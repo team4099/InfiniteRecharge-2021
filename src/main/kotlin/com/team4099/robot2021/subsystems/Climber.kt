@@ -1,4 +1,6 @@
 package com.team4099.robot2021.subsystems
 
-object Climber {
+import edu.wpi.first.wpilibj2.command.SubsystemBase
+
+object Climber: SubsystemBase()  {
 }
