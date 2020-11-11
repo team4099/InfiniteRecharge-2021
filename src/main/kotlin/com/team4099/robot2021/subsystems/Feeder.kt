@@ -16,17 +16,20 @@ object Feeder:SubsystemBase(){
      * @return None
     **/
 
-    var feederState = FeederState.NEUTRAL
+    var setState = FeederState.NEUTRAL
         set(value) {
-            when(state) {
-                state.FORWARD -> {
-                    // TODO
+            when(value) {
+                FeederState.FORWARD -> {
+                    field = value
+                    //TODO
                 }
-                state.BACKWARD -> {
-                    // TODO
+                FeederState.NEUTRAL -> {
+                    field = value
+                    //TODO
                 }
-                state.NUETRAL -> {
-                    // TODO
+                FeederState.BACKWARD -> {
+                    field = value
+                   //TODO
                 }
             }
         }

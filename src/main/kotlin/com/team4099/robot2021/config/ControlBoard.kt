@@ -2,6 +2,7 @@ package com.team4099.robot2021.config
 
 import com.team4099.lib.joystick.Gamepad
 import com.team4099.lib.joystick.XboxOneGamepad
+import edu.wpi.first.wpilibj2.command.button.Trigger
 
 /**
  * Maps buttons on the driver and operator controllers to specific actions
@@ -58,4 +59,9 @@ object ControlBoard {
 
     val slowMode: Boolean
         get() = driver.dPadDown
+
+    val goForward = Trigger{ runFeederIn};
+
+    val goBack = Trigger{ runFeederOut};
+
 }
