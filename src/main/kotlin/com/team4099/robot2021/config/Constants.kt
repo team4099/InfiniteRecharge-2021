@@ -22,6 +22,11 @@ object Constants {
       2 to RobotName.MULE
     )
   }
+  
+  object Drivetrain {
+    const val DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 200
+    const val WHEEL_COUNT = 4
+  }
 
   object Joysticks {
     const val DRIVER_PORT = 0
