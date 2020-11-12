@@ -16,20 +16,25 @@ object Feeder:SubsystemBase(){
      * @param state Feeder State
      * @return None
     **/
+	
+	private val floorMotor = TalonSRX(Constants.Feeder.FLOOR_ID)
+	private val verticalMotor = TalonSRX(Constants.Feeder.VERTICAL_ID)
+	
     var feederState = FeederState.NEUTRAL
         set(value) {
-            when(value) {
+            field = value
+			when(value) {
                 FeederState.FORWARD -> {
-                    field = value
-                    //TODO
+                    floorMotor.set(ControlMode.PercentOutput, Constants.Feeder.FEEDER_POWER)
+					verticalMotor.set(ControlMode.PercentOutput, Constants.Feeder.FEEDER_POWER)
                 }
                 FeederState.NEUTRAL -> {
-                    field = value
-                    //TODO
+                    floorMotor.set(ControlMode.PercentOutput, 0)
+					verticalMotor.set(ControlMode.PercentOutput, 0)
                 }
                 FeederState.BACKWARD -> {
-                    field = value
-                   //TODO
+                    floorMotor.set(ControlMode.PercentOutput, -Constants.Feeder.FEEDER_POWER)
+					verticalMotor.set(ControlMode.PercentOutput, -Constants.Feeder.FEEDER_POWER)
                 }
             }
         }

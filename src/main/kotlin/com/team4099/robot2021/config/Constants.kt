@@ -32,4 +32,10 @@ object Constants {
     const val TURN_DEADBAND = 0.035
   }
 
+  object Feeder {
+    const val FLOOR_ID = 0
+	const val VERTICAL_ID = 0
+	
+	const val FEEDER_POWER = 1
+  }
 }
