@@ -1,7 +1,10 @@
 package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
+import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.config.Constants
+import com.team4099.robot2021.config.ControlBoard
+import com.team4099.robot2021.config.subsystems.Feeder
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
@@ -21,6 +24,13 @@ object Robot: TimedRobot() {
     Logger.addSource("Robot", "Battery Voltage", RobotController::getBatteryVoltage)
 
     Logger.startLogging()
+
+    // Link between feeder Trigger and Command
+    ControlBoard.goForward.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD))
+    ControlBoard.goBackward.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD));
+
+
+
   }
 
   private val autonomousCommand = InstantCommand()

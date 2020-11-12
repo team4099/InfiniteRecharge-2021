@@ -1,10 +1,11 @@
 package com.team4099.robot2021.config.subsystems
 
 import com.team4099.robot2021.config.Constants
+import com.team4099.robot2021.commands.feeder.FeederCommand
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object Feeder:SubsystemBase(){
-
+    var feederCommand = FeederCommand(FeederState.NEUTRAL)
     /**
      * The state of the feeder 
     */
