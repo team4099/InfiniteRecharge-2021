@@ -42,6 +42,11 @@ object Constants {
     const val TURN_DEADBAND = 0.035
   }
 
+  object Drivetrain {
+    const val DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 200
+    const val WHEEL_COUNT = 4
+  }
+
   object Feeder {
     const val FLOOR_ID = 0
     const val VERTICAL_ID = 0
@@ -147,5 +152,4 @@ object Constants {
     LOW(0.meters),
     HIGH(1.0414.meters) //Climber fulled extended: 1.0414 meters = 41 in
   }
-
 }
