@@ -1,5 +1,7 @@
 package com.team4099.robot2021.config
 
+import com.team4099.lib.units.derived.Angle
+
 object Constants {
   object Universal {
     const val CTRE_CONFIG_TIMEOUT = 0
@@ -30,5 +32,16 @@ object Constants {
     const val QUICK_TURN_THROTTLE_TOLERANCE = 0.1
     const val THROTTLE_DEADBAND = 0.04
     const val TURN_DEADBAND = 0.035
+  }
+
+  object Intake {
+    const val INTAKE_MOTOR = 0; //temp
+
+    const val ARM_SOLENOID_PORT_1 = 0; //temp
+    const val ARM_SOLENOID_PORT_2 = 1; //temp
+
+    enum class ArmPosition(val pos: Angle) {
+
+    }
   }
 }
