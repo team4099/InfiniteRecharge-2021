@@ -48,20 +48,13 @@ object ControlBoard {
     val runIntakeOut: Boolean
         get() = operator.bButton
 
-    val runFeederIn: Boolean
-        get() = operator.dPadDown
+    val runFeederIn = Trigger{ operator.dPadDown};
 
-    val runFeederOut: Boolean
-        get() = operator.dPadUp
+    val runFeederOut = Trigger{ operator.dPadUp};
 
     val runFeederShoot: Boolean
         get() = operator.dPadLeft || operator.dPadRight
 
     val slowMode: Boolean
         get() = driver.dPadDown
-
-    val goForward = Trigger{ runFeederIn};
-
-    val goBack = Trigger{ runFeederOut};
-
 }
