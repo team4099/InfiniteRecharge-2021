@@ -42,9 +42,10 @@ object ControlBoard {
     val climberDown: Boolean
         get() = driver.dPadDown
 
-    val runIntakeIn: Boolean
-        get() = operator.aButton
+    val runFeederIn = Trigger{ operator.dPadDown};
 
+    val runFeederOut = Trigger{ operator.dPadUp};
+    
     val runIntakeOut: Boolean
         get() = operator.bButton
 
