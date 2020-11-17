@@ -24,6 +24,8 @@ object Constants {
   }
   
   object Drivetrain {
+    const val TICKS = 4096
+
     const val FRONT_LEFT_SPEED_ID = 2
     const val FRONT_LEFT_DIRECTION_ID = 3
 
@@ -42,10 +44,6 @@ object Constants {
 
     const val DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 200
     const val DRIVE_SETPOINT_MAX = 10000
-
-
-
-
   }
 
   object Joysticks {
