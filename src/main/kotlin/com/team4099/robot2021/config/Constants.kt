@@ -36,7 +36,6 @@ object Constants {
 
   object Intake {
     const val INTAKE_MOTOR = 0 //temp
-    const val INTAKE_SPEED = 1.0 //temp
     enum class IntakeState (val speed: Double){
       DEFAULT(0.0),
       IN(1.0),
