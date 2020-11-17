@@ -1,7 +1,12 @@
 package com.team4099.robot2021.subsystems
 
 import com.kauailabs.navx.frc.AHRS
+import com.revrobotics.SparkMax
 import edu.wpi.first.wpilibj.Preferences
+import edu.wpi.first.wpilibj2.command.SubsystemBase
+import com.team4099.robot2021.config.Constants
+import edu.wpi.first.wpilibj.SPI
+import kotlin.math.hypot
 
 // code "derived" from Strykeforce's SwerveDrive
 /**
@@ -16,13 +21,13 @@ import edu.wpi.first.wpilibj.Preferences
  *
  * @see Wheel
  */
-class SwerveDrive(config: SwerveDriveConfig) {
+object SwerveDrive : SubsystemBase() {
   /**
    * Get the gyro instance being used by the drive.
    *
    * @return the gyro instance
    */
-  val gyro: AHRS?
+  val gyro: AHRS
   
   /**
    * Unit testing
@@ -37,20 +42,22 @@ class SwerveDrive(config: SwerveDriveConfig) {
    * @return width
    */
   val widthComponent: Double
+
   private var kGyroRateCorrection = 0.0
-  private val wheels: Array<Wheel>
-  private val ws = DoubleArray(WHEEL_COUNT)
-  private val wa = DoubleArray(WHEEL_COUNT)
+  private val modules: Array<SwerveModule>
+  private val ws = DoubleArray(Constants.Drivetrain.WHEEL_COUNT)
+  private val wa = DoubleArray(Constants.Drivetrain.WHEEL_COUNT)
   private var isFieldOriented = false
-  
+
+
   /**
    * Set the drive mode.
    *
    * @param driveMode the drive mode
    */
   fun setDriveMode(driveMode: DriveMode?) {
-    for (wheel in wheels) {
-      wheel.setDriveMode(driveMode)
+    for (module in modules) {
+      module.setDriveMode(driveMode)
     }
 //    logger.info("drive mode = {}", driveMode)
   }
@@ -63,7 +70,7 @@ class SwerveDrive(config: SwerveDriveConfig) {
    * @param drive 0 to 1 in the direction of the wheel azimuth
    */
   operator fun set(azimuth: Double, drive: Double) {
-    for (wheel in wheels) {
+    for (wheel in modules) {
       wheel.set(azimuth, drive)
     }
   }
@@ -110,14 +117,14 @@ class SwerveDrive(config: SwerveDriveConfig) {
     // normalize wheel speed
     val maxWheelSpeed = Math.max(Math.max(ws[0], ws[1]), Math.max(ws[2], ws[3]))
     if (maxWheelSpeed > 1.0) {
-      for (i in 0 until WHEEL_COUNT) {
+      for (i in 0 until Constants.Drivetrain.WHEEL_COUNT) {
         ws[i] /= maxWheelSpeed
       }
     }
     
     // set wheels
-    for (i in 0 until WHEEL_COUNT) {
-      wheels[i].set(wa[i], ws[i])
+    for (i in 0 until Constants.Drivetrain.WHEEL_COUNT) {
+      modules[i].set(wa[i], ws[i])
     }
   }
   
@@ -127,7 +134,7 @@ class SwerveDrive(config: SwerveDriveConfig) {
    * thereby prevent wheel rotation if the wheels were moved manually while the robot was disabled.
    */
   fun stop() {
-    for (wheel in wheels) {
+    for (wheel in modules) {
       wheel.stop()
     }
 //    logger.info("stopped all wheels")
@@ -149,8 +156,8 @@ class SwerveDrive(config: SwerveDriveConfig) {
   }
   
   fun saveAzimuthPositions(prefs: Preferences) {
-    for (i in 0 until WHEEL_COUNT) {
-      val position: Int = wheels[i].getAzimuthAbsolutePosition()
+    for (i in 0 until Constants.Drivetrain.WHEEL_COUNT) {
+      val position: Int = modules[i].getAzimuthAbsolutePosition()
       prefs.putInt(getPreferenceKeyForWheel(i), position)
 //      logger.info("azimuth {}: saved zero = {}", i, position)
     }
@@ -169,9 +176,9 @@ class SwerveDrive(config: SwerveDriveConfig) {
   
   fun zeroAzimuthEncoders(prefs: Preferences) {
 //    Errors.setCount(0)
-    for (i in 0 until WHEEL_COUNT) {
-      val position = prefs.getInt(getPreferenceKeyForWheel(i), DEFAULT_ABSOLUTE_AZIMUTH_OFFSET)
-      wheels[i].setAzimuthZero(position)
+    for (i in 0 until Constants.Drivetrain.WHEEL_COUNT) {
+      val position = prefs.getInt(getPreferenceKeyForWheel(i), Constants.Drivetrain.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET)
+      modules[i].setAzimuthZero(position)
 //      logger.info("azimuth {}: loaded zero = {}", i, position)
     }
 //    val errorCount: Int = Errors.getCount()
@@ -183,8 +190,8 @@ class SwerveDrive(config: SwerveDriveConfig) {
    *
    * @return the Wheel array.
    */
-  fun getWheels(): Array<Wheel> {
-    return wheels
+  fun getWheels(): Array<SwerveModule> {
+    return modules
   }
   
   /**
@@ -229,22 +236,22 @@ class SwerveDrive(config: SwerveDriveConfig) {
   }
   
   init {
-    gyro = config.gyro
-    wheels = config.wheels
-    val summarizeErrors: Boolean = config.summarizeTalonErrors
+    gyro = AHRS(SPI.Port.kMXP)
+    modules = config.wheels
+//    val summarizeErrors: Boolean = config.summarizeTalonErrors
 //    Errors.setSummarized(summarizeErrors)
 //    Errors.setCount(0)
 //    logger.debug("TalonSRX configuration errors summarized = {}", summarizeErrors)
-    val length: Double = config.length
-    val width: Double = config.width
-    val radius = Math.hypot(length, width)
+    val length: Double = Constants.Drivetrain.DRIVETRAIN_LENGTH
+    val width: Double = Constants.Drivetrain.DRIVETRAIN_WIDTH
+    val radius = hypot(length, width)
     lengthComponent = length / radius
     widthComponent = width / radius
-    logger.info("gyro is configured: {}", gyro != null)
-    logger.info("gyro is connected: {}", gyro != null && gyro.isConnected)
+//    logger.info("gyro is configured: {}", gyro != null)
+//    logger.info("gyro is connected: {}", gyro != null && gyro.isConnected)
     setFieldOriented(gyro != null && gyro.isConnected)
     if (isFieldOriented) {
-      gyro.enableLogging(config.gyroLoggingEnabled)
+//      gyro.enableLogging(config.gyroLoggingEnabled)
       val robotPeriod: Double = config.robotPeriod
       val gyroRateCoeff: Double = config.gyroRateCoeff
       val rate = gyro.actualUpdateRate
