@@ -47,8 +47,8 @@ object Constants {
     const val ARM_SOLENOID_PORT_1 = 0 //temp
     const val ARM_SOLENOID_PORT_2 = 1 //temp
 
-    enum class ArmPosition(val pos: Angle) {
-
+    enum class ArmPosition {
+      OUT, IN, DEFAULT
     }
   }
 }
