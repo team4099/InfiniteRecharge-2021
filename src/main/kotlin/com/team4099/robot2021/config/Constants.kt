@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.team4099.robot2021.config
 
 import com.team4099.lib.units.base.inches
@@ -61,6 +60,7 @@ object Constants {
     const val DRIVETRAIN_WIDTH = 29.0
 
     const val DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 200
+    const val DRIVE_SETPOINT_MAX = 10000
   }
 
   object Feeder {
