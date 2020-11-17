@@ -24,8 +24,27 @@ object Constants {
   }
   
   object Drivetrain {
-    const val DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 200
+    const val FRONT_LEFT_SPEED_ID = 2
+    const val FRONT_LEFT_DIRECTION_ID = 3
+
+    const val FRONT_RIGHT_SPEED_ID = 4
+    const val FRONT_RIGHT_DIRECTION_ID = 5
+
+    const val BACK_LEFT_SPEED_ID = 6
+    const val BACK_LEFT_DIRECTION_ID = 7
+
+    const val BACK_RIGHT_SPEED_ID = 8
+    const val BACK_RIGHT_DIRECTION_ID = 9
+
     const val WHEEL_COUNT = 4
+    const val DRIVETRAIN_LENGTH = 29.0
+    const val DRIVETRAIN_WIDTH = 29.0
+
+    const val DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 200
+
+
+
+
   }
 
   object Joysticks {
