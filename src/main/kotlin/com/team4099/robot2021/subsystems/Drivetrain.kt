@@ -1,12 +1,14 @@
 package com.team4099.robot2021.subsystems
 
 import com.kauailabs.navx.frc.AHRS
-import com.revrobotics.SparkMax
+import com.revrobotics.CANSparkMax
+import com.revrobotics.CANSparkMaxLowLevel
 import edu.wpi.first.wpilibj.Preferences
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import com.team4099.robot2021.config.Constants
+import com.team4099.robot2021.subsystems.SwerveDrive.Companion.getPreferenceKeyForWheel
 import edu.wpi.first.wpilibj.SPI
-import kotlin.math.hypot
+import kotlin.math.*
 
 // code "derived" from Strykeforce's SwerveDrive
 /**
@@ -27,21 +29,21 @@ object SwerveDrive : SubsystemBase() {
    *
    * @return the gyro instance
    */
-  val gyro: AHRS
-  
+  private val gyro: AHRS = AHRS(SPI.Port.kMXP)
+
   /**
    * Unit testing
    *
    * @return length
    */
-  val lengthComponent: Double
+  private val lengthComponent: Double
   
   /**
    * Unit testing
    *
    * @return width
    */
-  val widthComponent: Double
+  private val widthComponent: Double
 
   private var kGyroRateCorrection = 0.0
   private val modules: Array<SwerveModule>
@@ -49,7 +51,17 @@ object SwerveDrive : SubsystemBase() {
   private val wa = DoubleArray(Constants.Drivetrain.WHEEL_COUNT)
   private var isFieldOriented = false
 
+  private val frontLeftSpeedSparkMax: CANSparkMax = CANSparkMax(Constants.Drivetrain.FRONT_LEFT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
+  private val frontLeftDirectionSparkMax: CANSparkMax = CANSparkMax(Constants.Drivetrain.FRONT_LEFT_DIRECTION_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
 
+  private val frontRightSpeedSparkMax: CANSparkMax = CANSparkMax(Constants.Drivetrain.FRONT_RIGHT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
+  private val frontRightDirectionSparkMax: CANSparkMax = CANSparkMax(Constants.Drivetrain.FRONT_RIGHT_DIRECTION_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
+
+  private val backLeftSpeedSparkMax: CANSparkMax = CANSparkMax(Constants.Drivetrain.BACK_LEFT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
+  private val backLeftDirectionSparkMax: CANSparkMax = CANSparkMax(Constants.Drivetrain.BACK_LEFT_DIRECTION_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
+
+  private val backRightSpeedSparkMax: CANSparkMax = CANSparkMax(Constants.Drivetrain.BACK_RIGHT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
+  private val backRightDirectionSparkMax: CANSparkMax = CANSparkMax(Constants.Drivetrain.BACK_RIGHT_DIRECTION_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
   /**
    * Set the drive mode.
    *
@@ -91,10 +103,10 @@ object SwerveDrive : SubsystemBase() {
     if (isFieldOriented) {
       var angle = gyro!!.angle
       angle += gyro.rate * kGyroRateCorrection
-      angle = Math.IEEEremainder(angle, 360.0)
+      angle = angle.IEEErem(360.0)
       angle = Math.toRadians(angle)
-      val temp = forward * Math.cos(angle) + strafe * Math.sin(angle)
-      strafe = strafe * Math.cos(angle) - forward * Math.sin(angle)
+      val temp = forward * cos(angle) + strafe * sin(angle)
+      strafe = strafe * cos(angle) - forward * sin(angle)
       forward = temp
     }
     val a = strafe - azimuth * lengthComponent
@@ -103,19 +115,19 @@ object SwerveDrive : SubsystemBase() {
     val d = forward + azimuth * widthComponent
     
     // wheel speed
-    ws[0] = Math.hypot(b, d)
-    ws[1] = Math.hypot(b, c)
-    ws[2] = Math.hypot(a, d)
-    ws[3] = Math.hypot(a, c)
+    ws[0] = hypot(b, d)
+    ws[1] = hypot(b, c)
+    ws[2] = hypot(a, d)
+    ws[3] = hypot(a, c)
     
     // wheel azimuth
-    wa[0] = Math.atan2(b, d) * 0.5 / Math.PI
-    wa[1] = Math.atan2(b, c) * 0.5 / Math.PI
-    wa[2] = Math.atan2(a, d) * 0.5 / Math.PI
-    wa[3] = Math.atan2(a, c) * 0.5 / Math.PI
+    wa[0] = atan2(b, d) * 0.5 / Math.PI
+    wa[1] = atan2(b, c) * 0.5 / Math.PI
+    wa[2] = atan2(a, d) * 0.5 / Math.PI
+    wa[3] = atan2(a, c) * 0.5 / Math.PI
     
     // normalize wheel speed
-    val maxWheelSpeed = Math.max(Math.max(ws[0], ws[1]), Math.max(ws[2], ws[3]))
+    val maxWheelSpeed = max(max(ws[0], ws[1]), max(ws[2], ws[3]))
     if (maxWheelSpeed > 1.0) {
       for (i in 0 until Constants.Drivetrain.WHEEL_COUNT) {
         ws[i] /= maxWheelSpeed
@@ -236,8 +248,11 @@ object SwerveDrive : SubsystemBase() {
   }
   
   init {
-    gyro = AHRS(SPI.Port.kMXP)
-    modules = config.wheels
+    val frontLeftSwerveModule = SwerveModule(frontLeftDirectionSparkMax, frontLeftSpeedSparkMax, Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    val frontRightSwerveModule = SwerveModule(frontRightDirectionSparkMax, frontRightSpeedSparkMax, Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    val backLeftSwerveModule = SwerveModule(backLeftDirectionSparkMax, backLeftSpeedSparkMax, Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    val backRightSwerveModule = SwerveModule(backRightDirectionSparkMax, backRightSpeedSparkMax, Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    modules = arrayOf(frontLeftSwerveModule, frontRightSwerveModule, backLeftSwerveModule, backRightSwerveModule)
 //    val summarizeErrors: Boolean = config.summarizeTalonErrors
 //    Errors.setSummarized(summarizeErrors)
 //    Errors.setCount(0)
