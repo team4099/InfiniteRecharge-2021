@@ -11,7 +11,8 @@ class ShooterIdleCommand : CommandBase() {
   }
 
   override fun initialize(){
-    Shooter.setVelocity(0.rotations.perMinute)
+    Shooter.targetVelocity = 0.rotations.perMinute
+    Shooter.setOpenLoopPower(0.0)
   }
   override fun execute(){
 
