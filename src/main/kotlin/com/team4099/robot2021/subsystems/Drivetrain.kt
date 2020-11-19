@@ -6,7 +6,6 @@ import com.revrobotics.CANSparkMaxLowLevel
 import edu.wpi.first.wpilibj.Preferences
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import com.team4099.robot2021.config.Constants
-import com.team4099.robot2021.subsystems.SwerveDrive.Companion.getPreferenceKeyForWheel
 import edu.wpi.first.wpilibj.SPI
 import kotlin.math.*
 
@@ -24,25 +23,9 @@ import kotlin.math.*
  * @see Wheel
  */
 object SwerveDrive : SubsystemBase() {
-  /**
-   * Get the gyro instance being used by the drive.
-   *
-   * @return the gyro instance
-   */
-  private val gyro: AHRS = AHRS(SPI.Port.kMXP)
 
-  /**
-   * Unit testing
-   *
-   * @return length
-   */
+  private val gyro: AHRS = AHRS(SPI.Port.kMXP)
   private val lengthComponent: Double
-  
-  /**
-   * Unit testing
-   *
-   * @return width
-   */
   private val widthComponent: Double
 
   private var kGyroRateCorrection = 0.0
@@ -62,6 +45,47 @@ object SwerveDrive : SubsystemBase() {
 
   private val backRightSpeedSparkMax: CANSparkMax = CANSparkMax(Constants.Drivetrain.BACK_RIGHT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
   private val backRightDirectionSparkMax: CANSparkMax = CANSparkMax(Constants.Drivetrain.BACK_RIGHT_DIRECTION_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
+
+  /** Swerve Drive drive mode  */
+  enum class DriveMode {
+    OPEN_LOOP, CLOSED_LOOP, TELEOP, TRAJECTORY, AZIMUTH
+  }
+
+  init {
+    val frontLeftSwerveModule = SwerveModule(frontLeftDirectionSparkMax, frontLeftSpeedSparkMax, Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    val frontRightSwerveModule = SwerveModule(frontRightDirectionSparkMax, frontRightSpeedSparkMax, Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    val backLeftSwerveModule = SwerveModule(backLeftDirectionSparkMax, backLeftSpeedSparkMax, Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    val backRightSwerveModule = SwerveModule(backRightDirectionSparkMax, backRightSpeedSparkMax, Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    modules = arrayOf(frontLeftSwerveModule, frontRightSwerveModule, backLeftSwerveModule, backRightSwerveModule)
+//    val summarizeErrors: Boolean = config.summarizeTalonErrors
+//    Errors.setSummarized(summarizeErrors)
+//    Errors.setCount(0)
+//    logger.debug("TalonSRX configuration errors summarized = {}", summarizeErrors)
+    val length: Double = Constants.Drivetrain.DRIVETRAIN_LENGTH
+    val width: Double = Constants.Drivetrain.DRIVETRAIN_WIDTH
+    val radius = hypot(length, width)
+    lengthComponent = length / radius
+    widthComponent = width / radius
+//    logger.info("gyro is configured: {}", gyro != null)
+//    logger.info("gyro is connected: {}", gyro != null && gyro.isConnected)
+    setFieldOriented(gyro != null && gyro.isConnected)
+    if (isFieldOriented) {
+//      gyro.enableLogging(config.gyroLoggingEnabled)
+      val robotPeriod: Double = config.robotPeriod
+      val gyroRateCoeff: Double = config.gyroRateCoeff
+      val rate = gyro.actualUpdateRate
+      val gyroPeriod = 1.0 / rate
+      kGyroRateCorrection = robotPeriod / gyroPeriod * gyroRateCoeff
+//      logger.debug("gyro frequency = {} Hz", rate)
+    } else {
+//      logger.warn("gyro is missing or not enabled")
+      kGyroRateCorrection = 0.0
+    }
+//    logger.debug("length = {}", length)
+//    logger.debug("width = {}", width)
+//    logger.debug("enableGyroLogging = {}", config.gyroLoggingEnabled)
+//    logger.debug("gyroRateCorrection = {}", kGyroRateCorrection)
+  }
   /**
    * Set the drive mode.
    *
@@ -90,16 +114,16 @@ object SwerveDrive : SubsystemBase() {
   /**
    * Drive the robot in given field-relative direction and with given rotation.
    *
-   * @param forward Y-axis movement, from -1.0 (reverse) to 1.0 (forward)
-   * @param strafe X-axis movement, from -1.0 (left) to 1.0 (right)
+   * @param forwardInput Y-axis movement, from -1.0 (reverse) to 1.0 (forward)
+   * @param strafeInput X-axis movement, from -1.0 (left) to 1.0 (right)
    * @param azimuth robot rotation, from -1.0 (CCW) to 1.0 (CW)
    */
-  fun drive(forward: Double, strafe: Double, azimuth: Double) {
+  fun drive(forwardInput: Double, strafeInput: Double, azimuth: Double) {
     
     // Use gyro for field-oriented drive. We use getAngle instead of getYaw to enable arbitrary
     // autonomous starting positions.
-    var forward = forward
-    var strafe = strafe
+    var forward = forwardInput
+    var strafe = strafeInput
     if (isFieldOriented) {
       var angle = gyro!!.angle
       angle += gyro.rate * kGyroRateCorrection
@@ -109,10 +133,10 @@ object SwerveDrive : SubsystemBase() {
       strafe = strafe * cos(angle) - forward * sin(angle)
       forward = temp
     }
-    val a = strafe - azimuth * lengthComponent
-    val b = strafe + azimuth * lengthComponent
-    val c = forward - azimuth * widthComponent
-    val d = forward + azimuth * widthComponent
+    val a = strafe - azimuth * Constants.Drivetrain.DRIVETRAIN_LENGTH
+    val b = strafe + azimuth * Constants.Drivetrain.DRIVETRAIN_LENGTH
+    val c = forward - azimuth * Constants.Drivetrain.DRIVETRAIN_WIDTH
+    val d = forward + azimuth *Constants.Drivetrain.DRIVETRAIN_WIDTH
     
     // wheel speed
     ws[0] = hypot(b, d)
@@ -127,8 +151,8 @@ object SwerveDrive : SubsystemBase() {
     wa[3] = atan2(a, c) * 0.5 / Math.PI
     
     // normalize wheel speed
-    val maxWheelSpeed = max(max(ws[0], ws[1]), max(ws[2], ws[3]))
-    if (maxWheelSpeed > 1.0) {
+    val maxWheelSpeed = ws.max()
+    if (maxWheelSpeed!! > 1.0) {
       for (i in 0 until Constants.Drivetrain.WHEEL_COUNT) {
         ws[i] /= maxWheelSpeed
       }
@@ -166,7 +190,8 @@ object SwerveDrive : SubsystemBase() {
   fun saveAzimuthPositions() {
     saveAzimuthPositions(Preferences.getInstance())
   }
-  
+
+
   fun saveAzimuthPositions(prefs: Preferences) {
     for (i in 0 until Constants.Drivetrain.WHEEL_COUNT) {
       val position: Int = modules[i].getAzimuthAbsolutePosition()
@@ -226,16 +251,7 @@ object SwerveDrive : SubsystemBase() {
 //    logger.info("field orientation driving is {}", if (isFieldOriented) "ENABLED" else "DISABLED")
   }
   
-  /** Swerve Drive drive mode  */
-  enum class DriveMode {
-    OPEN_LOOP, CLOSED_LOOP, TELEOP, TRAJECTORY, AZIMUTH
-  }
-  
-  companion object {
-    const val DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 200
 //    private val logger: Logger = LoggerFactory.getLogger(SwerveDrive::class.java)
-    private const val WHEEL_COUNT = 4
-    
     /**
      * Return key that wheel zero information is stored under in WPI preferences.
      *
@@ -245,41 +261,6 @@ object SwerveDrive : SubsystemBase() {
     fun getPreferenceKeyForWheel(wheel: Int): String {
       return String.format("%s/wheel.%d", SwerveDrive::class.java.simpleName, wheel)
     }
-  }
-  
-  init {
-    val frontLeftSwerveModule = SwerveModule(frontLeftDirectionSparkMax, frontLeftSpeedSparkMax, Constants.Drivetrain.DRIVE_SETPOINT_MAX)
-    val frontRightSwerveModule = SwerveModule(frontRightDirectionSparkMax, frontRightSpeedSparkMax, Constants.Drivetrain.DRIVE_SETPOINT_MAX)
-    val backLeftSwerveModule = SwerveModule(backLeftDirectionSparkMax, backLeftSpeedSparkMax, Constants.Drivetrain.DRIVE_SETPOINT_MAX)
-    val backRightSwerveModule = SwerveModule(backRightDirectionSparkMax, backRightSpeedSparkMax, Constants.Drivetrain.DRIVE_SETPOINT_MAX)
-    modules = arrayOf(frontLeftSwerveModule, frontRightSwerveModule, backLeftSwerveModule, backRightSwerveModule)
-//    val summarizeErrors: Boolean = config.summarizeTalonErrors
-//    Errors.setSummarized(summarizeErrors)
-//    Errors.setCount(0)
-//    logger.debug("TalonSRX configuration errors summarized = {}", summarizeErrors)
-    val length: Double = Constants.Drivetrain.DRIVETRAIN_LENGTH
-    val width: Double = Constants.Drivetrain.DRIVETRAIN_WIDTH
-    val radius = hypot(length, width)
-    lengthComponent = length / radius
-    widthComponent = width / radius
-//    logger.info("gyro is configured: {}", gyro != null)
-//    logger.info("gyro is connected: {}", gyro != null && gyro.isConnected)
-    setFieldOriented(gyro != null && gyro.isConnected)
-    if (isFieldOriented) {
-//      gyro.enableLogging(config.gyroLoggingEnabled)
-      val robotPeriod: Double = config.robotPeriod
-      val gyroRateCoeff: Double = config.gyroRateCoeff
-      val rate = gyro.actualUpdateRate
-      val gyroPeriod = 1.0 / rate
-      kGyroRateCorrection = robotPeriod / gyroPeriod * gyroRateCoeff
-//      logger.debug("gyro frequency = {} Hz", rate)
-    } else {
-//      logger.warn("gyro is missing or not enabled")
-      kGyroRateCorrection = 0.0
-    }
-//    logger.debug("length = {}", length)
-//    logger.debug("width = {}", width)
-//    logger.debug("enableGyroLogging = {}", config.gyroLoggingEnabled)
-//    logger.debug("gyroRateCorrection = {}", kGyroRateCorrection)
-  }
+
+
 }
