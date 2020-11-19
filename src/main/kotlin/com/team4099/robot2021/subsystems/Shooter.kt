@@ -1,6 +1,7 @@
 package com.team4099.robot2021.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
+import com.ctre.phoenix.motorcontrol.DemandType
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.ctreAngularMechanismSensor
@@ -21,7 +22,13 @@ object Shooter : SubsystemBase() {
   var targetVelocity
     set(velocity) {
       _targetVelocity = velocity
-      shooterMotor.set(ControlMode.Velocity,shooterSensor.velocityToRawUnits(velocity))
+      shooterMotor.set(
+        ControlMode.Velocity,
+        shooterSensor.velocityToRawUnits(velocity),
+        DemandType.ArbitraryFeedForward,
+        (Constants.Shooter.SHOOTER_KS +
+          Constants.Shooter.SHOOTER_KV * velocity.value)
+      )
     }
     get() = _targetVelocity
 

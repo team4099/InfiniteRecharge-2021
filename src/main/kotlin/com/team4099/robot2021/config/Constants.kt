@@ -1,5 +1,7 @@
 package com.team4099.robot2021.config
 
+import com.team4099.lib.units.derived.rotations
+import com.team4099.lib.units.perMinute
 import com.team4099.lib.units.derived.Angle
 import edu.wpi.first.wpilibj.DoubleSolenoid
 
@@ -51,17 +53,26 @@ object Constants {
     const val ARM_SOLENOID_PORT_2 = 1 //temp
     const val TAB = "Intake"
 
-    enum class IntakeState (val speed: Double){
+    enum class IntakeState(val speed: Double) {
       DEFAULT(0.0),
       IN(1.0),
       OUT(-1.0)
     }
 
-    enum class ArmPosition (val position: DoubleSolenoid.Value?){
+    enum class ArmPosition(val position: DoubleSolenoid.Value?) {
       OUT(DoubleSolenoid.Value.kReverse),
       IN(DoubleSolenoid.Value.kForward),
       DEFAULT(DoubleSolenoid.Value.kOff);
     }
+
+  }
+  object Shooter {
+    const val SHOOTER_MOTOR_ID = 0
+
+    val TARGET_VELOCITY = 0.rotations.perMinute
+
+    const val SHOOTER_KS = 0.0
+    const val SHOOTER_KV = 0.0
   }
 
 }
