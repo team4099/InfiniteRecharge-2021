@@ -2,6 +2,7 @@ package com.team4099.robot2021.config
 
 import com.team4099.lib.joystick.Gamepad
 import com.team4099.lib.joystick.XboxOneGamepad
+import edu.wpi.first.wpilibj2.command.button.Trigger
 
 /**
  * Maps buttons on the driver and operator controllers to specific actions
@@ -41,11 +42,9 @@ object ControlBoard {
     val climberDown: Boolean
         get() = driver.dPadDown
 
-    val runIntakeIn: Boolean
-        get() = operator.aButton
+    val runIntakeIn = Trigger {operator.aButton}
 
-    val runIntakeOut: Boolean
-        get() = operator.bButton
+    val runIntakeOut = Trigger { operator.bButton}
 
     val runFeederIn: Boolean
         get() = operator.dPadDown

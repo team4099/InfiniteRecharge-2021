@@ -1,7 +1,10 @@
 package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
+import com.team4099.robot2021.commands.intake.IntakeCommand
 import com.team4099.robot2021.config.Constants
+import com.team4099.robot2021.config.ControlBoard
+import com.team4099.robot2021.subsystems.Intake
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
@@ -21,6 +24,10 @@ object Robot: TimedRobot() {
     Logger.addSource("Robot", "Battery Voltage", RobotController::getBatteryVoltage)
 
     Logger.startLogging()
+
+    Intake.defaultCommand = IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
+    ControlBoard.runIntakeIn.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT))
+    ControlBoard.runIntakeOut.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT))
   }
 
   private val autonomousCommand = InstantCommand()
