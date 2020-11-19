@@ -1,5 +1,6 @@
 package com.team4099.robot2021.config
 
+import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.meters
 
 object Constants {
@@ -23,8 +24,6 @@ object Constants {
     val CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER = .0508.meters //diameter: .0508 meters = 2 in
     val CLIMBER_SOLENOID_FORWARDCHANNEL = 0
     val CLIMBER_SOLENOID_REVERSECHANNEL = 1
-    val CLIMBER_CLIMBERPOSITION_LOWVAL = 0.meters
-    val CLIMBER_CLIMBERPOSITION_HIGHVAL = 1.0414.meters //Climber fulled extended: 1.0414 meters = 41 in
     val CLIMBER_CLIMBERPIDCONTROLLER_P = 0.1
     val CLIMBER_CLIMBERPIDCONTROLLER_I = 0.1
     val CLIMBER_CLIMBERPIDCONTROLLER_D = 0.1
@@ -32,4 +31,10 @@ object Constants {
     val CLIMBER_PID_SLOTID_SMARTMOTIIONACC = 0
 
   }
+
+  enum class ClimberPosition(val length: Length) {
+    LOW(0.meters),
+    HIGH(1.0414.meters) //Climber fulled extended: 1.0414 meters = 41 in
+  }
+
 }

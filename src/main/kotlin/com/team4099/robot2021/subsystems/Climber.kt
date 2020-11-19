@@ -18,12 +18,6 @@ object Climber: SubsystemBase() {
   private val pneumaticShifter: DoubleSolenoid = DoubleSolenoid(Constants.Climber.CLIMBER_SOLENOID_FORWARDCHANNEL, Constants.Climber.CLIMBER_SOLENOID_REVERSECHANNEL)
   //CODE PNEUMATIC
 
-
-  enum class ClimberPosition(val length: Length) {
-    LOW(Constants.Climber.CLIMBER_CLIMBERPOSITION_LOWVAL),
-    HIGH(Constants.Climber.CLIMBER_CLIMBERPOSITION_HIGHVAL) //Climber fulled extended: 1.0414 meters = 41 in
-  }
-
   init {
     climberPIDController.p = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_P
     climberPIDController.i = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_I
@@ -32,7 +26,7 @@ object Climber: SubsystemBase() {
     climberPIDController.setSmartMotionMaxAccel(climberSensor.accelerationToRawUnits(0.5.meters.perSecond.perSecond), Constants.Climber.CLIMBER_PID_SLOTID_SMARTMOTIIONACC)
   }
 
-  fun setPosition(position: ClimberPosition) {
+  fun setPosition(position: Constants.ClimberPosition) {
     climberPIDController.setReference(climberSensor.positionToRawUnits(position.length), ControlType.kSmartMotion)
   }
 }
