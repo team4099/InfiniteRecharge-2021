@@ -13,15 +13,20 @@ object Shooter : SubsystemBase() {
   private val shooterMotor = TalonFX(Constants.Shooter.SHOOTER_MOTOR_ID)
   private val shooterSensor = ctreAngularMechanismSensor(shooterMotor,2048,2.0)
 
-  var currentVelocity = 0.rotations.perMinute
-    get() { return shooterSensor.velocity }
+  val currentVelocity
+    get() = shooterSensor.velocity
 
   // velocity setpoint
-  var targetVelocity = 0.rotations.perMinute
-    set(velocity) = shooterMotor.set(ControlMode.Velocity,shooterSensor.velocityToRawUnits(velocity))
+  private var _targetVelocity = 0.rotations.perMinute
+  var targetVelocity
+    set(velocity) {
+      _targetVelocity = velocity
+      shooterMotor.set(ControlMode.Velocity,shooterSensor.velocityToRawUnits(velocity))
+    }
+    get() = _targetVelocity
 
   fun setOpenLoopPower(power : Double){
+    _targetVelocity = 0.rotations.perMinute
     shooterMotor.set(ControlMode.PercentOutput,power)
   }
-
 }
