@@ -12,6 +12,8 @@ object ControlBoard {
   private val operator = XboxOneGamepad(1)
 
   val climberHigh = Trigger { operator.dPadUp }
-
   val climberLow = Trigger { operator.dPadDown }
+
+  val pneumaticLocked = Trigger { operator.dPadRight }
+  val pneumaticUnlocked = Trigger { operator.dPadLeft }
 }
