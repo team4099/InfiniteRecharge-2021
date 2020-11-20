@@ -29,4 +29,15 @@ object Intake : SubsystemBase() {
         intakeDoubleSolenoid.set(DoubleSolenoid.Value.kOff)
     }
   }
+
+  fun intakePower () : Double {
+    return intakeTalon.motorOutputPercent
+  }
+
+  fun intakeCurrent() : Double {
+    return intakeTalon.motorOutputVoltage
+  }
+
+
+
 }

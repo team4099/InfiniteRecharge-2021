@@ -36,18 +36,25 @@ object Constants {
 
   object Intake {
     const val INTAKE_MOTOR = 0 //temp
-    enum class IntakeState (val speed: Double){
-      DEFAULT(0.0),
-      IN(1.0),
-      OUT(-1.0)
-    }
-
-
     const val ARM_SOLENOID_PORT_1 = 0 //temp
     const val ARM_SOLENOID_PORT_2 = 1 //temp
+    const val TAB = "Intake"
+    const val INTAKE_STATE = "IntakeState"
+    const val ARM_STATE = "ArmState"
+    const val IN_SPEED = 1.0
+    const val OUT_SPEED = -1.0
+    const val INTAKE_DEFAULT = 0.0
+
+    enum class IntakeState (val speed: Double){
+      DEFAULT(INTAKE_DEFAULT),
+      IN(IN_SPEED),
+      OUT(OUT_SPEED)
+    }
 
     enum class ArmPosition {
       OUT, IN, DEFAULT
     }
+
+
   }
 }
