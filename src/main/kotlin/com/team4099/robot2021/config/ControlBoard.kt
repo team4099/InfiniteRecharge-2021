@@ -14,6 +14,4 @@ object ControlBoard {
   val climberHigh = Trigger { operator.dPadUp }
   val climberLow = Trigger { operator.dPadDown }
 
-  val pneumaticLocked = Trigger { operator.dPadRight }
-  val pneumaticUnlocked = Trigger { operator.dPadLeft }
 }

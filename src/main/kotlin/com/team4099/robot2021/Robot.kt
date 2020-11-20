@@ -12,10 +12,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler
 object Robot: TimedRobot() {
   init {
     Climber.defaultCommand = LockClimber()
-    ControlBoard.climberHigh.whileActiveOnce(MoveClimber(Constants.ClimberPosition.HIGH))
-    ControlBoard.climberLow.whileActiveOnce(MoveClimber(Constants.ClimberPosition.LOW))
-    ControlBoard.pneumaticLocked.whenActive(LockClimber())
-    ControlBoard.pneumaticUnlocked.whenActive(UnlockClimber())
+    ControlBoard.climberHigh.whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
+    ControlBoard.climberLow.whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
+
   }
   override fun robotPeriodic() {
     CommandScheduler.getInstance().run()
