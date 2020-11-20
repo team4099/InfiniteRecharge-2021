@@ -15,8 +15,15 @@ object Climber: SubsystemBase() {
   private val climber = CANSparkMax(Constants.Climber.CLIMBER_SPARKMAX_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
   private val climberPIDController = climber.pidController
   private val climberSensor = sparkMaxLinearMechanismSensor(climber, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_RATIO, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER)//diameter: .0508 meters = 2 in
-  private val pneumaticShifter: DoubleSolenoid = DoubleSolenoid(Constants.Climber.CLIMBER_SOLENOID_FORWARDCHANNEL, Constants.Climber.CLIMBER_SOLENOID_REVERSECHANNEL)
-  //CODE PNEUMATIC
+  private val pneumaticBrake = DoubleSolenoid(Constants.Climber.CLIMBER_SOLENOID_FORWARDCHANNEL, Constants.Climber.CLIMBER_SOLENOID_REVERSECHANNEL)
+  var brakeApplied = false
+    set(value) {
+      field = value
+      pneumaticBrake.set(
+        if (value) DoubleSolenoid.Value.kForward
+        else DoubleSolenoid.Value.kReverse
+      )
+    }
 
   init {
     climberPIDController.p = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_P
@@ -28,5 +35,9 @@ object Climber: SubsystemBase() {
 
   fun setPosition(position: Constants.ClimberPosition) {
     climberPIDController.setReference(climberSensor.positionToRawUnits(position.length), ControlType.kSmartMotion)
+  }
+
+  fun setOpenLoopPower(power: Double) {
+    climber.set(power)
   }
 }
