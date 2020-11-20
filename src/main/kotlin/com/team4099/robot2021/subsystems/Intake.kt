@@ -2,6 +2,7 @@ package com.team4099.robot2021.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
+import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.ctreLinearMechanismSensor
 import com.team4099.lib.units.perSecond
@@ -12,32 +13,35 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 object Intake : SubsystemBase() {
 
   private val intakeTalon = TalonFX(Constants.Intake.INTAKE_MOTOR)
-
   private val intakeDoubleSolenoid = DoubleSolenoid(Constants.Intake.ARM_SOLENOID_PORT_1, Constants.Intake.ARM_SOLENOID_PORT_2)
-
-  fun setVelocity(velocity: Constants.Intake.IntakeState) {
-    intakeTalon.set(ControlMode.PercentOutput, velocity.speed)
-  }
-
-  fun setPosition(position: Constants.Intake.ArmPosition) {
-    when(position) {
-      Constants.Intake.ArmPosition.IN ->
-        intakeDoubleSolenoid.set(DoubleSolenoid.Value.kReverse)
-      Constants.Intake.ArmPosition.OUT ->
-        intakeDoubleSolenoid.set(DoubleSolenoid.Value.kForward)
-      Constants.Intake.ArmPosition.DEFAULT ->
-        intakeDoubleSolenoid.set(DoubleSolenoid.Value.kOff)
+  var intakeState = Constants.Intake.IntakeState.DEFAULT
+    set(value) {
+      intakeTalon.set(ControlMode.PercentOutput, value.speed)
+      field = value
     }
+
+  var armState = Constants.Intake.ArmPosition.DEFAULT
+    set(value) {
+      intakeDoubleSolenoid.set(when(value) {
+        Constants.Intake.ArmPosition.IN ->
+          DoubleSolenoid.Value.kReverse
+        Constants.Intake.ArmPosition.OUT ->
+          DoubleSolenoid.Value.kForward
+        Constants.Intake.ArmPosition.DEFAULT ->
+          DoubleSolenoid.Value.kOff
+      })
+      field = value
+    }
+
+
+
+  init {
+    Logger.addSource(Constants.Intake.TAB, "Intake State") { intakeState.toString() }
+    Logger.addSource(Constants.Intake.TAB, "Intake Motor Power") { intakeTalon.motorOutputPercent }
+    Logger.addSource(Constants.Intake.TAB, "Intake Motor Stator Current") { intakeTalon.statorCurrent }
+    Logger.addSource(Constants.Intake.TAB, "Intake Motor Supply Current") { intakeTalon.supplyCurrent}
+    Logger.addSource(Constants.Intake.TAB, "Intake Motor Voltage") { intakeTalon.motorOutputVoltage}
+    Logger.addSource(Constants.Intake.TAB, "Arm State") { armState.toString()}
   }
-
-  fun intakePower () : Double {
-    return intakeTalon.motorOutputPercent
-  }
-
-  fun intakeCurrent() : Double {
-    return intakeTalon.motorOutputVoltage
-  }
-
-
 
 }
