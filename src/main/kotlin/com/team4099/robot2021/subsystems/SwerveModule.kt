@@ -3,7 +3,13 @@ package org.strykeforce.thirdcoast.swerve
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.BaseTalon
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
+import com.ctre.phoenix.sensors.CANCoder
 import com.revrobotics.CANSparkMax
+import com.revrobotics.ControlType
+import com.revrobotics.SparkMax
+import com.team4099.lib.units.LinearVelocity
+import com.team4099.lib.units.Velocity
+import com.team4099.lib.units.derived.Angle
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.SwerveDrive.DriveMode
 import java.util.*
@@ -29,42 +35,39 @@ import kotlin.math.abs
  * limits on wheel azimuth rotation. Azimuth Talons have an ID in the range 0-3 with corresponding
  * drive Talon IDs in the range 10-13.
  */
-class Wheel(azimuth: TalonSRX?, drive: BaseTalon?, private val driveSetpointMax: Double) {
+class SwerveModule(private val directionSpark: CANSparkMax, private val driveSpark: CANSparkMax, private val driveSetpointMax: LinearVelocity, private val encoder: CANCoder) {
 
   /**
    * Get the drive Talon controller.
    *
    * @return drive Talon instance used by wheel
    */
-  private val driveSpark: CANSparkMax
-
   /**
    * Get the azimuth Talon controller.
    *
    * @return azimuth Talon instance used by wheel
    */
-  private val directionSpark: CANSparkMax
 
-  var driver: DoubleConsumer? = null
+  private var driver: (Double) -> Unit = { setpoint: Double -> driveSpark.set(setpoint) }
+
   var isInverted = false
     private set
 
   /**
    * This method calculates the optimal driveTalon settings and applies them.
    *
-   * @param azimuth -0.5 to 0.5 rotations, measured clockwise with zero being the wheel's zeroed
+   * @param direction -0.5 to 0.5 rotations, measured clockwise with zero being the wheel's zeroed
    * position
    * @param drive 0 to 1.0 in the direction of the wheel azimuth
    */
-  operator fun set(azimuth: Double, drive: Double) {
+  operator fun set(direction: Angle, drive: Double) {
     // don't reset wheel azimuth direction to zero when returning to neutral
-    var azimuth = azimuth
+    var azimuth = direction
     var drive = drive
     if (drive == 0.0) {
-      driver!!.accept(0.0)
+      driver(0.0)
       return
     }
-    azimuth *= -Constants.Drivetrain.TICKS.toDouble() // flip azimuth, hardware configuration dependent
     val azimuthPosition = directionSpark.encoder.position
     var azimuthError = (azimuth - azimuthPosition).IEEErem(Constants.Drivetrain.TICKS.toDouble())
 
@@ -74,8 +77,8 @@ class Wheel(azimuth: TalonSRX?, drive: BaseTalon?, private val driveSetpointMax:
       azimuthError -= Math.copySign(0.5 * Constants.Drivetrain.TICKS, azimuthError)
       drive = -drive
     }
-    directionSpark[ControlMode.MotionMagic] = azimuthPosition + azimuthError
-    driver!!.accept(drive)
+    directionSpark.pidController.setReference(azimuthPosition + azimuthError, ControlType.kSmartMotion)
+    driver(drive)
   }
 
   /**
@@ -84,11 +87,11 @@ class Wheel(azimuth: TalonSRX?, drive: BaseTalon?, private val driveSetpointMax:
    * @param position position in encoder ticks.
    */
   fun setAzimuthPosition(position: Int) {
-    directionSpark[ControlMode.MotionMagic] = position.toDouble()
+    directionSpark.pidController.setReference(position.toDouble(), ControlType.kSmartMotion)
   }
 
   fun disableAzimuth() {
-    directionSpark.neutralOutput()
+    directionSpark.disable()
   }
 
   /**
@@ -107,12 +110,12 @@ class Wheel(azimuth: TalonSRX?, drive: BaseTalon?, private val driveSetpointMax:
   fun setDriveMode(driveMode: DriveMode?) {
     when (driveMode) {
       DriveMode.OPEN_LOOP, DriveMode.TELEOP -> driver =
-        DoubleConsumer { setpoint: Double ->
-          driveSpark[ControlMode.PercentOutput] = setpoint
+        { setpoint: Double ->
+          driveSpark.set(setpoint)
         }
       DriveMode.CLOSED_LOOP, DriveMode.TRAJECTORY, DriveMode.AZIMUTH -> driver =
-        DoubleConsumer { setpoint: Double ->
-          driveSpark[ControlMode.Velocity] = setpoint * driveSetpointMax
+        { setpoint: Double ->
+          driveSpark.pidController.setReference(setpoint, ControlType.kVelocity)
         }
     }
   }
@@ -122,8 +125,8 @@ class Wheel(azimuth: TalonSRX?, drive: BaseTalon?, private val driveSetpointMax:
    * current position in case the wheel has been manually rotated away from its previous setpoint.
    */
   fun stop() {
-    directionSpark[ControlMode.MotionMagic] = directionSpark.getSelectedSensorPosition(0).toDouble()
-    driver!!.accept(0.0)
+    directionSpark.pidController.setReference(directionSpark.encoder.position, ControlType.kSmartMotion)
+    driver(0.0)
   }
 
   /**
@@ -140,9 +143,10 @@ class Wheel(azimuth: TalonSRX?, drive: BaseTalon?, private val driveSetpointMax:
    *
    * @param zero zero setpoint, absolute encoder position (in ticks) where wheel is zeroed.
    */
-  fun setAzimuthZero(zero: Int) {
+  fun setAzimuthZero(zero: Degrees) {
+    encoder.configMagnetOffset(zero)
     val azimuthSetpoint = azimuthAbsolutePosition - zero
-    val err = directionSpark.setSelectedSensorPosition(azimuthSetpoint, 0, 10)
+    val err = directionSpark.pidController.setS(azimuthSetpoint, 0, 10)
     Errors.check(err, logger)
     directionSpark[ControlMode.MotionMagic] = azimuthSetpoint.toDouble()
   }
@@ -152,8 +156,8 @@ class Wheel(azimuth: TalonSRX?, drive: BaseTalon?, private val driveSetpointMax:
    *
    * @return 0 - 4095, corresponding to one full revolution.
    */
-  val azimuthAbsolutePosition: Int
-    get() = directionSpark.sensorCollection.pulseWidthPosition and 0xFFF
+  val azimuthAbsolutePosition: Double
+    get() = encoder.absolutePosition /*and 0xFFF*/
 
   override fun toString(): String {
     return ("Wheel{"
@@ -180,11 +184,9 @@ class Wheel(azimuth: TalonSRX?, drive: BaseTalon?, private val driveSetpointMax:
    * @param driveSetpointMax scales closed-loop drive output to this value when drive setpoint = 1.0
    */
   init {
-    directionSpark = Objects.requireNonNull(azimuth)
-    driveSpark = Objects.requireNonNull(drive)
-    setDriveMode(TELEOP)
-    logger.debug("azimuth = {} drive = {}", directionSpark.deviceID, driveSpark.deviceID)
-    logger.debug("driveSetpointMax = {}", driveSetpointMax)
-    if (driveSetpointMax == 0.0) logger.warn("driveSetpointMax may not have been configured")
+    setDriveMode(DriveMode.TELEOP)
+//    logger.debug("azimuth = {} drive = {}", directionSpark.deviceID, driveSpark.deviceID)
+//    logger.debug("driveSetpointMax = {}", driveSetpointMax)
+//    if (driveSetpointMax == 0.0) logger.warn("driveSetpointMax may not have been configured")
   }
 }
