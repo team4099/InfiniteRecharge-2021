@@ -1,5 +1,9 @@
 package com.team4099.robot2021.config
 
+import com.team4099.lib.units.LinearVelocity
+import com.team4099.lib.units.base.feet
+import com.team4099.lib.units.perSecond
+
 object Constants {
   object Universal {
     const val CTRE_CONFIG_TIMEOUT = 0
@@ -43,7 +47,7 @@ object Constants {
     const val DRIVETRAIN_WIDTH = 29.0
 
     const val DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 200
-    const val DRIVE_SETPOINT_MAX = 10000
+    val DRIVE_SETPOINT_MAX = 15.feet.perSecond
   }
 
   object Joysticks {

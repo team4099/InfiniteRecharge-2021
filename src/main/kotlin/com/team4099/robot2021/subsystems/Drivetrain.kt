@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.SwerveDrive.Companion.getPreferenceKeyForWheel
 import edu.wpi.first.wpilibj.SPI
+import org.strykeforce.thirdcoast.swerve.SwerveModule
 import kotlin.math.*
 
 // code "derived" from Strykeforce's SwerveDrive
