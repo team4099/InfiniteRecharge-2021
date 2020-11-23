@@ -26,8 +26,8 @@ object Robot: TimedRobot() {
     Logger.startLogging()
 
     // Link between feeder Trigger and Command
-    ControlBoard.goForward.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD))
-    ControlBoard.goBackward.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD));
+    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD))
+    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD));
 
 
 

@@ -34,8 +34,10 @@ object Constants {
 
   object Feeder {
     const val FLOOR_ID = 0
-	const val VERTICAL_ID = 0
-	
-	const val FEEDER_POWER = 1
+    const val VERTICAL_ID = 0
+    const val FEEDER_POWER = 1
+
+    const val DIO_1 = 4;
+    const val DIO_2 = 9;
   }
 }
