@@ -12,7 +12,7 @@ class UnlockClimber : CommandBase() {
   private var initTime = Clock.fpgaTime
   override fun initialize() {
     initTime = Clock.fpgaTime
-    Climber.brakeApplied = false
+    Climber.brakeApplied = true
   }
 
   override fun isFinished(): Boolean {

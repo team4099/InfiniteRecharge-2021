@@ -10,6 +10,6 @@ class LockClimber : CommandBase() {
 
   override fun initialize() {
     Climber.setOpenLoopPower(0.0)
-    Climber.brakeApplied = true
+    Climber.brakeApplied = false
   }
 }
