@@ -20,8 +20,8 @@ object Feeder:SubsystemBase(){
   private val floorMotor = TalonSRX(Constants.Feeder.FLOOR_ID)
   private val verticalMotor = TalonSRX(Constants.Feeder.VERTICAL_ID)
 
-  private val topBeamDIO = DigitalInput(Constants.Feeder.DIO_2);
-  private val bottomBeamDIO = DigitalInput(Constants.Feeder.DIO_1);
+  private val topBeamDIO = DigitalInput(Constants.Feeder.topDIOPin);
+  private val bottomBeamDIO = DigitalInput(Constants.Feeder.bottomDIOPin);
 
 
 
@@ -32,9 +32,9 @@ object Feeder:SubsystemBase(){
    **/
 
   val topBeamBroken: Boolean
-    get() = topBeamDIO.get();
+    get() = !(topBeamDIO).get();
   val bottomBeamBroken: Boolean
-    get() = bottomBeamDIO.get();
+    get() = !(bottomBeamDIO).get();
 
   /**
    * Interacts with feeder State
