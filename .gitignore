@@ -94,3 +94,5 @@ bin/
 # Simulation
 imgui.ini
 logs/*
+
+src/main/kotlin/com/team4099/robot2021/subsystems/Swerve*
