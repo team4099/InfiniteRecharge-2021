@@ -70,6 +70,7 @@ object Constants {
     const val SHOOTER_MOTOR_ID = 0
 
     val TARGET_VELOCITY = 0.rotations.perMinute
+    val VELOCITY_OFFSET = 60.rotations.perMinute
 
     const val SHOOTER_KS = 0.0
     const val SHOOTER_KV = 0.0
