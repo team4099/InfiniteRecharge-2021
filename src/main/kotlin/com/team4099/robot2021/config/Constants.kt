@@ -2,6 +2,8 @@ package com.team4099.robot2021.config
 
 import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.base.feet
+import com.team4099.lib.units.base.inches
+import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.perSecond
 
 object Constants {
@@ -32,22 +34,29 @@ object Constants {
 
     const val FRONT_LEFT_SPEED_ID = 2
     const val FRONT_LEFT_DIRECTION_ID = 3
+    const val FRONT_LEFT_CANCODER_ID = 0 // TODO: Change this value
 
     const val FRONT_RIGHT_SPEED_ID = 4
     const val FRONT_RIGHT_DIRECTION_ID = 5
+    const val FRONT_RIGHT_CANCODER_ID = 1 // TODO: Change this value
 
     const val BACK_LEFT_SPEED_ID = 6
     const val BACK_LEFT_DIRECTION_ID = 7
+    const val BACK_LEFT_CANCODER_ID = 2 // TODO: Change this value
 
     const val BACK_RIGHT_SPEED_ID = 8
     const val BACK_RIGHT_DIRECTION_ID = 9
+    const val BACK_RIGHT_CANCODER_ID = 3 // TODO: Change this value
 
     const val WHEEL_COUNT = 4
-    const val DRIVETRAIN_LENGTH = 29.0
-    const val DRIVETRAIN_WIDTH = 29.0
+    val DRIVETRAIN_LENGTH = 29.0.inches
+    val DRIVETRAIN_WIDTH = 29.0.inches
 
     const val DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 200
     val DRIVE_SETPOINT_MAX = 15.feet.perSecond
+    val TURN_SETPOINT_MAX = 90.degrees.perSecond // TODO: Make sure this value is something good
+
+    const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
   }
 
   object Joysticks {

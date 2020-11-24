@@ -1,5 +1,7 @@
 package com.team4099.lib.units.derived
 
+import com.team4099.lib.units.AngularVelocity
+import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.UnitKey
 import com.team4099.lib.units.Value
 import com.team4099.lib.units.base.Length
