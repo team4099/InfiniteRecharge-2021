@@ -8,14 +8,13 @@ import com.team4099.lib.units.*
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.Angle
+import com.team4099.lib.units.derived.Radian
 import com.team4099.lib.units.derived.degrees
+import com.team4099.lib.units.derived.radians
 import com.team4099.robot2021.Robot
 import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj2.command.SubsystemBase
-import kotlin.math.IEEErem
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
+import kotlin.math.*
 
 object Drivetrain : SubsystemBase() {
   private val wheels = listOf(
@@ -57,7 +56,8 @@ object Drivetrain : SubsystemBase() {
     )
   )
 
-  private val wheelSpeeds = mutableListOf(0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond)
+  private val wheelSpeeds =
+    mutableListOf(0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond)
 
   private val gyro = ADIS16470_IMU()
   val gyroAngle: Angle
@@ -77,23 +77,47 @@ object Drivetrain : SubsystemBase() {
     val vX = if (isFieldOriented) {
       driveVector.first * cos(angularVelocity.inRadiansPerSecond) -
         driveVector.second * sin(angularVelocity.inRadiansPerSecond)
-    } else { driveVector.first }
+    } else {
+      driveVector.first
+    }
     val vY = if (isFieldOriented) {
       driveVector.second * cos(angularVelocity.inRadiansPerSecond) +
         driveVector.first * sin(angularVelocity.inRadiansPerSecond)
-    } else { driveVector.second }
-    val a = vX - Constants.Drivetrain.DRIVETRAIN_LENGTH.perSecond / 2 * angularVelocity.inRadiansPerSecond
-    val b = vX + Constants.Drivetrain.DRIVETRAIN_LENGTH.perSecond / 2 * angularVelocity.inRadiansPerSecond
-    val c = vY - Constants.Drivetrain.DRIVETRAIN_WIDTH.perSecond / 2 * angularVelocity.inRadiansPerSecond
-    val d = vY + Constants.Drivetrain.DRIVETRAIN_WIDTH.perSecond / 2 * angularVelocity.inRadiansPerSecond
+    } else {
+      driveVector.second
+    }
+    val a =
+      vX - Constants.Drivetrain.DRIVETRAIN_LENGTH.perSecond / 2 * angularVelocity.inRadiansPerSecond
+    val b =
+      vX + Constants.Drivetrain.DRIVETRAIN_LENGTH.perSecond / 2 * angularVelocity.inRadiansPerSecond
+    val c =
+      vY - Constants.Drivetrain.DRIVETRAIN_WIDTH.perSecond / 2 * angularVelocity.inRadiansPerSecond
+    val d =
+      vY + Constants.Drivetrain.DRIVETRAIN_WIDTH.perSecond / 2 * angularVelocity.inRadiansPerSecond
 
-    wheelSpeeds[0] = hypot(b, c)
-    wheelSpeeds[1] = hypot(b, d)
+    wheelSpeeds[0] = hypot(b, d)
+    wheelSpeeds[1] = hypot(b, c)
     wheelSpeeds[2] = hypot(a, d)
     wheelSpeeds[3] = hypot(a, c)
+
+    val maxWheelSpeed = wheelSpeeds.max()
+    if (maxWheelSpeed != null && maxWheelSpeed > Constants.Drivetrain.DRIVE_SETPOINT_MAX) {
+      for (i in 0 until Constants.Drivetrain.WHEEL_COUNT) {
+        wheelSpeeds[i] = wheelSpeeds[i] / maxWheelSpeed.inMetersPerSecond
+      }
+    }
+
+    wheels[0].set(atan2(b, d), wheelSpeeds[0])
+    wheels[1].set(atan2(b, c), wheelSpeeds[1])
+    wheels[2].set(atan2(a, d), wheelSpeeds[2])
+    wheels[3].set(atan2(a, c), wheelSpeeds[3])
   }
 
   fun hypot(a: LinearVelocity, b: LinearVelocity): LinearVelocity {
     return kotlin.math.hypot(a.inMetersPerSecond, b.inMetersPerSecond).meters.perSecond
+  }
+
+  fun atan2(a: LinearVelocity, b: LinearVelocity): Angle {
+    return kotlin.math.atan2(a.inMetersPerSecond, b.inMetersPerSecond).radians
   }
 }
