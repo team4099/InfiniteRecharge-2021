@@ -36,6 +36,6 @@ object Constants {
     const val FLOOR_ID = 0
 	const val VERTICAL_ID = 0
 	
-	const val FEEDER_POWER = 1
+	const val FEEDER_POWER = 1.0
   }
 }
