@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.commands.feeder.FeederCommand
+import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object Feeder:SubsystemBase(){
@@ -36,5 +37,22 @@ object Feeder:SubsystemBase(){
             verticalMotor.set(ControlMode.PercentOutput, feederState.verticalMotorPower);
         }
 
-    
+  private val topBeamDIO = DigitalInput(Constants.Feeder.TOP_DIO_PIN);
+  private val bottomBeamDIO = DigitalInput(Constants.Feeder.BOTTOM_DIO_PIN);
+  /**
+   * Returns the DIO pin in Constants.kt state.
+   * If there is no current going through the pin,
+   * the output will be true.
+   **/
+
+  val topBeamBroken: Boolean
+    get() = !topBeamDIO.get();
+  val bottomBeamBroken: Boolean
+    get() = !bottomBeamDIO.get();
+
+  /**
+   * Interacts with feeder State
+   * @param state Feeder State
+   * @return None
+   **/
 }
