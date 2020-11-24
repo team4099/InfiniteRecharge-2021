@@ -20,16 +20,21 @@ object Feeder:SubsystemBase(){
   private val floorMotor = TalonSRX(Constants.Feeder.FLOOR_ID)
   private val verticalMotor = TalonSRX(Constants.Feeder.VERTICAL_ID)
 
+  private val topBeamDIO = DigitalInput(Constants.Feeder.DIO_2);
+  private val bottomBeamDIO = DigitalInput(Constants.Feeder.DIO_1);
+
+
+
   /**
    * Returns the DIO pin in Constants.kt state.
    * If there is no current going through the pin,
    * the output will be true.
    **/
 
-  val topBeamState: Boolean
-    get() = DigitalInput(Constants.Feeder.DIO_1).get();
-  val bottomBeamState: Boolean
-    get() = DigitalInput(Constants.Feeder.DIO_2).get();
+  val topBeamBroken: Boolean
+    get() = topBeamDIO.get();
+  val bottomBeamBroken: Boolean
+    get() = bottomBeamDIO.get();
 
   /**
    * Interacts with feeder State
