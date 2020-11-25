@@ -43,5 +43,9 @@ object Constants {
 
     const val SHOOTER_KS = 0.0
     const val SHOOTER_KV = 0.0
+
+    const val SHOOTER_KP = 0.0
+    const val SHOOTER_KI = 0.0
+    const val SHOOTER_KD = 0.0
   }
 }

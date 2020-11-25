@@ -14,9 +14,9 @@ object Shooter : SubsystemBase() {
   private val shooterSensor = ctreAngularMechanismSensor(shooterMotor,2048,2.0)
 
   init {
-    shooterMotor.config_kP(0,0.1,0)
-    shooterMotor.config_kI(0,0.1,0)
-    shooterMotor.config_kD(0,0.1,0)
+    shooterMotor.config_kP(0,Constants.Shooter.SHOOTER_KP,0)
+    shooterMotor.config_kI(0,Constants.Shooter.SHOOTER_KI,0)
+    shooterMotor.config_kD(0,Constants.Shooter.SHOOTER_KD,0)
   }
 
   val currentVelocity
