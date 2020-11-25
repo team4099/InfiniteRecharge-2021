@@ -1,9 +1,13 @@
 package com.team4099.robot2021.config
 
+import com.team4099.lib.units.base.feet
+import com.team4099.lib.units.base.inches
+import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.perMinute
 import com.team4099.lib.units.derived.Angle
 import edu.wpi.first.wpilibj.DoubleSolenoid
+import java.lang.Math.PI
 
 object Constants {
   object Universal {
@@ -78,6 +82,17 @@ object Constants {
     const val SHOOTER_KP = 0.0
     const val SHOOTER_KI = 0.0
     const val SHOOTER_KD = 0.0
+  }
+
+  object Vision {
+    const val DRIVER_PIPELINE_ID = 1
+    const val TARGETING_PIPELINE_ID = 0
+    val TARGET_HEIGHT = 98.25.inches
+    val CAMERA_HEIGHT = 35.0.inches
+    val CAMERA_ANGLE = 24.0.degrees
+
+    val MAX_DIST_ERROR = 0.1.inches
+    val MAX_ANGLE_ERROR = 1.0.degrees
   }
 
 }
