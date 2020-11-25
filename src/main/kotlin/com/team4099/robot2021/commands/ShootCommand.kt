@@ -1,10 +1,9 @@
 package com.team4099.robot2021.commands
 
-import com.team4099.lib.units.inRotationsPerMinute
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Shooter
+import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj2.command.CommandBase
-import java.lang.Math.abs
 
 class ShootCommand : CommandBase() {
   init{
@@ -15,11 +14,16 @@ class ShootCommand : CommandBase() {
     Shooter.targetVelocity = Constants.Shooter.TARGET_VELOCITY
   }
   override fun execute(){
-
+    var shooterReady = (Constants.Shooter.TARGET_VELOCITY - Shooter.currentVelocity).absoluteValue < Constants.Shooter.VELOCITY_TOLERANCE
+    if (shooterReady) { // && vision aligned on target
+      //run feeder
+    }
+    else{
+      //stop running feeder
+    }
   }
   override fun isFinished() : Boolean {
-    return abs(Constants.Shooter.TARGET_VELOCITY.inRotationsPerMinute - Shooter.currentVelocity.inRotationsPerMinute) <
-      Constants.Shooter.VELOCITY_OFFSET.inRotationsPerMinute
+    return false
   }
 
 
