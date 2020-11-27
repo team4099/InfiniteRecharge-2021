@@ -7,10 +7,7 @@ import com.revrobotics.CANSparkMaxLowLevel
 import com.team4099.lib.units.*
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.meters
-import com.team4099.lib.units.derived.Angle
-import com.team4099.lib.units.derived.Radian
-import com.team4099.lib.units.derived.degrees
-import com.team4099.lib.units.derived.radians
+import com.team4099.lib.units.derived.*
 import com.team4099.robot2021.Robot
 import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj2.command.SubsystemBase
@@ -25,7 +22,8 @@ object Drivetrain : SubsystemBase() {
       CANSparkMax(
         Constants.Drivetrain.FRONT_LEFT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless
       ),
-      CANCoder(Constants.Drivetrain.FRONT_LEFT_CANCODER_ID)
+      CANCoder(Constants.Drivetrain.FRONT_LEFT_CANCODER_ID),
+      0.degrees
     ),
     Wheel(
       CANSparkMax(
@@ -34,7 +32,8 @@ object Drivetrain : SubsystemBase() {
       CANSparkMax(
         Constants.Drivetrain.FRONT_RIGHT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless
       ),
-      CANCoder(Constants.Drivetrain.FRONT_RIGHT_CANCODER_ID)
+      CANCoder(Constants.Drivetrain.FRONT_RIGHT_CANCODER_ID),
+      (-90).degrees
     ),
     Wheel(
       CANSparkMax(
@@ -43,7 +42,8 @@ object Drivetrain : SubsystemBase() {
       CANSparkMax(
         Constants.Drivetrain.BACK_LEFT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless
       ),
-      CANCoder(Constants.Drivetrain.BACK_LEFT_CANCODER_ID)
+      CANCoder(Constants.Drivetrain.BACK_LEFT_CANCODER_ID),
+      (-180).degrees
     ),
     Wheel(
       CANSparkMax(
@@ -52,7 +52,8 @@ object Drivetrain : SubsystemBase() {
       CANSparkMax(
         Constants.Drivetrain.BACK_RIGHT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless
       ),
-      CANCoder(Constants.Drivetrain.BACK_RIGHT_CANCODER_ID)
+      CANCoder(Constants.Drivetrain.BACK_RIGHT_CANCODER_ID),
+      (-270).degrees
     )
   )
 
@@ -60,6 +61,7 @@ object Drivetrain : SubsystemBase() {
     mutableListOf(0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond)
 
   private val gyro = ADIS16470_IMU()
+
   val gyroAngle: Angle
     get() {
       var rawAngle = gyro.angle
@@ -75,25 +77,25 @@ object Drivetrain : SubsystemBase() {
 
   fun set(angularVelocity: AngularVelocity, driveVector: Pair<LinearVelocity, LinearVelocity>) {
     val vX = if (isFieldOriented) {
-      driveVector.first * cos(angularVelocity.inRadiansPerSecond) -
-        driveVector.second * sin(angularVelocity.inRadiansPerSecond)
+      driveVector.first * gyroAngle.cos -
+        driveVector.second * gyroAngle.sin
     } else {
       driveVector.first
     }
     val vY = if (isFieldOriented) {
-      driveVector.second * cos(angularVelocity.inRadiansPerSecond) +
-        driveVector.first * sin(angularVelocity.inRadiansPerSecond)
+      driveVector.second * gyroAngle.cos +
+        driveVector.first * gyroAngle.sin
     } else {
       driveVector.second
     }
     val a =
-      vX - Constants.Drivetrain.DRIVETRAIN_LENGTH.perSecond / 2 * angularVelocity.inRadiansPerSecond
+      vX - angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
     val b =
-      vX + Constants.Drivetrain.DRIVETRAIN_LENGTH.perSecond / 2 * angularVelocity.inRadiansPerSecond
+      vX + angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
     val c =
-      vY - Constants.Drivetrain.DRIVETRAIN_WIDTH.perSecond / 2 * angularVelocity.inRadiansPerSecond
+      vY - angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
     val d =
-      vY + Constants.Drivetrain.DRIVETRAIN_WIDTH.perSecond / 2 * angularVelocity.inRadiansPerSecond
+      vY + angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
 
     wheelSpeeds[0] = hypot(b, d)
     wheelSpeeds[1] = hypot(b, c)
@@ -119,5 +121,23 @@ object Drivetrain : SubsystemBase() {
 
   fun atan2(a: LinearVelocity, b: LinearVelocity): Angle {
     return kotlin.math.atan2(a.inMetersPerSecond, b.inMetersPerSecond).radians
+  }
+
+  fun zeroSensors(){
+    gyro.reset()
+    zeroDirection()
+    zeroDrive()
+  }
+
+  fun zeroDirection(){
+    wheels.forEach{
+      it.zeroDirection()
+    }
+  }
+
+  fun zeroDrive(){
+    wheels.forEach{
+      it.zeroDrive()
+    }
   }
 }

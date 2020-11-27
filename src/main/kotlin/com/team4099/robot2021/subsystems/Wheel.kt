@@ -11,13 +11,15 @@ import com.team4099.lib.units.derived.*
 import com.team4099.robot2021.config.Constants
 import kotlin.math.IEEErem
 
-class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CANSparkMax,  private val encoder: CANCoder) {
+class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CANSparkMax,  private val encoder: CANCoder, private val zeroOffset: Angle) {
 
   private val directionPID = directionSpark.pidController
   private val drivePID = driveSpark.pidController
 
   private val directionSensor = sparkMaxAngularMechanismSensor(directionSpark, 1.0)
   private val driveSensor = sparkMaxLinearMechanismSensor(driveSpark, 1.0, 3.inches)
+
+  private val directionAbsolute = AngularMechanismSensor(1.0,Timescale.CTRE,{encoder.velocity},{encoder.absolutePosition})
 
   private var speedSetPoint: LinearVelocity = 0.feet.perSecond
     set(value) {
@@ -43,5 +45,13 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     }
     speedSetPoint = if (isInverted) { speed * -1 } else { speed }
     directionSetPoint = direction + directionDifference
+  }
+
+  fun zeroDirection(){
+    directionSpark.encoder.position = directionSensor.positionToRawUnits(directionAbsolute.position + zeroOffset)
+  }
+
+  fun zeroDrive(){
+    driveSpark.encoder.position = 0.0
   }
 }
