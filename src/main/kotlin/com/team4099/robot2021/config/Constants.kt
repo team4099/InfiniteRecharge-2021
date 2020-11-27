@@ -36,32 +36,26 @@ object Constants {
     const val PORT = 0
     const val LED_COUNT = 50
     enum class Color(var h: Int, var s: Int, var v: Int) {
-      // Pink
-      FIRING(227, 117, 128),
+      //Green
+      VISION_LOCK(52, 255, 255),
 
-      // Turquoise
-      READY_FIRE(124, 255, 118),
+      // Blue
+      SHOOTER_SPEED(120, 255, 255),
 
-      // Orange
-      INTAKE_EMPTY(18, 184, 128),
+      // White
+      INTAKE_EMPTY(0, 0, 255),
 
       // Magenta
-      ONE_BALL(209, 242, 128),
+      ONE_TWO_BALL(154, 255, 255),
 
       // Sky blue
-      TWO_BALL(145, 242, 128),
+      THREE_FOUR_BALL(90, 255, 255),
+    }
 
-      // Tan
-      THREE_BALL(17, 122, 128),
-
-      // Green
-      FOUR_BALL(74, 207, 128),
-
-      // Brown
-      CLIMB(34, 255, 45),
-
-      // Rainbow is for climbing and when 5 balls and to appease the team
-      RAINBOW(0, 255, 128),
+    enum class Health(var h: Int, var s: Int, var v: Int) {
+      VISION(0, 255, 255),
+      BEAM_BREAK(60, 255, 255),
+      OTHER(17, 255, 255)
     }
   }
 }
