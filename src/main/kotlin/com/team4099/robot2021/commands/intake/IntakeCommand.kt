@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase
 class IntakeCommand(var intakeState: Constants.Intake.IntakeState, var armState: Constants.Intake.ArmPosition): CommandBase() {
   init {
     addRequirements(Intake)
-    Logger.addEvent(Constants.Intake.INTAKE_STATE, intakeState.toString())
-    Logger.addEvent(Constants.Intake.ARM_STATE, armState.toString())
+    Logger.addEvent("IntakeState", intakeState.toString())
+    Logger.addEvent("ArmState", armState.toString())
   }
 
   override fun initialize() {

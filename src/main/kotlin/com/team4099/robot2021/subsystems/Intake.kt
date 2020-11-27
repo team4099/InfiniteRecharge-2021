@@ -22,18 +22,9 @@ object Intake : SubsystemBase() {
 
   var armState = Constants.Intake.ArmPosition.DEFAULT
     set(value) {
-      intakeDoubleSolenoid.set(when(value) {
-        Constants.Intake.ArmPosition.IN ->
-          DoubleSolenoid.Value.kReverse
-        Constants.Intake.ArmPosition.OUT ->
-          DoubleSolenoid.Value.kForward
-        Constants.Intake.ArmPosition.DEFAULT ->
-          DoubleSolenoid.Value.kOff
-      })
+      intakeDoubleSolenoid.set(value.position)
       field = value
     }
-
-
 
   init {
     Logger.addSource(Constants.Intake.TAB, "Intake State") { intakeState.toString() }

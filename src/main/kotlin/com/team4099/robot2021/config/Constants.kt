@@ -1,6 +1,7 @@
 package com.team4099.robot2021.config
 
 import com.team4099.lib.units.derived.Angle
+import edu.wpi.first.wpilibj.DoubleSolenoid
 
 object Constants {
   object Universal {
@@ -39,20 +40,17 @@ object Constants {
     const val ARM_SOLENOID_PORT_1 = 0 //temp
     const val ARM_SOLENOID_PORT_2 = 1 //temp
     const val TAB = "Intake"
-    const val INTAKE_STATE = "IntakeState"
-    const val ARM_STATE = "ArmState"
-    const val IN_SPEED = 1.0
-    const val OUT_SPEED = -1.0
-    const val INTAKE_DEFAULT = 0.0
 
     enum class IntakeState (val speed: Double){
-      DEFAULT(INTAKE_DEFAULT),
-      IN(IN_SPEED),
-      OUT(OUT_SPEED)
+      DEFAULT(0.0),
+      IN(1.0),
+      OUT(-1.0)
     }
 
-    enum class ArmPosition {
-      OUT, IN, DEFAULT
+    enum class ArmPosition (val position: DoubleSolenoid.Value?){
+      OUT(DoubleSolenoid.Value.kReverse),
+      IN(DoubleSolenoid.Value.kForward),
+      DEFAULT(DoubleSolenoid.Value.kOff);
     }
 
 
