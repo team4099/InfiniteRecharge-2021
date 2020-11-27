@@ -1,9 +1,6 @@
 package com.team4099.lib.units.derived
 
-import com.team4099.lib.units.AngularVelocity
-import com.team4099.lib.units.LinearVelocity
-import com.team4099.lib.units.UnitKey
-import com.team4099.lib.units.Value
+import com.team4099.lib.units.*
 import com.team4099.lib.units.base.Length
 import kotlin.math.PI
 
@@ -27,5 +24,4 @@ val Angle.sin : Double get() = kotlin.math.sin(value)
 val Angle.cos : Double get() = kotlin.math.cos(value)
 val Angle.tan : Double get() = kotlin.math.tan(value)
 
-operator fun Angle.times(o: Length): Length = o * inRadians
-
+operator fun AngularVelocity.times(o: Length): LinearVelocity = (o * inRadiansPerSecond).perSecond
