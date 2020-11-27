@@ -8,9 +8,9 @@ class BeamBreak(): CommandBase(){
   }
   override fun execute() {
     Feeder.feederState = when{
-      !Feeder.bottomBeamBroken && Feeder.topBeamBroken -> Feeder.FeederState.FORWARD_ALL;
-      Feeder.bottomBeamBroken && !Feeder.topBeamBroken -> Feeder.FeederState.FORWARD_FLOOR;
-      else -> Feeder.FeederState.NEUTRAL;
+      Feeder.topBeamBroken -> Feeder.FeederState.NEUTRAL
+      Feeder.bottomBeamBroken -> Feeder.FeederState.FORWARD_ALL;
+      else -> Feeder.FeederState.FORWARD_FLOOR;
     }
   }
 }
