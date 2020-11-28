@@ -21,7 +21,7 @@ object Constants {
 
   object Climber {
     val CLIMBER_SPARKMAX_ID = 6
-    val CLIMBER_SENSOR_LINEARMECH_RATIO = 6.0
+    val CLIMBER_SENSOR_LINEARMECH_RATIO = 8.2
     val CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER = .0508.meters //diameter: .0508 meters = 2 in
     val CLIMBER_SOLENOID_ACTUATIONSTATE = 0 //this is prolly not the right name for this parameter
     val CLIMBER_CLIMBERPIDCONTROLLER_P = 0.1
