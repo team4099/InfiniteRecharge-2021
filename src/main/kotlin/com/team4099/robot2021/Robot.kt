@@ -1,6 +1,7 @@
 package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
+import com.team4099.robot2021.commands.feeder.BeamBreak
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
@@ -12,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.InstantCommand
 import kotlin.math.pow
 
-object Robot: TimedRobot() {
+object Robot : TimedRobot() {
   val robotName: Constants.Tuning.RobotName
 
   init {
@@ -26,10 +27,8 @@ object Robot: TimedRobot() {
     Logger.startLogging()
 
     // Link between feeder Trigger and Command
-    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD))
+    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_FLOOR));
     ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD));
-
-
 
   }
 
