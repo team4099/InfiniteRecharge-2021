@@ -1,10 +1,12 @@
 package com.team4099.robot2021.subsystems
 
+import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.derived.tan
+import com.team4099.lib.units.inRotationsPerMinute
 import com.team4099.robot2021.config.Constants
 import edu.wpi.first.networktables.NetworkTable
 import edu.wpi.first.networktables.NetworkTableEntry
@@ -19,6 +21,11 @@ object Vision : SubsystemBase() {
   private val ty get() = table.getEntry("ty").getDouble(0.0).degrees
   private val tv get() = table.getEntry("tv").getDouble(0.0)
   private val ta get() = table.getEntry("ta").getDouble(0.0)
+
+  init {
+    Logger.addSource("Vision","Pipeline"){ pipelineEntry }
+    Logger.addSource("Vision","Distance (inches)"){ distance }
+  }
 
   private val pipelineEntry: NetworkTableEntry = table.getEntry("pipeline")
 
