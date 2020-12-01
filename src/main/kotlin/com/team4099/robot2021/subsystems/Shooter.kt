@@ -13,7 +13,11 @@ object Shooter : SubsystemBase() {
   private val shooterMotor = TalonFX(Constants.Shooter.SHOOTER_MOTOR_ID)
   private val shooterSensor = ctreAngularMechanismSensor(shooterMotor,2048,2.0)
 
+  private val shooterFollower = TalonFX(Constants.Shooter.SHOOTER_FOLLOWER_ID)
+
   init {
+    shooterFollower.follow(shooterMotor)
+
     shooterMotor.config_kP(0,Constants.Shooter.SHOOTER_KP,0)
     shooterMotor.config_kI(0,Constants.Shooter.SHOOTER_KI,0)
     shooterMotor.config_kD(0,Constants.Shooter.SHOOTER_KD,0)
