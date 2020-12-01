@@ -4,6 +4,7 @@ import com.analog.adis16470.frc.ADIS16470_IMU
 import com.ctre.phoenix.sensors.CANCoder
 import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel
+import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.*
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.meters
@@ -60,6 +61,9 @@ object Drivetrain : SubsystemBase() {
   private val wheelSpeeds =
     mutableListOf(0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond)
 
+  private val wheelAngles =
+    mutableListOf(0.radians, 0.radians, 0.radians, 0.radians)
+
   private val gyro = ADIS16470_IMU()
 
   val gyroAngle: Angle
@@ -72,7 +76,15 @@ object Drivetrain : SubsystemBase() {
   var isFieldOriented = true
 
   init {
+    Logger.addSource("Drivetrain", "Front Left Wheel Speed") {wheelSpeeds[0]}
+    Logger.addSource("Drivetrain", "Front Right Wheel Speed") {wheelSpeeds[1]}
+    Logger.addSource("Drivetrain", "Back Left Wheel Speed") {wheelSpeeds[2]}
+    Logger.addSource("Drivetrain", "Back Right Wheel Speed") {wheelSpeeds[3]}
 
+    Logger.addSource("Drivetrain", "Front Left Wheel Angles") {wheelAngles[0]}
+    Logger.addSource("Drivetrain", "Front Right Wheel Angles") {wheelAngles[1]}
+    Logger.addSource("Drivetrain", "Back Left Wheel Angles") {wheelAngles[2]}
+    Logger.addSource("Drivetrain", "Back Right Wheel Angles") {wheelAngles[3]}
   }
 
   fun set(angularVelocity: AngularVelocity, driveVector: Pair<LinearVelocity, LinearVelocity>) {
@@ -108,11 +120,15 @@ object Drivetrain : SubsystemBase() {
         wheelSpeeds[i] = wheelSpeeds[i] / maxWheelSpeed.inMetersPerSecond
       }
     }
+    wheelAngles[0] = atan2(b, d)
+    wheelAngles[1] = atan2(b, c)
+    wheelAngles[2] = atan2(a, d)
+    wheelAngles[3] = atan2(a, c)
 
-    wheels[0].set(atan2(b, d), wheelSpeeds[0])
-    wheels[1].set(atan2(b, c), wheelSpeeds[1])
-    wheels[2].set(atan2(a, d), wheelSpeeds[2])
-    wheels[3].set(atan2(a, c), wheelSpeeds[3])
+    wheels[0].set(wheelAngles[0], wheelSpeeds[0])
+    wheels[1].set(wheelAngles[1], wheelSpeeds[1])
+    wheels[2].set(wheelAngles[2], wheelSpeeds[2])
+    wheels[3].set(wheelAngles[3], wheelSpeeds[3])
   }
 
   fun hypot(a: LinearVelocity, b: LinearVelocity): LinearVelocity {
