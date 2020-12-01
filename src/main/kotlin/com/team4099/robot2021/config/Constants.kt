@@ -39,5 +39,6 @@ object Constants {
 
     const val TOP_DIO_PIN = 4;
     const val BOTTOM_DIO_PIN = 9;
+    const val TAB = "Feeder";
   }
 }

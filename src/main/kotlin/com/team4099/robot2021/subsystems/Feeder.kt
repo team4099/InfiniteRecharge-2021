@@ -2,12 +2,29 @@ package com.team4099.robot2021.config.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
+import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object Feeder:SubsystemBase(){
+  init {
+    Logger.addSource(Constants.Feeder.TAB, "Feeder State") { feederState }
+
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Power") { floorMotor.motorOutputPercent }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Stator Current") { floorMotor.statorCurrent }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Supply Current") { floorMotor.supplyCurrent }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Voltage") { floorMotor.motorOutputVoltage }
+
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Power") { verticalMotor.motorOutputPercent }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Stator Current") { verticalMotor.statorCurrent }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Supply Current") { verticalMotor.supplyCurrent }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Voltage") { verticalMotor.motorOutputVoltage }
+
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Top Beam DIO Broken") { topBeamBroken }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Bottom Beam DIO Broken") { bottomBeamBroken }
+  }
     /**
      * An enum representing the state of the feeder
      * floorMotor power, verticalMotor power
@@ -31,6 +48,9 @@ object Feeder:SubsystemBase(){
      * @return None
      **/
     var feederState = FeederState.NEUTRAL
+      get() {
+        return field;
+      }
         set(value) {
             field = value
             floorMotor.set(ControlMode.PercentOutput, feederState.floorMotorPower);
