@@ -8,54 +8,57 @@ import com.team4099.lib.joystick.XboxOneGamepad
  * with meaningful variable names.
  */
 object ControlBoard {
-    private val driver = XboxOneGamepad(Constants.Joysticks.DRIVER_PORT)
-    private val operator = XboxOneGamepad(Constants.Joysticks.SHOTGUN_PORT)
+  private val driver = XboxOneGamepad(Constants.Joysticks.DRIVER_PORT)
+  private val operator = XboxOneGamepad(Constants.Joysticks.SHOTGUN_PORT)
 
-    val throttle: Double
-        get() = driver.rightTriggerAxis - driver.leftTriggerAxis
+  val strafe: Double
+    get() = driver.leftXAxis
 
-    val turn: Double
-        get() = -driver.leftXAxis
+  val forward: Double
+    get() = driver.leftYAxis
 
-    val sampleClimberVelocity: Double
-        get() = operator.leftTriggerAxis - operator.rightTriggerAxis
+  val turn: Double
+    get() = driver.rightXAxis
 
-    val wristVertical: Boolean
-        get() = operator.leftShoulderButton
+  val sampleClimberVelocity: Double
+    get() = operator.leftTriggerAxis - operator.rightTriggerAxis
 
-    val wristHorizontal: Boolean
-        get() = operator.rightShoulderButton
+  val wristVertical: Boolean
+    get() = operator.leftShoulderButton
 
-    val enableVisionAlignment: Boolean
-        get() = driver.aButton
+  val wristHorizontal: Boolean
+    get() = operator.rightShoulderButton
 
-    val startShooter: Boolean
-        get() = operator.xButton
+  val enableVisionAlignment: Boolean
+    get() = driver.aButton
 
-    val stopShooter: Boolean
-        get() = operator.yButton
+  val startShooter: Boolean
+    get() = operator.xButton
 
-    val climberUp: Boolean
-        get() = driver.dPadUp
+  val stopShooter: Boolean
+    get() = operator.yButton
 
-    val climberDown: Boolean
-        get() = driver.dPadDown
+  val climberUp: Boolean
+    get() = driver.dPadUp
 
-    val runIntakeIn: Boolean
-        get() = operator.aButton
+  val climberDown: Boolean
+    get() = driver.dPadDown
 
-    val runIntakeOut: Boolean
-        get() = operator.bButton
+  val runIntakeIn: Boolean
+    get() = operator.aButton
 
-    val runFeederIn: Boolean
-        get() = operator.dPadDown
+  val runIntakeOut: Boolean
+    get() = operator.bButton
 
-    val runFeederOut: Boolean
-        get() = operator.dPadUp
+  val runFeederIn: Boolean
+    get() = operator.dPadDown
 
-    val runFeederShoot: Boolean
-        get() = operator.dPadLeft || operator.dPadRight
+  val runFeederOut: Boolean
+    get() = operator.dPadUp
 
-    val slowMode: Boolean
-        get() = driver.dPadDown
+  val runFeederShoot: Boolean
+    get() = operator.dPadLeft || operator.dPadRight
+
+  val slowMode: Boolean
+    get() = driver.dPadDown
 }

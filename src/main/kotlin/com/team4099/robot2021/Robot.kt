@@ -1,7 +1,10 @@
 package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
+import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
+import com.team4099.robot2021.commands.drivetrain.ZeroSensorsCommand
 import com.team4099.robot2021.config.Constants
+import com.team4099.robot2021.config.ControlBoard
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
@@ -31,10 +34,12 @@ object Robot: TimedRobot() {
 
   override fun teleopInit() {
     autonomousCommand.cancel()
+    ZeroSensorsCommand()
   }
 
   override fun robotPeriodic() {
     CommandScheduler.getInstance().run()
     Logger.saveLogs()
+    TeleopDriveCommand({ ControlBoard.strafe }, { ControlBoard.forward }, { ControlBoard.turn })
   }
 }
