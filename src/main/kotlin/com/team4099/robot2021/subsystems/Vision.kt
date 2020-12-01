@@ -22,7 +22,7 @@ object Vision : SubsystemBase() {
 
   private val pipelineEntry: NetworkTableEntry = table.getEntry("pipeline")
 
-  private var pipeline = Constants.Vision.DRIVER_PIPELINE_ID
+  var pipeline = Constants.Vision.DRIVER_PIPELINE_ID
     set(value) {
       pipelineEntry.setNumber(value)
       field = value

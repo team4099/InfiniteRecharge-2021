@@ -12,10 +12,11 @@ class ShootCommand : CommandBase() {
 
   override fun initialize(){
     Shooter.targetVelocity = Constants.Shooter.TARGET_VELOCITY
+    Vision.pipeline = Constants.Vision.TARGETING_PIPELINE_ID
   }
   override fun execute(){
     var shooterReady = (Constants.Shooter.TARGET_VELOCITY - Shooter.currentVelocity).absoluteValue < Constants.Shooter.VELOCITY_TOLERANCE
-    if (shooterReady) { // && vision aligned on target
+    if (shooterReady/* && (Vision.tx.absoluteValue < Constants.Vision.MAX_ANGLE_ERROR)*/) { // && vision aligned on target
       //run feeder
     }
     else{
