@@ -3,8 +3,10 @@ package com.team4099.robot2021.subsystems
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.DemandType
 import com.ctre.phoenix.motorcontrol.can.TalonFX
+import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.ctreAngularMechanismSensor
 import com.team4099.lib.units.derived.rotations
+import com.team4099.lib.units.inRotationsPerMinute
 import com.team4099.lib.units.perMinute
 import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj2.command.SubsystemBase
@@ -21,6 +23,8 @@ object Shooter : SubsystemBase() {
     shooterMotor.config_kP(0,Constants.Shooter.SHOOTER_KP,0)
     shooterMotor.config_kI(0,Constants.Shooter.SHOOTER_KI,0)
     shooterMotor.config_kD(0,Constants.Shooter.SHOOTER_KD,0)
+
+    Logger.addSource("Shooter","Velocity (rpm)"){ currentVelocity.inRotationsPerMinute }
   }
 
   val currentVelocity
