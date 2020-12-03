@@ -24,7 +24,13 @@ object Shooter : SubsystemBase() {
     shooterMotor.config_kI(0,Constants.Shooter.SHOOTER_KI,0)
     shooterMotor.config_kD(0,Constants.Shooter.SHOOTER_KD,0)
 
-    Logger.addSource("Shooter","Velocity (rpm)"){ currentVelocity.inRotationsPerMinute }
+    Logger.addSource("Shooter","Shooter Current Velocity (rpm)") { currentVelocity.inRotationsPerMinute }
+    Logger.addSource("Shooter", "Shooter Target Velocity (rpm)") { targetVelocity.inRotationsPerMinute }
+
+    Logger.addSource("Shooter", "Shooter Motor Power") { shooterMotor.motorOutputPercent }
+    Logger.addSource("Shooter", "Shooter Motor Stator Current") { shooterMotor.statorCurrent }
+    Logger.addSource("Shooter", "Shooter Motor Supply Current") { shooterMotor.supplyCurrent }
+    Logger.addSource("Shooter", "Shooter Motor Voltage") { shooterMotor.motorOutputVoltage }
   }
 
   val currentVelocity
