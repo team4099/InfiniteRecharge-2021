@@ -13,10 +13,9 @@ class TeleopDriveCommand(
     addRequirements(Drivetrain)
   }
 
-  override fun initialize(){
-    // Zero Gyros?
-  }
-  override fun execute(){
+  override fun initialize() {}
+
+  override fun execute() {
     val speed = Pair(Constants.Drivetrain.DRIVE_SETPOINT_MAX * driveX(), Constants.Drivetrain.DRIVE_SETPOINT_MAX * driveY())
     val direction = Constants.Drivetrain.TURN_SETPOINT_MAX * turn()
     Drivetrain.set(direction,speed)
