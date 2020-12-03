@@ -7,10 +7,17 @@ import com.revrobotics.CANSparkMaxLowLevel
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.*
 import com.team4099.lib.units.base.feet
+import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.*
 import com.team4099.robot2021.Robot
 import com.team4099.robot2021.config.Constants
+import edu.wpi.first.wpilibj.geometry.Pose2d
+import edu.wpi.first.wpilibj.geometry.Rotation2d
+import edu.wpi.first.wpilibj.geometry.Translation2d
+import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics
+import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry
+import edu.wpi.first.wpilibj.kinematics.SwerveModuleState
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import kotlin.math.*
 
@@ -75,6 +82,24 @@ object Drivetrain : SubsystemBase() {
 
   var isFieldOriented = true
 
+  private var frontLeftWheelLocation = Translation2d(-(Constants.Drivetrain.DRIVETRAIN_WIDTH).inMeters, Constants.Drivetrain.DRIVETRAIN_LENGTH.inMeters)
+  private var frontRightWheelLocation = Translation2d(Constants.Drivetrain.DRIVETRAIN_WIDTH.inMeters, Constants.Drivetrain.DRIVETRAIN_LENGTH.inMeters)
+  private var backLeftWheelLocation = Translation2d(-(Constants.Drivetrain.DRIVETRAIN_WIDTH).inMeters, -(Constants.Drivetrain.DRIVETRAIN_LENGTH).inMeters)
+  private var backRightWheelLocation = Translation2d(Constants.Drivetrain.DRIVETRAIN_WIDTH.inMeters, -(Constants.Drivetrain.DRIVETRAIN_LENGTH).inMeters)
+
+  private var swerveDriveKinematics = SwerveDriveKinematics(
+    frontLeftWheelLocation,
+    frontRightWheelLocation,
+    backLeftWheelLocation,
+    backRightWheelLocation
+  )
+
+  private var swerveDriveOdometry = SwerveDriveOdometry(
+    swerveDriveKinematics,
+    Rotation2d(gyroAngle.inRadians),
+    Pose2d(0.0, 0.0, Rotation2d()) // TODO: Later: Figure out what the starting position will be
+  )
+
   init {
     Logger.addSource("Drivetrain", "Front Left Wheel Speed") {wheelSpeeds[0]}
     Logger.addSource("Drivetrain", "Front Right Wheel Speed") {wheelSpeeds[1]}
@@ -85,6 +110,7 @@ object Drivetrain : SubsystemBase() {
     Logger.addSource("Drivetrain", "Front Right Wheel Angles") {wheelAngles[1]}
     Logger.addSource("Drivetrain", "Back Left Wheel Angles") {wheelAngles[2]}
     Logger.addSource("Drivetrain", "Back Right Wheel Angles") {wheelAngles[3]}
+
   }
 
   fun set(angularVelocity: AngularVelocity, driveVector: Pair<LinearVelocity, LinearVelocity>) {
@@ -129,6 +155,17 @@ object Drivetrain : SubsystemBase() {
     wheels[1].set(wheelAngles[1], wheelSpeeds[1])
     wheels[2].set(wheelAngles[2], wheelSpeeds[2])
     wheels[3].set(wheelAngles[3], wheelSpeeds[3])
+
+    // odometry
+    var gyro2d = Rotation2d(gyroAngle.inRadians)
+
+    swerveDriveOdometry.update(
+      gyro2d,
+      SwerveModuleState(wheelSpeeds[0].inMetersPerSecond, Rotation2d(wheelAngles[0].inRadians)),
+      SwerveModuleState(wheelSpeeds[1].inMetersPerSecond, Rotation2d(wheelAngles[1].inRadians)),
+      SwerveModuleState(wheelSpeeds[2].inMetersPerSecond, Rotation2d(wheelAngles[2].inRadians)),
+      SwerveModuleState(wheelSpeeds[3].inMetersPerSecond, Rotation2d(wheelAngles[3].inRadians))
+    )
   }
 
   fun hypot(a: LinearVelocity, b: LinearVelocity): LinearVelocity {
