@@ -6,6 +6,9 @@ class BeamBreak(): CommandBase(){
   init{
     addRequirements(Feeder)
   }
+  override fun initialize() {
+    Logger.addEvent("Feeder", "Beam break started")
+  }
   override fun execute() {
     Feeder.feederState = when{
       Feeder.topBeamBroken -> Feeder.FeederState.NEUTRAL
