@@ -3,6 +3,7 @@ package com.team4099.robot2021.config.subsystems
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.team4099.lib.logging.Logger
+import com.team4099.robot2021.commands.feeder.BeamBreak
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import edu.wpi.first.wpilibj.DigitalInput
