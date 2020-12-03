@@ -53,6 +53,6 @@ object Constants {
       DEFAULT(DoubleSolenoid.Value.kOff);
     }
 
-
   }
+
 }

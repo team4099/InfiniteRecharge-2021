@@ -6,15 +6,15 @@ import com.team4099.robot2021.subsystems.Intake
 import edu.wpi.first.wpilibj2.command.CommandBase
 
 class IntakeCommand(var intakeState: Constants.Intake.IntakeState, var armState: Constants.Intake.ArmPosition): CommandBase() {
+
   init {
     addRequirements(Intake)
-    Logger.addEvent("IntakeState", intakeState.toString())
-    Logger.addEvent("ArmState", armState.toString())
   }
 
   override fun initialize() {
     Intake.armState = armState
     Intake.intakeState = intakeState
+    Logger.addEvent("Intake", "Intake State: $intakeState Arm State: $armState")
   }
 
 }
