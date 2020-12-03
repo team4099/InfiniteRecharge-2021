@@ -1,7 +1,6 @@
 package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
-import com.team4099.robot2021.commands.feeder.BeamBreak
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
@@ -29,12 +28,16 @@ object Robot : TimedRobot() {
     Logger.startLogging()
 
     // Link between feeder Trigger and Command
+    Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
     ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_FLOOR));
     ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD));
 
     Intake.defaultCommand = IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
     ControlBoard.runIntakeIn.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT))
     ControlBoard.runIntakeOut.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT))
+
+
+
   }
 
   private val autonomousCommand = InstantCommand()

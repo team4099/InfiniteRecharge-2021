@@ -1,8 +1,9 @@
 package com.team4099.robot2021.commands.feeder
+import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.config.subsystems.Feeder
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class BeamBreak(): CommandBase(){
+class FeederBeamBreak(): CommandBase(){
   init{
     addRequirements(Feeder)
   }

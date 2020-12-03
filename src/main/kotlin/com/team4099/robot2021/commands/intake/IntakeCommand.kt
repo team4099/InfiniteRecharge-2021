@@ -16,5 +16,4 @@ class IntakeCommand(var intakeState: Constants.Intake.IntakeState, var armState:
     Intake.armState = armState
     Intake.intakeState = intakeState
   }
-
 }
