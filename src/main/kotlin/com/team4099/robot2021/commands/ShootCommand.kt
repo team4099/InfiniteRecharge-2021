@@ -13,7 +13,7 @@ class ShootCommand : CommandBase() {
 
   override fun initialize(){
     Shooter.targetVelocity = Constants.Shooter.TARGET_VELOCITY
-    Vision.pipeline = Constants.Vision.TARGETING_PIPELINE_ID
+    // Vision.pipeline = Constants.Vision.TARGETING_PIPELINE_ID
     Logger.addEvent("ShootCommand","Started shoot command")
   }
   override fun execute(){
