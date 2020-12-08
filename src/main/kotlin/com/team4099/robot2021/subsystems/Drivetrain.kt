@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.geometry.Translation2d
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import kotlin.math.*
 
@@ -31,7 +32,8 @@ object Drivetrain : SubsystemBase() {
         Constants.Drivetrain.FRONT_LEFT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless
       ),
       CANCoder(Constants.Drivetrain.FRONT_LEFT_CANCODER_ID),
-      0.degrees
+      0.degrees,
+      "Front Left Wheel"
     ),
     Wheel(
       CANSparkMax(
@@ -41,7 +43,8 @@ object Drivetrain : SubsystemBase() {
         Constants.Drivetrain.FRONT_RIGHT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless
       ),
       CANCoder(Constants.Drivetrain.FRONT_RIGHT_CANCODER_ID),
-      (-90).degrees
+      (-90).degrees,
+      "Front Right Wheel"
     ),
     Wheel(
       CANSparkMax(
@@ -51,7 +54,8 @@ object Drivetrain : SubsystemBase() {
         Constants.Drivetrain.BACK_LEFT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless
       ),
       CANCoder(Constants.Drivetrain.BACK_LEFT_CANCODER_ID),
-      (-180).degrees
+      (-180).degrees,
+      "Back Left Wheel"
     ),
     Wheel(
       CANSparkMax(
@@ -61,7 +65,8 @@ object Drivetrain : SubsystemBase() {
         Constants.Drivetrain.BACK_RIGHT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless
       ),
       CANCoder(Constants.Drivetrain.BACK_RIGHT_CANCODER_ID),
-      (-270).degrees
+      (-270).degrees,
+      "Back Right"
     )
   )
 
@@ -101,15 +106,36 @@ object Drivetrain : SubsystemBase() {
   )
 
   init {
-    Logger.addSource("Drivetrain", "Front Left Wheel Speed") {wheelSpeeds[0]}
-    Logger.addSource("Drivetrain", "Front Right Wheel Speed") {wheelSpeeds[1]}
-    Logger.addSource("Drivetrain", "Back Left Wheel Speed") {wheelSpeeds[2]}
-    Logger.addSource("Drivetrain", "Back Right Wheel Speed") {wheelSpeeds[3]}
+    // Wheel speeds
+    Logger.addSource("Drivetrain", "Front Left Wheel Speed") { wheelSpeeds[0] }
+    Logger.addSource("Drivetrain", "Front Right Wheel Speed") { wheelSpeeds[1] }
+    Logger.addSource("Drivetrain", "Back Left Wheel Speed") { wheelSpeeds[2] }
+    Logger.addSource("Drivetrain", "Back Right Wheel Speed") { wheelSpeeds[3] }
 
-    Logger.addSource("Drivetrain", "Front Left Wheel Angles") {wheelAngles[0]}
-    Logger.addSource("Drivetrain", "Front Right Wheel Angles") {wheelAngles[1]}
-    Logger.addSource("Drivetrain", "Back Left Wheel Angles") {wheelAngles[2]}
-    Logger.addSource("Drivetrain", "Back Right Wheel Angles") {wheelAngles[3]}
+    // Wheel angles
+    Logger.addSource("Drivetrain", "Front Left Wheel Angles") { wheelAngles[0] }
+    Logger.addSource("Drivetrain", "Front Right Wheel Angles") { wheelAngles[1] }
+    Logger.addSource("Drivetrain", "Back Left Wheel Angles") { wheelAngles[2] }
+    Logger.addSource("Drivetrain", "Back Right Wheel Angles") { wheelAngles[3] }
+
+
+    //  position (from odometry)?
+
+    //  gyro angle
+    Logger.addSource("Drivetrain", "Gyro Angle") {gyroAngle}
+    //  pathfollow time stamp (need to do pathfollow stuff first?)
+
+    //  if gyro is connected boolean
+
+    //  X Pose and Y pose
+
+    //  Wheel speeds
+
+    //  Wheel positions
+
+    //  Wheel velocity
+
+    //  Wheel target velocities
 
   }
 
