@@ -98,14 +98,6 @@ object Constants {
 
     const val MIN_TURN_COMMAND = 0.0
 
-    /* val ON_TARGET_KP = 0.0
-    const val ON_TARGET_KI = 0.0
-    const val ON_TARGET_KD = 0.0
-
-    const val OFF_TARGET_KP = 0.0
-    const val OFF_TARGET_KI = 0.0
-    const val OFF_TARGET_KD = 0.0*/
-
     object TurnGains {
       const val KP = 0.0
       const val KI = 0.0

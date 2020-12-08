@@ -26,26 +26,6 @@ object Vision : SubsystemBase() {
   val tv get() = table.getEntry("tv").getDouble(0.0)
   private val ta get() = table.getEntry("ta").getDouble(0.0)
 
-  /*val onTargetController = PIDController(
-    Constants.Vision.ON_TARGET_KP,
-    Constants.Vision.ON_TARGET_KI,
-    Constants.Vision.ON_TARGET_KD
-  )
-  val offTargetController = PIDController(
-    Constants.Vision.OFF_TARGET_KP,
-    Constants.Vision.OFF_TARGET_KI,
-    Constants.Vision.OFF_TARGET_KD
-  )*/
-  val visionPIDcontroller = ProfiledPIDController(
-    Constants.Vision.TurnGains.KP,
-    Constants.Vision.TurnGains.KI,
-    Constants.Vision.TurnGains.KD,
-    TrapezoidProfile.Constraints(
-      Constants.Vision.TurnGains.MAX_VELOCITY.value,
-      Constants.Vision.TurnGains.MAX_ACCEL.value
-    )
-  )
-
   init {
     Logger.addSource("Vision","Pipeline"){ pipelineEntry }
     Logger.addSource("Vision","Distance (inches)"){ distance }
