@@ -7,6 +7,7 @@ import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.perMinute
 import com.team4099.lib.units.derived.Angle
 import edu.wpi.first.wpilibj.DoubleSolenoid
+import com.team4099.lib.units.perSecond
 import java.lang.Math.PI
 
 object Constants {
@@ -94,6 +95,26 @@ object Constants {
 
     val MAX_DIST_ERROR = 0.1.inches
     val MAX_ANGLE_ERROR = 1.0.degrees
+
+    const val MIN_TURN_COMMAND = 0.0
+
+    /* val ON_TARGET_KP = 0.0
+    const val ON_TARGET_KI = 0.0
+    const val ON_TARGET_KD = 0.0
+
+    const val OFF_TARGET_KP = 0.0
+    const val OFF_TARGET_KI = 0.0
+    const val OFF_TARGET_KD = 0.0*/
+
+    object TurnGains {
+      const val KP = 0.0
+      const val KI = 0.0
+      const val KD = 0.0
+
+      val MAX_VELOCITY = 0.0.degrees.perSecond
+      val MAX_ACCEL = 0.0.degrees.perSecond.perSecond
+
+    }
   }
 
 }
