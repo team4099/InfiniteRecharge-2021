@@ -3,6 +3,7 @@ package com.team4099.robot2021.config
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
+import com.team4099.lib.units.perSecond
 
 object Constants {
   object Universal {
@@ -28,8 +29,8 @@ object Constants {
     val CLIMBER_CLIMBERPIDCONTROLLER_P = 0.1
     val CLIMBER_CLIMBERPIDCONTROLLER_I = 0.1
     val CLIMBER_CLIMBERPIDCONTROLLER_D = 0.1
-    val CLIMBER_PID_SLOTID_SMARTMOTIIONVEL = 0
-    val CLIMBER_PID_SLOTID_SMARTMOTIIONACC = 0
+    val CLIMBER_SPARKMAX_VEL = 0.5.meters.perSecond
+    val CLIMBER_SPARKMAX_ACC = 0.5.meters.perSecond.perSecond
     val BRAKE_RELEASE_TIMEOUT = 0.1.seconds
     val TAB = "Climber"
   }

@@ -42,14 +42,14 @@ object Climber: SubsystemBase() {
     climberRArmPIDController.p = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_P
     climberRArmPIDController.i = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_I
     climberRArmPIDController.d = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_D
-    climberRArmPIDController.setSmartMotionMaxVelocity(climberRArmSensor.velocityToRawUnits(0.5.meters.perSecond), Constants.Climber.CLIMBER_PID_SLOTID_SMARTMOTIIONVEL) //what is the slotID (second argument)
-    climberRArmPIDController.setSmartMotionMaxAccel(climberRArmSensor.accelerationToRawUnits(0.5.meters.perSecond.perSecond), Constants.Climber.CLIMBER_PID_SLOTID_SMARTMOTIIONACC)
+    climberRArmPIDController.setSmartMotionMaxVelocity(climberRArmSensor.velocityToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_VEL), 0)
+    climberRArmPIDController.setSmartMotionMaxAccel(climberRArmSensor.accelerationToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_ACC), 0)
 
     climberLArmPIDController.p = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_P
     climberLArmPIDController.i = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_I
     climberLArmPIDController.d = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_D
-    climberLArmPIDController.setSmartMotionMaxVelocity(climberLArmSensor.velocityToRawUnits(0.5.meters.perSecond), Constants.Climber.CLIMBER_PID_SLOTID_SMARTMOTIIONVEL) //what is the slotID (second argument)
-    climberLArmPIDController.setSmartMotionMaxAccel(climberLArmSensor.accelerationToRawUnits(0.5.meters.perSecond.perSecond), Constants.Climber.CLIMBER_PID_SLOTID_SMARTMOTIIONACC)
+    climberLArmPIDController.setSmartMotionMaxVelocity(climberLArmSensor.velocityToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_VEL), 0)
+    climberLArmPIDController.setSmartMotionMaxAccel(climberLArmSensor.accelerationToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_ACC), 0)
   }
 
   fun setPosition(position: Constants.ClimberPosition) {
