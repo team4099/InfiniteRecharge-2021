@@ -3,6 +3,7 @@ package com.team4099.robot2021.subsystems
 import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel
 import com.revrobotics.ControlType
+import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.perSecond
 import com.team4099.lib.units.sparkMaxLinearMechanismSensor
@@ -27,6 +28,17 @@ object Climber: SubsystemBase() {
     }
 
   init {
+    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Motor Power") { climberRArm.appliedOutput }
+    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Motor Current") { climberRArm.appliedOutput }
+    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Motor Voltage") { climberRArm.busVoltage } //idk if this correct
+
+    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Motor Power") { climberLArm.appliedOutput }
+    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Motor Stator Current") { climberLArm.appliedOutput }
+    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Motor Voltage") { climberLArm.busVoltage } //idk if this correct
+
+    Logger.addSource(Constants.Climber.TAB, "Right Pneumatics State") { brakeApplied.toString() }
+    Logger.addSource(Constants.Climber.TAB, "Left Pneumatics State") { brakeApplied.toString() }
+
     climberRArmPIDController.p = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_P
     climberRArmPIDController.i = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_I
     climberRArmPIDController.d = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_D

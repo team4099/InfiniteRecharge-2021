@@ -31,6 +31,7 @@ object Constants {
     val CLIMBER_PID_SLOTID_SMARTMOTIIONVEL = 0
     val CLIMBER_PID_SLOTID_SMARTMOTIIONACC = 0
     val BRAKE_RELEASE_TIMEOUT = 0.1.seconds
+    val TAB = "Climber"
   }
 
   enum class ClimberPosition(val length: Length) {
