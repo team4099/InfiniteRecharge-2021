@@ -2,6 +2,7 @@ package com.team4099.robot2021.commands
 
 import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.config.Constants
+import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.subsystems.Shooter
 import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj2.command.CommandBase
@@ -21,12 +22,14 @@ class ShootCommand : CommandBase() {
     // var visionReady = Vision.tx.absoluteValue < Constants.Vision.MAX_ANGLE_ERROR
     //   && Vision.distance < Constants.Vision.MAX_DIST_ERROR
 
-    if (shooterReady /*&& visionReady*/) {
+    if (shooterReady/* && visionReady*/) {
       //run feeder
+      Feeder.feederState = Feeder.FeederState.FORWARD_ALL
       Logger.addEvent("ShootCommand","Running feeder to shoot")
     }
     else{
       //stop running feeder
+      Feeder.feederState = Feeder.FeederState.NEUTRAL
       Logger.addEvent("ShootCommand","Preparing to shoot")
     }
   }
