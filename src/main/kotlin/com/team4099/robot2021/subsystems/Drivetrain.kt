@@ -4,6 +4,7 @@ import com.analog.adis16470.frc.ADIS16470_IMU
 import com.ctre.phoenix.sensors.CANCoder
 import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel
+import com.team4099.lib.geometry.*
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.*
 import com.team4099.lib.units.base.feet
@@ -87,22 +88,22 @@ object Drivetrain : SubsystemBase() {
 
   var isFieldOriented = true
 
-  private var frontLeftWheelLocation = Translation2d(-(Constants.Drivetrain.DRIVETRAIN_WIDTH).inMeters, Constants.Drivetrain.DRIVETRAIN_LENGTH.inMeters)
-  private var frontRightWheelLocation = Translation2d(Constants.Drivetrain.DRIVETRAIN_WIDTH.inMeters, Constants.Drivetrain.DRIVETRAIN_LENGTH.inMeters)
-  private var backLeftWheelLocation = Translation2d(-(Constants.Drivetrain.DRIVETRAIN_WIDTH).inMeters, -(Constants.Drivetrain.DRIVETRAIN_LENGTH).inMeters)
-  private var backRightWheelLocation = Translation2d(Constants.Drivetrain.DRIVETRAIN_WIDTH.inMeters, -(Constants.Drivetrain.DRIVETRAIN_LENGTH).inMeters)
+  private var frontLeftWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH*-1, Constants.Drivetrain.DRIVETRAIN_LENGTH)
+  private var frontRightWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH, Constants.Drivetrain.DRIVETRAIN_LENGTH)
+  private var backLeftWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH*-1, Constants.Drivetrain.DRIVETRAIN_LENGTH*-1)
+  private var backRightWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH, Constants.Drivetrain.DRIVETRAIN_LENGTH*-1)
 
   private var swerveDriveKinematics = SwerveDriveKinematics(
-    frontLeftWheelLocation,
-    frontRightWheelLocation,
-    backLeftWheelLocation,
-    backRightWheelLocation
+    frontLeftWheelLocation.translation2d,
+    frontRightWheelLocation.translation2d,
+    backLeftWheelLocation.translation2d,
+    backRightWheelLocation.translation2d
   )
 
   private var swerveDriveOdometry = SwerveDriveOdometry(
     swerveDriveKinematics,
     Rotation2d(gyroAngle.inRadians),
-    Pose2d(0.0, 0.0, Rotation2d()) // TODO: Later: Figure out what the starting position will be
+    Pose(0.meters, 0.meters, 0.degrees).pose2d // TODO: Later: Figure out what the starting position will be
   )
 
   init {
@@ -118,18 +119,19 @@ object Drivetrain : SubsystemBase() {
     Logger.addSource("Drivetrain", "Back Left Wheel Angles") { wheelAngles[2] }
     Logger.addSource("Drivetrain", "Back Right Wheel Angles") { wheelAngles[3] }
 
-
-    //  position (from odometry)?
+    // Wheel positions (from odometry)?
+    Logger.addSource("Drivetrain", "Front Left Wheel Position") { frontLeftWheelLocation }
+    Logger.addSource("Drivetrain", "Front Right Wheel Position") { frontRightWheelLocation }
+    Logger.addSource("Drivetrain", "Back Left Wheel Position") { backLeftWheelLocation }
+    Logger.addSource("Drivetrain", "Back Right Wheel Position") { backRightWheelLocation }
 
     //  gyro angle
-    Logger.addSource("Drivetrain", "Gyro Angle") {gyroAngle}
+    Logger.addSource("Drivetrain", "Gyro Angle") { gyroAngle }
     //  pathfollow time stamp (need to do pathfollow stuff first?)
 
     //  if gyro is connected boolean
-
+    Logger.addSource("Drivetrain", "Gyro Connected") {  }
     //  X Pose and Y pose
-
-    //  Wheel speeds
 
     //  Wheel positions
 
