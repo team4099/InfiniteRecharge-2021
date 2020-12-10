@@ -71,6 +71,7 @@ object Constants {
     }
 
   }
+
   object Shooter {
     const val SHOOTER_MOTOR_ID = 0
     const val SHOOTER_FOLLOWER_ID = 0
@@ -105,7 +106,6 @@ object Constants {
 
       val MAX_VELOCITY = 0.0.degrees.perSecond
       val MAX_ACCEL = 0.0.degrees.perSecond.perSecond
-
     }
   }
 
