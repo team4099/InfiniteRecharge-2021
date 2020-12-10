@@ -16,5 +16,4 @@ class IntakeCommand(var intakeState: Constants.Intake.IntakeState, var armState:
     Intake.intakeState = intakeState
     Logger.addEvent("Intake", "Intake State: $intakeState Arm State: $armState")
   }
-
 }

@@ -35,6 +35,16 @@ object Constants {
     const val TURN_DEADBAND = 0.035
   }
 
+  object Feeder {
+    const val FLOOR_ID = 0
+    const val VERTICAL_ID = 0
+    const val FEEDER_POWER = 1.0;
+
+    const val TOP_DIO_PIN = 4;
+    const val BOTTOM_DIO_PIN = 9;
+    const val TAB = "Feeder";
+  }
+
   object Intake {
     const val INTAKE_MOTOR = 0 //temp
     const val ARM_SOLENOID_PORT_1 = 0 //temp
@@ -52,7 +62,6 @@ object Constants {
       IN(DoubleSolenoid.Value.kForward),
       DEFAULT(DoubleSolenoid.Value.kOff);
     }
-
   }
 
 }
