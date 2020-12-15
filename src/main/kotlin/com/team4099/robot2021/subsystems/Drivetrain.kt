@@ -13,6 +13,7 @@ import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.*
 import com.team4099.robot2021.Robot
 import com.team4099.robot2021.config.Constants
+import edu.wpi.first.wpilibj.controller.RamseteController
 import edu.wpi.first.wpilibj.geometry.Pose2d
 import edu.wpi.first.wpilibj.geometry.Rotation2d
 import edu.wpi.first.wpilibj.geometry.Translation2d
@@ -105,6 +106,31 @@ object Drivetrain : SubsystemBase() {
     Rotation2d(gyroAngle.inRadians),
     Pose(0.meters, 0.meters, 0.degrees).pose2d // TODO: Later: Figure out what the starting position will be
   )
+
+  private var pathFollowController = RamseteController()
+  var path: Trajectory = Trajectory(listOf(Trajectory.State()))
+    set(value) {
+      trajDuration = value.totalTimeSeconds
+      trajStartTime = Timer.getFPGATimestamp()
+
+      enterVelocityClosedLoop()
+      zeroSensors()
+      val initialSample = value.sample(0.0)
+      autoOdometry.resetPosition(initialSample.poseMeters, Rotation2d.fromDegrees(-angle))
+      pathFollowController = RamseteController(
+        Constants.Drive.Gains.RAMSETE_B,
+        Constants.Drive.Gains.RAMSETE_ZETA
+      )
+      lastWheelSpeeds = kinematics.toWheelSpeeds(
+        pathFollowController.calculate(autoOdometry.poseMeters, initialSample)
+      )
+
+      currentState = DriveControlState.PATH_FOLLOWING
+      HelixEvents.addEvent("DRIVETRAIN", "Begin path following")
+
+      field = value
+    }
+//last wheel speeds (swerve drive)
 
   init {
     // Wheel speeds
@@ -212,13 +238,13 @@ object Drivetrain : SubsystemBase() {
   }
 
   fun zeroDirection(){
-    wheels.forEach{
+    wheels.forEach {
       it.zeroDirection()
     }
   }
 
   fun zeroDrive(){
-    wheels.forEach{
+    wheels.forEach {
       it.zeroDrive()
     }
   }
