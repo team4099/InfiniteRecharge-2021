@@ -8,9 +8,11 @@ import com.team4099.lib.units.ctreLinearMechanismSensor
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj.DoubleSolenoid
+import edu.wpi.first.wpilibj.simulation.Mechanism2D
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object Intake : SubsystemBase() {
+  private val simulated = Mechanism2D()
 
   private val intakeTalon = TalonFX(Constants.Intake.INTAKE_MOTOR)
   private val intakeDoubleSolenoid = DoubleSolenoid(Constants.Intake.ARM_SOLENOID_PORT_1, Constants.Intake.ARM_SOLENOID_PORT_2)
