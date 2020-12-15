@@ -1,4 +1,4 @@
-package com.team4099.robot2021.commands
+package com.team4099.robot2021.commands.shooter
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.derived.inDegrees
@@ -31,7 +31,10 @@ class VisionCommand : CommandBase(){
     Logger.addEvent("VisionCommand","Started vision command")
   }
   override fun execute() {
-    if(Vision.tv != 0.0){
+    if(Vision.tv == 0.0) {
+      Vision.steeringAdjust = 0.0
+    }
+    else {
       Vision.steeringAdjust = visionPIDcontroller.calculate(Vision.tx.value, 0.0)
       Vision.steeringAdjust += sign(Vision.tx.value) * Constants.Vision.MIN_TURN_COMMAND
     }

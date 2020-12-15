@@ -1,4 +1,4 @@
-package com.team4099.robot2021.commands
+package com.team4099.robot2021.commands.shooter
 
 import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.config.Constants
@@ -14,15 +14,15 @@ class ShootCommand : CommandBase() {
 
   override fun initialize(){
     Shooter.targetVelocity = Constants.Shooter.TARGET_VELOCITY
-    // Vision.pipeline = Constants.Vision.TARGETING_PIPELINE_ID
     Logger.addEvent("ShootCommand","Started shoot command")
   }
   override fun execute(){
     var shooterReady = (Constants.Shooter.TARGET_VELOCITY - Shooter.currentVelocity).absoluteValue < Constants.Shooter.VELOCITY_TOLERANCE
-    // var visionReady = Vision.tx.absoluteValue < Constants.Vision.MAX_ANGLE_ERROR
+    // maybe implement a goal distance
+    var visionReady = Vision.onTarget
     //   && Vision.distance < Constants.Vision.MAX_DIST_ERROR
 
-    if (shooterReady/* && visionReady*/) {
+    if (shooterReady && visionReady) {
       //run feeder
       Feeder.feederState = Feeder.FeederState.FORWARD_ALL
       Logger.addEvent("ShootCommand","Running feeder to shoot")

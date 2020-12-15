@@ -1,13 +1,15 @@
 package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
-import com.team4099.robot2021.commands.ShooterIdleCommand
+import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.feeder.FeederBeamBreak
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
 import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.commands.intake.IntakeCommand
+import com.team4099.robot2021.commands.shooter.ShootCommand
+import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2021.subsystems.Shooter
 import edu.wpi.first.wpilibj.DigitalInput
@@ -15,6 +17,8 @@ import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.InstantCommand
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
+import javax.naming.ldap.Control
 import kotlin.math.pow
 
 object Robot : TimedRobot() {
@@ -40,7 +44,8 @@ object Robot : TimedRobot() {
     ControlBoard.runIntakeOut.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT).alongWith(FeederCommand(Feeder.FeederState.BACKWARD)));
 
     Shooter.defaultCommand = ShooterIdleCommand()
-
+    ControlBoard.shoot.whileActiveOnce(ParallelCommandGroup(ShootCommand(), VisionCommand()))
+    ControlBoard.stopShooting.whileActiveOnce(ShooterIdleCommand())
   }
 
   private val autonomousCommand = InstantCommand()

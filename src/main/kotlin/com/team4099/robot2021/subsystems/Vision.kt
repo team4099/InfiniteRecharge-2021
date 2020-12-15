@@ -33,7 +33,7 @@ object Vision : SubsystemBase() {
 
   var steeringAdjust = 0.0
   var onTarget = false
-    get() = /*tv != 0.0 &&*/ tx.absoluteValue < Constants.Vision.MAX_ANGLE_ERROR;
+    get() = tx.absoluteValue < Constants.Vision.MAX_ANGLE_ERROR
 
   private val pipelineEntry: NetworkTableEntry = table.getEntry("pipeline")
 
@@ -44,8 +44,6 @@ object Vision : SubsystemBase() {
     }
 
   val distance: Length
-    get() {
-      return (Constants.Vision.TARGET_HEIGHT - Constants.Vision.CAMERA_HEIGHT) /
-        (Constants.Vision.CAMERA_ANGLE + ty).tan
-    }
+    get() = (Constants.Vision.TARGET_HEIGHT - Constants.Vision.CAMERA_HEIGHT) / (Constants.Vision.CAMERA_ANGLE + ty).tan
+
 }

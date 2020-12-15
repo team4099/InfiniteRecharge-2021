@@ -53,4 +53,8 @@ object ControlBoard {
 
   val runFeederOut = Trigger{ operator.dPadUp};
 
+  val shoot = Trigger{ operator.xButton }
+
+  val stopShooting = Trigger{ operator.yButton }
+
 }
