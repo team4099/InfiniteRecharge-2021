@@ -12,6 +12,8 @@ inline class Value<T: UnitKey>(internal val value: Double) : Comparable<Value<T>
   operator fun times(k: Number): Value<T> = div(k.toDouble())
   operator fun <K: UnitKey> times(o: Value<Fraction<K, T>>): Value<K> = Value(value * o.value)
 
+  operator fun unaryMinus(): Value<T> = Value(-value)
+
   operator fun div(k: Double): Value<T> = Value(value / k)
   operator fun div(k: Number): Value<T> = div(k.toDouble())
   operator fun div(o: Value<T>): Double = value / o.value

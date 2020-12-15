@@ -88,10 +88,10 @@ object Drivetrain : SubsystemBase() {
 
   var isFieldOriented = true
 
-  private var frontLeftWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH*-1, Constants.Drivetrain.DRIVETRAIN_LENGTH)
-  private var frontRightWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH, Constants.Drivetrain.DRIVETRAIN_LENGTH)
-  private var backLeftWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH*-1, Constants.Drivetrain.DRIVETRAIN_LENGTH*-1)
-  private var backRightWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH, Constants.Drivetrain.DRIVETRAIN_LENGTH*-1)
+  private var frontLeftWheelLocation = Translation(-Constants.Drivetrain.DRIVETRAIN_WIDTH/2, Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
+  private var frontRightWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH/2, Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
+  private var backLeftWheelLocation = Translation(-Constants.Drivetrain.DRIVETRAIN_WIDTH/2, -Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
+  private var backRightWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH/2, -Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
 
   private var swerveDriveKinematics = SwerveDriveKinematics(
     frontLeftWheelLocation.translation2d,
@@ -185,6 +185,7 @@ object Drivetrain : SubsystemBase() {
     wheels[3].set(wheelAngles[3], wheelSpeeds[3])
 
     // odometry
+    // TODO: Put in periodic
     var gyro2d = Rotation2d(gyroAngle.inRadians)
 
     swerveDriveOdometry.update(
