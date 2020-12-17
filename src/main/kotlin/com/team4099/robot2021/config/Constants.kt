@@ -1,5 +1,8 @@
 package com.team4099.robot2021.config
 
+import com.team4099.lib.units.derived.Angle
+import edu.wpi.first.wpilibj.DoubleSolenoid
+
 object Constants {
   object Universal {
     const val CTRE_CONFIG_TIMEOUT = 0
@@ -31,4 +34,34 @@ object Constants {
     const val THROTTLE_DEADBAND = 0.04
     const val TURN_DEADBAND = 0.035
   }
+
+  object Feeder {
+    const val FLOOR_ID = 0
+    const val VERTICAL_ID = 0
+    const val FEEDER_POWER = 1.0;
+
+    const val TOP_DIO_PIN = 4;
+    const val BOTTOM_DIO_PIN = 9;
+    const val TAB = "Feeder";
+  }
+
+  object Intake {
+    const val INTAKE_MOTOR = 0 //temp
+    const val ARM_SOLENOID_PORT_1 = 0 //temp
+    const val ARM_SOLENOID_PORT_2 = 1 //temp
+    const val TAB = "Intake"
+
+    enum class IntakeState (val speed: Double){
+      DEFAULT(0.0),
+      IN(1.0),
+      OUT(-1.0)
+    }
+
+    enum class ArmPosition (val position: DoubleSolenoid.Value?){
+      OUT(DoubleSolenoid.Value.kReverse),
+      IN(DoubleSolenoid.Value.kForward),
+      DEFAULT(DoubleSolenoid.Value.kOff);
+    }
+  }
+
 }

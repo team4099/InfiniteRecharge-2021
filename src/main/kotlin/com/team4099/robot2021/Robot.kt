@@ -1,7 +1,13 @@
 package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
+import com.team4099.robot2021.commands.feeder.FeederBeamBreak
+import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.config.Constants
+import com.team4099.robot2021.config.ControlBoard
+import com.team4099.robot2021.subsystems.Feeder
+import com.team4099.robot2021.commands.intake.IntakeCommand
+import com.team4099.robot2021.subsystems.Intake
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
@@ -9,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.InstantCommand
 import kotlin.math.pow
 
-object Robot: TimedRobot() {
+object Robot : TimedRobot() {
   val robotName: Constants.Tuning.RobotName
 
   init {
@@ -21,6 +27,15 @@ object Robot: TimedRobot() {
     Logger.addSource("Robot", "Battery Voltage", RobotController::getBatteryVoltage)
 
     Logger.startLogging()
+
+    // Link between feeder Trigger and Command
+    Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
+    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_FLOOR));
+    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD));
+
+    Intake.defaultCommand = IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
+    ControlBoard.runIntakeIn.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT).alongWith(FeederBeamBreak()));
+    ControlBoard.runIntakeOut.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT).alongWith(FeederCommand(Feeder.FeederState.BACKWARD)));
   }
 
   private val autonomousCommand = InstantCommand()
