@@ -57,6 +57,11 @@ object Constants {
     val TURN_SETPOINT_MAX = 90.degrees.perSecond // TODO: Make sure this value is something good
 
     const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
+
+    object Gains {
+      const val RAMSETE_B = 2.0
+      const val RAMSETE_ZETA = 0.7
+    }
   }
 
   object Joysticks {
