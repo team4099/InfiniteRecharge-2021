@@ -3,6 +3,7 @@ package com.team4099.robot2021.subsystems
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.simulation.SimulationAnnotationProcessor
 import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj2.command.SubsystemBase
@@ -23,6 +24,8 @@ object Feeder:SubsystemBase(){
 
     Logger.addSource(Constants.Feeder.TAB, "Feeder Top Beam DIO Broken") { topBeamBroken }
     Logger.addSource(Constants.Feeder.TAB, "Feeder Bottom Beam DIO Broken") { bottomBeamBroken }
+
+    SimulationAnnotationProcessor.registerSubsystem(this)
   }
 
   /**
@@ -73,4 +76,13 @@ object Feeder:SubsystemBase(){
       floorMotor.set(ControlMode.PercentOutput, feederState.floorMotorPower)
       verticalMotor.set(ControlMode.PercentOutput, feederState.verticalMotorPower)
     }
+
+  override fun periodic() {
+    floorMotor.set(ControlMode.PercentOutput, 0.1)
+  }
+
+  override fun simulationPeriodic() {
+    println(floorMotor.controlMode)
+    floorMotor
+  }
 }
