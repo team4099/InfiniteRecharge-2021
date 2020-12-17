@@ -1,39 +1,61 @@
 package com.team4099.robot2021.loops
 
-import com.team4099.lib.logging.Logger
-import org.graalvm.compiler.core.common.cfg.Loop
+import com.team4099.robot2021.Robot
+import edu.wpi.first.wpilibj.Sendable
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
 
-object FailureManager {
-
-
+object FailureManager: Sendable {
   //Map of Error Flags
-  private val errorFlags = mutableMapOf(Failures.PRESSURE_LEAK to false, Failures.INTAKE_SPEC_VIOLATION to false)
+
+  private val failures = mutableListOf<FailureSource>()
+  private var log = ""
+
+  private val errorFlags = mutableMapOf(
+    Failures.PRESSURE_LEAK to false,
+    Failures.INTAKE_SPEC_VIOLATION to false
+  )
 
   enum class Severity {
     WARNING,
     ERROR
   }
 
-  enum class Failures (val severity : Severity) {
-    PRESSURE_LEAK(Severity.ERROR),
-    INTAKE_SPEC_VIOLATION(Severity.WARNING)
+  enum class Failures (val severity : Severity, val description: String) {
+    PRESSURE_LEAK(Severity.ERROR, "Pressure Leak"),
+    INTAKE_SPEC_VIOLATION(Severity.WARNING, "intake bad")
   }
 
-  //have the motor as a parameter so it can be controlled (eg. motor drawing too much current so shut it down)
-  //Create a when (switch) statement in the teleopInit for the loop
-  fun addFailure(failType: Failures, condition: () -> Boolean) {
-    //Set the failure to true
-    errorFlags[failType] = true;
+  fun addFailure(failType: Failures, latching: Boolean = false, condition: () -> Boolean) {
+    failures.add(FailureSource(failType, latching, condition, false))
   }
-
-  //fun removeFailure?
 
   fun addTestFailure(failType: Failures, condition: () -> Boolean) {
-
+    failures.add(FailureSource(failType, true, condition, true))
   }
 
+  fun checkFailures() {
+    failures.forEach { failure ->
+      if (!failure.testOnly || Robot.isTest) {
+        if (!failure.latching) {
+          errorFlags[failure.failType] = failure.condition()
+        } else if (failure.condition()) {
+          errorFlags[failure.failType] = true
+        }
+      }
+    }
+  }
 
+  fun reset(){
+    failures.forEach{failure -> errorFlags[failure.failType] = false}
+    log = ""
+  }
 
+  fun logDashboard(string: String) {
+    log += "$string\n"
+  }
 
-
+  override fun initSendable(builder: SendableBuilder?) {
+    builder?.addStringProperty("Failures", { log }) {}
+  }
 }
+data class FailureSource(val failType: FailureManager.Failures, val latching: Boolean, val condition: () -> Boolean, val testOnly: Boolean)
