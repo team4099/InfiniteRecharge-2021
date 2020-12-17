@@ -74,6 +74,7 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
 
   }
 
+
   fun set(direction: Angle, speed: LinearVelocity) {
     if(speed == 0.feet.perSecond){
       speedSetPoint = 0.feet.perSecond

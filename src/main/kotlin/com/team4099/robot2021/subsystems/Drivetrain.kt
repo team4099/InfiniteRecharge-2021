@@ -8,19 +8,14 @@ import com.team4099.lib.geometry.*
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.*
 import com.team4099.lib.units.base.feet
-import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.*
-import com.team4099.robot2021.Robot
 import com.team4099.robot2021.config.Constants
+import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.controller.RamseteController
-import edu.wpi.first.wpilibj.geometry.Pose2d
 import edu.wpi.first.wpilibj.geometry.Rotation2d
-import edu.wpi.first.wpilibj.geometry.Translation2d
-import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics
-import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry
-import edu.wpi.first.wpilibj.kinematics.SwerveModuleState
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
+import edu.wpi.first.wpilibj.kinematics.*
+import edu.wpi.first.wpilibj.trajectory.Trajectory
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import kotlin.math.*
 
@@ -107,30 +102,34 @@ object Drivetrain : SubsystemBase() {
     Pose(0.meters, 0.meters, 0.degrees).pose2d // TODO: Later: Figure out what the starting position will be
   )
 
+  private var trajDuration = 0.0
+  private var trajCurTime = 0.0
+  private var trajStartTime = 0.0
+
+  private lateinit var lastModuleSpeeds: Array<SwerveModuleState>
+
   private var pathFollowController = RamseteController()
   var path: Trajectory = Trajectory(listOf(Trajectory.State()))
     set(value) {
       trajDuration = value.totalTimeSeconds
       trajStartTime = Timer.getFPGATimestamp()
 
-      enterVelocityClosedLoop()
-      zeroSensors()
+      // TODO: When set Trajectory in command run ZeroSensors command
       val initialSample = value.sample(0.0)
-      autoOdometry.resetPosition(initialSample.poseMeters, Rotation2d.fromDegrees(-angle))
+      swerveDriveOdometry.resetPosition(initialSample.poseMeters, Rotation2d(-gyroAngle.inRadians))
       pathFollowController = RamseteController(
-        Constants.Drive.Gains.RAMSETE_B,
-        Constants.Drive.Gains.RAMSETE_ZETA
-      )
-      lastWheelSpeeds = kinematics.toWheelSpeeds(
-        pathFollowController.calculate(autoOdometry.poseMeters, initialSample)
+        Constants.Drivetrain.Gains.RAMSETE_B,
+        Constants.Drivetrain.Gains.RAMSETE_ZETA
       )
 
-      currentState = DriveControlState.PATH_FOLLOWING
-      HelixEvents.addEvent("DRIVETRAIN", "Begin path following")
+      Logger.addEvent("Epic Gaming Drivertrains 4099 remeber to like and subscribe!", "Whats up gamers today we Begin path following")
 
       field = value
     }
-//last wheel speeds (swerve drive)
+
+  fun isPathFinished(): Boolean {
+    return (trajCurTime - trajStartTime) > trajDuration
+  }
 
   init {
     // Wheel speeds
@@ -157,16 +156,20 @@ object Drivetrain : SubsystemBase() {
 
     //  if gyro is connected boolean
     Logger.addSource("Drivetrain", "Gyro Connected") {  }
-    //  X Pose and Y pose
 
-    //  Wheel positions
-
-    //  Wheel velocity
-
-    //  Wheel target velocities
+    // TODO: X Pose and Y pose, wheel positions, wheel velocity, wheel target velocities?
 
   }
 
+  /**
+   * Sets the drivetrain to the specified angular and X & Y velocities.
+   * Calculates angular and linear velocities and calls set for each Wheel object.
+   *
+   * @param angularVelocity The angular velocity of a specified drive
+   * @param driveVector.first The linear velocity on the X axis
+   * @param driveVector.second The linear velocity on the Y axis
+   *
+   */
   fun set(angularVelocity: AngularVelocity, driveVector: Pair<LinearVelocity, LinearVelocity>) {
     val vX = if (isFieldOriented) {
       driveVector.first * gyroAngle.cos -
@@ -221,6 +224,29 @@ object Drivetrain : SubsystemBase() {
       SwerveModuleState(wheelSpeeds[2].inMetersPerSecond, Rotation2d(wheelAngles[2].inRadians)),
       SwerveModuleState(wheelSpeeds[3].inMetersPerSecond, Rotation2d(wheelAngles[3].inRadians))
     )
+  }
+
+  private fun updatePathFollowing(timestamp: Double, dT: Double) {
+    trajCurTime = timestamp - trajStartTime
+    val sample = path.sample(trajCurTime)
+
+    val drivetrainSpeeds = pathFollowController.calculate(swerveDriveOdometry.poseMeters, sample)
+    // Note: ChassisSpeeds takes x as forward so it is swapped
+    set(
+      drivetrainSpeeds.omegaRadiansPerSecond.radians.perSecond,
+      Pair(drivetrainSpeeds.vyMetersPerSecond.meters.perSecond,drivetrainSpeeds.vxMetersPerSecond.meters.perSecond)
+    )
+  }
+
+  /**
+   * Checks if path following has reached the end of the path.
+   *
+   * @param timestamp The current time. Value originates from Timer.getFPGATimestamp.
+   * @return If path following is finished.
+   */
+  fun isPathFinished(timestamp: Double): Boolean {
+    trajCurTime = timestamp - trajStartTime
+    return trajCurTime > trajDuration
   }
 
   fun hypot(a: LinearVelocity, b: LinearVelocity): LinearVelocity {

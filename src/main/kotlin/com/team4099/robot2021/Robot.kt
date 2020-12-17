@@ -1,7 +1,9 @@
 package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
-<<<<<<< HEAD
+import com.team4099.robot2021.commands.MoveClimber
+import com.team4099.robot2021.commands.climber.LockClimber
+import com.team4099.robot2021.commands.climber.UnlockClimber
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.feeder.FeederBeamBreak
 import com.team4099.robot2021.commands.feeder.FeederCommand
@@ -14,12 +16,9 @@ import com.team4099.robot2021.commands.shooter.SpinUpCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2021.subsystems.Shooter
-=======
 import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ZeroSensorsCommand
-import com.team4099.robot2021.config.Constants
-import com.team4099.robot2021.config.ControlBoard
->>>>>>> f4a7f55 (Add current drivetrain commands to init and periodic functions)
+import com.team4099.robot2021.subsystems.Climber
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
