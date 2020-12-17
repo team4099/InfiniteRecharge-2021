@@ -52,12 +52,11 @@ object Vision : SubsystemBase() {
 
 
   val currentDistance: DistanceState
-    get() {
-      return when(distance.value) {
-        in 0.0..100.0 -> DistanceState.LINE
-        in 101.0..129.0 -> DistanceState.NEAR
-        in 130.0..249.0 -> DistanceState.MID
-        else -> DistanceState.FAR
-      }
+    get() = when(distance.value) {
+      in 0.0..100.0 -> DistanceState.LINE
+      in 101.0..129.0 -> DistanceState.NEAR
+      in 130.0..249.0 -> DistanceState.MID
+      else -> DistanceState.FAR
     }
+
 }

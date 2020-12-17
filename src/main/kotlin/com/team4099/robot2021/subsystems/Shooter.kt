@@ -55,4 +55,5 @@ object Shooter : SubsystemBase() {
     _targetVelocity = 0.rotations.perMinute
     shooterMotor.set(ControlMode.PercentOutput,power)
   }
+
 }

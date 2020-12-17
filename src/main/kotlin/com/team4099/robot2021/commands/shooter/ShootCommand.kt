@@ -23,13 +23,11 @@ class ShootCommand : CommandBase() {
       }
     Logger.addEvent("ShootCommand","Started shoot command")
   }
+
   override fun execute(){
     var shooterReady = (Constants.Shooter.TARGET_VELOCITY - Shooter.currentVelocity).absoluteValue < Constants.Shooter.VELOCITY_TOLERANCE
-    // maybe implement a goal distance
-    var visionReady = Vision.onTarget
-    //   && Vision.distance < Constants.Vision.MAX_DIST_ERROR
 
-    if (shooterReady && visionReady) {
+    if (shooterReady && Vision.onTarget) {
       //run feeder
       Feeder.feederState = Feeder.FeederState.FORWARD_ALL
       Logger.addEvent("ShootCommand","Running feeder to shoot")
@@ -40,9 +38,9 @@ class ShootCommand : CommandBase() {
       Logger.addEvent("ShootCommand","Preparing to shoot")
     }
   }
+
   override fun isFinished() : Boolean {
     return false
   }
-
 
 }

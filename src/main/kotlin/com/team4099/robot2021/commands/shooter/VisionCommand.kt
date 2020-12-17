@@ -30,6 +30,7 @@ class VisionCommand : CommandBase(){
     Vision.pipeline = Constants.Vision.TARGETING_PIPELINE_ID
     Logger.addEvent("VisionCommand","Started vision command")
   }
+
   override fun execute() {
     if(Vision.tv == 0.0) {
       Vision.steeringAdjust = 0.0
@@ -37,8 +38,11 @@ class VisionCommand : CommandBase(){
     else {
       Vision.steeringAdjust = visionPIDcontroller.calculate(Vision.tx.value, 0.0)
       Vision.steeringAdjust += sign(Vision.tx.value) * Constants.Vision.MIN_TURN_COMMAND
+      // TODO: implement when drivetrain exists in master
+      // Drivetrain.set(Vision.steeringAdjust, Pair(0.0,0.0))
     }
   }
+
   override fun isFinished() : Boolean {
     return false
   }
