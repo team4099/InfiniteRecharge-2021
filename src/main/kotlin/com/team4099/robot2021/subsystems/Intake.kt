@@ -7,6 +7,7 @@ import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.ctreLinearMechanismSensor
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2021.config.Constants
+import com.team4099.robot2021.loops.FailureManager
 import edu.wpi.first.wpilibj.DoubleSolenoid
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 

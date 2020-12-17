@@ -11,6 +11,7 @@ import com.team4099.robot2021.subsystems.Intake
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.InstantCommand
 import kotlin.math.pow
@@ -39,17 +40,25 @@ object Robot : TimedRobot() {
   }
 
   private val autonomousCommand = InstantCommand()
+  private val testCommand = InstantCommand()
 
   override fun autonomousInit() {
     autonomousCommand.schedule()
+    testCommand.cancel()
   }
 
   override fun teleopInit() {
     autonomousCommand.cancel()
+    testCommand.cancel()
   }
 
   override fun robotPeriodic() {
     CommandScheduler.getInstance().run()
     Logger.saveLogs()
+  }
+
+  override fun testInit() {
+    testCommand.schedule()
+    autonomousCommand.cancel()
   }
 }
