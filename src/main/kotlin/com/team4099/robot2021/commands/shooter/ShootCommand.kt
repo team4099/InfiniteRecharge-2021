@@ -1,6 +1,8 @@
 package com.team4099.robot2021.commands.shooter
 
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.units.derived.rotations
+import com.team4099.lib.units.perMinute
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.subsystems.Shooter
@@ -13,7 +15,12 @@ class ShootCommand : CommandBase() {
   }
 
   override fun initialize(){
-    Shooter.targetVelocity = Constants.Shooter.TARGET_VELOCITY
+    Shooter.targetVelocity = when(Vision.currentDistance) {
+      Vision.DistanceState.LINE -> 4600.0.rotations.perMinute
+      Vision.DistanceState.NEAR -> 4700.0.rotations.perMinute
+      Vision.DistanceState.MID -> 5300.0.rotations.perMinute
+      Vision.DistanceState.FAR -> 5700.0.rotations.perMinute
+      }
     Logger.addEvent("ShootCommand","Started shoot command")
   }
   override fun execute(){

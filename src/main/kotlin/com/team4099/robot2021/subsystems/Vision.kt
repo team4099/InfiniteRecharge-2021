@@ -26,6 +26,10 @@ object Vision : SubsystemBase() {
   val tv get() = table.getEntry("tv").getDouble(0.0)
   private val ta get() = table.getEntry("ta").getDouble(0.0)
 
+  enum class DistanceState() {
+    LINE, NEAR, MID, FAR
+  }
+
   init {
     Logger.addSource("Vision","Pipeline"){ pipelineEntry }
     Logger.addSource("Vision","Distance (inches)"){ distance }
@@ -43,7 +47,17 @@ object Vision : SubsystemBase() {
       field = value
     }
 
-  val distance: Length
+  private val distance: Length
     get() = (Constants.Vision.TARGET_HEIGHT - Constants.Vision.CAMERA_HEIGHT) / (Constants.Vision.CAMERA_ANGLE + ty).tan
 
+
+  val currentDistance: DistanceState
+    get() {
+      return when(distance.value) {
+        in 0.0..100.0 -> DistanceState.LINE
+        in 101.0..129.0 -> DistanceState.NEAR
+        in 130.0..249.0 -> DistanceState.MID
+        else -> DistanceState.FAR
+      }
+    }
 }
