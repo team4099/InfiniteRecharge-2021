@@ -26,6 +26,27 @@ object Vision : SubsystemBase() {
   val tv get() = table.getEntry("tv").getDouble(0.0)
   private val ta get() = table.getEntry("ta").getDouble(0.0)
 
+  /*
+  //PhotonVision Code
+  val camera : PhotonCamera = PhotonCamera("gloworm")
+
+  //tv
+  var targets = false
+    get() = camera.hasTargets()
+  //tx
+  //negative: target on left of screen
+  var yaw = 0.0.degrees
+    get() = camera.getBestTargetYaw()
+  //ty
+  //negative: target on bottom of screen
+  var pitch = 0.0.degrees
+    get() = camera.getBestTargetPitch()
+  //ta
+  //area is 0-100%
+  var area: Double
+    get() = camera.getBestTargetArea()
+  */
+
   enum class DistanceState() {
     LINE, NEAR, MID, FAR
   }
@@ -37,6 +58,7 @@ object Vision : SubsystemBase() {
 
   var steeringAdjust = 0.0
   var onTarget = false
+    //use yaw instead of tx
     get() = tx.absoluteValue < Constants.Vision.MAX_ANGLE_ERROR
 
   private val pipelineEntry: NetworkTableEntry = table.getEntry("pipeline")
@@ -49,7 +71,15 @@ object Vision : SubsystemBase() {
 
   private val distance: Length
     get() = (Constants.Vision.TARGET_HEIGHT - Constants.Vision.CAMERA_HEIGHT) / (Constants.Vision.CAMERA_ANGLE + ty).tan
-
+  /*val distanceMeters: Length
+    //heights need to be meters, pitches need to be radians
+    get() = PhotonUtils.calculateDistanceToTargetMeters(
+      Constants.Vision.CAMERA_HEIGHT.inMeters,
+      Constants.Vision.TARGET_HEIGHT.inMeters,
+      Constants.Vision.CAMERA_ANGLE.inRadians,
+      camera.getFirstTargetPitch().inRadians
+      )
+   */
 
   val currentDistance: DistanceState
     get() = when(distance.value) {
@@ -58,5 +88,6 @@ object Vision : SubsystemBase() {
       in 130.0..249.0 -> DistanceState.MID
       else -> DistanceState.FAR
     }
+
 
 }

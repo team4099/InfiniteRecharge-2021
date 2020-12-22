@@ -27,6 +27,8 @@ class VisionCommand : CommandBase(){
   }
 
   override fun initialize() {
+    //Vision.camera.setPipelineIndex(TARGETING_PIPELINE_ID)
+    //Vision.camera.setDriverMode(false)
     Vision.pipeline = Constants.Vision.TARGETING_PIPELINE_ID
     Logger.addEvent("VisionCommand","Started vision command")
   }
