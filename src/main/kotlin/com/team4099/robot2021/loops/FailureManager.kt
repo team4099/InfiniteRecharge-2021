@@ -10,7 +10,7 @@ object FailureManager: Sendable {
   private val failures = mutableListOf<FailureSource>()
   private var log = ""
 
-  private val errorFlags = mutableMapOf(
+  val errorFlags = mutableMapOf(
     Failures.PRESSURE_LEAK to false,
     Failures.INTAKE_SPEC_VIOLATION to false
   )
