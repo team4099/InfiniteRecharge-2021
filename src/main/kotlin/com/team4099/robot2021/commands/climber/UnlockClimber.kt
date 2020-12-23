@@ -1,6 +1,7 @@
 package com.team4099.robot2021.commands.climber
 
 import com.team4099.lib.hal.Clock
+import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Climber
 import edu.wpi.first.wpilibj2.command.CommandBase
@@ -12,7 +13,8 @@ class UnlockClimber : CommandBase() {
   private var initTime = Clock.fpgaTime
   override fun initialize() {
     initTime = Clock.fpgaTime
-    Climber.brakeApplied = true
+    Climber.brakeApplied = false
+    Logger.addEvent("UnlockClimber", "Climber Unlocked")
   }
 
   override fun isFinished(): Boolean {

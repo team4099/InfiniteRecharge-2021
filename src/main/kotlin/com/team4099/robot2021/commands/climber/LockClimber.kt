@@ -1,5 +1,6 @@
 package com.team4099.robot2021.commands.climber
 
+import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.subsystems.Climber
 import edu.wpi.first.wpilibj2.command.CommandBase
 
@@ -10,6 +11,9 @@ class LockClimber : CommandBase() {
 
   override fun initialize() {
     Climber.setOpenLoopPower(0.0)
-    Climber.brakeApplied = false
+    Climber.brakeApplied = true
+    Logger.addEvent("LockClimber", "Climber Locked")
   }
+
+
 }
