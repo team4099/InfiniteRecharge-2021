@@ -2,6 +2,7 @@ package com.team4099.robot2021.subsystems
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.base.Length
+import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inRadians
@@ -16,6 +17,8 @@ import edu.wpi.first.wpilibj.controller.PIDController
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.SubsystemBase
+import org.photonvision.PhotonCamera
+import org.photonvision.PhotonUtils
 import java.lang.Math.tan
 
 object Vision : SubsystemBase() {
@@ -26,12 +29,15 @@ object Vision : SubsystemBase() {
   val tv get() = table.getEntry("tv").getDouble(0.0)
   private val ta get() = table.getEntry("ta").getDouble(0.0)
 
-  /*
   //PhotonVision Code
   val camera : PhotonCamera = PhotonCamera("gloworm")
 
+  private val cameraResult = camera.latestResult
+
+  //TODO: get these values from result
+  //the methods don't seem to exist in PhotonCamera like the docs say
   //tv
-  var targets = false
+  /*var targets = false
     get() = camera.hasTargets()
   //tx
   //negative: target on left of screen
@@ -43,9 +49,9 @@ object Vision : SubsystemBase() {
     get() = camera.getBestTargetPitch()
   //ta
   //area is 0-100%
-  var area: Double
-    get() = camera.getBestTargetArea()
-  */
+  var area = 0.0
+    get() = camera.getBestTargetArea()*/
+
 
   enum class DistanceState() {
     LINE, NEAR, MID, FAR
@@ -71,15 +77,14 @@ object Vision : SubsystemBase() {
 
   private val distance: Length
     get() = (Constants.Vision.TARGET_HEIGHT - Constants.Vision.CAMERA_HEIGHT) / (Constants.Vision.CAMERA_ANGLE + ty).tan
-  /*val distanceMeters: Length
-    //heights need to be meters, pitches need to be radians
+
+  /*val distanceMeters: Double
     get() = PhotonUtils.calculateDistanceToTargetMeters(
       Constants.Vision.CAMERA_HEIGHT.inMeters,
       Constants.Vision.TARGET_HEIGHT.inMeters,
       Constants.Vision.CAMERA_ANGLE.inRadians,
-      camera.getFirstTargetPitch().inRadians
-      )
-   */
+      pitch.inRadians
+    )*/
 
   val currentDistance: DistanceState
     get() = when(distance.value) {
