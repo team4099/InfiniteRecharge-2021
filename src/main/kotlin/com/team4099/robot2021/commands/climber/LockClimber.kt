@@ -12,7 +12,7 @@ class LockClimber : CommandBase() {
   override fun initialize() {
     Climber.setOpenLoopPower(0.0)
     Climber.brakeApplied = true
-    Logger.addEvent("LockClimber", "Climber Locked")
+    Logger.addEvent("Climber", "Climber Locked")
   }
 
 

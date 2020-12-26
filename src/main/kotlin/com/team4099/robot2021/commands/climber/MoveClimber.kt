@@ -11,7 +11,7 @@ class MoveClimber(val pos: Constants.ClimberPosition): CommandBase() {
   }
 
   override fun initialize() {
-    Logger.addEvent("MoveClimber", "Climber Moved")
+    Logger.addEvent("Climber", "Climber Moved to $pos")
   }
 
   override fun execute() {

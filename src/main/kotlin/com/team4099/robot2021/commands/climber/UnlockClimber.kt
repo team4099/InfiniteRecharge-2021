@@ -14,7 +14,7 @@ class UnlockClimber : CommandBase() {
   override fun initialize() {
     initTime = Clock.fpgaTime
     Climber.brakeApplied = false
-    Logger.addEvent("UnlockClimber", "Climber Unlocked")
+    Logger.addEvent("Climber", "Climber Unlocked")
   }
 
   override fun isFinished(): Boolean {
