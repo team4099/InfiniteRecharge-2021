@@ -1,7 +1,7 @@
-package com.team4099.robot2020.auto
+package com.team4099.robot2021.auto
 
-import com.team4099.robot2020.config.Constants
-import com.team4099.robot2020.subsystems.Drive
+import com.team4099.robot2021.config.Constants
+import com.team4099.robot2021.subsystems.Drivetrain
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward
 import edu.wpi.first.wpilibj.geometry.Pose2d
 import edu.wpi.first.wpilibj.geometry.Rotation2d
@@ -13,33 +13,33 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
 
 object PathStore {
   private val centripetalConstraint = CentripetalAccelerationConstraint(
-    Constants.Drive.CENTRIPETAL_ACCEL_METERS_PER_SEC_SQ
+    Constants.Drivetrain.CENTRIPETAL_ACCEL_METERS_PER_SEC_SQ
   )
 
   private val config: TrajectoryConfig = TrajectoryConfig(
-    Constants.Drive.MAX_VEL_METERS_PER_SEC,
-    Constants.Drive.MAX_ACCEL_METERS_PER_SEC_SQ
+    Constants.Drivetrain.MAX_VEL_METERS_PER_SEC,
+    Constants.Drivetrain.MAX_ACCEL_METERS_PER_SEC_SQ
   )
     .setKinematics(Drivetrain.swerveDriveKinematics)
     .addConstraint(centripetalConstraint)
 
   private val slowConfig: TrajectoryConfig = TrajectoryConfig(
-    Constants.Drive.SLOW_VEL_METERS_PER_SEC,
-    Constants.Drive.SLOW_ACCEL_METERS_PER_SEC_SQ
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    Constants.Drivetrain.SLOW_ACCEL_METERS_PER_SEC_SQ
   )
     .setKinematics(Drivetrain.swerveDriveKinematics)
     .addConstraint(centripetalConstraint)
 
   private val reversedConfig: TrajectoryConfig = TrajectoryConfig(
-    Constants.Drive.MAX_VEL_METERS_PER_SEC,
-    Constants.Drive.MAX_ACCEL_METERS_PER_SEC_SQ
+    Constants.Drivetrain.MAX_VEL_METERS_PER_SEC,
+    Constants.Drivetrain.MAX_ACCEL_METERS_PER_SEC_SQ
   )
     .setKinematics(Drivetrain.swerveDriveKinematics)
     .setReversed(true)
 
   private val slowReversedConfig: TrajectoryConfig = TrajectoryConfig(
-    Constants.Drive.SLOW_VEL_METERS_PER_SEC,
-    Constants.Drive.SLOW_ACCEL_METERS_PER_SEC_SQ
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    Constants.Drivetrain.SLOW_ACCEL_METERS_PER_SEC_SQ
   )
     .setKinematics(Drivetrain.swerveDriveKinematics)
     .setReversed(true)
@@ -62,14 +62,14 @@ object PathStore {
     initLinePowerPort,
     listOf(),
     nearTrenchEdge,
-    config.setStartVelocity(0.0).setEndVelocity(Constants.Drive.SLOW_VEL_METERS_PER_SEC)
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC)
   )
 
   val intakeInNearTrench: Trajectory = TrajectoryGenerator.generateTrajectory(
     nearTrenchEdge,
     listOf(),
     nearTrenchEnd,
-    slowConfig.setStartVelocity(Constants.Drive.SLOW_VEL_METERS_PER_SEC).setEndVelocity(0.0)
+    slowConfig.setStartVelocity(Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC).setEndVelocity(0.0)
   )
 
   val fromNearTrench: Trajectory = TrajectoryGenerator.generateTrajectory(

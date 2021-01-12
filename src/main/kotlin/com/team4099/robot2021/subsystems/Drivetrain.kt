@@ -89,7 +89,7 @@ object Drivetrain : SubsystemBase() {
   private var backLeftWheelLocation = Translation(-Constants.Drivetrain.DRIVETRAIN_WIDTH/2, -Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
   private var backRightWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH/2, -Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
 
-  private var swerveDriveKinematics = SwerveDriveKinematics(
+  var swerveDriveKinematics = SwerveDriveKinematics(
     frontLeftWheelLocation.translation2d,
     frontRightWheelLocation.translation2d,
     backLeftWheelLocation.translation2d,
