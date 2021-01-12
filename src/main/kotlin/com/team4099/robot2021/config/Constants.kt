@@ -5,6 +5,9 @@ import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.perSecond
+import com.team4099.lib.units.derived.Angle
+
+import edu.wpi.first.wpilibj.DoubleSolenoid
 
 object Constants {
   object Universal {
@@ -27,6 +30,44 @@ object Constants {
       1 to RobotName.PRACTICE,
       2 to RobotName.MULE
     )
+  }
+
+  object Joysticks {
+    const val DRIVER_PORT = 0
+    const val SHOTGUN_PORT = 1
+
+    const val QUICK_TURN_THROTTLE_TOLERANCE = 0.1
+    const val THROTTLE_DEADBAND = 0.04
+    const val TURN_DEADBAND = 0.035
+  }
+
+  object Feeder {
+    const val FLOOR_ID = 0
+    const val VERTICAL_ID = 0
+    const val FEEDER_POWER = 1.0;
+
+    const val TOP_DIO_PIN = 4;
+    const val BOTTOM_DIO_PIN = 9;
+    const val TAB = "Feeder";
+  }
+
+  object Intake {
+    const val INTAKE_MOTOR = 0 //temp
+    const val ARM_SOLENOID_PORT_1 = 0 //temp
+    const val ARM_SOLENOID_PORT_2 = 1 //temp
+    const val TAB = "Intake"
+
+    enum class IntakeState (val speed: Double){
+      DEFAULT(0.0),
+      IN(1.0),
+      OUT(-1.0)
+    }
+
+    enum class ArmPosition (val position: DoubleSolenoid.Value?){
+      OUT(DoubleSolenoid.Value.kReverse),
+      IN(DoubleSolenoid.Value.kForward),
+      DEFAULT(DoubleSolenoid.Value.kOff);
+    }
   }
   
   object Drivetrain {
@@ -71,12 +112,5 @@ object Constants {
     }
   }
 
-  object Joysticks {
-    const val DRIVER_PORT = 0
-    const val SHOTGUN_PORT = 1
-
-    const val QUICK_TURN_THROTTLE_TOLERANCE = 0.1
-    const val THROTTLE_DEADBAND = 0.04
-    const val TURN_DEADBAND = 0.035
-  }
 }
+
