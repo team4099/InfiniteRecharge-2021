@@ -22,35 +22,31 @@ import org.photonvision.PhotonUtils
 import java.lang.Math.tan
 
 object Vision : SubsystemBase() {
-  private val table: NetworkTable = NetworkTableInstance.getDefault().getTable("limelight")
+  //for up close
+  private val camera : PhotonCamera = PhotonCamera("gloworm")
+  //from farther away
+  private val zoomedCamera : PhotonCamera = PhotonCamera("")
 
-  val tx get() = table.getEntry("tx").getDouble(0.0).degrees
-  private val ty get() = table.getEntry("ty").getDouble(0.0).degrees
-  val tv get() = table.getEntry("tv").getDouble(0.0)
-  private val ta get() = table.getEntry("ta").getDouble(0.0)
+  private val cameraResult
+    get() = camera.getLatestResult()
+  private val target
+    get() = cameraResult.bestTarget
 
-  //PhotonVision Code
-  val camera : PhotonCamera = PhotonCamera("gloworm")
-
-  private val cameraResult = camera.latestResult
-
-  //TODO: get these values from result
-  //the methods don't seem to exist in PhotonCamera like the docs say
   //tv
-  /*var targets = false
+  var hasTargets = false
     get() = camera.hasTargets()
   //tx
   //negative: target on left of screen
   var yaw = 0.0.degrees
-    get() = camera.getBestTargetYaw()
+    get() = target.yaw.degrees
   //ty
   //negative: target on bottom of screen
   var pitch = 0.0.degrees
-    get() = camera.getBestTargetPitch()
+    get() = target.pitch.degrees
   //ta
   //area is 0-100%
   var area = 0.0
-    get() = camera.getBestTargetArea()*/
+    get() = target.area
 
 
   enum class DistanceState() {
@@ -58,27 +54,28 @@ object Vision : SubsystemBase() {
   }
 
   init {
-    Logger.addSource("Vision","Pipeline"){ pipelineEntry }
+    Logger.addSource("Vision","Pipeline"){ pipelineIndex }
     Logger.addSource("Vision","Distance (inches)"){ distance }
   }
 
   var steeringAdjust = 0.0
   var onTarget = false
-    //use yaw instead of tx
-    get() = tx.absoluteValue < Constants.Vision.MAX_ANGLE_ERROR
+    get() = yaw.absoluteValue < Constants.Vision.MAX_ANGLE_ERROR
 
-  private val pipelineEntry: NetworkTableEntry = table.getEntry("pipeline")
+  private val pipelineIndex = camera.pipelineIndex
 
   var pipeline = Constants.Vision.DRIVER_PIPELINE_ID
     set(value) {
-      pipelineEntry.setNumber(value)
+      //this method sets the pipeline index and entry
+      camera.setPipelineIndex(value)
       field = value
     }
 
   private val distance: Length
-    get() = (Constants.Vision.TARGET_HEIGHT - Constants.Vision.CAMERA_HEIGHT) / (Constants.Vision.CAMERA_ANGLE + ty).tan
+    get() = (Constants.Vision.TARGET_HEIGHT - Constants.Vision.CAMERA_HEIGHT) / (Constants.Vision.CAMERA_ANGLE + pitch).tan
 
-  /*val distanceMeters: Double
+  //could use method from PhotonUtils to calculate distance
+  /*private val distanceMeters: Double
     get() = PhotonUtils.calculateDistanceToTargetMeters(
       Constants.Vision.CAMERA_HEIGHT.inMeters,
       Constants.Vision.TARGET_HEIGHT.inMeters,

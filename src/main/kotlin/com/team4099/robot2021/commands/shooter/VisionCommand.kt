@@ -27,19 +27,18 @@ class VisionCommand : CommandBase(){
   }
 
   override fun initialize() {
-    //Vision.camera.setPipelineIndex(TARGETING_PIPELINE_ID)
-    //Vision.camera.setDriverMode(false)
     Vision.pipeline = Constants.Vision.TARGETING_PIPELINE_ID
+    //Vision.camera.setDriverMode(false)
     Logger.addEvent("VisionCommand","Started vision command")
   }
 
   override fun execute() {
-    if(Vision.tv == 0.0) {
+    if(Vision.hasTargets == false) {
       Vision.steeringAdjust = 0.0
     }
     else {
-      Vision.steeringAdjust = visionPIDcontroller.calculate(Vision.tx.value, 0.0)
-      Vision.steeringAdjust += sign(Vision.tx.value) * Constants.Vision.MIN_TURN_COMMAND
+      Vision.steeringAdjust = visionPIDcontroller.calculate(Vision.yaw.inDegrees, 0.0)
+      Vision.steeringAdjust += sign(Vision.yaw.inDegrees) * Constants.Vision.MIN_TURN_COMMAND
       // TODO: implement when drivetrain exists in master
       // Drivetrain.set(Vision.steeringAdjust, Pair(0.0,0.0))
     }

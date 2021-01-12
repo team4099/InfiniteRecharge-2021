@@ -13,9 +13,8 @@ class ShooterIdleCommand : CommandBase() {
 
   override fun initialize(){
     Shooter.setOpenLoopPower(0.0)
-    //Vision.camera.setPipelineIndex(DRIVER_PIPELINE_ID)
-    //Vision.camera.setDriverMode(true)
     Vision.pipeline = Constants.Vision.DRIVER_PIPELINE_ID
+    //Vision.camera.setDriverMode(true)
     Logger.addEvent("ShooterIdleCommand","Started shooter idle command")
   }
   override fun execute(){
