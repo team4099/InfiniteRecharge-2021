@@ -72,6 +72,13 @@ object Constants {
 
     const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
 
+    const val MAX_VEL_METERS_PER_SEC = 4.0
+    const val SLOW_VEL_METERS_PER_SEC = 0.66
+    const val MAX_ACCEL_METERS_PER_SEC_SQ = 2.0
+    const val SLOW_ACCEL_METERS_PER_SEC_SQ = 2.0
+
+    const val CENTRIPETAL_ACCEL_METERS_PER_SEC_SQ = 1.0
+
     object Gains {
       const val RAMSETE_B = 2.0
       const val RAMSETE_ZETA = 0.7
