@@ -112,7 +112,7 @@ object Drivetrain : SubsystemBase() {
   var path: Trajectory = Trajectory(listOf(Trajectory.State()))
     set(value) {
       trajDuration = value.totalTimeSeconds
-      trajStartTime = Timer.getFPGATimestamp()
+      trajStartTime = Clock.fpgaTime
 
       // TODO: When set Trajectory in command run ZeroSensors command
       val initialSample = value.sample(0.0)
