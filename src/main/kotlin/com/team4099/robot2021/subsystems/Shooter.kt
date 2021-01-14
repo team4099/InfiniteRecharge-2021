@@ -18,6 +18,9 @@ object Shooter : SubsystemBase() {
   private val shooterFollower = TalonFX(Constants.Shooter.SHOOTER_FOLLOWER_ID)
 
   init {
+    shooterMotor.configFactoryDefault()
+    shooterFollower.configFactoryDefault()
+
     shooterFollower.follow(shooterMotor)
 
     shooterMotor.config_kP(0,Constants.Shooter.SHOOTER_KP,0)
