@@ -68,7 +68,6 @@ object Robot : TimedRobot() {
 
   override fun teleopInit() {
     autonomousCommand.cancel()
-    ZeroSensorsCommand()
   }
 
   override fun robotPeriodic() {

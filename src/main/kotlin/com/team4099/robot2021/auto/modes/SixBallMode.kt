@@ -34,15 +34,3 @@ class SixBallMode : SequentialCommandGroup(){
     )
   }
 }
-/*
-        runAction(ShootAction(align = false))
-        runAction(ParallelRaceAction(listOf(
-            SeriesAction(listOf(
-                FollowPathAction(PathStore.toNearTrench),
-                FollowPathAction(PathStore.intakeInNearTrench)
-            )),
-            IntakeAction()
-        )))
-        runAction(FollowPathAction(PathStore.fromNearTrench))
-        runAction(ShootAction())
- */

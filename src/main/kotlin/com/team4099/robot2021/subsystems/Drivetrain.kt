@@ -5,13 +5,12 @@ import com.ctre.phoenix.sensors.CANCoder
 import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel
 import com.team4099.lib.geometry.*
+import com.team4099.lib.hal.Clock
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.*
-import com.team4099.lib.units.base.feet
-import com.team4099.lib.units.base.meters
+import com.team4099.lib.units.base.*
 import com.team4099.lib.units.derived.*
 import com.team4099.robot2021.config.Constants
-import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.controller.RamseteController
 import edu.wpi.first.wpilibj.geometry.Rotation2d
 import edu.wpi.first.wpilibj.kinematics.*
@@ -102,16 +101,16 @@ object Drivetrain : SubsystemBase() {
     Pose(0.meters, 0.meters, 0.degrees).pose2d // TODO: Later: Figure out what the starting position will be
   )
 
-  private var trajDuration = 0.0
-  private var trajCurTime = 0.0
-  private var trajStartTime = 0.0
+  private var trajDuration = 0.0.seconds
+  private var trajCurTime = 0.0.seconds
+  private var trajStartTime = 0.0.seconds
 
   private lateinit var lastModuleSpeeds: Array<SwerveModuleState>
 
   private var pathFollowController = RamseteController()
   var path: Trajectory = Trajectory(listOf(Trajectory.State()))
     set(value) {
-      trajDuration = value.totalTimeSeconds
+      trajDuration = value.totalTimeSeconds.seconds
       trajStartTime = Clock.fpgaTime
 
       // TODO: When set Trajectory in command run ZeroSensors command
@@ -122,7 +121,7 @@ object Drivetrain : SubsystemBase() {
         Constants.Drivetrain.Gains.RAMSETE_ZETA
       )
 
-      Logger.addEvent("Epic Gaming Drivertrains 4099 remeber to like and subscribe!", "Whats up gamers today we Begin path following")
+      Logger.addEvent("Drivetrain", "Path Following Started")
 
       field = value
     }
@@ -226,9 +225,9 @@ object Drivetrain : SubsystemBase() {
     )
   }
 
-  private fun updatePathFollowing(timestamp: Double, dT: Double) {
+  fun updatePathFollowing(timestamp: Time) {
     trajCurTime = timestamp - trajStartTime
-    val sample = path.sample(trajCurTime)
+    val sample = path.sample(trajCurTime.inSeconds)
 
     val drivetrainSpeeds = pathFollowController.calculate(swerveDriveOdometry.poseMeters, sample)
     // Note: ChassisSpeeds takes x as forward so it is swapped
@@ -244,7 +243,7 @@ object Drivetrain : SubsystemBase() {
    * @param timestamp The current time. Value originates from Timer.getFPGATimestamp.
    * @return If path following is finished.
    */
-  fun isPathFinished(timestamp: Double): Boolean {
+  fun isPathFinished(timestamp: Time): Boolean {
     trajCurTime = timestamp - trajStartTime
     return trajCurTime > trajDuration
   }
