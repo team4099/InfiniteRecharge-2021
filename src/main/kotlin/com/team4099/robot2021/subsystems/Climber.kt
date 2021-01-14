@@ -39,17 +39,21 @@ object Climber: SubsystemBase() {
     Logger.addSource(Constants.Climber.TAB, "Right Pneumatics State") { brakeApplied.toString() }
     Logger.addSource(Constants.Climber.TAB, "Left Pneumatics State") { brakeApplied.toString() }
 
+    climberRArm.restoreFactoryDefaults()
     climberRArmPIDController.p = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_P
     climberRArmPIDController.i = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_I
     climberRArmPIDController.d = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_D
     climberRArmPIDController.setSmartMotionMaxVelocity(climberRArmSensor.velocityToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_VEL), 0)
     climberRArmPIDController.setSmartMotionMaxAccel(climberRArmSensor.accelerationToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_ACC), 0)
+    climberRArm.burnFlash()
 
+    climberLArm.restoreFactoryDefaults()
     climberLArmPIDController.p = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_P
     climberLArmPIDController.i = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_I
     climberLArmPIDController.d = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_D
     climberLArmPIDController.setSmartMotionMaxVelocity(climberLArmSensor.velocityToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_VEL), 0)
     climberLArmPIDController.setSmartMotionMaxAccel(climberLArmSensor.accelerationToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_ACC), 0)
+    climberLArm.burnFlash()
   }
 
   fun setPosition(position: Constants.ClimberPosition) {

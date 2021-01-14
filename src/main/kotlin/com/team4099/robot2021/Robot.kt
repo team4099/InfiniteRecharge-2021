@@ -14,8 +14,8 @@ object Robot: TimedRobot() {
     Climber.defaultCommand = LockClimber()
     ControlBoard.climberHigh.whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
     ControlBoard.climberLow.whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
-
   }
+
   override fun robotPeriodic() {
     CommandScheduler.getInstance().run()
   }
