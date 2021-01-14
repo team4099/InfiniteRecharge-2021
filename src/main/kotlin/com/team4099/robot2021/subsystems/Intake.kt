@@ -28,6 +28,7 @@ object Intake : SubsystemBase() {
     }
 
   init {
+    intakeTalon.configFactoryDefault()
     Logger.addSource(Constants.Intake.TAB, "Intake State") { intakeState.toString() }
     Logger.addSource(Constants.Intake.TAB, "Intake Motor Power") { intakeTalon.motorOutputPercent }
     Logger.addSource(Constants.Intake.TAB, "Intake Motor Stator Current") { intakeTalon.statorCurrent }
