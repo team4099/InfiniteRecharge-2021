@@ -8,6 +8,13 @@ import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object Feeder:SubsystemBase(){
+
+  // The motor for the floor of the feeder (the spinny wheel at the bottom)
+  private val floorMotor = TalonSRX(Constants.Feeder.FLOOR_ID)
+
+  // The motor for vertical part of the feeder (the poly cord)
+  private val verticalMotor = TalonSRX(Constants.Feeder.VERTICAL_ID)
+
   init {
     Logger.addSource(Constants.Feeder.TAB, "Feeder State") { feederState }
 
@@ -23,6 +30,9 @@ object Feeder:SubsystemBase(){
 
     Logger.addSource(Constants.Feeder.TAB, "Feeder Top Beam DIO Broken") { topBeamBroken }
     Logger.addSource(Constants.Feeder.TAB, "Feeder Bottom Beam DIO Broken") { bottomBeamBroken }
+
+    floorMotor.configFactoryDefault();
+    verticalMotor.configFactoryDefault();
   }
 
   /**
@@ -37,11 +47,7 @@ object Feeder:SubsystemBase(){
     NEUTRAL(0.0, 0.0)
   }
 
-  // The motor for the floor of the feeder (the spinny wheel at the bottom)
-  private val floorMotor = TalonSRX(Constants.Feeder.FLOOR_ID)
 
-  // The motor for vertical part of the feeder (the poly cord)
-  private val verticalMotor = TalonSRX(Constants.Feeder.VERTICAL_ID)
 
 
   //The DIO pin state of the top Beam Break
