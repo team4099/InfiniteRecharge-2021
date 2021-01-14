@@ -18,7 +18,11 @@ class AutoDriveCommand(private val path: Trajectory) : CommandBase() {
     Drivetrain.path = this.path
   }
 
+  override fun execute() {
+    Drivetrain.updatePathFollowing(Clock.fpgaTime)
+  }
+
   override fun isFinished(): Boolean {
-    return Drivetrain.isPathFinished(Clock.fpgaTime.inSeconds)
+    return Drivetrain.isPathFinished(Clock.fpgaTime)
   }
 }
