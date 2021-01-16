@@ -2,6 +2,7 @@ package com.team4099.lib.units.derived
 
 import com.team4099.lib.units.*
 import com.team4099.lib.units.base.Length
+import edu.wpi.first.wpilibj.geometry.Rotation2d
 import kotlin.math.PI
 
 object Radian : UnitKey
@@ -16,9 +17,10 @@ val Number.radians : Angle get() = toDouble().radians
 val Number.degrees : Angle get() = toDouble().degrees
 val Number.rotations : Angle get() = toDouble().rotations
 
-val Angle.inDegrees : Double get() = value
-val Angle.inRadians : Double get() = Math.toDegrees(value)
+val Angle.inDegrees : Double get() = Math.toDegrees(value)
+val Angle.inRadians : Double get() = value
 val Angle.inRotations : Double get() = value / (2 * PI)
+val Angle.inRotation2ds: Rotation2d get() = Rotation2d(value)
 
 val Angle.sin : Double get() = kotlin.math.sin(value)
 val Angle.cos : Double get() = kotlin.math.cos(value)

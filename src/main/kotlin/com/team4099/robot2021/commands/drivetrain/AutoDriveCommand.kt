@@ -16,10 +16,13 @@ class AutoDriveCommand(private val path: Trajectory) : CommandBase() {
 
   override fun initialize() {
     Drivetrain.path = this.path
+    Drivetrain.isFieldOriented = false
   }
 
   override fun execute() {
     Drivetrain.updatePathFollowing(Clock.fpgaTime)
+    Drivetrain.updateOdometry()
+
   }
 
   override fun isFinished(): Boolean {
