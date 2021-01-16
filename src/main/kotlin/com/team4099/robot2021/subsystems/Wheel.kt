@@ -11,6 +11,7 @@ import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.derived.*
 import com.team4099.robot2021.config.Constants
 import kotlin.math.IEEErem
+import kotlin.math.withSign
 
 class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CANSparkMax,  private val encoder: CANCoder, private val zeroOffset: Angle, public val label: String) {
 
@@ -23,28 +24,28 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
   private val directionAbsolute = AngularMechanismSensor(1.0,Timescale.CTRE,{encoder.velocity},{encoder.absolutePosition})
 
   // motor params
-  val driveTemp: Double
+  private val driveTemp: Double
     get() = driveSpark.getMotorTemperature()
 
-  val directionTemp: Double
+  private val directionTemp: Double
     get() = directionSpark.getMotorTemperature()
 
-  val driveOutputCurrent: Double
+  private val driveOutputCurrent: Double
     get() = directionSpark.getOutputCurrent()
 
-  val directionOutputCurrent: Double
+  private val directionOutputCurrent: Double
     get() = directionSpark.getOutputCurrent()
 
-  val drivePercentOutput: Double
+  private val drivePercentOutput: Double
     get() = driveSpark.get()
 
-  val directionPercentOutput: Double
+  private val directionPercentOutput: Double
     get() = directionSpark.get()
 
-  val driveBusVoltage: Double
+  private val driveBusVoltage: Double
     get() = driveSpark.getBusVoltage()
 
-  val directionBusVoltage: Double
+  private val directionBusVoltage: Double
     get() = directionSpark.getBusVoltage()
 
 
@@ -60,17 +61,17 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     }
 
   init {
-    Logger.addSource("Drivetrain", label + " Drive Output Current") { driveOutputCurrent}
-    Logger.addSource("Drivetrain", label + " Direction Output Current") { directionOutputCurrent }
+    Logger.addSource("Drivetrain", "$label Drive Output Current") { driveOutputCurrent}
+    Logger.addSource("Drivetrain", "$label Direction Output Current") { directionOutputCurrent }
 
-    Logger.addSource("Drivetrain", label + " Drive Temperature") { driveTemp }
-    Logger.addSource("Drivetrain", label + " Direction Temperature") { directionTemp }
+    Logger.addSource("Drivetrain", "$label Drive Temperature") { driveTemp }
+    Logger.addSource("Drivetrain", "$label Direction Temperature") { directionTemp }
 
-    Logger.addSource("Drivetrain", label + " Drive Percent Output") { drivePercentOutput }
-    Logger.addSource("Drivetrain", label + " Direction Percent Output") { directionPercentOutput }
+    Logger.addSource("Drivetrain", "$label Drive Percent Output") { drivePercentOutput }
+    Logger.addSource("Drivetrain", "$label Direction Percent Output") { directionPercentOutput }
 
-    Logger.addSource("Drivetrain", label + " Drive Bus Voltage") { driveBusVoltage }
-    Logger.addSource("Drivetrain", label + " Direction Bus Voltage") { directionBusVoltage }
+    Logger.addSource("Drivetrain", "$label Drive Bus Voltage") { driveBusVoltage }
+    Logger.addSource("Drivetrain", "$label Direction Bus Voltage") { directionBusVoltage }
 
   }
 
@@ -82,9 +83,9 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     var directionDifference =
       (direction - directionSensor.position).inRadians.IEEErem(2 * Math.PI).radians
 
-    var isInverted = directionDifference.absoluteValue > (Math.PI / 2).radians
+    val isInverted = directionDifference.absoluteValue > (Math.PI / 2).radians
     if (isInverted) {
-      directionDifference -= Math.copySign(Math.PI, directionDifference.inRadians).radians
+      directionDifference -= Math.PI.withSign(directionDifference.inRadians).radians
     }
     speedSetPoint = if (isInverted) { speed * -1 } else { speed }
     directionSetPoint = direction + directionDifference

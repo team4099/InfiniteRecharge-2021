@@ -12,7 +12,6 @@ import com.team4099.lib.units.base.*
 import com.team4099.lib.units.derived.*
 import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj.controller.RamseteController
-import edu.wpi.first.wpilibj.geometry.Rotation2d
 import edu.wpi.first.wpilibj.kinematics.*
 import edu.wpi.first.wpilibj.trajectory.Trajectory
 import edu.wpi.first.wpilibj2.command.SubsystemBase
@@ -62,7 +61,7 @@ object Drivetrain : SubsystemBase() {
       ),
       CANCoder(Constants.Drivetrain.BACK_RIGHT_CANCODER_ID),
       (-270).degrees,
-      "Back Right"
+      "Back Right Wheel"
     )
   )
 
@@ -74,7 +73,7 @@ object Drivetrain : SubsystemBase() {
 
   private val gyro = ADIS16470_IMU()
 
-  val gyroAngle: Angle
+  private val gyroAngle: Angle
     get() {
       var rawAngle = gyro.angle
       rawAngle += Constants.Drivetrain.GYRO_RATE_COEFFICIENT * gyro.rate
@@ -83,10 +82,10 @@ object Drivetrain : SubsystemBase() {
 
   var isFieldOriented = true
 
-  private var frontLeftWheelLocation = Translation(-Constants.Drivetrain.DRIVETRAIN_WIDTH/2, Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
-  private var frontRightWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH/2, Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
-  private var backLeftWheelLocation = Translation(-Constants.Drivetrain.DRIVETRAIN_WIDTH/2, -Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
-  private var backRightWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH/2, -Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
+  private val frontLeftWheelLocation = Translation(-Constants.Drivetrain.DRIVETRAIN_WIDTH/2, Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
+  private val frontRightWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH/2, Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
+  private val backLeftWheelLocation = Translation(-Constants.Drivetrain.DRIVETRAIN_WIDTH/2, -Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
+  private val backRightWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH/2, -Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
 
   var swerveDriveKinematics = SwerveDriveKinematics(
     frontLeftWheelLocation.translation2d,
@@ -97,8 +96,8 @@ object Drivetrain : SubsystemBase() {
 
   private var swerveDriveOdometry = SwerveDriveOdometry(
     swerveDriveKinematics,
-    Rotation2d(gyroAngle.inRadians),
-    Pose(0.meters, 0.meters, 0.degrees).pose2d // TODO: Later: Figure out what the starting position will be
+    gyroAngle.inRotation2ds,
+    Pose(0.meters, 0.meters, 0.degrees).pose2d
   )
 
   private var trajDuration = 0.0.seconds
@@ -113,9 +112,8 @@ object Drivetrain : SubsystemBase() {
       trajDuration = value.totalTimeSeconds.seconds
       trajStartTime = Clock.fpgaTime
 
-      // TODO: When set Trajectory in command run ZeroSensors command
       val initialSample = value.sample(0.0)
-      swerveDriveOdometry.resetPosition(initialSample.poseMeters, Rotation2d(-gyroAngle.inRadians))
+      swerveDriveOdometry.resetPosition(initialSample.poseMeters, -gyroAngle.inRotation2ds)
       pathFollowController = RamseteController(
         Constants.Drivetrain.Gains.RAMSETE_B,
         Constants.Drivetrain.Gains.RAMSETE_ZETA
@@ -125,10 +123,6 @@ object Drivetrain : SubsystemBase() {
 
       field = value
     }
-
-  fun isPathFinished(): Boolean {
-    return (trajCurTime - trajStartTime) > trajDuration
-  }
 
   init {
     // Wheel speeds
@@ -143,20 +137,15 @@ object Drivetrain : SubsystemBase() {
     Logger.addSource("Drivetrain", "Back Left Wheel Angles") { wheelAngles[2] }
     Logger.addSource("Drivetrain", "Back Right Wheel Angles") { wheelAngles[3] }
 
-    // Wheel positions (from odometry)?
-    Logger.addSource("Drivetrain", "Front Left Wheel Position") { frontLeftWheelLocation }
-    Logger.addSource("Drivetrain", "Front Right Wheel Position") { frontRightWheelLocation }
-    Logger.addSource("Drivetrain", "Back Left Wheel Position") { backLeftWheelLocation }
-    Logger.addSource("Drivetrain", "Back Right Wheel Position") { backRightWheelLocation }
-
     //  gyro angle
     Logger.addSource("Drivetrain", "Gyro Angle") { gyroAngle }
-    //  pathfollow time stamp (need to do pathfollow stuff first?)
+
+    Logger.addSource("Drivetrain", "Path Follow Start Timestamp") { trajStartTime }
+    Logger.addSource("Drivetrain", "Path Follow Duration") { trajDuration }
+    Logger.addSource("Drivetrain", "Path Follow Current Timestamp") { trajCurTime }
 
     //  if gyro is connected boolean
     Logger.addSource("Drivetrain", "Gyro Connected") {  }
-
-    // TODO: X Pose and Y pose, wheel positions, wheel velocity, wheel target velocities?
 
   }
 
@@ -212,16 +201,15 @@ object Drivetrain : SubsystemBase() {
     wheels[2].set(wheelAngles[2], wheelSpeeds[2])
     wheels[3].set(wheelAngles[3], wheelSpeeds[3])
 
-    // odometry
-    // TODO: Put in periodic
-    var gyro2d = Rotation2d(gyroAngle.inRadians)
+  }
 
+  fun updateOdometry(){
     swerveDriveOdometry.update(
-      gyro2d,
-      SwerveModuleState(wheelSpeeds[0].inMetersPerSecond, Rotation2d(wheelAngles[0].inRadians)),
-      SwerveModuleState(wheelSpeeds[1].inMetersPerSecond, Rotation2d(wheelAngles[1].inRadians)),
-      SwerveModuleState(wheelSpeeds[2].inMetersPerSecond, Rotation2d(wheelAngles[2].inRadians)),
-      SwerveModuleState(wheelSpeeds[3].inMetersPerSecond, Rotation2d(wheelAngles[3].inRadians))
+      gyroAngle.inRotation2ds,
+      SwerveModuleState(wheelSpeeds[0].inMetersPerSecond,wheelAngles[0].inRotation2ds),
+      SwerveModuleState(wheelSpeeds[1].inMetersPerSecond,wheelAngles[1].inRotation2ds),
+      SwerveModuleState(wheelSpeeds[2].inMetersPerSecond,wheelAngles[2].inRotation2ds),
+      SwerveModuleState(wheelSpeeds[3].inMetersPerSecond,wheelAngles[3].inRotation2ds)
     )
   }
 
@@ -248,11 +236,11 @@ object Drivetrain : SubsystemBase() {
     return trajCurTime > trajDuration
   }
 
-  fun hypot(a: LinearVelocity, b: LinearVelocity): LinearVelocity {
+  private fun hypot(a: LinearVelocity, b: LinearVelocity): LinearVelocity {
     return kotlin.math.hypot(a.inMetersPerSecond, b.inMetersPerSecond).meters.perSecond
   }
 
-  fun atan2(a: LinearVelocity, b: LinearVelocity): Angle {
+  private fun atan2(a: LinearVelocity, b: LinearVelocity): Angle {
     return kotlin.math.atan2(a.inMetersPerSecond, b.inMetersPerSecond).radians
   }
 
@@ -262,13 +250,13 @@ object Drivetrain : SubsystemBase() {
     zeroDrive()
   }
 
-  fun zeroDirection(){
+  private fun zeroDirection(){
     wheels.forEach {
       it.zeroDirection()
     }
   }
 
-  fun zeroDrive(){
+  private fun zeroDrive(){
     wheels.forEach {
       it.zeroDrive()
     }
