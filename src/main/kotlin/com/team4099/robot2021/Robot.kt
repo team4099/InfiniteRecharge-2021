@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler
 object Robot: TimedRobot() {
   init {
     Climber.defaultCommand = LockClimber()
-    ControlBoard.climberHigh.whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
+    ControlBoard.climberHigh.whileActiveOnce(new ConditionalCommand(LockClimber(), UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)), () -> FailureManager.errorFlags[failure]))
     ControlBoard.climberLow.whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
   }
 

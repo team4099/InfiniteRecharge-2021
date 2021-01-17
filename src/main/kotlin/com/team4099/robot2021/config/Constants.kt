@@ -21,14 +21,14 @@ object Constants {
   }
 
   object Climber {
-    val CLIMBERRARM_SPARKMAX_ID = 6 //right arm
-    val CLIMBERlARM_SPARKMAX_ID = 5 //left arm
+    val CLIMBER_R_ARM_SPARKMAX_ID = 6 //right arm
+    val CLIMBER_L_ARM_SPARKMAX_ID = 5 //left arm
     val CLIMBER_SENSOR_LINEARMECH_GEARRATIO = 8.4
     val CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER = .0508.meters //diameter: .0508 meters = 2 in
     val CLIMBER_SOLENOID_ACTUATIONSTATE = 0 //this is prolly not the right name for this parameter
-    val CLIMBER_CLIMBERPIDCONTROLLER_P = 0.1
-    val CLIMBER_CLIMBERPIDCONTROLLER_I = 0.1
-    val CLIMBER_CLIMBERPIDCONTROLLER_D = 0.1
+    val CLIMBER_P = 0.1
+    val CLIMBER_I = 0.1
+    val CLIMBER_D = 0.1
     val CLIMBER_SPARKMAX_VEL = 0.5.meters.perSecond
     val CLIMBER_SPARKMAX_ACC = 0.5.meters.perSecond.perSecond
     val BRAKE_RELEASE_TIMEOUT = 0.1.seconds

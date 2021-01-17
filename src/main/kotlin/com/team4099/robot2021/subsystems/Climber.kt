@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.Solenoid
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object Climber: SubsystemBase() {
-  private val climberRArm = CANSparkMax(Constants.Climber.CLIMBERRARM_SPARKMAX_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
-  private val climberLArm = CANSparkMax(Constants.Climber.CLIMBERlARM_SPARKMAX_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
+  private val climberRArm = CANSparkMax(Constants.Climber.CLIMBER_R_ARM_SPARKMAX_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
+  private val climberLArm = CANSparkMax(Constants.Climber.CLIMBER_L_ARM_SPARKMAX_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
   private val climberRArmPIDController = climberRArm.pidController
   private val climberLArmPIDController = climberLArm.pidController
   private val climberRArmSensor = sparkMaxLinearMechanismSensor(climberRArm, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_GEARRATIO, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER)//diameter: .0508 meters = 2 in
@@ -40,17 +40,17 @@ object Climber: SubsystemBase() {
     Logger.addSource(Constants.Climber.TAB, "Left Pneumatics State") { brakeApplied.toString() }
 
     climberRArm.restoreFactoryDefaults()
-    climberRArmPIDController.p = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_P
-    climberRArmPIDController.i = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_I
-    climberRArmPIDController.d = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_D
+    climberRArmPIDController.p = Constants.Climber.CLIMBER_P
+    climberRArmPIDController.i = Constants.Climber.CLIMBER_I
+    climberRArmPIDController.d = Constants.Climber.CLIMBER_D
     climberRArmPIDController.setSmartMotionMaxVelocity(climberRArmSensor.velocityToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_VEL), 0)
     climberRArmPIDController.setSmartMotionMaxAccel(climberRArmSensor.accelerationToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_ACC), 0)
     climberRArm.burnFlash()
 
     climberLArm.restoreFactoryDefaults()
-    climberLArmPIDController.p = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_P
-    climberLArmPIDController.i = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_I
-    climberLArmPIDController.d = Constants.Climber.CLIMBER_CLIMBERPIDCONTROLLER_D
+    climberLArmPIDController.p = Constants.Climber.CLIMBER_P
+    climberLArmPIDController.i = Constants.Climber.CLIMBER_I
+    climberLArmPIDController.d = Constants.Climber.CLIMBER_D
     climberLArmPIDController.setSmartMotionMaxVelocity(climberLArmSensor.velocityToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_VEL), 0)
     climberLArmPIDController.setSmartMotionMaxAccel(climberLArmSensor.accelerationToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_ACC), 0)
     climberLArm.burnFlash()

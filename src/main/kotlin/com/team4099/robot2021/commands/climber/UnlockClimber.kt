@@ -21,3 +21,4 @@ class UnlockClimber : CommandBase() {
     return Clock.fpgaTime - initTime > Constants.Climber.BRAKE_RELEASE_TIMEOUT
   }
 }
+//check if climber has pressure, if not, don't unlock and add event that pressure failed
