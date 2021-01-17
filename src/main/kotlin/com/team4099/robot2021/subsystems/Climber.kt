@@ -26,15 +26,22 @@ object Climber: SubsystemBase() {
       pneumaticRBrake.set(value)
       pneumaticLBrake.set(value)
     }
+  var encoderR = climberRArm.encoder
+  var encoderL= climberLArm.encoder
 
   init {
-    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Motor Power") { climberRArm.appliedOutput }
-    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Motor Current") { climberRArm.appliedOutput }
-    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Motor Voltage") { climberRArm.busVoltage } //idk if this correct
+    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Motor Power") { climberLArm.appliedOutput }
+    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Output Current") { climberRArm.outputCurrent }
+    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Motor Applied Voltage") { climberRArm.busVoltage } //idk if this correct
+    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Motor Velocity") {encoderR.velocity}
+    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Current Position") {encoderR.position}
+
 
     Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Motor Power") { climberLArm.appliedOutput }
-    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Motor Stator Current") { climberLArm.appliedOutput }
-    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Motor Voltage") { climberLArm.busVoltage } //idk if this correct
+    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Output Current") { climberLArm.outputCurrent }
+    Logger.addSource(Constants.Climber.TAB, "Climber Left Arm Motor Applied Voltage") { climberLArm.busVoltage } //idk if this correct
+    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Motor Velocity") {encoderL.velocity}
+    Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Current Position") {encoderL.position}
 
     Logger.addSource(Constants.Climber.TAB, "Right Pneumatics State") { brakeApplied.toString() }
     Logger.addSource(Constants.Climber.TAB, "Left Pneumatics State") { brakeApplied.toString() }

@@ -37,7 +37,7 @@ object Robot: TimedRobot() {
   override fun teleopInit() {
     autonomousCommand.cancel()
     Climber.defaultCommand = LockClimber()
-    ControlBoard.climberHigh.whileActiveOnce(new ConditionalCommand(LockClimber(), UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)), () -> FailureManager.errorFlags[failure]))
+    ControlBoard.climberHigh.whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
     ControlBoard.climberLow.whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
   }
 
