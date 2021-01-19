@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.InstantCommand
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
-import javax.naming.ldap.Control
 import kotlin.math.pow
 
 object Robot : TimedRobot() {
@@ -44,8 +43,8 @@ object Robot : TimedRobot() {
     ControlBoard.runIntakeOut.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT).alongWith(FeederCommand(Feeder.FeederState.BACKWARD)));
 
     Shooter.defaultCommand = ShooterIdleCommand()
-    ControlBoard.shoot.whileActiveOnce(ParallelCommandGroup(ShootCommand(), VisionCommand()))
-    ControlBoard.stopShooting.whileActiveOnce(ShooterIdleCommand())
+    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
+    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
   }
 
   private val autonomousCommand = InstantCommand()

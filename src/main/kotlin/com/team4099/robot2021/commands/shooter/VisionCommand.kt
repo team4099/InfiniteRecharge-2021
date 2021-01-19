@@ -2,7 +2,6 @@ package com.team4099.robot2021.commands.shooter
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.derived.inDegrees
-import com.team4099.lib.units.derived.tan
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController

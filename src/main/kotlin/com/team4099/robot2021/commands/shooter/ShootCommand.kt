@@ -16,10 +16,10 @@ class ShootCommand : CommandBase() {
 
   override fun initialize(){
     Shooter.targetVelocity = when(Vision.currentDistance) {
-      Vision.DistanceState.LINE -> 4600.0.rotations.perMinute
-      Vision.DistanceState.NEAR -> 4700.0.rotations.perMinute
-      Vision.DistanceState.MID -> 5300.0.rotations.perMinute
-      Vision.DistanceState.FAR -> 5700.0.rotations.perMinute
+      Vision.DistanceState.LINE -> Constants.Shooter.LINE_VELOCITY
+      Vision.DistanceState.NEAR -> Constants.Shooter.NEAR_VELOCITY
+      Vision.DistanceState.MID -> Constants.Shooter.MID_VELOCITY
+      Vision.DistanceState.FAR -> Constants.Shooter.FAR_VELOCITY
       }
     Logger.addEvent("ShootCommand","Started shoot command")
   }

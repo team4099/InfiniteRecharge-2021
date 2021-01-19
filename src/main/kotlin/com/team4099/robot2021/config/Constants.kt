@@ -1,14 +1,11 @@
 package com.team4099.robot2021.config
 
-import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.perMinute
-import com.team4099.lib.units.derived.Angle
 import edu.wpi.first.wpilibj.DoubleSolenoid
 import com.team4099.lib.units.perSecond
-import java.lang.Math.PI
 
 object Constants {
   object Universal {
@@ -85,6 +82,15 @@ object Constants {
     const val SHOOTER_KP = 0.0
     const val SHOOTER_KI = 0.0
     const val SHOOTER_KD = 0.0
+
+    val LINE_VELOCITY = 4600.0.rotations.perMinute
+    val NEAR_VELOCITY = 4700.0.rotations.perMinute
+    val MID_VELOCITY = 5300.0.rotations.perMinute
+    val FAR_VELOCITY = 5700.0.rotations.perMinute
+
+    const val LINE_DISTANCE = 100.0
+    const val NEAR_DISTANCE = 130.0
+    const val MID_DISTANCE = 249.0
   }
 
   object Vision {

@@ -3,23 +3,12 @@ package com.team4099.robot2021.subsystems
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.inMeters
-import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.derived.tan
-import com.team4099.lib.units.inDegreesPerSecond
-import com.team4099.lib.units.inRotationsPerMinute
 import com.team4099.robot2021.config.Constants
-import edu.wpi.first.networktables.NetworkTable
-import edu.wpi.first.networktables.NetworkTableEntry
-import edu.wpi.first.networktables.NetworkTableInstance
-import edu.wpi.first.wpilibj.controller.PIDController
-import edu.wpi.first.wpilibj.controller.ProfiledPIDController
-import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.photonvision.PhotonCamera
-import org.photonvision.PhotonUtils
-import java.lang.Math.tan
 
 object Vision : SubsystemBase() {
   //for up close
@@ -54,15 +43,13 @@ object Vision : SubsystemBase() {
   }
 
   init {
-    Logger.addSource("Vision","Pipeline"){ pipelineIndex }
+    Logger.addSource("Vision","Pipeline"){ pipeline }
     Logger.addSource("Vision","Distance (inches)"){ distance }
   }
 
   var steeringAdjust = 0.0
   var onTarget = false
     get() = yaw.absoluteValue < Constants.Vision.MAX_ANGLE_ERROR
-
-  private val pipelineIndex = camera.pipelineIndex
 
   var pipeline = Constants.Vision.DRIVER_PIPELINE_ID
     set(value) {
@@ -85,9 +72,10 @@ object Vision : SubsystemBase() {
 
   val currentDistance: DistanceState
     get() = when(distance.value) {
-      in 0.0..100.0 -> DistanceState.LINE
-      in 101.0..129.0 -> DistanceState.NEAR
-      in 130.0..249.0 -> DistanceState.MID
+      //not sure if using the same numbers will work but it should never be exactly 100
+      in 0.0..Constants.Shooter.LINE_DISTANCE -> DistanceState.LINE
+      in Constants.Shooter.LINE_DISTANCE..Constants.Shooter.NEAR_DISTANCE -> DistanceState.NEAR
+      in Constants.Shooter.NEAR_DISTANCE..Constants.Shooter.MID_DISTANCE -> DistanceState.MID
       else -> DistanceState.FAR
     }
 
