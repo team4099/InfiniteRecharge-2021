@@ -16,8 +16,8 @@ object Climber: SubsystemBase() {
   private val climberLArm = CANSparkMax(Constants.Climber.CLIMBER_L_ARM_SPARKMAX_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
   private val climberRArmPIDController = climberRArm.pidController
   private val climberLArmPIDController = climberLArm.pidController
-  private val climberRArmSensor = sparkMaxLinearMechanismSensor(climberRArm, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_GEARRATIO, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER)//diameter: .0508 meters = 2 in
-  private val climberLArmSensor = sparkMaxLinearMechanismSensor(climberLArm, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_GEARRATIO, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER)//diameter: .0508 meters = 2 in
+  val climberRArmSensor = sparkMaxLinearMechanismSensor(climberRArm, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_GEARRATIO, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER)//diameter: .0508 meters = 2 in
+  val climberLArmSensor = sparkMaxLinearMechanismSensor(climberLArm, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_GEARRATIO, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER)//diameter: .0508 meters = 2 in
   private val pneumaticRBrake = Solenoid(Constants.Climber.CLIMBER_SOLENOID_ACTUATIONSTATE) //unactuated state is having the pneumatic extended out to lock
   private val pneumaticLBrake = Solenoid(Constants.Climber.CLIMBER_SOLENOID_ACTUATIONSTATE) //unactuated state is having the pneumatic extended out to lock
   var brakeApplied = false

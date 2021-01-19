@@ -1,9 +1,13 @@
 package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.units.base.inInches
+import com.team4099.lib.units.base.inches
+import com.team4099.lib.units.base.seconds
 import com.team4099.robot2021.commands.MoveClimber
 import com.team4099.robot2021.commands.climber.LockClimber
 import com.team4099.robot2021.commands.climber.UnlockClimber
+import com.team4099.robot2021.commands.failures.ValidateCommand
 import com.team4099.robot2021.commands.feeder.FeederBeamBreak
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.config.Constants
@@ -13,11 +17,12 @@ import com.team4099.robot2021.commands.intake.IntakeCommand
 import com.team4099.robot2021.subsystems.Intake
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
-import com.team4099.robot2021.config.ControlBoard
+import com.team4099.robot2021.loops.FailureManager
 import com.team4099.robot2021.subsystems.Climber
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.InstantCommand
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import kotlin.math.pow
 
 object Robot : TimedRobot() {
@@ -44,6 +49,14 @@ object Robot : TimedRobot() {
   }
 
   private val autonomousCommand = InstantCommand()
+  private val testCommand = SequentialCommandGroup(MoveClimber(Constants.ClimberPosition.HIGH),
+    (ValidateCommand(({1.inches>(Climber.climberRArmSensor.position) && (1.inches)>(Climber.climberLArmSensor.position)}),5.seconds,FailureManager.Failures.PRESSURE_LEAK)),
+    MoveClimber(Constants.ClimberPosition.LOW), (ValidateCommand(({1.inches<(Climber.climberRArmSensor.position) && (1.inches)<(Climber.climberLArmSensor.position)}),5.seconds,FailureManager.Failures.PRESSURE_LEAK)),
+    IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT),
+    FeederBeamBreak(),
+    IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT),
+    FeederCommand(Feeder.FeederState.BACKWARD))
+
 
   override fun autonomousInit() {
     autonomousCommand.schedule()
