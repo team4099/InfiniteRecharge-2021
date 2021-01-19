@@ -50,8 +50,8 @@ object Robot : TimedRobot() {
 
   private val autonomousCommand = InstantCommand()
   private val testCommand = SequentialCommandGroup(MoveClimber(Constants.ClimberPosition.HIGH),
-    (ValidateCommand(({1.inches>(Climber.climberRArmSensor.position) && (1.inches)>(Climber.climberLArmSensor.position)}),5.seconds,FailureManager.Failures.PRESSURE_LEAK)),
-    MoveClimber(Constants.ClimberPosition.LOW), (ValidateCommand(({1.inches<(Climber.climberRArmSensor.position) && (1.inches)<(Climber.climberLArmSensor.position)}),5.seconds,FailureManager.Failures.PRESSURE_LEAK)),
+    (ValidateCommand(({1.inches>(Constants.ClimberPosition.HIGH.length - Climber.climberRArmSensor.position).absoluteValue && (1.inches)>(Constants.ClimberPosition.HIGH.length - Climber.climberLArmSensor.position).absoluteValue}),5.seconds,FailureManager.Failures.PRESSURE_LEAK)),
+    MoveClimber(Constants.ClimberPosition.LOW), (ValidateCommand(({1.inches<(Constants.ClimberPosition.LOW.length - Climber.climberRArmSensor.position).absoluteValue && (1.inches)<(Constants.ClimberPosition.LOW.length - Climber.climberLArmSensor.position).absoluteValue}),5.seconds,FailureManager.Failures.PRESSURE_LEAK)),
     IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT),
     FeederBeamBreak(),
     IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT),
