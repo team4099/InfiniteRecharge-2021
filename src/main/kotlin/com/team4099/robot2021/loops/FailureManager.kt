@@ -1,5 +1,6 @@
 package com.team4099.robot2021.loops
 
+import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.Robot
 import edu.wpi.first.wpilibj.Sendable
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
@@ -38,8 +39,10 @@ object FailureManager: Sendable {
     failures.forEach { failure ->
       if (!failure.testOnly || Robot.isTest) {
         if (!failure.latching) {
+          if (failure.condition() && errorFlags[failure.failType] == false) logDashboard(failure.failType.description)
           errorFlags[failure.failType] = failure.condition()
         } else if (failure.condition()) {
+          if (errorFlags[failure.failType] == false) logDashboard(failure.failType.description)
           errorFlags[failure.failType] = true
         }
       }
@@ -52,8 +55,9 @@ object FailureManager: Sendable {
   }
 
   fun logDashboard(string: String) {
-    log += "$string\n"
-    log.trim();
+    Logger.addEvent("FailureManager", string)
+    log += "\n$string"
+    log.trim()
   }
 
   override fun initSendable(builder: SendableBuilder?) {
