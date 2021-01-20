@@ -37,8 +37,10 @@ object FailureManager: Sendable {
     failures.forEach { failure ->
       if (!failure.testOnly || Robot.isTest) {
         if (!failure.latching) {
+          if (failure.condition() && errorFlags[failure.failType] == false) logDashboard(failure.failType.description)
           errorFlags[failure.failType] = failure.condition()
         } else if (failure.condition()) {
+          if (errorFlags[failure.failType] == false) logDashboard(failure.failType.description)
           errorFlags[failure.failType] = true
         }
       }
@@ -51,7 +53,8 @@ object FailureManager: Sendable {
   }
 
   fun logDashboard(string: String) {
-    log += "$string\n"
+    log += "\n$string"
+    log.trim()
   }
 
   override fun initSendable(builder: SendableBuilder?) {
