@@ -22,7 +22,8 @@ object FailureManager: Sendable {
 
   enum class Failures (val severity : Severity, val description: String) {
     PRESSURE_LEAK(Severity.ERROR, "Pressure Leak"),
-    INTAKE_SPEC_VIOLATION(Severity.WARNING, "intake bad")
+    INTAKE_SPEC_VIOLATION(Severity.WARNING, "intake bad"),
+    CLIMBER_FAILED_POS(Severity.ERROR, "Climber position is wrong");
   }
 
   fun addFailure(failType: Failures, latching: Boolean = false, condition: () -> Boolean) {
@@ -52,6 +53,7 @@ object FailureManager: Sendable {
 
   fun logDashboard(string: String) {
     log += "$string\n"
+    log.trim();
   }
 
   override fun initSendable(builder: SendableBuilder?) {

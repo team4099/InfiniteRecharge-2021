@@ -50,8 +50,8 @@ object Robot : TimedRobot() {
 
   private val autonomousCommand = InstantCommand()
   private val testCommand = SequentialCommandGroup(MoveClimber(Constants.ClimberPosition.HIGH),
-    (ValidateCommand(({1.inches>(Constants.ClimberPosition.HIGH.length - Climber.climberRArmSensor.position).absoluteValue && (1.inches)>(Constants.ClimberPosition.HIGH.length - Climber.climberLArmSensor.position).absoluteValue}),5.seconds,FailureManager.Failures.PRESSURE_LEAK)),
-    MoveClimber(Constants.ClimberPosition.LOW), (ValidateCommand(({1.inches<(Constants.ClimberPosition.LOW.length - Climber.climberRArmSensor.position).absoluteValue && (1.inches)<(Constants.ClimberPosition.LOW.length - Climber.climberLArmSensor.position).absoluteValue}),5.seconds,FailureManager.Failures.PRESSURE_LEAK)),
+    (ValidateCommand(({1.inches>(Constants.ClimberPosition.HIGH.length - Climber.climberRArmSensor.position).absoluteValue && (1.inches)>(Constants.ClimberPosition.HIGH.length - Climber.climberLArmSensor.position).absoluteValue}),5.seconds,FailureManager.Failures.CLIMBER_FAILED_POS)),
+    MoveClimber(Constants.ClimberPosition.LOW), (ValidateCommand(({1.inches<(Constants.ClimberPosition.LOW.length - Climber.climberRArmSensor.position).absoluteValue && (1.inches)<(Constants.ClimberPosition.LOW.length - Climber.climberLArmSensor.position).absoluteValue}),5.seconds,FailureManager.Failures.CLIMBER_FAILED_POS)),
     IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT),
     FeederBeamBreak(),
     IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT),
@@ -71,6 +71,7 @@ object Robot : TimedRobot() {
 
   override fun robotPeriodic() {
     CommandScheduler.getInstance().run()
+    FailureManager.checkFailures();
     Logger.saveLogs()
   }
 }
