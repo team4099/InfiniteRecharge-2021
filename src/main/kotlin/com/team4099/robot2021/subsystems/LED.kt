@@ -12,23 +12,34 @@ object LED: SubsystemBase() {
   private val ledBuffer = AddressableLEDBuffer(Constants.LED.LED_COUNT)
   private var rainbowFirstPixelHue = 0
 
+  var statusState = Constants.LED.Status.DEFAULT
+  set(value) {
+    for(i in 0 until Constants.LED.STATUS_LENGTH) {
+      ledBuffer.setHSV(i, value.h, value.s, value.v)
+    }
+    field = value
+  }
+
+  var healthState = Constants.LED.Health.DEFAULT
+  set(value) {
+    for(i in Constants.LED.STATUS_LENGTH + 1 until ledBuffer.length) {
+      ledBuffer.setHSV(i, value.h, value.s, value.v)
+    }
+    field = value
+  }
+
   init {
     led.setLength(ledBuffer.length)
     led.setData(ledBuffer)
     led.start()
-
   }
 
-  override fun periodic() {
-
-  }
-
-  private fun rainbow() {
+  fun rainbow() {
     // For every pixel
-    for (i in 0 until ledBuffer.getLength()) {
+    for (i in 0 until Constants.LED.STATUS_LENGTH) {
       // Calculate the hue - hue is easier for rainbows because the color
       // shape is a circle so only one value needs to precess
-      val hue = (rainbowFirstPixelHue + i * 180 / ledBuffer.getLength()) % 180
+      val hue = (rainbowFirstPixelHue + i * 180 / ledBuffer.length) % 180
       // Set the value
       ledBuffer.setHSV(i, hue, 255, 128)
     }

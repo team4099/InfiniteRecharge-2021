@@ -35,7 +35,8 @@ object Constants {
   object LED {
     const val PORT = 0
     const val LED_COUNT = 50
-    enum class Color(var h: Int, var s: Int, var v: Int) {
+    const val STATUS_LENGTH = 0
+    enum class Status(var h: Int, var s: Int, var v: Int) {
       //Green
       VISION_LOCK(52, 255, 255),
 
@@ -50,12 +51,16 @@ object Constants {
 
       // Sky blue
       THREE_FOUR_BALL(90, 255, 255),
+
+      //Weird yellow green
+      DEFAULT(36, 255, 255)
     }
 
     enum class Health(var h: Int, var s: Int, var v: Int) {
       VISION(0, 255, 255),
       BEAM_BREAK(60, 255, 255),
-      OTHER(17, 255, 255)
+      OTHER(17, 255, 255),
+      DEFAULT(36, 255, 255)
     }
   }
 }
