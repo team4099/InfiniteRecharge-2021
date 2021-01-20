@@ -88,9 +88,11 @@ object Constants {
     val MID_VELOCITY = 5300.0.rotations.perMinute
     val FAR_VELOCITY = 5700.0.rotations.perMinute
 
-    const val LINE_DISTANCE = 100.0
-    const val NEAR_DISTANCE = 130.0
-    const val MID_DISTANCE = 249.0
+    val LINE_DISTANCE = 100.0.inches
+    val NEAR_DISTANCE = 130.0.inches
+    val MID_DISTANCE = 249.0.inches
+
+    //val HOOD_THRESHOLD = 0.0.inches
   }
 
   object Vision {

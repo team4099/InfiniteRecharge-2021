@@ -1,12 +1,14 @@
 package com.team4099.robot2021.commands.shooter
 
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.units.base.inInches
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.perMinute
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.subsystems.Shooter
 import com.team4099.robot2021.subsystems.Vision
+import edu.wpi.first.wpilibj.DoubleSolenoid
 import edu.wpi.first.wpilibj2.command.CommandBase
 
 class ShootCommand : CommandBase() {
@@ -15,6 +17,13 @@ class ShootCommand : CommandBase() {
   }
 
   override fun initialize(){
+    //make distance not private if we want to use a different number for the threshold
+    when(Vision.currentDistance){
+      Vision.DistanceState.LINE -> Shooter.solenoid.set(DoubleSolenoid.Value.kReverse)
+      Vision.DistanceState.NEAR -> Shooter.solenoid.set(DoubleSolenoid.Value.kReverse)
+      else -> Shooter.solenoid.set(DoubleSolenoid.Value.kForward)
+    }
+
     Shooter.targetVelocity = when(Vision.currentDistance) {
       Vision.DistanceState.LINE -> Constants.Shooter.LINE_VELOCITY
       Vision.DistanceState.NEAR -> Constants.Shooter.NEAR_VELOCITY

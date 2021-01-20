@@ -2,6 +2,7 @@ package com.team4099.robot2021.subsystems
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.base.Length
+import com.team4099.lib.units.base.inInches
 import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inRadians
@@ -73,9 +74,9 @@ object Vision : SubsystemBase() {
   val currentDistance: DistanceState
     get() = when(distance.value) {
       //not sure if using the same numbers will work but it should never be exactly 100
-      in 0.0..Constants.Shooter.LINE_DISTANCE -> DistanceState.LINE
-      in Constants.Shooter.LINE_DISTANCE..Constants.Shooter.NEAR_DISTANCE -> DistanceState.NEAR
-      in Constants.Shooter.NEAR_DISTANCE..Constants.Shooter.MID_DISTANCE -> DistanceState.MID
+      in 0.0..Constants.Shooter.LINE_DISTANCE.inInches -> DistanceState.LINE
+      in Constants.Shooter.LINE_DISTANCE.inInches..Constants.Shooter.NEAR_DISTANCE.inInches -> DistanceState.NEAR
+      in Constants.Shooter.NEAR_DISTANCE.inInches..Constants.Shooter.MID_DISTANCE.inInches -> DistanceState.MID
       else -> DistanceState.FAR
     }
 

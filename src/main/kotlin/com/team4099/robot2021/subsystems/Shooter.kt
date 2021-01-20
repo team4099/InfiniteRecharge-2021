@@ -9,6 +9,7 @@ import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.inRotationsPerMinute
 import com.team4099.lib.units.perMinute
 import com.team4099.robot2021.config.Constants
+import edu.wpi.first.wpilibj.DoubleSolenoid
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object Shooter : SubsystemBase() {
@@ -16,6 +17,8 @@ object Shooter : SubsystemBase() {
   private val shooterSensor = ctreAngularMechanismSensor(shooterMotor,2048,2.0)
 
   private val shooterFollower = TalonFX(Constants.Shooter.SHOOTER_FOLLOWER_ID)
+
+  val solenoid = DoubleSolenoid(0,1)
 
   init {
     shooterMotor.configFactoryDefault()

@@ -9,6 +9,7 @@ import com.team4099.robot2021.config.ControlBoard
 import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.commands.intake.IntakeCommand
 import com.team4099.robot2021.commands.shooter.ShootCommand
+import com.team4099.robot2021.commands.shooter.SpinUpCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2021.subsystems.Shooter
@@ -45,6 +46,8 @@ object Robot : TimedRobot() {
     Shooter.defaultCommand = ShooterIdleCommand()
     ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
     ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
+
+    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
   }
 
   private val autonomousCommand = InstantCommand()

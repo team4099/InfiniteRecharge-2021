@@ -57,4 +57,6 @@ object ControlBoard {
 
   val stopShooting = Trigger{ operator.yButton }
 
+  val spinUpShooter = Trigger{ operator.dPadRight }
+
 }
