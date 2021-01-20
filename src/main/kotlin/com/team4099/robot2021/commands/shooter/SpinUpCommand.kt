@@ -16,11 +16,9 @@ class SpinUpCommand(var withVision : Boolean) : CommandBase() {
     Logger.addEvent("SpinUpCommand","Started shooter spin-up command")
   }
   override fun execute() {
-    if(withVision){
-      Shooter.targetVelocity = Constants.Shooter.LINE_VELOCITY
-    }
-    else{
-      Shooter.targetVelocity = 5000.rotations.perMinute
+    Shooter.targetVelocity = when(withVision){
+      true -> Constants.Shooter.LINE_VELOCITY
+      false -> 5000.rotations.perMinute
     }
   }
   override fun isFinished() : Boolean {
