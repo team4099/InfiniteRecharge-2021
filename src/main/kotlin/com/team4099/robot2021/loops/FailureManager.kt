@@ -1,5 +1,6 @@
 package com.team4099.robot2021.loops
 
+import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.Robot
 import edu.wpi.first.wpilibj.Sendable
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
@@ -53,6 +54,7 @@ object FailureManager: Sendable {
   }
 
   fun logDashboard(string: String) {
+    Logger.addEvent("FailureManager", string)
     log += "\n$string"
     log.trim()
   }
