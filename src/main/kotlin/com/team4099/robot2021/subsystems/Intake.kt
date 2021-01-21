@@ -15,12 +15,14 @@ object Intake : SubsystemBase() {
   private val intakeTalon = TalonFX(Constants.Intake.INTAKE_MOTOR)
   private val intakeDoubleSolenoid = DoubleSolenoid(Constants.Intake.ARM_SOLENOID_PORT_1, Constants.Intake.ARM_SOLENOID_PORT_2)
 
+  //intakeState is public and sets stage in command
   var intakeState = Constants.Intake.IntakeState.DEFAULT
     set(value) {
       intakeTalon.set(ControlMode.PercentOutput, value.speed)
       field = value
     }
 
+  //armState is public and sets stage in command
   var armState = Constants.Intake.ArmPosition.DEFAULT
     set(value) {
       intakeDoubleSolenoid.set(value.position)

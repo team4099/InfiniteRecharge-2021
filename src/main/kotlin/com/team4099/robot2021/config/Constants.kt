@@ -50,7 +50,7 @@ object Constants {
     enum class ArmPosition (val position: DoubleSolenoid.Value?){
       OUT(DoubleSolenoid.Value.kReverse),
       IN(DoubleSolenoid.Value.kForward),
-      DEFAULT(DoubleSolenoid.Value.kOff);
+      DEFAULT(DoubleSolenoid.Value.kOff)
     }
 
   }

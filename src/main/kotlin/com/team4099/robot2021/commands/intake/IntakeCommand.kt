@@ -5,6 +5,7 @@ import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Intake
 import edu.wpi.first.wpilibj2.command.CommandBase
 
+//Robot.kt calls command and inputs desired arguments
 class IntakeCommand(var intakeState: Constants.Intake.IntakeState, var armState: Constants.Intake.ArmPosition): CommandBase() {
 
   init {
@@ -12,6 +13,7 @@ class IntakeCommand(var intakeState: Constants.Intake.IntakeState, var armState:
   }
 
   override fun initialize() {
+    //Calls public variables and sets value based on arguments given
     Intake.armState = armState
     Intake.intakeState = intakeState
     Logger.addEvent("Intake", "Intake State: $intakeState Arm State: $armState")
