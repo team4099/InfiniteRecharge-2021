@@ -13,7 +13,8 @@ object FailureManager: Sendable {
 
   val errorFlags = mutableMapOf(
     Failures.PRESSURE_LEAK to false,
-    Failures.INTAKE_SPEC_VIOLATION to false
+    Failures.INTAKE_SPEC_VIOLATION to false,
+    Failures.CLIMBER_FAILED_POS to false
   )
 
   enum class Severity {
