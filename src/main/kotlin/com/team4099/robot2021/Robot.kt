@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import com.team4099.robot2021.loops.FailureManager
 import com.team4099.robot2021.subsystems.Climber
+import edu.wpi.first.wpilibj.AnalogInput
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.InstantCommand
@@ -27,6 +28,11 @@ import kotlin.math.pow
 
 object Robot : TimedRobot() {
   val robotName: Constants.Tuning.RobotName
+
+  private val pressureSensor = AnalogInput(Constants.PressureSensor.ANALOG_PIN);
+
+  private val pneumaticsPressure: Double
+    get() = 250*(pressureSensor.voltage/Constants.PressureSensor.ANALOG_VOLTAGE) - 25;
 
   init {
     val robotId = Constants.Tuning.ROBOT_ID_PINS.withIndex().map { (i, pin) ->
@@ -46,6 +52,9 @@ object Robot : TimedRobot() {
     Intake.defaultCommand = IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
     ControlBoard.runIntakeIn.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT).alongWith(FeederBeamBreak()));
     ControlBoard.runIntakeOut.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT).alongWith(FeederCommand(Feeder.FeederState.BACKWARD)));
+
+    FailureManager.addFailure(FailureManager.Failures.PRESSURE_LEAK,false) { Constants.PressureSensor.PSI_THRESHOLD > pneumaticsPressure  };
+    Logger.addSource("Pressure","Pressure Value"){ pneumaticsPressure };
   }
 
   private val autonomousCommand = InstantCommand()
@@ -56,7 +65,6 @@ object Robot : TimedRobot() {
     FeederBeamBreak(),
     IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT),
     FeederCommand(Feeder.FeederState.BACKWARD))
-
 
   override fun autonomousInit() {
     autonomousCommand.schedule()

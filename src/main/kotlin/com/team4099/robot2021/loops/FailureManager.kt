@@ -23,7 +23,7 @@ object FailureManager: Sendable {
   }
 
   enum class Failures (val severity : Severity, val description: String) {
-    PRESSURE_LEAK(Severity.ERROR, "Pressure Leak"),
+    PRESSURE_LEAK(Severity.ERROR, "Pressure Leak, pressure under"),
     INTAKE_SPEC_VIOLATION(Severity.WARNING, "intake bad"),
     CLIMBER_FAILED_POS(Severity.ERROR, "Climber position is wrong");
   }
