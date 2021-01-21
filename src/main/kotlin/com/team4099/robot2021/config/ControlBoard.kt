@@ -14,9 +14,6 @@ object ControlBoard {
   val throttle: Double
     get() = driver.rightTriggerAxis - driver.leftTriggerAxis
 
-  val climberHigh = Trigger { operator.dPadUp }
-  val climberLow = Trigger { operator.dPadDown }
-
   val turn: Double
     get() = -driver.leftXAxis
 
@@ -44,21 +41,16 @@ object ControlBoard {
   val climberDown: Boolean
     get() = driver.dPadDown
 
-  val runIntakeIn: Boolean
-    get() = operator.aButton
+  val runIntakeIn = Trigger {operator.aButton}
 
-  val runIntakeOut: Boolean
-    get() = operator.bButton
-
-  val runFeederIn: Boolean
-    get() = operator.dPadDown
-
-  val runFeederOut: Boolean
-    get() = operator.dPadUp
-
-  val runFeederShoot: Boolean
-    get() = operator.dPadLeft || operator.dPadRight
+  val runIntakeOut = Trigger { operator.bButton}
 
   val slowMode: Boolean
     get() = driver.dPadDown
+
+  val runFeederIn = Trigger{ operator.dPadDown};
+  val runFeederOut = Trigger{ operator.dPadUp};
+  
+  val climberHigh = Trigger { driver.dPadUp }
+  val climberLow = Trigger { driver.dPadDown }
 }
