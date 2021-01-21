@@ -14,7 +14,12 @@ class UnlockClimber : CommandBase() {
   override fun initialize() {
     initTime = Clock.fpgaTime
     Climber.brakeApplied = false
-    Logger.addEvent("Climber", "Climber Unlocked")
+    if (FailureManager.errorFlags[Failures.PRESSURE_LEAK]){
+      Climber.brakeApplied = true
+      Logger.addEvent("Climber", "Climber Unlock Failed")
+    }else {
+      Logger.addEvent("Climber", "Climber Unlocked")
+    }
   }
 
   override fun isFinished(): Boolean {

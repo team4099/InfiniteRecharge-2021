@@ -17,10 +17,9 @@ class MoveClimber(val pos: Constants.ClimberPosition): CommandBase() {
   }
 
   override fun execute() {
-    if (Climber.brakeApplied) {
-      UnlockClimber()
+    if (!Climber.brakeApplied) {
+      Climber.setPosition(pos)
     }
-    Climber.setPosition(pos)
   }
 }
 //check if climber is locked, if locked don't move
