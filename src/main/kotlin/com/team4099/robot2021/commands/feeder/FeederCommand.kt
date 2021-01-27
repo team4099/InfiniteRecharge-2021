@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase
 /**
  * Feeder command
  *
- * @property dir sets the direction the motors rotate
+ * @property dir Sets the direction the motors rotate
  * @constructor Create empty Feeder command
  */
 class FeederCommand(var dir: Feeder.FeederState): CommandBase(){

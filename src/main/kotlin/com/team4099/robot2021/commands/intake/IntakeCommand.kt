@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase
 /**
  * Intake command
  *
- * @property intakeState sets the velocity of the wheel
- * @property armState sets the position of the pneumatic arms
+ * @property intakeState Sets the velocity of the wheel
+ * @property armState Sets the position of the pneumatic arms
  * @constructor Create empty Intake command
  */
 class IntakeCommand(var intakeState: Constants.Intake.IntakeState, var armState: Constants.Intake.ArmPosition): CommandBase() {

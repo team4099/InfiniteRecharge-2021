@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase
 
 /**
  * Lock climber
- * @property brakeApplied locks the
+ * @property Climber.brakeApplied Prevents motors from powering / moving the climber
  * @constructor Create empty Lock climber
  */
 class LockClimber : CommandBase() {

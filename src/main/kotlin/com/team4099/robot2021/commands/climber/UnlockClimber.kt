@@ -7,6 +7,12 @@ import com.team4099.robot2021.loops.FailureManager
 import com.team4099.robot2021.subsystems.Climber
 import edu.wpi.first.wpilibj2.command.CommandBase
 
+/**
+ * Unlock climber
+ *
+ * @property FailureManager.Failures.PRESSURE_LEAK State based if leak detected in pneumatics
+ * @constructor Create empty Unlock climber
+ */
 class UnlockClimber : CommandBase() {
   init {
     addRequirements(Climber)
