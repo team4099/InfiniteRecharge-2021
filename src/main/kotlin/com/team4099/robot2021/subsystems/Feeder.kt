@@ -37,7 +37,7 @@ object Feeder:SubsystemBase(){
 
   /**
    * An enum representing the state of the feeder
-   * floorMotor power, verticalMotor power
+   *floorMotor power, verticalMotor power
    */
 
   enum class FeederState(val floorMotorPower: Double, val verticalMotorPower: Double) {

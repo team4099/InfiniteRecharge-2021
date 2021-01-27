@@ -5,6 +5,13 @@ import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Intake
 import edu.wpi.first.wpilibj2.command.CommandBase
 
+/**
+ * Intake command
+ *
+ * @property intakeState sets the velocity of the wheel
+ * @property armState sets the position of the pneumatic arms
+ * @constructor Create empty Intake command
+ */
 class IntakeCommand(var intakeState: Constants.Intake.IntakeState, var armState: Constants.Intake.ArmPosition): CommandBase() {
 
   init {

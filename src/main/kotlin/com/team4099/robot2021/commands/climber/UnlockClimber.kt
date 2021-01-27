@@ -3,6 +3,7 @@ package com.team4099.robot2021.commands.climber
 import com.team4099.lib.hal.Clock
 import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.config.Constants
+import com.team4099.robot2021.loops.FailureManager
 import com.team4099.robot2021.subsystems.Climber
 import edu.wpi.first.wpilibj2.command.CommandBase
 
@@ -14,7 +15,7 @@ class UnlockClimber : CommandBase() {
   override fun initialize() {
     initTime = Clock.fpgaTime
     Climber.brakeApplied = false
-    if (FailureManager.errorFlags[Failures.PRESSURE_LEAK]){
+    if (FailureManager.errorFlags[FailureManager.Failures.PRESSURE_LEAK] == true){
       Climber.brakeApplied = true
       Logger.addEvent("Climber", "Climber Unlock Failed")
     }else {

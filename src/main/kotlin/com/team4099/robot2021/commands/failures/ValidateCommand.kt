@@ -5,7 +5,14 @@ import com.team4099.lib.units.base.Time
 import com.team4099.lib.units.base.seconds
 import com.team4099.robot2021.loops.FailureManager
 import edu.wpi.first.wpilibj2.command.CommandBase
-
+/**
+ * Validate command
+ *
+ * @property condition
+ * @property timeout
+ * @property failure
+ * @constructor Create empty Validate command
+ */
 class ValidateCommand(val condition : () -> Boolean, val timeout : Time, val failure : FailureManager.Failures) : CommandBase() {
   private var startTime : Time = 0.seconds
   override fun initialize() {

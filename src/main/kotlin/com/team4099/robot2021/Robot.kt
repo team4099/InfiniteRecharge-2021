@@ -1,10 +1,9 @@
 package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
-import com.team4099.lib.units.base.inInches
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.seconds
-import com.team4099.robot2021.commands.MoveClimber
+import com.team4099.robot2021.commands.climber.MoveClimber
 import com.team4099.robot2021.commands.climber.LockClimber
 import com.team4099.robot2021.commands.climber.UnlockClimber
 import com.team4099.robot2021.commands.failures.ValidateCommand
@@ -29,10 +28,10 @@ import kotlin.math.pow
 object Robot : TimedRobot() {
   val robotName: Constants.Tuning.RobotName
 
-  private val pressureSensor = AnalogInput(Constants.PressureSensor.ANALOG_PIN);
+  private val pressureSensor = AnalogInput(Constants.PressureSensor.ANALOG_PIN)
 
   private val pneumaticsPressure: Double
-    get() = 250*(pressureSensor.voltage/Constants.PressureSensor.ANALOG_VOLTAGE) - 25;
+    get() = 250*(pressureSensor.voltage/Constants.PressureSensor.ANALOG_VOLTAGE) - 25
 
   init {
     val robotId = Constants.Tuning.ROBOT_ID_PINS.withIndex().map { (i, pin) ->
@@ -46,19 +45,20 @@ object Robot : TimedRobot() {
 
     // Link between feeder Trigger and Command
     Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
-    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_FLOOR));
-    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD));
+    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_FLOOR))
+    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
 
     Intake.defaultCommand = IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
-    ControlBoard.runIntakeIn.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT).alongWith(FeederBeamBreak()));
-    ControlBoard.runIntakeOut.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT).alongWith(FeederCommand(Feeder.FeederState.BACKWARD)));
+    ControlBoard.runIntakeIn.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT).alongWith(FeederBeamBreak()))
+    ControlBoard.runIntakeOut.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT).alongWith(FeederCommand(Feeder.FeederState.BACKWARD)))
 
-    FailureManager.addFailure(FailureManager.Failures.PRESSURE_LEAK,false) { Constants.PressureSensor.PSI_THRESHOLD > pneumaticsPressure  };
-    Logger.addSource("Pressure","Pressure Value"){ pneumaticsPressure };
+    FailureManager.addFailure(FailureManager.Failures.PRESSURE_LEAK,false) { Constants.PressureSensor.PSI_THRESHOLD > pneumaticsPressure  }
+    Logger.addSource("Pressure","Pressure Value"){ pneumaticsPressure }
   }
 
   private val autonomousCommand = InstantCommand()
-  private val testCommand = SequentialCommandGroup(MoveClimber(Constants.ClimberPosition.HIGH),
+  private val testCommand = SequentialCommandGroup(
+    MoveClimber(Constants.ClimberPosition.HIGH),
     (ValidateCommand(({1.inches>(Constants.ClimberPosition.HIGH.length - Climber.climberRArmSensor.position).absoluteValue && (1.inches)>(Constants.ClimberPosition.HIGH.length - Climber.climberLArmSensor.position).absoluteValue}),5.seconds,FailureManager.Failures.CLIMBER_FAILED_POS)),
     MoveClimber(Constants.ClimberPosition.LOW), (ValidateCommand(({1.inches<(Constants.ClimberPosition.LOW.length - Climber.climberRArmSensor.position).absoluteValue && (1.inches)<(Constants.ClimberPosition.LOW.length - Climber.climberLArmSensor.position).absoluteValue}),5.seconds,FailureManager.Failures.CLIMBER_FAILED_POS)),
     IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT),
@@ -79,7 +79,7 @@ object Robot : TimedRobot() {
 
   override fun robotPeriodic() {
     CommandScheduler.getInstance().run()
-    FailureManager.checkFailures();
+    FailureManager.checkFailures()
     Logger.saveLogs()
   }
 }

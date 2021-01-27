@@ -4,6 +4,11 @@ import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.subsystems.Climber
 import edu.wpi.first.wpilibj2.command.CommandBase
 
+/**
+ * Lock climber
+ * @property brakeApplied locks the
+ * @constructor Create empty Lock climber
+ */
 class LockClimber : CommandBase() {
   init {
     addRequirements(Climber)
