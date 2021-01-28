@@ -7,15 +7,25 @@ import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
-object Feeder:SubsystemBase(){
+/**
+ * Feeder
+ * @property floorMotor The motor for the floor of the feeder (the spinny wheel at the bottom)
+ * @property verticalMotor The motor for vertical part of the feeder (the poly cord)
+ * @constructor Create empty Feeder
+ */
+object Feeder : SubsystemBase() {
 
-  // The motor for the floor of the feeder (the spinny wheel at the bottom)
   private val floorMotor = TalonSRX(Constants.Feeder.FLOOR_ID)
-
-  // The motor for vertical part of the feeder (the poly cord)
   private val verticalMotor = TalonSRX(Constants.Feeder.VERTICAL_ID)
 
+  /**
+   * @param floorMotor Reset motor to ensure clear data
+   * @param verticalMotor Reset motor to ensure clear data
+   */
   init {
+    floorMotor.configFactoryDefault();
+    verticalMotor.configFactoryDefault();
+
     Logger.addSource(Constants.Feeder.TAB, "Feeder State") { feederState }
 
     Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Power") { floorMotor.motorOutputPercent }
@@ -30,16 +40,15 @@ object Feeder:SubsystemBase(){
 
     Logger.addSource(Constants.Feeder.TAB, "Feeder Top Beam DIO Broken") { topBeamBroken }
     Logger.addSource(Constants.Feeder.TAB, "Feeder Bottom Beam DIO Broken") { bottomBeamBroken }
-
-    floorMotor.configFactoryDefault();
-    verticalMotor.configFactoryDefault();
   }
 
   /**
-   * An enum representing the state of the feeder
-   *floorMotor power, verticalMotor power
+   * Feeder state
+   *
+   * @property floorMotorPower Represents state of floorMotor power
+   * @property verticalMotorPower Represents state of verticalMotor power
+   * @constructor Create empty Feeder state
    */
-
   enum class FeederState(val floorMotorPower: Double, val verticalMotorPower: Double) {
     FORWARD_ALL(Constants.Feeder.FEEDER_POWER, Constants.Feeder.FEEDER_POWER),
     FORWARD_FLOOR(Constants.Feeder.FEEDER_POWER, 0.0),
@@ -47,10 +56,12 @@ object Feeder:SubsystemBase(){
     NEUTRAL(0.0, 0.0)
   }
 
-  //The DIO pin state of the top Beam Break
-  private val topBeamDIO = DigitalInput(Constants.Feeder.TOP_DIO_PIN);
+  /**
+   * @property topBeamDIO The DIO pin state of the top Beam Break
+   * @property bottomBeamDIO The DIO pin state of the bottom Beam Break
+   */
 
-  //The DIO pin state of the bottom Beam Break
+  private val topBeamDIO = DigitalInput(Constants.Feeder.TOP_DIO_PIN);
   private val bottomBeamDIO = DigitalInput(Constants.Feeder.BOTTOM_DIO_PIN);
 
   /**
@@ -66,8 +77,7 @@ object Feeder:SubsystemBase(){
 
   /**
    * Interacts with feeder State
-   * @param state Feeder State
-   * @return None
+   * Sets Feeder state to the given argument in FeederCommand
    **/
 
   var feederState = FeederState.NEUTRAL

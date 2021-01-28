@@ -11,6 +11,16 @@ import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj.Solenoid
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
+/**
+ * Climber
+ *
+ * @property climberRArm Object representing the right motor
+ * @property climberLArm Object representing the left motor
+ * @property pneumaticLBrake Object representing the right pneumatic brake
+ * @property pneumaticRBrake Object representing the left pneumatic brake
+ * @property brakeApplied Prevents motors from powering / sets brake state for pneumatics
+ * @constructor Create empty Climber
+ */
 object Climber: SubsystemBase() {
   private val climberRArm = CANSparkMax(Constants.Climber.CLIMBER_R_ARM_SPARKMAX_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
   private val climberLArm = CANSparkMax(Constants.Climber.CLIMBER_L_ARM_SPARKMAX_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
