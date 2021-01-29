@@ -4,6 +4,7 @@ import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.inInches
 import com.team4099.lib.units.base.inMeters
+import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inRadians
@@ -63,7 +64,7 @@ object Vision : SubsystemBase() {
 
   var yawToUse = 0.0.degrees
     get() = when{
-      hasCloseTargets && hasFarTargets -> { if(closeArea>farArea) closeYaw else farYaw }
+      hasCloseTargets && hasFarTargets -> { if (closeArea > farArea) closeYaw else farYaw }
       hasCloseTargets && !hasFarTargets -> closeYaw
       !hasCloseTargets && hasFarTargets -> farYaw
       else -> Constants.Vision.MAX_ANGLE_ERROR
@@ -80,8 +81,21 @@ object Vision : SubsystemBase() {
       field = value
     }
 
-  private val distance: Length
+  private val closeDistance: Length
+    get() = (Constants.Vision.TARGET_HEIGHT - Constants.Vision.CLOSE_CAMERA_HEIGHT) / (Constants.Vision.CLOSE_CAMERA_ANGLE + closePitch).tan
+  private val farDistance: Length
     get() = (Constants.Vision.TARGET_HEIGHT - Constants.Vision.FAR_CAMERA_HEIGHT) / (Constants.Vision.FAR_CAMERA_ANGLE + farPitch).tan
+
+  private val distance: Length
+    get() = if (hasCloseTargets && hasFarTargets) when {
+      closeDistance < Constants.Vision.CAMERA_DIST_THRESHOLD -> closeDistance
+      farDistance > Constants.Vision.CAMERA_DIST_THRESHOLD -> farDistance
+      /*closeDistance > Constants.Vision.CAMERA_DIST_THRESHOLD
+        && farDistance < Constants.Vision.CAMERA_DIST_THRESHOLD -> (closeDistance+farDistance)/2 */
+      else -> (closeDistance+farDistance)/2
+    } else if (hasCloseTargets && !hasFarTargets) closeDistance
+    else if (!hasCloseTargets && hasFarTargets) farDistance
+    else 0.0.inches
 
   //could use method from PhotonUtils to calculate distance
   /*private val distanceMeters: Double
