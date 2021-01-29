@@ -72,6 +72,12 @@ object PathStore {
   private val farTrench = Pose2d(5.794, -7.243, Rotation2d(-20.0))
   private val rendezvousPoint2Balls = Pose2d(5.878, -2.755, Rotation2d(-20.0))
 
+  private val reintroductionZone = Pose(navPoints["C"]!![10] + Translation(15.inches, 0.feet), 0.degrees).pose2d
+  private val green = Pose(navPoints["C"]!![2] + Translation(15.inches, 0.feet), 0.degrees).pose2d
+  private val yellow = Pose(navPoints["C"]!![5] + Translation(15.inches, 0.feet), 0.degrees).pose2d
+  private val red = Pose(navPoints["C"]!![8] + Translation(15.inches, 0.feet), 0.degrees).pose2d
+  private val blue = Pose(navPoints["C"]!![6] + Translation(15.inches, 0.feet), 0.degrees).pose2d
+
   val galacticSearchARed: Trajectory = TrajectoryGenerator.generateTrajectory(
     Pose(navPoints["C"]!![1] + Translation(30.inches, 0.feet), 0.degrees).pose2d,
     listOf(navPoints["C"]!![3].translation2d),
@@ -114,17 +120,72 @@ object PathStore {
     reversedConfig.setStartVelocity(0.0).setEndVelocity(0.0)
   )
 
-  val toRendezvousPoint2Balls = TrajectoryGenerator.generateTrajectory(
+  val toRendezvousPoint2Balls: Trajectory = TrajectoryGenerator.generateTrajectory(
     initLinePowerPort,
     listOf(),
     rendezvousPoint2Balls,
     config.setStartVelocity(0.0).setEndVelocity(0.0)
   )
 
-  val fromRendezvousPoint2Balls = TrajectoryGenerator.generateTrajectory(
+  val fromRendezvousPoint2Balls: Trajectory = TrajectoryGenerator.generateTrajectory(
     rendezvousPoint2Balls,
     listOf(),
     initLinePowerPort,
     reversedConfig.setStartVelocity(0.0).setEndVelocity(0.0)
+  )
+
+  val fromGreentoReintroduction: Trajectory = TrajectoryGenerator.generateTrajectory(
+    green,
+    listOf(),
+    reintroductionZone,
+    config.setStartVelocity(0.0).setEndVelocity(0.0)
+  )
+
+  val fromYellowtoReintroduction: Trajectory = TrajectoryGenerator.generateTrajectory(
+    yellow,
+    listOf(),
+    reintroductionZone,
+    config.setStartVelocity(0.0).setEndVelocity(0.0)
+  )
+  val fromBluetoReintroduction: Trajectory = TrajectoryGenerator.generateTrajectory(
+    blue,
+    listOf(navPoints["C"]!![6].translation2d),
+    reintroductionZone,
+    config.setStartVelocity(0.0).setEndVelocity(0.0)
+  )
+
+  val fromRedtoReintroduction: Trajectory = TrajectoryGenerator.generateTrajectory(
+    red,
+    listOf(navPoints["C"]!![8].translation2d),
+    reintroductionZone,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
+  )
+
+  val fromIntrotoGreen: Trajectory = TrajectoryGenerator.generateTrajectory(
+    reintroductionZone,
+    listOf(navPoints["C"]!![10].translation2d),
+    green,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
+  )
+
+  val fromIntrotoYellow: Trajectory = TrajectoryGenerator.generateTrajectory(
+    reintroductionZone,
+    listOf(navPoints["C"]!![10].translation2d),
+    yellow,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
+  )
+
+  val fromIntrotoBlue: Trajectory = TrajectoryGenerator.generateTrajectory(
+    reintroductionZone,
+    listOf(navPoints["C"]!![10].translation2d),
+    blue,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
+  )
+
+  val fromIntrotoRed: Trajectory = TrajectoryGenerator.generateTrajectory(
+    reintroductionZone,
+    listOf(navPoints["C"]!![10].translation2d),
+    red,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
   )
 }
