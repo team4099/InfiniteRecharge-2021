@@ -1,5 +1,11 @@
 package com.team4099.robot2021.auto
 
+import com.team4099.lib.geometry.Pose
+import com.team4099.lib.geometry.Translation
+import com.team4099.lib.units.base.feet
+import com.team4099.lib.units.base.inches
+import com.team4099.lib.units.derived.degrees
+import com.team4099.lib.units.step
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Drivetrain
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward
@@ -51,12 +57,27 @@ object PathStore {
     config.setStartVelocity(0.0).setEndVelocity(0.0)
   )
 
+  private val navPoints = mapOf(
+    "A" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(2.5.feet, x) },
+    "B" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(5.feet, x) },
+    "C" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(7.5.feet, x) },
+    "D" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(10.feet, x) },
+    "E" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(12.5.feet, x) }
+  )
+
   private val initLinePowerPort = Pose2d(3.627, -2.429, Rotation2d(0.0))
   private val initLineFarTrench = Pose2d(3.627, -6.824, Rotation2d(0.0))
   private val nearTrenchEdge = Pose2d(5.0, -0.869, Rotation2d(0.0))
   private val nearTrenchEnd = Pose2d(7.5, -0.869, Rotation2d(0.0))
   private val farTrench = Pose2d(5.794, -7.243, Rotation2d(-20.0))
   private val rendezvousPoint2Balls = Pose2d(5.878, -2.755, Rotation2d(-20.0))
+
+  val galacticSearchARed: Trajectory = TrajectoryGenerator.generateTrajectory(
+    Pose(navPoints["C"]!![1] + Translation(30.inches, 0.feet), 0.degrees).pose2d,
+    listOf(navPoints["C"]!![3].translation2d),
+    Pose(navPoints["C"]!![11] - Translation(30.inches, 0.feet), 0.degrees).pose2d,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
+  )
 
   val toNearTrench: Trajectory = TrajectoryGenerator.generateTrajectory(
     initLinePowerPort,
