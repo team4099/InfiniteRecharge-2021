@@ -32,13 +32,22 @@ class VisionCommand : CommandBase(){
   }
 
   override fun execute() {
-    if(Vision.hasTargets == false) {
+    //var yaw = Vision.yaw.inDegrees
+    //could just choose one here instead of using yawToUse, but we would need an onTarget for both cameras
+    /*var yaw = when(Pair(Vision.hasTargets, Vision.hasFarTargets)){
+      Pair(true,true) -> 0.0 //yaw from camera with higher area
+      Pair(true,false) -> Vision.closeYaw
+      Pair(false,true) -> Vision.farYaw
+      else -> 0.0
+    }*/
+
+    if(!Vision.hasCloseTargets && !Vision.hasFarTargets) {
       Vision.steeringAdjust = 0.0
     }
-    else {
-      Vision.steeringAdjust = visionPIDcontroller.calculate(Vision.yaw.inDegrees, 0.0)
-      Vision.steeringAdjust += sign(Vision.yaw.inDegrees) * Constants.Vision.MIN_TURN_COMMAND
-      // TODO: implement when drivetrain exists in master
+    else{
+      Vision.steeringAdjust = visionPIDcontroller.calculate(Vision.yawToUse.inDegrees, 0.0)
+      Vision.steeringAdjust += sign(Vision.yawToUse.inDegrees) * Constants.Vision.MIN_TURN_COMMAND
+      // TODO: implement when shooter or drivetrain exists in master
       // Drivetrain.set(Vision.steeringAdjust, Pair(0.0,0.0))
     }
   }

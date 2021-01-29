@@ -99,8 +99,8 @@ object Constants {
     const val DRIVER_PIPELINE_ID = 1
     const val TARGETING_PIPELINE_ID = 0
     val TARGET_HEIGHT = 98.25.inches
-    val CAMERA_HEIGHT = 35.0.inches
-    val CAMERA_ANGLE = 24.0.degrees
+    val FAR_CAMERA_HEIGHT = 35.0.inches
+    val FAR_CAMERA_ANGLE = 24.0.degrees
 
     val MAX_DIST_ERROR = 0.1.inches
     val MAX_ANGLE_ERROR = 1.0.degrees

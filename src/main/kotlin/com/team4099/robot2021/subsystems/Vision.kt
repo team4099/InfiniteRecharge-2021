@@ -4,6 +4,7 @@ import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.inInches
 import com.team4099.lib.units.base.inMeters
+import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.derived.tan
@@ -13,33 +14,45 @@ import org.photonvision.PhotonCamera
 
 object Vision : SubsystemBase() {
   //for up close
-  private val camera : PhotonCamera = PhotonCamera("gloworm")
-  //from farther away
-  private val zoomedCamera : PhotonCamera = PhotonCamera("")
-
-  private val cameraResult
-    get() = camera.getLatestResult()
+  private val closeCamera : PhotonCamera = PhotonCamera("gloworm")
+  private val closeCameraResult
+    get() = closeCamera.getLatestResult()
   private val target
-    get() = cameraResult.bestTarget
+    get() = closeCameraResult.bestTarget
 
   //tv
-  var hasTargets = false
-    get() = camera.hasTargets()
+  var hasCloseTargets = false
+    get() = closeCamera.hasTargets()
   //tx
   //negative: target on left of screen
-  var yaw = 0.0.degrees
+  var closeYaw = 0.0.degrees
     get() = target.yaw.degrees
   //ty
   //negative: target on bottom of screen
-  var pitch = 0.0.degrees
+  var closePitch = 0.0.degrees
     get() = target.pitch.degrees
   //ta
   //area is 0-100%
-  var area = 0.0
+  var closeArea = 0.0
     get() = target.area
 
+  //from farther away
+  private val farCamera : PhotonCamera = PhotonCamera("")
+  private val farCameraResult
+    get() = farCamera.getLatestResult()
+  private val farTarget
+    get() = farCameraResult.bestTarget
 
-  enum class DistanceState() {
+  var hasFarTargets = false
+    get() = farCamera.hasTargets()
+  var farYaw = 0.0.degrees
+    get() = farTarget.yaw.degrees
+  var farPitch = 0.0.degrees
+    get() = farTarget.pitch.degrees
+  var farArea = 0.0
+    get() = farTarget.area
+
+  enum class DistanceState {
     LINE, NEAR, MID, FAR
   }
 
@@ -48,19 +61,27 @@ object Vision : SubsystemBase() {
     Logger.addSource("Vision","Distance (inches)"){ distance }
   }
 
-  var steeringAdjust = 0.0
+  var yawToUse = 0.0.degrees
+    get() = when{
+      hasCloseTargets && hasFarTargets -> { if(closeArea>farArea) closeYaw else farYaw }
+      hasCloseTargets && !hasFarTargets -> closeYaw
+      !hasCloseTargets && hasFarTargets -> farYaw
+      else -> Constants.Vision.MAX_ANGLE_ERROR
+    }
   var onTarget = false
-    get() = yaw.absoluteValue < Constants.Vision.MAX_ANGLE_ERROR
+    get() = yawToUse.absoluteValue < Constants.Vision.MAX_ANGLE_ERROR
+  var steeringAdjust = 0.0
 
   var pipeline = Constants.Vision.DRIVER_PIPELINE_ID
     set(value) {
       //this method sets the pipeline index and entry
-      camera.setPipelineIndex(value)
+      closeCamera.setPipelineIndex(value)
+      farCamera.setPipelineIndex(value)
       field = value
     }
 
   private val distance: Length
-    get() = (Constants.Vision.TARGET_HEIGHT - Constants.Vision.CAMERA_HEIGHT) / (Constants.Vision.CAMERA_ANGLE + pitch).tan
+    get() = (Constants.Vision.TARGET_HEIGHT - Constants.Vision.FAR_CAMERA_HEIGHT) / (Constants.Vision.FAR_CAMERA_ANGLE + farPitch).tan
 
   //could use method from PhotonUtils to calculate distance
   /*private val distanceMeters: Double
