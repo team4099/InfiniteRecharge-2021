@@ -43,7 +43,7 @@ object FailureManager: Sendable {
   /**
    * Failures
    *
-   * @property severity Enum aboved giving classification of the severity level of the failure
+   * @property severity Enum above giving classification of the severity level of the failure
    * @property description Gives details about the given failure
    * @constructor Create empty Failures
    */
@@ -56,19 +56,31 @@ object FailureManager: Sendable {
   /**
    * Add failure
    *
-   * @param failType
-   * @param latching
-   * @param condition
+   * @param failType Name implies
+   * @param latching If true failure can't be removed
+   * @param condition Given the condition will determine if there is a failure
    * @receiver
    */
   fun addFailure(failType: Failures, latching: Boolean = false, condition: () -> Boolean) {
     failures.add(FailureSource(failType, latching, condition, false))
   }
 
+  /**
+   * Add test failure (test mode)
+   *
+   * @param failType Name implies
+   * @param condition Given the condition will determine if there is a failure
+   * @receiver
+   */
   fun addTestFailure(failType: Failures, condition: () -> Boolean) {
     failures.add(FailureSource(failType, true, condition, true))
   }
 
+  /**
+   * Check failures
+   *
+   * Goes through each failure in the list and checks if it's true and if so logs it
+   */
   fun checkFailures() {
     failures.forEach { failure ->
       if (!failure.testOnly || Robot.isTest) {
@@ -83,17 +95,32 @@ object FailureManager: Sendable {
     }
   }
 
+  /**
+   * Reset
+   *
+   * Method that resets each failure to false
+   */
   fun reset(){
     failures.forEach{failure -> errorFlags[failure.failType] = false}
     log = ""
   }
 
+  /**
+   * Log dashboard
+   *
+   * @param string Description of failure
+   */
   fun logDashboard(string: String) {
     Logger.addEvent("FailureManager", string)
     log += "\n$string"
     log.trim()
   }
 
+  /**
+   * Init sendable
+   *
+   * @param builder
+   */
   override fun initSendable(builder: SendableBuilder?) {
     builder?.addStringProperty("Failures", { log }) {}
   }
