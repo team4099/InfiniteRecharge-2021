@@ -4,6 +4,12 @@ import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.subsystems.Feeder.feederState
 import edu.wpi.first.wpilibj2.command.CommandBase
 
+
+/**
+ * Feeder command
+ *
+ * @property dir Sets the direction the motors rotate
+ */
 class FeederCommand(var dir: Feeder.FeederState): CommandBase(){
   init{
     addRequirements(Feeder)

@@ -11,13 +11,22 @@ import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj.Solenoid
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
+/**
+ * Climber
+ *
+ * @property climberRArm Object representing the right motor
+ * @property climberLArm Object representing the left motor
+ * @property pneumaticLBrake Object representing the right pneumatic brake
+ * @property pneumaticRBrake Object representing the left pneumatic brake
+ * @property brakeApplied Prevents motors from powering / sets brake state for pneumatics
+ */
 object Climber: SubsystemBase() {
   private val climberRArm = CANSparkMax(Constants.Climber.CLIMBER_R_ARM_SPARKMAX_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
   private val climberLArm = CANSparkMax(Constants.Climber.CLIMBER_L_ARM_SPARKMAX_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
   private val climberRArmPIDController = climberRArm.pidController
   private val climberLArmPIDController = climberLArm.pidController
-  private val climberRArmSensor = sparkMaxLinearMechanismSensor(climberRArm, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_GEARRATIO, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER)//diameter: .0508 meters = 2 in
-  private val climberLArmSensor = sparkMaxLinearMechanismSensor(climberLArm, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_GEARRATIO, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER)//diameter: .0508 meters = 2 in
+  val climberRArmSensor = sparkMaxLinearMechanismSensor(climberRArm, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_GEARRATIO, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER)//diameter: .0508 meters = 2 in
+  val climberLArmSensor = sparkMaxLinearMechanismSensor(climberLArm, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_GEARRATIO, Constants.Climber.CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER)//diameter: .0508 meters = 2 in
   private val pneumaticRBrake = Solenoid(Constants.Climber.CLIMBER_SOLENOID_ACTUATIONSTATE) //unactuated state is having the pneumatic extended out to lock
   private val pneumaticLBrake = Solenoid(Constants.Climber.CLIMBER_SOLENOID_ACTUATIONSTATE) //unactuated state is having the pneumatic extended out to lock
   var brakeApplied = false

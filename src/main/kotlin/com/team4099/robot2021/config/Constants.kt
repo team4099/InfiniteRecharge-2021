@@ -13,6 +13,12 @@ object Constants {
     const val EPSILON = 1E-9
   }
 
+  object PressureSensor{
+    const val ANALOG_PIN = 0;
+    const val ANALOG_VOLTAGE = 5.00;
+    const val PSI_THRESHOLD = 10.00;
+  }
+
   object Tuning {
     const val TUNING_TOGGLE_PIN = 0
     val ROBOT_ID_PINS = 1..2

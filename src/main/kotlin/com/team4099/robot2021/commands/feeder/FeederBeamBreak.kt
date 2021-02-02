@@ -3,6 +3,13 @@ import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.subsystems.Feeder
 import edu.wpi.first.wpilibj2.command.CommandBase
 
+/**
+ * Feeder beam break
+ *
+ * @property Feeder.topBeamBroken
+ * @property Feeder.bottomBeamBroken
+ */
+
 class FeederBeamBreak(): CommandBase(){
   init{
     addRequirements(Feeder)
