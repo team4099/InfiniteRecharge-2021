@@ -5,10 +5,10 @@ import com.team4099.robot2021.loops.FailureManager;
 /**
  * Failure reset command
  *
- * @constructor Create empty Failure reset command
+ * @property FailureManager.reset Sets all errors back to normal
  */
 class FailureResetCommand : CommandBase() {
   override fun initialize(){
-    FailureManager.reset();
+    FailureManager.reset()
   }
 }

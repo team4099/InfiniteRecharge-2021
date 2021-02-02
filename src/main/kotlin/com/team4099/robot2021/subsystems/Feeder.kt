@@ -9,9 +9,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 /**
  * Feeder
+ *
  * @property floorMotor The motor for the floor of the feeder (the spinny wheel at the bottom)
  * @property verticalMotor The motor for vertical part of the feeder (the poly cord)
- * @constructor Create empty Feeder
+ * @property feederState Represents the stage of the feeder
  */
 object Feeder : SubsystemBase() {
 

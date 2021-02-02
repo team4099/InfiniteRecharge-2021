@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
  *  @property intakeDoubleSolenoid Object representing the solenoid for the arm
  *  @property armState Represents the stage of the arm
  *  @property intakeState Represents the stage of the intake
- *  @constructor Create empty Intake
  */
 object Intake : SubsystemBase() {
 

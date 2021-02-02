@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
  * @property pneumaticLBrake Object representing the right pneumatic brake
  * @property pneumaticRBrake Object representing the left pneumatic brake
  * @property brakeApplied Prevents motors from powering / sets brake state for pneumatics
- * @constructor Create empty Climber
  */
 object Climber: SubsystemBase() {
   private val climberRArm = CANSparkMax(Constants.Climber.CLIMBER_R_ARM_SPARKMAX_ID, CANSparkMaxLowLevel.MotorType.kBrushless)

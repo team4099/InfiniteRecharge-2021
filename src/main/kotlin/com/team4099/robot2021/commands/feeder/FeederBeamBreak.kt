@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase
  *
  * @property Feeder.topBeamBroken
  * @property Feeder.bottomBeamBroken
- * @constructor Create empty Feeder beam break
  */
 
 class FeederBeamBreak(): CommandBase(){

@@ -8,10 +8,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase
 /**
  * Validate command
  *
- * @property condition
- * @property timeout
- * @property failure
- * @constructor Create empty Validate command
+ * @property condition Runs if boolean is true
+ * @property timeout When timeout passes a threshold it is registered as a failure
+ * @property failure The failure that the condition is tied to
  */
 class ValidateCommand(val condition : () -> Boolean, val timeout : Time, val failure : FailureManager.Failures) : CommandBase() {
   private var startTime : Time = 0.seconds

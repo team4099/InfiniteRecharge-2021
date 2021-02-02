@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase
  * Move climber
  *
  * @property pos Direct motor to rotate based on position
- * @constructor Create empty Move climber
  */
 class MoveClimber(val pos: Constants.ClimberPosition): CommandBase() {
   init {
