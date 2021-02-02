@@ -18,10 +18,10 @@ class ShootCommand : CommandBase() {
 
   override fun initialize(){
     //make distance not private if we want to use a different number for the threshold
-    when(Vision.currentDistance){
-      Vision.DistanceState.LINE -> Shooter.solenoid.set(DoubleSolenoid.Value.kReverse)
-      Vision.DistanceState.NEAR -> Shooter.solenoid.set(DoubleSolenoid.Value.kReverse)
-      else -> Shooter.solenoid.set(DoubleSolenoid.Value.kForward)
+    Shooter.hoodState = when(Vision.currentDistance){
+      Vision.DistanceState.LINE -> Shooter.HoodPosition.RETRACTED
+      Vision.DistanceState.NEAR -> Shooter.HoodPosition.RETRACTED
+      else -> Shooter.HoodPosition.EXTENDED
     }
 
     Shooter.targetVelocity = when(Vision.currentDistance) {

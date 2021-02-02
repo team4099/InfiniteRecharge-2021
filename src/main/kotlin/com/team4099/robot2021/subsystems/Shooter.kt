@@ -18,7 +18,17 @@ object Shooter : SubsystemBase() {
 
   private val shooterFollower = TalonFX(Constants.Shooter.SHOOTER_FOLLOWER_ID)
 
-  val solenoid = DoubleSolenoid(0,1)
+  private val solenoid = DoubleSolenoid(0,1)
+
+  enum class HoodPosition(val pos: DoubleSolenoid.Value){
+    EXTENDED(DoubleSolenoid.Value.kForward), RETRACTED(DoubleSolenoid.Value.kReverse)
+  }
+
+  var hoodState = HoodPosition.RETRACTED
+    set(value){
+      field = value
+      solenoid.set(hoodState.pos)
+    }
 
   init {
     shooterMotor.configFactoryDefault()
