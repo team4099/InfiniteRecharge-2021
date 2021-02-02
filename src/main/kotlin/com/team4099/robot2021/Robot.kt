@@ -13,7 +13,6 @@ import com.team4099.robot2021.commands.intake.IntakeCommand
 import com.team4099.robot2021.subsystems.Intake
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
-import com.team4099.robot2021.config.ControlBoard
 import com.team4099.robot2021.subsystems.Climber
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
