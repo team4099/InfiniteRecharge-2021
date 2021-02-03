@@ -1,22 +1,24 @@
 package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
-import com.team4099.robot2021.commands.MoveClimber
-import com.team4099.robot2021.commands.climber.LockClimber
-import com.team4099.robot2021.commands.climber.UnlockClimber
+import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.feeder.FeederBeamBreak
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
 import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.commands.intake.IntakeCommand
+import com.team4099.robot2021.commands.shooter.ShootCommand
+import com.team4099.robot2021.commands.shooter.SpinUpCommand
+import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.subsystems.Intake
+import com.team4099.robot2021.subsystems.Shooter
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
-import com.team4099.robot2021.subsystems.Climber
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.InstantCommand
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
 import kotlin.math.pow
 
 object Robot : TimedRobot() {
@@ -40,6 +42,16 @@ object Robot : TimedRobot() {
     Intake.defaultCommand = IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
     ControlBoard.runIntakeIn.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT).alongWith(FeederBeamBreak()));
     ControlBoard.runIntakeOut.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT).alongWith(FeederCommand(Feeder.FeederState.BACKWARD)));
+    
+    Climber.defaultCommand = LockClimber()
+    ControlBoard.climberHigh.whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
+    ControlBoard.climberLow.whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
+
+    Shooter.defaultCommand = ShooterIdleCommand()
+    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
+    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
+
+    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
   }
 
   private val autonomousCommand = InstantCommand()
@@ -50,9 +62,6 @@ object Robot : TimedRobot() {
 
   override fun teleopInit() {
     autonomousCommand.cancel()
-    Climber.defaultCommand = LockClimber()
-    ControlBoard.climberHigh.whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
-    ControlBoard.climberLow.whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
   }
 
   override fun robotPeriodic() {

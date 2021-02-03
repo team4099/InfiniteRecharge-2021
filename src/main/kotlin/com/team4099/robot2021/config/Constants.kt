@@ -1,6 +1,9 @@
 package com.team4099.robot2021.config
 
-import com.team4099.lib.units.derived.Angle
+import com.team4099.lib.units.base.inches
+import com.team4099.lib.units.derived.degrees
+import com.team4099.lib.units.derived.rotations
+import com.team4099.lib.units.perMinute
 import edu.wpi.first.wpilibj.DoubleSolenoid
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.meters
@@ -55,16 +58,73 @@ object Constants {
     const val ARM_SOLENOID_PORT_2 = 1 //temp
     const val TAB = "Intake"
 
-    enum class IntakeState (val speed: Double){
+    enum class IntakeState(val speed: Double) {
       DEFAULT(0.0),
       IN(1.0),
       OUT(-1.0)
     }
 
-    enum class ArmPosition (val position: DoubleSolenoid.Value?){
+    enum class ArmPosition(val position: DoubleSolenoid.Value?) {
       OUT(DoubleSolenoid.Value.kReverse),
       IN(DoubleSolenoid.Value.kForward),
       DEFAULT(DoubleSolenoid.Value.kOff);
+    }
+
+  }
+
+  object Shooter {
+    const val SHOOTER_MOTOR_ID = 0
+    const val SHOOTER_FOLLOWER_ID = 0
+
+    const val SOLENOID_FORWARD_CHANNEL = 0
+    const val SOLENOID_REVERSE_CHANNEL = 1
+
+    val TARGET_VELOCITY = 0.rotations.perMinute
+    val VELOCITY_TOLERANCE = 60.rotations.perMinute
+
+    const val SHOOTER_KS = 0.0
+    const val SHOOTER_KV = 0.0
+
+    const val SHOOTER_KP = 0.0
+    const val SHOOTER_KI = 0.0
+    const val SHOOTER_KD = 0.0
+
+    val LINE_VELOCITY = 4600.0.rotations.perMinute
+    val NEAR_VELOCITY = 4700.0.rotations.perMinute
+    val MID_VELOCITY = 5300.0.rotations.perMinute
+    val FAR_VELOCITY = 5700.0.rotations.perMinute
+
+    val LINE_DISTANCE = 100.0.inches
+    val NEAR_DISTANCE = 130.0.inches
+    val MID_DISTANCE = 249.0.inches
+
+    //val HOOD_THRESHOLD = 0.0.inches
+  }
+
+  object Vision {
+    const val DRIVER_PIPELINE_ID = 1
+    const val TARGETING_PIPELINE_ID = 0
+    val TARGET_HEIGHT = 98.25.inches
+
+    val CLOSE_CAMERA_HEIGHT = 0.0.inches
+    val CLOSE_CAMERA_ANGLE = 0.0.degrees
+    val FAR_CAMERA_HEIGHT = 35.0.inches
+    val FAR_CAMERA_ANGLE = 24.0.degrees
+
+    val CAMERA_DIST_THRESHOLD = 55.0.inches
+
+    val MAX_DIST_ERROR = 0.1.inches
+    val MAX_ANGLE_ERROR = 1.0.degrees
+
+    const val MIN_TURN_COMMAND = 0.0
+
+    object TurnGains {
+      const val KP = 0.0
+      const val KI = 0.0
+      const val KD = 0.0
+
+      val MAX_VELOCITY = 0.0.degrees.perSecond
+      val MAX_ACCEL = 0.0.degrees.perSecond.perSecond
     }
   }
   

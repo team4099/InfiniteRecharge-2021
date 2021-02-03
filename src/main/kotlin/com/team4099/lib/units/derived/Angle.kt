@@ -21,4 +21,9 @@ val Angle.inDegrees : Double get() = value
 val Angle.inRadians : Double get() = Math.toDegrees(value)
 val Angle.inRotations : Double get() = value / (2 * PI)
 
+val Angle.sin : Double get() = kotlin.math.sin(value)
+val Angle.cos : Double get() = kotlin.math.cos(value)
+val Angle.tan : Double get() = kotlin.math.tan(value)
+
 operator fun Angle.times(o: Length): Length = o * inRadians
+
