@@ -89,10 +89,8 @@ object Feeder:SubsystemBase(){
         ballCount--
       }
     }
-    if(topLastStage != topBeamBroken && !topBeamBroken) {
-      if (floorMotor.motorOutputPercent > 0) {
-        ballCount--
-      }
+    if(topLastStage != topBeamBroken && !topBeamBroken && verticalMotor.motorOutputPercent > 0) {
+      ballCount--
     }
     bottomLastStage = bottomBeamBroken
     topLastStage = topBeamBroken
