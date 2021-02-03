@@ -18,7 +18,7 @@ object Shooter : SubsystemBase() {
 
   private val shooterFollower = TalonFX(Constants.Shooter.SHOOTER_FOLLOWER_ID)
 
-  private val solenoid = DoubleSolenoid(0,1)
+  private val solenoid = DoubleSolenoid(Constants.Shooter.SOLENOID_FORWARD_CHANNEL,Constants.Shooter.SOLENOID_REVERSE_CHANNEL)
 
   enum class HoodPosition(val pos: DoubleSolenoid.Value){
     EXTENDED(DoubleSolenoid.Value.kForward), RETRACTED(DoubleSolenoid.Value.kReverse)
