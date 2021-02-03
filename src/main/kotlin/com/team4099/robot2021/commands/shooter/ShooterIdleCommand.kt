@@ -7,21 +7,18 @@ import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj2.command.CommandBase
 
 class ShooterIdleCommand : CommandBase() {
-  init{
+  init {
     addRequirements(Shooter)
   }
 
-  override fun initialize(){
+  override fun initialize() {
     Shooter.setOpenLoopPower(0.0)
     Vision.pipeline = Constants.Vision.DRIVER_PIPELINE_ID
-    //Vision.camera.setDriverMode(true)
-    Logger.addEvent("ShooterIdleCommand","Started shooter idle command")
+    // Vision.camera.setDriverMode(true)
+    Logger.addEvent("ShooterIdleCommand", "Started shooter idle command")
   }
-  override fun execute(){
-
-  }
-  override fun isFinished() : Boolean {
+  override fun execute() {}
+  override fun isFinished(): Boolean {
     return false
   }
-
 }

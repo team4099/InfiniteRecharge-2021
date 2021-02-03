@@ -1,14 +1,14 @@
 package com.team4099.robot2021.config
 
+import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.inches
+import com.team4099.lib.units.base.meters
+import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.perMinute
-import edu.wpi.first.wpilibj.DoubleSolenoid
-import com.team4099.lib.units.base.Length
-import com.team4099.lib.units.base.meters
-import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.perSecond
+import edu.wpi.first.wpilibj.DoubleSolenoid
 
 object Constants {
   object Universal {
@@ -26,11 +26,9 @@ object Constants {
       MULE
     }
 
-    val ROBOT_ID_MAP = mapOf<Int, RobotName>(
-      0 to RobotName.COMPETITION,
-      1 to RobotName.PRACTICE,
-      2 to RobotName.MULE
-    )
+    val ROBOT_ID_MAP =
+        mapOf<Int, RobotName>(
+            0 to RobotName.COMPETITION, 1 to RobotName.PRACTICE, 2 to RobotName.MULE)
   }
 
   object Joysticks {
@@ -45,17 +43,17 @@ object Constants {
   object Feeder {
     const val FLOOR_ID = 0
     const val VERTICAL_ID = 0
-    const val FEEDER_POWER = 1.0;
+    const val FEEDER_POWER = 1.0
 
-    const val TOP_DIO_PIN = 4;
-    const val BOTTOM_DIO_PIN = 9;
-    const val TAB = "Feeder";
+    const val TOP_DIO_PIN = 4
+    const val BOTTOM_DIO_PIN = 9
+    const val TAB = "Feeder"
   }
 
   object Intake {
-    const val INTAKE_MOTOR = 0 //temp
-    const val ARM_SOLENOID_PORT_1 = 0 //temp
-    const val ARM_SOLENOID_PORT_2 = 1 //temp
+    const val INTAKE_MOTOR = 0 // temp
+    const val ARM_SOLENOID_PORT_1 = 0 // temp
+    const val ARM_SOLENOID_PORT_2 = 1 // temp
     const val TAB = "Intake"
 
     enum class IntakeState(val speed: Double) {
@@ -67,9 +65,8 @@ object Constants {
     enum class ArmPosition(val position: DoubleSolenoid.Value?) {
       OUT(DoubleSolenoid.Value.kReverse),
       IN(DoubleSolenoid.Value.kForward),
-      DEFAULT(DoubleSolenoid.Value.kOff);
+      DEFAULT(DoubleSolenoid.Value.kOff)
     }
-
   }
 
   object Shooter {
@@ -98,7 +95,7 @@ object Constants {
     val NEAR_DISTANCE = 130.0.inches
     val MID_DISTANCE = 249.0.inches
 
-    //val HOOD_THRESHOLD = 0.0.inches
+    // val HOOD_THRESHOLD = 0.0.inches
   }
 
   object Vision {
@@ -127,13 +124,13 @@ object Constants {
       val MAX_ACCEL = 0.0.degrees.perSecond.perSecond
     }
   }
-  
+
   object Climber {
-    val CLIMBER_R_ARM_SPARKMAX_ID = 6 //right arm
-    val CLIMBER_L_ARM_SPARKMAX_ID = 5 //left arm
+    val CLIMBER_R_ARM_SPARKMAX_ID = 6 // right arm
+    val CLIMBER_L_ARM_SPARKMAX_ID = 5 // left arm
     val CLIMBER_SENSOR_LINEARMECH_GEARRATIO = 8.4
-    val CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER = .0508.meters //diameter: .0508 meters = 2 in
-    val CLIMBER_SOLENOID_ACTUATIONSTATE = 0 //this is prolly not the right name for this parameter
+    val CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER = .0508.meters // diameter: .0508 meters = 2 in
+    val CLIMBER_SOLENOID_ACTUATIONSTATE = 0 // this is prolly not the right name for this parameter
     val CLIMBER_P = 0.1
     val CLIMBER_I = 0.1
     val CLIMBER_D = 0.1
@@ -145,7 +142,6 @@ object Constants {
 
   enum class ClimberPosition(val length: Length) {
     LOW(0.meters),
-    HIGH(1.0414.meters) //Climber fulled extended: 1.0414 meters = 41 in
+    HIGH(1.0414.meters) // Climber fulled extended: 1.0414 meters = 41 in
   }
-
 }
