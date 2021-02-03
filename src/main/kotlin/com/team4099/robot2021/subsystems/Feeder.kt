@@ -79,16 +79,22 @@ object Feeder:SubsystemBase(){
     }
 
   var ballCount : Int = 0
-  private var stage : Boolean = false
+  private var bottomLastStage : Boolean = bottomBeamBroken
+  private var topLastStage : Boolean = topBeamBroken
   override fun periodic() {
-    if(floorMotor.motorOutputPercent > 0) {
-      if(bottomBeamBroken) stage = true
-      else {
-        if(stage) {
-          ballCount++
-          stage = false
-        }
+    if(bottomLastStage != bottomBeamBroken && !bottomBeamBroken) {
+      if (floorMotor.motorOutputPercent > 0) {
+        ballCount++
+      } else if (floorMotor.motorOutputPercent < 0) {
+        ballCount--
       }
     }
+    if(topLastStage != topBeamBroken && !topBeamBroken) {
+      if (floorMotor.motorOutputPercent > 0) {
+        ballCount--
+      }
+    }
+    bottomLastStage = bottomBeamBroken
+    topLastStage = topBeamBroken
   }
 }
