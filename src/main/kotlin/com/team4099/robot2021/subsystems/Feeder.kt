@@ -2,7 +2,11 @@ package com.team4099.robot2021.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
+import com.team4099.lib.hal.Clock
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.units.base.Time
+import com.team4099.lib.units.base.inSeconds
+import com.team4099.lib.units.base.seconds
 import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj2.command.SubsystemBase
@@ -73,4 +77,18 @@ object Feeder:SubsystemBase(){
       floorMotor.set(ControlMode.PercentOutput, feederState.floorMotorPower)
       verticalMotor.set(ControlMode.PercentOutput, feederState.verticalMotorPower)
     }
+
+  var ballCount : Int = 0
+  private var stage : Boolean = false
+  override fun periodic() {
+    if(floorMotor.motorOutputPercent > 0) {
+      if(bottomBeamBroken) stage = true
+      else {
+        if(stage) {
+          ballCount++
+          stage = false
+        }
+      }
+    }
+  }
 }
