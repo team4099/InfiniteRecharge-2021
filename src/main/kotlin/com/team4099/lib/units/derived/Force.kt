@@ -29,31 +29,74 @@ import com.team4099.lib.units.zepto
 import com.team4099.lib.units.zeta
 
 typealias Newton = Fraction<Product<Kilogram, Meter>, Squared<Second>>
+
 typealias Force = Value<Newton>
 
-val Double.newtons get() = Force(this)
+val Double.newtons
+  get() = Force(this)
 
-val Number.newtons get() = Force(this.toDouble())
+val Number.newtons
+  get() = Force(this.toDouble())
 
-val Force.inNewtons : Double get() = value
+val Force.inNewtons: Double
+  get() = value
 
-val Force.inYottanewtons : Double get() = value.yotta
-val Force.inZetanewtons : Double get() = value.zeta
-val Force.inExanewtons : Double get() = value.exa
-val Force.inPetanewtons : Double get() = value.peta
-val Force.inTeranewtons : Double get() = value.tera
-val Force.inGiganewtons : Double get() = value.giga
-val Force.inMeganewtons : Double get() = value.mega
-val Force.inKilonewtons : Double get() = value.kilo
-val Force.inHectonewtons : Double get() = value.hecto
-val Force.inDecanewtons : Double get() = value.deca
-val Force.inDecinewtons : Double get() = value.deci
-val Force.inCentinewtons : Double get() = value.centi
-val Force.inMillinewtons : Double get() = value.milli
-val Force.inMicronewtons : Double get() = value.micro
-val Force.inNanonewtons : Double get() = value.nano
-val Force.inPiconewtons : Double get() = value.pico
-val Force.inFemtonewtons : Double get() = value.femto
-val Force.inAttonewtons : Double get() = value.atto
-val Force.inZeptonewtons : Double get() = value.zepto
-val Force.inYoctonewtons : Double get() = value.yocto
+val Force.inYottanewtons: Double
+  get() = value.yotta
+
+val Force.inZetanewtons: Double
+  get() = value.zeta
+
+val Force.inExanewtons: Double
+  get() = value.exa
+
+val Force.inPetanewtons: Double
+  get() = value.peta
+
+val Force.inTeranewtons: Double
+  get() = value.tera
+
+val Force.inGiganewtons: Double
+  get() = value.giga
+
+val Force.inMeganewtons: Double
+  get() = value.mega
+
+val Force.inKilonewtons: Double
+  get() = value.kilo
+
+val Force.inHectonewtons: Double
+  get() = value.hecto
+
+val Force.inDecanewtons: Double
+  get() = value.deca
+
+val Force.inDecinewtons: Double
+  get() = value.deci
+
+val Force.inCentinewtons: Double
+  get() = value.centi
+
+val Force.inMillinewtons: Double
+  get() = value.milli
+
+val Force.inMicronewtons: Double
+  get() = value.micro
+
+val Force.inNanonewtons: Double
+  get() = value.nano
+
+val Force.inPiconewtons: Double
+  get() = value.pico
+
+val Force.inFemtonewtons: Double
+  get() = value.femto
+
+val Force.inAttonewtons: Double
+  get() = value.atto
+
+val Force.inZeptonewtons: Double
+  get() = value.zepto
+
+val Force.inYoctonewtons: Double
+  get() = value.yocto

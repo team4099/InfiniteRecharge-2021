@@ -2,28 +2,19 @@ package com.team4099.lib.geometry
 
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.inMeters
-import com.team4099.lib.units.base.inSeconds
 import com.team4099.lib.units.base.meters
-import com.team4099.lib.units.derived.radians
-import com.team4099.lib.units.perSecond
 import edu.wpi.first.wpilibj.geometry.Translation2d
-import edu.wpi.first.wpilibj.geometry.Twist2d
 import kotlin.math.hypot
-import kotlin.math.pow
-import kotlin.math.sqrt
 
 /**
- * Represents a translation in 3d space.
- * This object can be used to represent a point or a vector.
+ * Represents a translation in 3d space. This object can be used to represent a point or a vector.
  *
- * <p>This assumes that you are using conventional mathematical axes.
- * When the robot is placed on the origin, facing toward the X direction,
- * moving forward increases the X, moving to the left increases the Y,
- * and moving upwards increases the Z.
+ * <p>This assumes that you are using conventional mathematical axes. When the robot is placed on
+ * the origin, facing toward the X direction, moving forward increases the X, moving to the left
+ * increases the Y, and moving upwards increases the Z.
  */
 data class Translation(val x: Length, val y: Length) {
-  constructor(translation: Translation2d) :
-    this(translation.x.meters, translation.y.meters)
+  constructor(translation: Translation2d) : this(translation.x.meters, translation.y.meters)
 
   val translation2d
     get() = Translation2d(x.inMeters, y.inMeters)
@@ -39,7 +30,7 @@ data class Translation(val x: Length, val y: Length) {
     return Translation(x - other.x, y - other.y)
   }
 
-  operator fun times(scalar: Double) : Translation {
+  operator fun times(scalar: Double): Translation {
     return Translation(x * scalar, y * scalar)
   }
 
@@ -48,7 +39,7 @@ data class Translation(val x: Length, val y: Length) {
   }
 
   operator fun unaryMinus(): Translation {
-    return Translation(x*-1, y*-1)
+    return Translation(x * -1, y * -1)
   }
 
   fun normalize(): Translation {
