@@ -1,6 +1,5 @@
 package com.team4099.robot2021.config
 
-import com.team4099.lib.joystick.Gamepad
 import com.team4099.lib.joystick.XboxOneGamepad
 import edu.wpi.first.wpilibj2.command.button.Trigger
 
@@ -50,13 +49,13 @@ object ControlBoard {
     get() = driver.dPadDown
 
   val runFeederIn = Trigger{ operator.dPadDown};
-
   val runFeederOut = Trigger{ operator.dPadUp};
-
   val shoot = Trigger{ operator.xButton }
 
   val stopShooting = Trigger{ operator.yButton }
 
   val spinUpShooter = Trigger{ operator.dPadRight }
-
+  
+  val climberHigh = Trigger { driver.dPadUp }
+  val climberLow = Trigger { driver.dPadDown }
 }
