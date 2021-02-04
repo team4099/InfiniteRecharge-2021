@@ -92,6 +92,17 @@ object PathStore {
   val galacticSearchABlue: Trajectory = TrajectoryGenerator.generateTrajectory(
     Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
     listOf(
+      navPoints["E"]!![6].translation2d,
+      navPoints["B"]!![7].translation2d,
+      navPoints["C"]!![9].translation2d
+    ),
+    Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
+  )
+
+  val galacticSearchBRed: Trajectory = TrajectoryGenerator.generateTrajectory(
+    Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
+    listOf(
       navPoints["B"]!![3].translation2d,
       navPoints["D"]!![5].translation2d,
       navPoints["B"]!![7].translation2d
@@ -100,7 +111,7 @@ object PathStore {
     config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
   )
 
-  val galacticSearchBRed: Trajectory = TrajectoryGenerator.generateTrajectory(
+  val galacticSearchBBlue: Trajectory = TrajectoryGenerator.generateTrajectory(
     Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
     listOf(
       navPoints["D"]!![6].translation2d,
