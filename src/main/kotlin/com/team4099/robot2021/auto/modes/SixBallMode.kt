@@ -3,9 +3,11 @@ package com.team4099.robot2021.auto.modes
 import com.team4099.robot2021.auto.PathStore
 import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
 import com.team4099.robot2021.commands.intake.IntakeCommand
+import com.team4099.robot2021.commands.shooter.ShootAllCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Drivetrain
 import com.team4099.robot2021.subsystems.Intake
+import com.team4099.robot2021.subsystems.Shooter
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup
 
@@ -17,7 +19,7 @@ class SixBallMode : SequentialCommandGroup(){
 
 
     addCommands(
-      ShootAction(),
+      ShootAllCommand(),
 
       ParallelRaceGroup(
         SequentialCommandGroup(
@@ -30,7 +32,7 @@ class SixBallMode : SequentialCommandGroup(){
 
       AutoDriveCommand(PathStore.fromNearTrench),
 
-      ShootAction(),
+      ShootAllCommand()
     )
   }
 }
