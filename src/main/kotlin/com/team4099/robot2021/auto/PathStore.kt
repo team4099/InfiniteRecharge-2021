@@ -75,7 +75,7 @@ object PathStore {
   private val yellow = Pose(navPoints["C"]!![5] + Translation(15.inches, 0.feet), 0.degrees).pose2d
   private val red = Pose(navPoints["C"]!![8] + Translation(15.inches, 0.feet), 0.degrees).pose2d
   private val blue = Pose(navPoints["C"]!![6] + Translation(15.inches, 0.feet), 0.degrees).pose2d
-  
+
   val galacticSearchARed: Trajectory = TrajectoryGenerator.generateTrajectory(
     Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
     listOf(
