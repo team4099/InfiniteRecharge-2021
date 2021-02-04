@@ -115,7 +115,4 @@ object Vision : SubsystemBase() {
       else -> DistanceState.FAR
     }
 
-  
-
-
 }
