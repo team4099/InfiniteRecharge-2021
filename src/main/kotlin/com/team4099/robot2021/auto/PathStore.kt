@@ -75,130 +75,152 @@ object PathStore {
   private val yellow = Pose(navPoints["C"]!![5] + Translation(15.inches, 0.feet), 0.degrees).pose2d
   private val red = Pose(navPoints["C"]!![8] + Translation(15.inches, 0.feet), 0.degrees).pose2d
   private val blue = Pose(navPoints["C"]!![6] + Translation(15.inches, 0.feet), 0.degrees).pose2d
+  
+  val galacticSearchARed: Trajectory = TrajectoryGenerator.generateTrajectory(
+    Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
+    listOf(
+      navPoints["C"]!![3].translation2d,
+      navPoints["D"]!![5].translation2d,
+      navPoints["A"]!![6].translation2d
+    ),
+    Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
+  )
 
-  val galacticSearchARed: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
-          listOf(
-              navPoints["C"]!![3].translation2d,
-              navPoints["D"]!![5].translation2d,
-              navPoints["A"]!![6].translation2d),
-          Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC))
+  val galacticSearchABlue: Trajectory = TrajectoryGenerator.generateTrajectory(
+    Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
+    listOf(
+      navPoints["E"]!![6].translation2d,
+      navPoints["B"]!![7].translation2d,
+      navPoints["C"]!![9].translation2d
+    ),
+    Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
+  )
 
-  val galacticSearchABlue: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
-          listOf(
-              navPoints["B"]!![3].translation2d,
-              navPoints["D"]!![5].translation2d,
-              navPoints["B"]!![7].translation2d),
-          Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC))
+  val galacticSearchBRed: Trajectory = TrajectoryGenerator.generateTrajectory(
+    Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
+    listOf(
+      navPoints["B"]!![3].translation2d,
+      navPoints["D"]!![5].translation2d,
+      navPoints["B"]!![7].translation2d
+    ),
+    Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
+  )
 
-  val galacticSearchBRed: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
-          listOf(
-              navPoints["D"]!![6].translation2d,
-              navPoints["B"]!![8].translation2d,
-              navPoints["D"]!![10].translation2d),
-          Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC))
+  val galacticSearchBBlue: Trajectory = TrajectoryGenerator.generateTrajectory(
+    Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
+    listOf(
+      navPoints["D"]!![6].translation2d,
+      navPoints["B"]!![8].translation2d,
+      navPoints["D"]!![10].translation2d
+    ),
+    Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
+  )
 
-  val toNearTrench: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          initLinePowerPort,
-          listOf(),
-          nearTrenchEdge,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC))
+  val toNearTrench: Trajectory = TrajectoryGenerator.generateTrajectory(
+    initLinePowerPort,
+    listOf(),
+    nearTrenchEdge,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC)
+  )
 
-  val intakeInNearTrench: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          nearTrenchEdge,
-          listOf(),
-          nearTrenchEnd,
-          slowConfig.setStartVelocity(Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC)
-              .setEndVelocity(0.0))
+  val intakeInNearTrench: Trajectory = TrajectoryGenerator.generateTrajectory(
+    nearTrenchEdge,
+    listOf(),
+    nearTrenchEnd,
+    slowConfig.setStartVelocity(Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC).setEndVelocity(0.0)
+  )
 
-  val fromNearTrench: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          nearTrenchEnd,
-          listOf(),
-          initLinePowerPort,
-          reversedConfig.setStartVelocity(0.0).setEndVelocity(0.0))
+  val fromNearTrench: Trajectory = TrajectoryGenerator.generateTrajectory(
+    nearTrenchEnd,
+    listOf(),
+    initLinePowerPort,
+    reversedConfig.setStartVelocity(0.0).setEndVelocity(0.0)
+  )
 
-  val toFarTrench: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          initLineFarTrench, listOf(), farTrench, config.setStartVelocity(0.0).setEndVelocity(0.0))
+  val toFarTrench: Trajectory = TrajectoryGenerator.generateTrajectory(
+    initLineFarTrench,
+    listOf(),
+    farTrench,
+    config.setStartVelocity(0.0).setEndVelocity(0.0)
+  )
 
-  val fromFarTrench: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          farTrench,
-          listOf(),
-          initLinePowerPort,
-          reversedConfig.setStartVelocity(0.0).setEndVelocity(0.0))
+  val fromFarTrench: Trajectory = TrajectoryGenerator.generateTrajectory(
+    farTrench,
+    listOf(),
+    initLinePowerPort,
+    reversedConfig.setStartVelocity(0.0).setEndVelocity(0.0)
+  )
 
-  val toRendezvousPoint2Balls: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          initLinePowerPort,
-          listOf(),
-          rendezvousPoint2Balls,
-          config.setStartVelocity(0.0).setEndVelocity(0.0))
+  val toRendezvousPoint2Balls: Trajectory = TrajectoryGenerator.generateTrajectory(
+    initLinePowerPort,
+    listOf(),
+    rendezvousPoint2Balls,
+    config.setStartVelocity(0.0).setEndVelocity(0.0)
+  )
 
-  val fromRendezvousPoint2BallsToPowerPort: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          rendezvousPoint2Balls,
-          listOf(),
-          initLinePowerPort,
-          reversedConfig.setStartVelocity(0.0).setEndVelocity(0.0))
+  val fromRendezvousPoint2Balls: Trajectory = TrajectoryGenerator.generateTrajectory(
+    rendezvousPoint2Balls,
+    listOf(),
+    initLinePowerPort,
+    reversedConfig.setStartVelocity(0.0).setEndVelocity(0.0)
+  )
 
-  val fromGreentoReintroduction: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          green, listOf(), reintroductionZone, config.setStartVelocity(0.0).setEndVelocity(0.0))
+  val fromGreentoReintroduction: Trajectory = TrajectoryGenerator.generateTrajectory(
+    green,
+    listOf(),
+    reintroductionZone,
+    config.setStartVelocity(0.0).setEndVelocity(0.0)
+  )
 
-  val fromYellowtoReintroduction: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          yellow, listOf(), reintroductionZone, config.setStartVelocity(0.0).setEndVelocity(0.0))
-  val fromBluetoReintroduction: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          blue,
-          listOf(navPoints["C"]!![6].translation2d),
-          reintroductionZone,
-          config.setStartVelocity(0.0).setEndVelocity(0.0))
+  val fromYellowtoReintroduction: Trajectory = TrajectoryGenerator.generateTrajectory(
+    yellow,
+    listOf(),
+    reintroductionZone,
+    config.setStartVelocity(0.0).setEndVelocity(0.0)
+  )
+  val fromBluetoReintroduction: Trajectory = TrajectoryGenerator.generateTrajectory(
+    blue,
+    listOf(navPoints["C"]!![6].translation2d),
+    reintroductionZone,
+    config.setStartVelocity(0.0).setEndVelocity(0.0)
+  )
 
-  val fromRedtoReintroduction: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          red,
-          listOf(navPoints["C"]!![8].translation2d),
-          reintroductionZone,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC))
+  val fromRedtoReintroduction: Trajectory = TrajectoryGenerator.generateTrajectory(
+    red,
+    listOf(navPoints["C"]!![8].translation2d),
+    reintroductionZone,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
+  )
 
-  val fromIntrotoGreen: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          reintroductionZone,
-          listOf(navPoints["C"]!![10].translation2d),
-          green,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC))
+  val fromIntrotoGreen: Trajectory = TrajectoryGenerator.generateTrajectory(
+    reintroductionZone,
+    listOf(navPoints["C"]!![10].translation2d),
+    green,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
+  )
 
-  val fromIntrotoYellow: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          reintroductionZone,
-          listOf(navPoints["C"]!![10].translation2d),
-          yellow,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC))
+  val fromIntrotoYellow: Trajectory = TrajectoryGenerator.generateTrajectory(
+    reintroductionZone,
+    listOf(navPoints["C"]!![10].translation2d),
+    yellow,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
+  )
 
-  val fromIntrotoBlue: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          reintroductionZone,
-          listOf(navPoints["C"]!![10].translation2d),
-          blue,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC))
+  val fromIntrotoBlue: Trajectory = TrajectoryGenerator.generateTrajectory(
+    reintroductionZone,
+    listOf(navPoints["C"]!![10].translation2d),
+    blue,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
+  )
 
-  val fromIntrotoRed: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          reintroductionZone,
-          listOf(navPoints["C"]!![10].translation2d),
-          red,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC))
+  val fromIntrotoRed: Trajectory = TrajectoryGenerator.generateTrajectory(
+    reintroductionZone,
+    listOf(navPoints["C"]!![10].translation2d),
+    red,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
+  )
 }
