@@ -190,4 +190,11 @@ object Constants {
     LOW(0.meters),
     HIGH(1.0414.meters) //Climber fulled extended: 1.0414 meters = 41 in
   }
+
+  object BallVision {
+    //TODO: change these values based on testing
+    val CENTER_YAW_THRESHOLD = 5.degrees
+    val PATH_A_AREA_THRESHOLD = 0.2
+  }
+
 }
