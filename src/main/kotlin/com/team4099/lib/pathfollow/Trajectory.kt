@@ -3,6 +3,7 @@ package com.team4099.lib.pathfollow
 import com.team4099.lib.geometry.Pose
 import com.team4099.lib.geometry.Translation
 import com.team4099.lib.units.LinearVelocity
+import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inMetersPerSecondPerSecond
 import edu.wpi.first.wpilibj.spline.PoseWithCurvature
@@ -33,6 +34,8 @@ class Trajectory(
       false
     ).states
 
-    val headingTargets =
+    val headingTimeMap = path.headingPointMap.keys.map { it ->
+      Pair(states[it].timeSeconds.seconds, path.headingPointMap[it])
+    }.toMap()
   }
 }
