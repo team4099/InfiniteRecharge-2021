@@ -9,16 +9,13 @@ import com.team4099.robot2021.commands.feeder.FeederBeamBreak
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
-import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.commands.intake.IntakeCommand
 import com.team4099.robot2021.commands.shooter.ShootCommand
 import com.team4099.robot2021.commands.shooter.SpinUpCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
-import com.team4099.robot2021.subsystems.Intake
-import com.team4099.robot2021.subsystems.Shooter
 import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ZeroSensorsCommand
-import com.team4099.robot2021.subsystems.Climber
+import com.team4099.robot2021.subsystems.*
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
@@ -48,7 +45,7 @@ object Robot : TimedRobot() {
     Intake.defaultCommand = IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
     ControlBoard.runIntakeIn.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT).alongWith(FeederBeamBreak()));
     ControlBoard.runIntakeOut.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT).alongWith(FeederCommand(Feeder.FeederState.BACKWARD)));
-    
+
     Climber.defaultCommand = LockClimber()
     ControlBoard.climberHigh.whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
     ControlBoard.climberLow.whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
@@ -56,6 +53,8 @@ object Robot : TimedRobot() {
     Shooter.defaultCommand = ShooterIdleCommand()
     ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
     ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
+
+    Drivetrain.defaultCommand = TeleopDriveCommand({ ControlBoard.strafe }, { ControlBoard.forward }, { ControlBoard.turn })
 
     ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
   }
@@ -73,6 +72,5 @@ object Robot : TimedRobot() {
   override fun robotPeriodic() {
     CommandScheduler.getInstance().run()
     Logger.saveLogs()
-    TeleopDriveCommand({ ControlBoard.strafe }, { ControlBoard.forward }, { ControlBoard.turn })
   }
 }
