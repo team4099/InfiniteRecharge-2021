@@ -18,27 +18,62 @@ object Second : UnitKey
 typealias Time = Value<Second>
 
 internal const val SECONDS_PER_MINUTE = 60
+
 internal const val SECONDS_PER_HOUR = SECONDS_PER_MINUTE * 60
 
-val Double.seconds: Time get() = Time(this)
-val Double.minutes: Time get() = Time(this * SECONDS_PER_MINUTE)
-val Double.hours: Time get() = Time(this * SECONDS_PER_HOUR)
+val Double.seconds: Time
+  get() = Time(this)
 
-val Number.seconds: Time get() = toDouble().seconds
-val Number.minutes: Time get() = toDouble().minutes
-val Number.hours: Time get() = toDouble().hours
+val Double.minutes: Time
+  get() = Time(this * SECONDS_PER_MINUTE)
 
-val Time.inSeconds : Double get() = value
-val Time.inMinutes : Double get() = value / SECONDS_PER_MINUTE
-val Time.inHours : Double get() = value / SECONDS_PER_HOUR
+val Double.hours: Time
+  get() = Time(this * SECONDS_PER_HOUR)
 
-val Time.inDeciseconds : Double get() = value.deci
-val Time.inCentiseconds : Double get() = value.centi
-val Time.inMilliseconds : Double get() = value.milli
-val Time.inMicroseconds : Double get() = value.micro
-val Time.inNanoseconds : Double get() = value.nano
-val Time.inPicoseconds : Double get() = value.pico
-val Time.inFemtoseconds : Double get() = value.femto
-val Time.inAttoseconds : Double get() = value.atto
-val Time.inZeptoseconds : Double get() = value.zepto
-val Time.inYoctoseconds : Double get() = value.yocto
+val Number.seconds: Time
+  get() = toDouble().seconds
+
+val Number.minutes: Time
+  get() = toDouble().minutes
+
+val Number.hours: Time
+  get() = toDouble().hours
+
+val Time.inSeconds: Double
+  get() = value
+
+val Time.inMinutes: Double
+  get() = value / SECONDS_PER_MINUTE
+
+val Time.inHours: Double
+  get() = value / SECONDS_PER_HOUR
+
+val Time.inDeciseconds: Double
+  get() = value.deci
+
+val Time.inCentiseconds: Double
+  get() = value.centi
+
+val Time.inMilliseconds: Double
+  get() = value.milli
+
+val Time.inMicroseconds: Double
+  get() = value.micro
+
+val Time.inNanoseconds: Double
+  get() = value.nano
+
+val Time.inPicoseconds: Double
+  get() = value.pico
+
+val Time.inFemtoseconds: Double
+  get() = value.femto
+
+val Time.inAttoseconds: Double
+  get() = value.atto
+
+val Time.inZeptoseconds: Double
+  get() = value.zepto
+
+val Time.inYoctoseconds: Double
+  get() = value.yocto

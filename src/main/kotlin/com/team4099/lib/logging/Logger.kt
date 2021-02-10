@@ -17,11 +17,11 @@ object Logger {
   private lateinit var file: Path
   private lateinit var eventsFile: Path
   private var loggingLocation: String =
-    when {
+      when {
         RobotBase.isSimulation() -> "./logs"
         File("/media/sda1/").exists() -> "/media/sda1/logs/"
         else -> "/home/lvuser/logs/"
-    }
+      }
 
   private var values: String = ""
     get() {
@@ -58,14 +58,14 @@ object Logger {
             Paths.get("${loggingLocation}test.csv")
           }
       eventsFile =
-        if (DriverStation.getInstance().isFMSAttached) {
-          Paths.get(
-            "$loggingLocation${DriverStation.getInstance().eventName}_" +
-              "${DriverStation.getInstance().matchType}" +
-              "${DriverStation.getInstance().matchNumber}Events.csv")
-        } else {
-          Paths.get("${loggingLocation}testEvents.csv")
-        }
+          if (DriverStation.getInstance().isFMSAttached) {
+            Paths.get(
+                "$loggingLocation${DriverStation.getInstance().eventName}_" +
+                    "${DriverStation.getInstance().matchType}" +
+                    "${DriverStation.getInstance().matchNumber}Events.csv")
+          } else {
+            Paths.get("${loggingLocation}testEvents.csv")
+          }
 
       if (Files.exists(file)) Files.delete(file)
       Files.createFile(file)
@@ -104,11 +104,12 @@ object Logger {
   }
 
   fun addEvent(source: String, event: String, severity: Severity = Severity.INFO) {
-    val log = "$severity,${Instant.now()},${DriverStation.getInstance().matchTime}," +
-      "($source),$event"
+    val log =
+        "$severity,${Instant.now()},${DriverStation.getInstance().matchTime}," + "($source),$event"
     events.add(log)
-    val consoleString = "[$severity][${Instant.now()}][${DriverStation.getInstance().matchTime}] " +
-      "($source): $event"
+    val consoleString =
+        "[$severity][${Instant.now()}][${DriverStation.getInstance().matchTime}] " +
+            "($source): $event"
     when (severity) {
       Severity.INFO -> println(consoleString)
       Severity.DEBUG -> println(consoleString)
