@@ -16,7 +16,6 @@ class AutoDriveCommand(private val path: Trajectory) : CommandBase() {
 
   override fun initialize() {
     Drivetrain.path = this.path
-    Drivetrain.isFieldOriented = false
   }
 
   override fun execute() {

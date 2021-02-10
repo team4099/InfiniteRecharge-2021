@@ -80,7 +80,6 @@ object Drivetrain : SubsystemBase() {
       return rawAngle.IEEErem(360.0).degrees
     }
 
-  var isFieldOriented = true
 
   private val frontLeftWheelLocation = Translation(-Constants.Drivetrain.DRIVETRAIN_WIDTH/2, Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
   private val frontRightWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH/2, Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
