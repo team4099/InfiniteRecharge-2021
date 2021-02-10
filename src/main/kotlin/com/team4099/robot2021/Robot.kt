@@ -17,6 +17,8 @@ import com.team4099.robot2021.subsystems.Climber
 import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2021.subsystems.Shooter
+import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
+import com.team4099.robot2021.commands.drivetrain.ZeroSensorsCommand
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
@@ -84,5 +86,6 @@ object Robot : TimedRobot() {
   override fun robotPeriodic() {
     CommandScheduler.getInstance().run()
     Logger.saveLogs()
+    TeleopDriveCommand({ ControlBoard.strafe }, { ControlBoard.forward }, { ControlBoard.turn })
   }
 }

@@ -11,11 +11,14 @@ object ControlBoard {
   private val driver = XboxOneGamepad(Constants.Joysticks.DRIVER_PORT)
   private val operator = XboxOneGamepad(Constants.Joysticks.SHOTGUN_PORT)
 
-  val throttle: Double
-    get() = driver.rightTriggerAxis - driver.leftTriggerAxis
+  val strafe: Double
+    get() = driver.leftXAxis
+
+  val forward: Double
+    get() = driver.leftYAxis
 
   val turn: Double
-    get() = -driver.leftXAxis
+    get() = driver.rightXAxis
 
   val sampleClimberVelocity: Double
     get() = operator.leftTriggerAxis - operator.rightTriggerAxis
