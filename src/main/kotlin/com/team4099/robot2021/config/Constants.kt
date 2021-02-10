@@ -64,7 +64,6 @@ object Constants {
     val DRIVETRAIN_LENGTH = 29.0.inches
     val DRIVETRAIN_WIDTH = 29.0.inches
 
-    const val DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 200
     val DRIVE_SETPOINT_MAX = 15.feet.perSecond
     val TURN_SETPOINT_MAX = 90.degrees.perSecond // TODO: Make sure this value is something good
 

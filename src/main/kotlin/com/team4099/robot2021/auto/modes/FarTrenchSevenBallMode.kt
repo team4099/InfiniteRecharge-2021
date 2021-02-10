@@ -30,7 +30,7 @@ class FarTrenchSevenBallMode : SequentialCommandGroup(){
         AutoDriveCommand(PathStore.toRendezvousPoint2Balls),
         IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT) //states may be wrong
       ),
-      AutoDriveCommand(PathStore.fromRendezvousPoint2Balls),
+      AutoDriveCommand(PathStore.fromRendezvousPoint2BallsToPowerPort),
       ShootCommand()
     )
   }

@@ -22,7 +22,7 @@ class EightBallMode : SequentialCommandGroup() {
         IntakeCommand(Constants.Intake.IntakeState.IN,Constants.Intake.ArmPosition.OUT)
       ),
 
-      AutoDriveCommand(PathStore.fromRendezvousPoint2Balls),
+      AutoDriveCommand(PathStore.fromRendezvousPoint2BallsToPowerPort),
 
       ShootCommand(),
 
@@ -31,7 +31,7 @@ class EightBallMode : SequentialCommandGroup() {
         IntakeCommand(Constants.Intake.IntakeState.IN,Constants.Intake.ArmPosition.IN)
       ),
 
-      AutoDriveCommand(PathStore.fromRendezvousPoint2Balls),
+      AutoDriveCommand(PathStore.fromRendezvousPoint2BallsToPowerPort),
 
       ShootCommand()
 

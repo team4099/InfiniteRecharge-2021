@@ -158,19 +158,20 @@ object Drivetrain : SubsystemBase() {
    * @param driveVector.second The linear velocity on the Y axis
    *
    */
-  fun set(angularVelocity: AngularVelocity, driveVector: Pair<LinearVelocity, LinearVelocity>) {
-    val vX = if (isFieldOriented) {
+  fun set(angularVelocity: AngularVelocity, driveVector: Pair<LinearVelocity, LinearVelocity>, fieldOriented: Boolean = true) {
+    val vX = if (fieldOriented) {
       driveVector.first * gyroAngle.cos -
         driveVector.second * gyroAngle.sin
     } else {
       driveVector.first
     }
-    val vY = if (isFieldOriented) {
+    val vY = if (fieldOriented) {
       driveVector.second * gyroAngle.cos +
         driveVector.first * gyroAngle.sin
     } else {
       driveVector.second
     }
+
     val a =
       vX - angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
     val b =
@@ -221,9 +222,11 @@ object Drivetrain : SubsystemBase() {
     // Note: ChassisSpeeds takes x as forward so it is swapped
     set(
       drivetrainSpeeds.omegaRadiansPerSecond.radians.perSecond,
-      Pair(drivetrainSpeeds.vyMetersPerSecond.meters.perSecond,drivetrainSpeeds.vxMetersPerSecond.meters.perSecond)
+      Pair(drivetrainSpeeds.vyMetersPerSecond.meters.perSecond,drivetrainSpeeds.vxMetersPerSecond.meters.perSecond),
+      fieldOriented = false
     )
   }
+
 
   /**
    * Checks if path following has reached the end of the path.

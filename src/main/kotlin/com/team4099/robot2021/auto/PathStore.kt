@@ -153,7 +153,7 @@ object PathStore {
     config.setStartVelocity(0.0).setEndVelocity(0.0)
   )
 
-  val fromRendezvousPoint2Balls: Trajectory = TrajectoryGenerator.generateTrajectory(
+  val fromRendezvousPoint2BallsToPowerPort: Trajectory = TrajectoryGenerator.generateTrajectory(
     rendezvousPoint2Balls,
     listOf(),
     initLinePowerPort,
