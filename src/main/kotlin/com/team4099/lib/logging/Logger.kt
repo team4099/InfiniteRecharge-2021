@@ -115,7 +115,7 @@ object Logger {
                 } catch (e: ClassCastException) {
                   addEvent(
                       "Logger",
-                    "Could not change value for $tab/$name due to invalid type cast.",
+                      "Could not change value for $tab/$name due to invalid type cast.",
                       Severity.ERROR)
                 }
               },
