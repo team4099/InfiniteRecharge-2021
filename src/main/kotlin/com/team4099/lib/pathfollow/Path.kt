@@ -84,7 +84,7 @@ class Path constructor(val startingPose: Pose, val endingPose: Pose) {
 
       // Map spline index for heading to point index
       val splineHeading = headingSplineMap[index]
-      if (splineHeading !== null) {
+      if (splineHeading != null) {
         headingPointMap[splinePoints.size - 1] = splineHeading
       }
     }
