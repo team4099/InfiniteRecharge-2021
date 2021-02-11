@@ -17,7 +17,7 @@ import java.util.ArrayList
  * any waypoint.
  */
 class Path constructor(val startingPose: Pose, val endingPose: Pose) {
-  val headingPointMap = mutableMapOf<Int, Angle>()
+  val headingPointMap = sortedMapOf<Int, Angle>()
   var splinePoints = mutableListOf<PoseWithCurvature>()
   private val headingSplineMap = mutableMapOf<Int, Angle>()
   private val waypoints = mutableListOf<Translation>()
@@ -67,7 +67,7 @@ class Path constructor(val startingPose: Pose, val endingPose: Pose) {
     ))
 
     // Create the vector of spline points.
-    splinePoints = mutableListOf<PoseWithCurvature>()
+    splinePoints = mutableListOf()
 
     // Add the first point to the vector.
     splinePoints.add(splines[0].getPoint(0.0))
