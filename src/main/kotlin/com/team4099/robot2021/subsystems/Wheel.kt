@@ -21,7 +21,7 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
   private val directionSensor = sparkMaxAngularMechanismSensor(directionSpark, 1.0)
   private val driveSensor = sparkMaxLinearMechanismSensor(driveSpark, 1.0, 3.inches)
 
-  private val directionAbsolute = AngularMechanismSensor(1.0,Timescale.CTRE,{encoder.velocity},{encoder.absolutePosition})
+  private val directionAbsolute = AngularMechanismSensor(1.0,Timescale.CTRE, { encoder.velocity }, { encoder.absolutePosition })
 
   // motor params
   private val driveTemp: Double
@@ -61,7 +61,7 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     }
 
   init {
-    Logger.addSource("Drivetrain", "$label Drive Output Current") { driveOutputCurrent}
+    Logger.addSource("Drivetrain", "$label Drive Output Current") { driveOutputCurrent }
     Logger.addSource("Drivetrain", "$label Direction Output Current") { directionOutputCurrent }
 
     Logger.addSource("Drivetrain", "$label Drive Temperature") { driveTemp }
@@ -73,6 +73,13 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     Logger.addSource("Drivetrain", "$label Drive Bus Voltage") { driveBusVoltage }
     Logger.addSource("Drivetrain", "$label Direction Bus Voltage") { directionBusVoltage }
 
+    directionPID.p = Constants.Vision.TurnGains.DIRECTION_KP
+    directionPID.i = Constants.Vision.TurnGains.DIRECTION_KI
+    directionPID.d = Constants.Vision.TurnGains.DIRECTION_KD
+
+    drivePID.p = Constants.Vision.TurnGains.DRIVE_KP
+    drivePID.i = Constants.Vision.TurnGains.DRIVE_KI
+    drivePID.d = Constants.Vision.TurnGains.DRIVE_KD
   }
 
 
