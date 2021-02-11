@@ -7,6 +7,7 @@ import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj.trajectory.Trajectory
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.photonvision.PhotonCamera
+import org.photonvision.PhotonTrackedTarget
 import kotlin.math.absoluteValue
 
 object BallVision : SubsystemBase() {
@@ -26,36 +27,41 @@ object BallVision : SubsystemBase() {
   }
 
   fun choosePath() : Trajectory {
-    //could implement with these variables instead
-    /*var pathA = false
-    var pathB = false
-    var redPath = false
-    var bluePath = false*/
+    var centerTarget: PhotonTrackedTarget = targets[0]
+    var closeCenterTarget: PhotonTrackedTarget = targets[0]
+    var pathA = false
 
-    //this is basically pseudocode so we can make if statements cleaner later
-    //also figure out something better than a for loop
     for (target in targets) {
       if (target.yaw.degrees.absoluteValue < Constants.BallVision.CENTER_YAW_THRESHOLD) {
-        //balls in center means path A
-        //potentially save which target this is elsewhere to refer to outside loop
-        //check area of target to see if it is red or blue (test to find values for this)
-        //could use pitch instead of camera is high enough on the robot
-        if (target.area < Constants.BallVision.PATH_A_AREA_THRESHOLD) {
-          return PathStore.galacticSearchABlue
-        } else {
-          return PathStore.galacticSearchARed
-        }
-      } else {
-        //no balls in center means path B
-        //assume the robot was placed accordingly - row A if red, row E if blue
-        if (target.yaw < 0) {
-          return PathStore.galacticSearchBBlue
-        } else {
-          return PathStore.galacticSearchBRed
-        }
+        pathA = true
+        centerTarget = target
       }
     }
 
-    return PathStore.galacticSearchARed
+    if (pathA){
+      //balls in center means path A
+      //check area of target (distance of ball) to see if it is red or blue - test to find values for this
+      //could use pitch instead if camera is high enough on the robot
+      if (centerTarget.area < Constants.BallVision.PATH_A_AREA_THRESHOLD) {
+        return PathStore.galacticSearchABlue
+      } else {
+        return PathStore.galacticSearchARed
+      }
+    } else {
+      //no balls in center means path B
+      //assume the robot was placed accordingly - row A-B if red, row D-E if blue
+      if (centerTarget.yaw < 0) {
+        return PathStore.galacticSearchBBlue
+      } else {
+        return PathStore.galacticSearchBRed
+      }
+
+      //code other options here
+      //if the robot starts in front of path B balls
+      //should be a little bit faster
+
+    }
+
   }
+
 }
