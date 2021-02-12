@@ -28,18 +28,29 @@ object BallVision : SubsystemBase() {
 
   private fun choosePath() : Trajectory {
     var centerTarget: PhotonTrackedTarget = targets[0]
+    //what is this for again
     var closeCenterTarget: PhotonTrackedTarget = targets[0]
     var pathA = false
+    var ballsOnLeft = false
+    var ballsOnRight = true
 
     for (target in targets) {
       if (target.yaw.degrees.absoluteValue < Constants.BallVision.CENTER_YAW_THRESHOLD) {
+      //comment path if using option 2
         pathA = true
         centerTarget = target
       }
+      //option 2
+      else if (target.yaw.degrees.absoluteValue < 0.degrees){
+        ballsOnLeft = true
+      }
+      else {
+        ballsOnRight = true
+      }
     }
 
-    //Option 1
-    if (pathA) {
+    //Option 1 & 2
+    /*if (pathA) {
       //balls in center means path A
       //check area of target (distance of ball) to see if it is red or blue - test to find values for this
       //could use pitch instead if camera is high enough on the robot
@@ -48,19 +59,43 @@ object BallVision : SubsystemBase() {
       } else {
         return PathStore.galacticSearchARed
       }
-    } else {
+    } else { //ELSE: Option 1 Only
       //no balls in center means path B
-      //assume the robot was placed accordingly - row A-B if red, row D-E if blue
+      //assume the robot was placed accordingly - above row B if red, below row D if blue
       if (centerTarget.yaw < 0) {
         return PathStore.galacticSearchBBlue
       } else {
         return PathStore.galacticSearchBRed
       }
+    }*/ //End Else 1
 
-      //code other options here
-      //if the robot starts in front of path B balls
-      //should be a little bit faster
+    //if the robot starts in front of path B/D balls - should be a little bit faster
+    //change trajectories accordingly!
+    //Option 2 - this formatting is awful
+    /*return when (Pair(ballsOnLeft, ballsOnRight)){
+      Pair(true,true) -> if (centerTarget.area < Constants.BallVision.PATH_A_AREA_THRESHOLD) PathStore.galacticSearchABlue
+      else PathStore.galacticSearchARed
+      Pair(true,false) -> PathStore.galacticSearchBBlue //only on left
+      Pair(false,true) -> PathStore.galacticSearchBRed //only on right
+      else -> PathStore.galacticSearchARed
+    }*/
 
+    //Option 2 again
+    if (ballsOnLeft && ballsOnRight){
+      if (centerTarget.area < Constants.BallVision.PATH_A_AREA_THRESHOLD) {
+        return PathStore.galacticSearchABlue
+      } else {
+        return PathStore.galacticSearchARed
+      }
+    }
+    else if (ballsOnLeft && !ballsOnRight){
+      return PathStore.galacticSearchBBlue
+    }
+    else if (!ballsOnLeft && ballsOnRight){
+      return PathStore.galacticSearchBRed
+    }
+    else{
+      return PathStore.galacticSearchARed
     }
 
   }
