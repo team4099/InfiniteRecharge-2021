@@ -61,8 +61,8 @@ object Constants {
     const val BACK_RIGHT_CANCODER_ID = 3 // TODO: Change this value
 
     const val WHEEL_COUNT = 4
-    val DRIVETRAIN_LENGTH = 29.0.inches
-    val DRIVETRAIN_WIDTH = 29.0.inches
+    val DRIVETRAIN_LENGTH = 22.173.inches
+    val DRIVETRAIN_WIDTH = 22.173.inches
 
     val DRIVE_SETPOINT_MAX = 15.feet.perSecond
     val TURN_SETPOINT_MAX = 90.degrees.perSecond // TODO: Make sure this value is something good
