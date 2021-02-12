@@ -38,6 +38,7 @@ object BallVision : SubsystemBase() {
       }
     }
 
+    //Option 1
     if (pathA) {
       //balls in center means path A
       //check area of target (distance of ball) to see if it is red or blue - test to find values for this
