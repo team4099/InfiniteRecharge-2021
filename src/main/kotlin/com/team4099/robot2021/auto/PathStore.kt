@@ -90,18 +90,20 @@ object PathStore {
     Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
     config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
   )
-  /*val galacticSearchARed: Trajectory = Trajectory(
+  /*
+  val ARedPath = Path(
+    Pose(navPoints["C"]!![1] + Translation(30.inches, 0.feet), 0.degrees),
+    Pose(navPoints["C"]!![11] - Translation(30.inches, 0.feet), 0.degrees)
+  )
+  ARedPath.addWaypoint(navPoints["C"]!![3].translation2d)
+  ARedPath.addWaypoint(navPoints["D"]!![5].translation2d)
+  ARedPath.addWaypoint(navPoints["A"]!![6].translation2d)
+  val galacticSearchARed: Trajectory = Trajectory(
     0.0.meters.perSecond,
-    Path(
-      Pose(navPoints["C"]!![1] + Translation(30.inches, 0.feet), 0.degrees),
-      Pose(navPoints["C"]!![11] - Translation(30.inches, 0.feet), 0.degrees)
-    ),
+    ARedPath,
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
     trajectoryConstant
-  )
-  galacticSearchARed.addWaypoint(navPoints["C"]!![3].translation2d)
-  galacticSearchARed.addWaypoint(navPoints["D"]!![5].translation2d)
-  galacticSearchARed.addWaypoint(navPoints["A"]!![6].translation2d)*/
+  )*/
 
   val galacticSearchABlue: Trajectory = TrajectoryGenerator.generateTrajectory(
     Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
@@ -113,18 +115,20 @@ object PathStore {
     Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
     config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
   )
-  /*val galacticSearchABlue: Trajectory = Trajectory(
-      0.0.meters.perSecond,
-      Path(
-        Pose(navPoints["C"]!![1] + Translation(30.inches, 0.feet), 0.degrees),
-        Pose(navPoints["C"]!![11] - Translation(30.inches, 0.feet), 0.degrees)
-      ),
-      Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-      trajectoryConstant
-    )
-    galacticSearchABlue.addWaypoint(navPoints["E"]!![6].translation2d)
-    galacticSearchABlue.addWaypoint(navPoints["B"]!![7].translation2d)
-    galacticSearchABlue.addWaypoint(navPoints["C"]!![9].translation2d)*/
+  /*
+  val ABluePath: Path(
+    Pose(navPoints["C"]!![1] + Translation(30.inches, 0.feet), 0.degrees),
+    Pose(navPoints["C"]!![11] - Translation(30.inches, 0.feet), 0.degrees)
+  )
+  ABluePath.addWaypoint(navPoints["E"]!![6].translation2d)
+  ABluePath.addWaypoint(navPoints["B"]!![7].translation2d)
+  ABluePath.addWaypoint(navPoints["C"]!![9].translation2d)
+  val galacticSearchABlue: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    ABluePath,
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )*/
 
   val galacticSearchBRed: Trajectory = TrajectoryGenerator.generateTrajectory(
     Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
@@ -136,18 +140,20 @@ object PathStore {
     Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
     config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
   )
-  /*val galacticSearchBRed: Trajectory = Trajectory(
+  /*
+  val BRedPath = Path(
+    Pose(navPoints["B"]!![1] + Translation(30.inches, 15.inches), 0.degrees),
+    Pose(navPoints["B"]!![11] - Translation(30.inches, 0.feet), 0.degrees)
+  )
+  BRedPath.addWaypoint(navPoints["B"]!![3].translation2d)
+  BRedPath.addWaypoint(navPoints["D"]!![5].translation2d)
+  BRedPath.addWaypoint(navPoints["B"]!![7].translation2d)
+  val galacticSearchBRed: Trajectory = Trajectory(
     0.0.meters.perSecond,
-    Path(
-      Pose(navPoints["B"]!![1] + Translation(30.inches, 15.inches), 0.degrees),
-      Pose(navPoints["B"]!![11] - Translation(30.inches, 0.feet), 0.degrees)
-    ),
+    BRedPath,
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
     trajectoryConstant
-  )
-  galacticSearchBRed.addWaypoint(navPoints["B"]!![3].translation2d)
-  galacticSearchBRed.addWaypoint(navPoints["D"]!![5].translation2d)
-  galacticSearchBRed.addWaypoint(navPoints["B"]!![7].translation2d)*/
+  )*/
 
   val galacticSearchBBlue: Trajectory = TrajectoryGenerator.generateTrajectory(
     Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
@@ -159,19 +165,20 @@ object PathStore {
     Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
     config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
   )
-  /*val galacticSearchBBlue: Trajectory = Trajectory(
-      0.0.meters.perSecond,
-      Path(
-        Pose(navPoints["E"]!![1] + Translation(30.inches, 15.inches), 0.degrees),
-        Pose(navPoints["D"]!![11] - Translation(30.inches, 0.feet), 0.degrees)
-      ),
-      Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-      trajectoryConstant
-    )
-    galacticSearchBBlue.addWaypoint(navPoints["D"]!![6].translation2d)
-    galacticSearchBBlue.addWaypoint(navPoints["B"]!![8].translation2d)
-    galacticSearchBBlue.addWaypoint(navPoints["D"]!![10].translation2d)*/
-
+  /*
+  val BBluePath = Path(
+    Pose(navPoints["E"]!![1] + Translation(30.inches, 15.inches), 0.degrees),
+    Pose(navPoints["D"]!![11] - Translation(30.inches, 0.feet), 0.degrees)
+  )
+  BBluePath.addWaypoint(navPoints["D"]!![6].translation2d)
+  BBluePath.addWaypoint(navPoints["B"]!![8].translation2d)
+  BBluePath.addWaypoint(navPoints["D"]!![10].translation2d)
+  val galacticSearchBBlue: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    BBluePath,
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )*/
 
   val toNearTrench: Trajectory = TrajectoryGenerator.generateTrajectory(
     initLinePowerPort,
