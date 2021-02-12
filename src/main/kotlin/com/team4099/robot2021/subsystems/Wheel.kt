@@ -91,6 +91,10 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     directionSetPoint = direction + directionDifference
   }
 
+  fun resetModuleZero () {
+    encoder.configMagnetOffset(-encoder.position)
+  }
+
   fun zeroDirection(){
     directionSpark.encoder.position = directionSensor.positionToRawUnits(directionAbsolute.position + zeroOffset)
   }

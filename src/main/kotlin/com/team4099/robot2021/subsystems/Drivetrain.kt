@@ -246,6 +246,12 @@ object Drivetrain : SubsystemBase() {
     return kotlin.math.atan2(a.inMetersPerSecond, b.inMetersPerSecond).radians
   }
 
+  fun resetModuleZero() {
+    wheels.forEach {
+      it.resetModuleZero()
+    }
+  }
+
   fun zeroSensors(){
     gyro.reset()
     zeroDirection()
