@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import kotlin.math.*
 
-object Drivetrain : SubsystemBase() { //add kf (direction) add gear ratios
+object Drivetrain : SubsystemBase() {
   private val wheels = listOf(
     Wheel(
       CANSparkMax(
