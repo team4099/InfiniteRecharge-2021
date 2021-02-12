@@ -76,16 +76,16 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     Logger.addSource("Drivetrain", "$label Drive Bus Voltage") { driveBusVoltage }
     Logger.addSource("Drivetrain", "$label Direction Bus Voltage") { directionBusVoltage }
 
-    directionPID.p = Constants.Vision.TurnGains.DIRECTION_KP
-    directionPID.i = Constants.Vision.TurnGains.DIRECTION_KI
-    directionPID.d = Constants.Vision.TurnGains.DIRECTION_KD
-    directionPID.ff = Constants.Vision.TurnGains.DIRECTION_KFF
+    directionPID.p = Constants.Drivetrain.PID.DIRECTION_KP
+    directionPID.i = Constants.Drivetrain.PID.DIRECTION_KI
+    directionPID.d = Constants.Drivetrain.PID.DIRECTION_KD
+    directionPID.ff = Constants.Drivetrain.PID.DIRECTION_KFF
     directionSpark.burnFlash()
 
-    drivePID.p = Constants.Vision.TurnGains.DRIVE_KP
-    drivePID.i = Constants.Vision.TurnGains.DRIVE_KI
-    drivePID.d = Constants.Vision.TurnGains.DRIVE_KD
-    drivePID.ff = Constants.Vision.TurnGains.DIRECTION_KFF
+    drivePID.p = Constants.Drivetrain.PID.DRIVE_KP
+    drivePID.i = Constants.Drivetrain.PID.DRIVE_KI
+    drivePID.d = Constants.Drivetrain.PID.DRIVE_KD
+    drivePID.ff = Constants.Drivetrain.PID.DRIVE_KFF
     driveSpark.burnFlash()
   }
 

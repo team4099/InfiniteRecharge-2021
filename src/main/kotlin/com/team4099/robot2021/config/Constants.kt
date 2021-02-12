@@ -84,6 +84,18 @@ object Constants {
       const val RAMSETE_B = 2.0
       const val RAMSETE_ZETA = 0.7
     }
+
+    object PID {
+      const val DIRECTION_KP = 0.0
+      const val DIRECTION_KI = 0.0
+      const val DIRECTION_KD = 0.0
+      const val DIRECTION_KFF = 0.0
+
+      const val DRIVE_KP = 0.0
+      const val DRIVE_KI = 0.0
+      const val DRIVE_KD = 0.0
+      const val DRIVE_KFF = 0.0
+    }
   }
 
   object Feeder {
@@ -162,15 +174,9 @@ object Constants {
     const val MIN_TURN_COMMAND = 0.0
 
     object TurnGains {
-      const val DIRECTION_KP = 0.0
-      const val DIRECTION_KI = 0.0
-      const val DIRECTION_KD = 0.0
-      const val DIRECTION_KFF = 0.0
-
-      const val DRIVE_KP = 0.0
-      const val DRIVE_KI = 0.0
-      const val DRIVE_KD = 0.0
-      const val DRIVE_KFF = 0.0
+      const val KP = 0.0
+      const val KI = 0.0
+      const val KD = 0.0
 
       val MAX_VELOCITY = 0.0.degrees.perSecond
       val MAX_ACCEL = 0.0.degrees.perSecond.perSecond
