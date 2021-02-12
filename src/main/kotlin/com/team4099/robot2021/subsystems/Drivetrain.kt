@@ -81,10 +81,22 @@ object Drivetrain : SubsystemBase() {
     }
 
 
-  private val frontLeftWheelLocation = Translation(-Constants.Drivetrain.DRIVETRAIN_WIDTH/2, Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
-  private val frontRightWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH/2, Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
-  private val backLeftWheelLocation = Translation(-Constants.Drivetrain.DRIVETRAIN_WIDTH/2, -Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
-  private val backRightWheelLocation = Translation(Constants.Drivetrain.DRIVETRAIN_WIDTH/2, -Constants.Drivetrain.DRIVETRAIN_LENGTH/2)
+  private val frontLeftWheelLocation = Translation(
+    -Constants.Drivetrain.DRIVETRAIN_WIDTH / 2,
+    Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
+  )
+  private val frontRightWheelLocation = Translation(
+    Constants.Drivetrain.DRIVETRAIN_WIDTH / 2,
+    Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
+  )
+  private val backLeftWheelLocation = Translation(
+    -Constants.Drivetrain.DRIVETRAIN_WIDTH / 2,
+    -Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
+  )
+  private val backRightWheelLocation = Translation(
+    Constants.Drivetrain.DRIVETRAIN_WIDTH / 2,
+    -Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
+  )
 
   var swerveDriveKinematics = SwerveDriveKinematics(
     frontLeftWheelLocation.translation2d,
@@ -144,7 +156,7 @@ object Drivetrain : SubsystemBase() {
     Logger.addSource("Drivetrain", "Path Follow Current Timestamp") { trajCurTime }
 
     //  if gyro is connected boolean
-    Logger.addSource("Drivetrain", "Gyro Connected") {  }
+    Logger.addSource("Drivetrain", "Gyro Connected") { }
 
   }
 
@@ -157,7 +169,11 @@ object Drivetrain : SubsystemBase() {
    * @param driveVector.second The linear velocity on the Y axis
    *
    */
-  fun set(angularVelocity: AngularVelocity, driveVector: Pair<LinearVelocity, LinearVelocity>, fieldOriented: Boolean = true) {
+  fun set(
+    angularVelocity: AngularVelocity,
+    driveVector: Pair<LinearVelocity, LinearVelocity>,
+    fieldOriented: Boolean = true
+  ) {
     val vX = if (fieldOriented) {
       driveVector.first * gyroAngle.cos -
         driveVector.second * gyroAngle.sin
@@ -203,13 +219,13 @@ object Drivetrain : SubsystemBase() {
 
   }
 
-  fun updateOdometry(){
+  fun updateOdometry() {
     swerveDriveOdometry.update(
       gyroAngle.inRotation2ds,
-      SwerveModuleState(wheelSpeeds[0].inMetersPerSecond,wheelAngles[0].inRotation2ds),
-      SwerveModuleState(wheelSpeeds[1].inMetersPerSecond,wheelAngles[1].inRotation2ds),
-      SwerveModuleState(wheelSpeeds[2].inMetersPerSecond,wheelAngles[2].inRotation2ds),
-      SwerveModuleState(wheelSpeeds[3].inMetersPerSecond,wheelAngles[3].inRotation2ds)
+      SwerveModuleState(wheelSpeeds[0].inMetersPerSecond, wheelAngles[0].inRotation2ds),
+      SwerveModuleState(wheelSpeeds[1].inMetersPerSecond, wheelAngles[1].inRotation2ds),
+      SwerveModuleState(wheelSpeeds[2].inMetersPerSecond, wheelAngles[2].inRotation2ds),
+      SwerveModuleState(wheelSpeeds[3].inMetersPerSecond, wheelAngles[3].inRotation2ds)
     )
   }
 
@@ -221,7 +237,10 @@ object Drivetrain : SubsystemBase() {
     // Note: ChassisSpeeds takes x as forward so it is swapped
     set(
       drivetrainSpeeds.omegaRadiansPerSecond.radians.perSecond,
-      Pair(drivetrainSpeeds.vyMetersPerSecond.meters.perSecond,drivetrainSpeeds.vxMetersPerSecond.meters.perSecond),
+      Pair(
+        drivetrainSpeeds.vyMetersPerSecond.meters.perSecond,
+        drivetrainSpeeds.vxMetersPerSecond.meters.perSecond
+      ),
       fieldOriented = false
     )
   }
@@ -252,19 +271,19 @@ object Drivetrain : SubsystemBase() {
     }
   }
 
-  fun zeroSensors(){
+  fun zeroSensors() {
     gyro.reset()
     zeroDirection()
     zeroDrive()
   }
 
-  private fun zeroDirection(){
+  private fun zeroDirection() {
     wheels.forEach {
       it.zeroDirection()
     }
   }
 
-  private fun zeroDrive(){
+  private fun zeroDrive() {
     wheels.forEach {
       it.zeroDrive()
     }
