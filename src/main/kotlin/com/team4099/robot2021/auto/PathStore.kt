@@ -9,6 +9,7 @@ import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.degrees
+import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.perSecond
 import com.team4099.lib.units.step
 import com.team4099.robot2021.config.Constants
@@ -20,7 +21,7 @@ import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstr
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint
 
 object PathStore {
-  private val trajConfig = TrajectoryConfig(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC, Constants.Drivetrain.MAX_ACCEL_METERS_PER_SEC_SQ, Constants.Drivetrain.MAX_VEL_ANGULAR_PER_SEC,Constants.Drivetrain.MAX_ACCEL_ANGULAR_PER_SEC_SQ)
+  private val trajectoryConstant = TrajectoryConfig(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC, Constants.Drivetrain.MAX_ACCEL_METERS_PER_SEC_SQ, Constants.Drivetrain.MAX_VEL_ANGULAR_PER_SEC,Constants.Drivetrain.MAX_ACCEL_ANGULAR_PER_SEC_SQ)
 
 /*  private val centripetalConstraint = CentripetalAccelerationConstraint(
     Constants.Drivetrain.CENTRIPETAL_ACCEL_METERS_PER_SEC_SQ
@@ -71,12 +72,12 @@ object PathStore {
     "E" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(12.5.feet, x) }
   )
 
-  private val initLinePowerPort = Pose2d(3.627, -2.429, Rotation2d(0.0))
-  private val initLineFarTrench = Pose2d(3.627, -6.824, Rotation2d(0.0))
-  private val nearTrenchEdge = Pose2d(5.0, -0.869, Rotation2d(0.0))
-  private val nearTrenchEnd = Pose2d(7.5, -0.869, Rotation2d(0.0))
-  private val farTrench = Pose2d(5.794, -7.243, Rotation2d(-20.0))
-  private val rendezvousPoint2Balls = Pose2d(5.878, -2.755, Rotation2d(-20.0))
+  private val initLinePowerPort = Pose(3.627.meters, (-2.429).meters, 0.0.radians)
+  private val initLineFarTrench = Pose(3.627.meters, (-6.824).meters, 0.0.radians)
+  private val nearTrenchEdge = Pose(5.0.meters, (-0.869).meters, 0.0.radians)
+  private val nearTrenchEnd = Pose(7.5.meters, (-0.869).meters, 0.0.radians)
+  private val farTrench = Pose(5.794.meters, (-7.243).meters, (-20.0).radians)
+  private val rendezvousPoint2Balls = Pose(5.878.meters, (-2.755).meters, (-20.0).radians)
 
   val galacticSearchARed: Trajectory = Trajectory(
     0.0.meters.perSecond,
@@ -85,76 +86,76 @@ object PathStore {
       Pose(navPoints["C"]!![11] - Translation(30.inches, 0.feet), 0.degrees)
     ),
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-    trajConfig
+    trajectoryConstant
   )
 
   val toNearTrench: Trajectory = Trajectory(
     0.0.meters.perSecond,
     Path(
-      Pose(initLinePowerPort),
-      Pose(nearTrenchEdge)
+      initLinePowerPort,
+      nearTrenchEdge
     ),
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-    trajConfig
+    trajectoryConstant
   )
 
   val intakeInNearTrench: Trajectory = Trajectory(
     0.0.meters.perSecond,
     Path(
-      Pose(nearTrenchEdge),
-      Pose(nearTrenchEnd)
+      nearTrenchEdge,
+      nearTrenchEnd
     ),
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-    trajConfig
+    trajectoryConstant
   )
 
   val fromNearTrench: Trajectory = Trajectory(
     0.0.meters.perSecond,
     Path(
-      Pose(nearTrenchEnd),
-      Pose(initLinePowerPort)
+      nearTrenchEnd,
+      initLinePowerPort
     ),
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-    trajConfig
+    trajectoryConstant
   )
 
   val toFarTrench: Trajectory = Trajectory(
     0.0.meters.perSecond,
     Path(
-      Pose(initLineFarTrench),
-      Pose(farTrench)
+      initLineFarTrench,
+      farTrench
     ),
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-    trajConfig
+    trajectoryConstant
   )
 
   val fromFarTrench: Trajectory = Trajectory(
     0.0.meters.perSecond,
     Path(
-      Pose(farTrench),
-      Pose(initLinePowerPort)
+      farTrench,
+      initLinePowerPort
     ),
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-    trajConfig
+    trajectoryConstant
   )
 
   val toRendezvousPoint2Balls = Trajectory(
     0.0.meters.perSecond,
     Path(
-      Pose(initLinePowerPort),
-      Pose(rendezvousPoint2Balls)
+      initLinePowerPort,
+      rendezvousPoint2Balls
     ),
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-    trajConfig
+    trajectoryConstant
   )
 
   val fromRendezvousPoint2Balls = Trajectory(
     0.0.meters.perSecond,
     Path(
-      Pose(rendezvousPoint2Balls),
-      Pose(initLinePowerPort)
+      rendezvousPoint2Balls,
+      initLinePowerPort
     ),
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-    trajConfig
+    trajectoryConstant
   )
 }
