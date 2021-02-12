@@ -46,23 +46,23 @@ object Constants {
 
     const val FRONT_LEFT_SPEED_ID = 2
     const val FRONT_LEFT_DIRECTION_ID = 3
-    const val FRONT_LEFT_CANCODER_ID = 0 // TODO: Change this value
+    const val FRONT_LEFT_CANCODER_ID = 11
 
     const val FRONT_RIGHT_SPEED_ID = 4
     const val FRONT_RIGHT_DIRECTION_ID = 5
-    const val FRONT_RIGHT_CANCODER_ID = 1 // TODO: Change this value
+    const val FRONT_RIGHT_CANCODER_ID = 12
 
     const val BACK_LEFT_SPEED_ID = 6
     const val BACK_LEFT_DIRECTION_ID = 7
-    const val BACK_LEFT_CANCODER_ID = 2 // TODO: Change this value
+    const val BACK_LEFT_CANCODER_ID = 24
 
     const val BACK_RIGHT_SPEED_ID = 8
     const val BACK_RIGHT_DIRECTION_ID = 9
-    const val BACK_RIGHT_CANCODER_ID = 3 // TODO: Change this value
+    const val BACK_RIGHT_CANCODER_ID = 23
 
     const val WHEEL_COUNT = 4
-    val DRIVETRAIN_LENGTH = 29.0.inches
-    val DRIVETRAIN_WIDTH = 29.0.inches
+    val DRIVETRAIN_LENGTH = 22.173.inches
+    val DRIVETRAIN_WIDTH = 22.173.inches
 
     val DRIVE_SETPOINT_MAX = 15.feet.perSecond
     val TURN_SETPOINT_MAX = 90.degrees.perSecond // TODO: Make sure this value is something good
