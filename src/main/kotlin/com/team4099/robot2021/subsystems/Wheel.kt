@@ -106,6 +106,7 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
   }
 
   fun resetModuleZero () {
+    encoder.configFactoryDefault()
     encoder.configMagnetOffset(-encoder.position)
   }
 
