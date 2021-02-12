@@ -51,7 +51,8 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
 
   private var speedSetPoint: LinearVelocity = 0.feet.perSecond
     set(value) {
-      drivePID.setReference(driveSensor.velocityToRawUnits(value), ControlType.kVelocity)
+      driveSpark.set(value / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+//      drivePID.setReference(driveSensor.velocityToRawUnits(value), ControlType.kVelocity)
       field = value
     }
   private var directionSetPoint: Angle = 0.degrees
