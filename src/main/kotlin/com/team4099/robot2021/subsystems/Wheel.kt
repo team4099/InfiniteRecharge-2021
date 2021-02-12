@@ -83,6 +83,7 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     directionPID.ff = Constants.Drivetrain.PID.DIRECTION_KFF
     directionPID.setSmartMotionMaxVelocity(directionSensor.velocityToRawUnits(Constants.Drivetrain.DIRECTION_VEL_MAX), 0)
     directionPID.setSmartMotionMaxAccel(directionSensor.accelerationToRawUnits(Constants.Drivetrain.DIRECTION_ACCEL_MAX), 0)
+    directionPID.setOutputRange(-1.0, 1.0)
     directionSpark.burnFlash()
 
     drivePID.p = Constants.Drivetrain.PID.DRIVE_KP
