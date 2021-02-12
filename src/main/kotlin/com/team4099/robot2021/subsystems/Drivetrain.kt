@@ -157,7 +157,7 @@ object Drivetrain : SubsystemBase() {
 
     //  if gyro is connected boolean
     Logger.addSource("Drivetrain", "Gyro Connected") { }
-
+    zeroDirection()
   }
 
   /**
