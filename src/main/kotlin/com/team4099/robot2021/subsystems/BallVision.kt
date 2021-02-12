@@ -26,7 +26,7 @@ object BallVision : SubsystemBase() {
     Logger.addSource("BallVision", "Best Ball Path") { ballPath }
   }
 
-  fun choosePath() : Trajectory {
+  private fun choosePath() : Trajectory {
     var centerTarget: PhotonTrackedTarget = targets[0]
     var closeCenterTarget: PhotonTrackedTarget = targets[0]
     var pathA = false
