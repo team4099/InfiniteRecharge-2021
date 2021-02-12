@@ -80,6 +80,8 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     directionPID.i = Constants.Drivetrain.PID.DIRECTION_KI
     directionPID.d = Constants.Drivetrain.PID.DIRECTION_KD
     directionPID.ff = Constants.Drivetrain.PID.DIRECTION_KFF
+    directionPID.setSmartMotionMaxVelocity(directionSensor.velocityToRawUnits(Constants.Drivetrain.DIRECTION_VEL_MAX), 0)
+    directionPID.setSmartMotionMaxAccel(directionSensor.accelerationToRawUnits(Constants.Drivetrain.DIRECTION_ACCEL_MAX), 0)
     directionSpark.burnFlash()
 
     drivePID.p = Constants.Drivetrain.PID.DRIVE_KP
@@ -107,7 +109,7 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
 
   fun resetModuleZero () {
     encoder.configFactoryDefault()
-    encoder.configMagnetOffset(-encoder.position)
+    encoder.configMagnetOffset(-encoder.position + zeroOffset.inDegrees)
   }
 
   fun zeroDirection(){

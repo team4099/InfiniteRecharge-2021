@@ -67,6 +67,9 @@ object Constants {
     val DRIVE_SETPOINT_MAX = 15.feet.perSecond
     val TURN_SETPOINT_MAX = 90.degrees.perSecond // TODO: Make sure this value is something good
 
+    val DIRECTION_VEL_MAX = 900.degrees.perSecond
+    val DIRECTION_ACCEL_MAX = 9000.degrees.perSecond.perSecond
+
     const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
 
     const val MAX_VEL_METERS_PER_SEC = 4.0
