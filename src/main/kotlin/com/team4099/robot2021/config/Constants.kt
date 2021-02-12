@@ -76,6 +76,10 @@ object Constants {
 
     const val CENTRIPETAL_ACCEL_METERS_PER_SEC_SQ = 1.0
 
+    const val ABSOLUTE_GEAR_RATIO = 1.0
+    const val DRIVE_SENSOR_GEAR_RATIO = 1.0
+    const val DIRECTION_SENSOR_GEAR_RATIO = 1.0
+
     object Gains {
       const val RAMSETE_B = 2.0
       const val RAMSETE_ZETA = 0.7
@@ -161,10 +165,12 @@ object Constants {
       const val DIRECTION_KP = 0.0
       const val DIRECTION_KI = 0.0
       const val DIRECTION_KD = 0.0
+      const val DIRECTION_KFF = 0.0
 
       const val DRIVE_KP = 0.0
       const val DRIVE_KI = 0.0
       const val DRIVE_KD = 0.0
+      const val DRIVE_KFF = 0.0
 
       val MAX_VELOCITY = 0.0.degrees.perSecond
       val MAX_ACCEL = 0.0.degrees.perSecond.perSecond
