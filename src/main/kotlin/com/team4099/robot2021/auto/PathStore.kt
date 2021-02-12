@@ -4,7 +4,9 @@ import com.team4099.lib.geometry.Pose
 import com.team4099.lib.geometry.Translation
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
+import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.degrees
+import com.team4099.lib.units.perSecond
 import com.team4099.lib.units.step
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Drivetrain
@@ -88,6 +90,18 @@ object PathStore {
     Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
     config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
   )
+  /*val galacticSearchARed: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      Pose(navPoints["C"]!![1] + Translation(30.inches, 0.feet), 0.degrees),
+      Pose(navPoints["C"]!![11] - Translation(30.inches, 0.feet), 0.degrees)
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+  galacticSearchARed.addWaypoint(navPoints["C"]!![3].translation2d)
+  galacticSearchARed.addWaypoint(navPoints["D"]!![5].translation2d)
+  galacticSearchARed.addWaypoint(navPoints["A"]!![6].translation2d)*/
 
   val galacticSearchABlue: Trajectory = TrajectoryGenerator.generateTrajectory(
     Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
@@ -99,6 +113,18 @@ object PathStore {
     Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
     config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
   )
+  /*val galacticSearchABlue: Trajectory = Trajectory(
+      0.0.meters.perSecond,
+      Path(
+        Pose(navPoints["C"]!![1] + Translation(30.inches, 0.feet), 0.degrees),
+        Pose(navPoints["C"]!![11] - Translation(30.inches, 0.feet), 0.degrees)
+      ),
+      Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+      trajectoryConstant
+    )
+    galacticSearchABlue.addWaypoint(navPoints["E"]!![6].translation2d)
+    galacticSearchABlue.addWaypoint(navPoints["B"]!![7].translation2d)
+    galacticSearchABlue.addWaypoint(navPoints["C"]!![9].translation2d)*/
 
   val galacticSearchBRed: Trajectory = TrajectoryGenerator.generateTrajectory(
     Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
@@ -110,6 +136,18 @@ object PathStore {
     Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
     config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
   )
+  /*val galacticSearchBRed: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      Pose(navPoints["B"]!![1] + Translation(30.inches, 15.inches), 0.degrees),
+      Pose(navPoints["B"]!![11] - Translation(30.inches, 0.feet), 0.degrees)
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+  galacticSearchBRed.addWaypoint(navPoints["B"]!![3].translation2d)
+  galacticSearchBRed.addWaypoint(navPoints["D"]!![5].translation2d)
+  galacticSearchBRed.addWaypoint(navPoints["B"]!![7].translation2d)*/
 
   val galacticSearchBBlue: Trajectory = TrajectoryGenerator.generateTrajectory(
     Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
@@ -121,6 +159,19 @@ object PathStore {
     Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
     config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC)
   )
+  /*val galacticSearchBBlue: Trajectory = Trajectory(
+      0.0.meters.perSecond,
+      Path(
+        Pose(navPoints["E"]!![1] + Translation(30.inches, 15.inches), 0.degrees),
+        Pose(navPoints["D"]!![11] - Translation(30.inches, 0.feet), 0.degrees)
+      ),
+      Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+      trajectoryConstant
+    )
+    galacticSearchBBlue.addWaypoint(navPoints["D"]!![6].translation2d)
+    galacticSearchBBlue.addWaypoint(navPoints["B"]!![8].translation2d)
+    galacticSearchBBlue.addWaypoint(navPoints["D"]!![10].translation2d)*/
+
 
   val toNearTrench: Trajectory = TrajectoryGenerator.generateTrajectory(
     initLinePowerPort,
