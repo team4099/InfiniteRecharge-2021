@@ -1,6 +1,7 @@
 package com.team4099.robot2021.subsystems
 
 import com.ctre.phoenix.sensors.CANCoder
+import com.revrobotics.CANPIDController
 import com.revrobotics.CANSparkMax
 import com.revrobotics.ControlType
 import com.revrobotics.SparkMax
@@ -107,6 +108,18 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     }
     speedSetPoint = if (isInverted) { speed * -1 } else { speed }
     directionSetPoint = direction + directionDifference
+  }
+
+  fun setVelocitySetpoint(velocity: LinearVelocity, acceleration: LinearAcceleration) {
+    drivePID.setReference(
+      driveSensor.velocityToRawUnits(velocity),
+      ControlType.kVelocity,
+      0,
+      (Constants.Drivetrain.PID.DRIVE_KS +
+        velocity * Constants.Drivetrain.PID.DRIVE_KV +
+        acceleration * Constants.Drivetrain.PID.DRIVE_KA).inVolts,
+      CANPIDController.ArbFFUnits.kVoltage
+    )
   }
 
   fun resetModuleZero () {
