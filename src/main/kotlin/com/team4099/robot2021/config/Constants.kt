@@ -81,7 +81,7 @@ object Constants {
 
     const val ABSOLUTE_GEAR_RATIO = 1.0
     const val DRIVE_SENSOR_GEAR_RATIO = (12.0/21.0)*(15.0/45.0)
-    const val DIRECTION_SENSOR_GEAR_RATIO = 12.0/64.0
+    const val DIRECTION_SENSOR_GEAR_RATIO = (12.0/64.0)*(1.0/10.0)
 
     object Gains {
       const val RAMSETE_B = 2.0
