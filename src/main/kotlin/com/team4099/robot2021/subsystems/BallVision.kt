@@ -28,24 +28,29 @@ object BallVision : SubsystemBase() {
 
   private fun choosePath() : Trajectory {
     var centerTarget: PhotonTrackedTarget = targets[0]
-    //what is this for again
-    var closeCenterTarget: PhotonTrackedTarget = targets[0]
+    var offCenterTarget: PhotonTrackedTarget = targets[0]
     var pathA = false
     var ballsOnLeft = false
     var ballsOnRight = true
+    var ballsOffCenter = 0
 
     for (target in targets) {
       if (target.yaw.degrees.absoluteValue < Constants.BallVision.CENTER_YAW_THRESHOLD) {
-      //comment path if using option 2
+        //comment path if using option 2
         pathA = true
         centerTarget = target
       }
-      //option 2
-      else if (target.yaw.degrees.absoluteValue < 0.degrees){
-        ballsOnLeft = true
-      }
-      else {
-        ballsOnRight = true
+      else{
+        //lines for option 3
+        offCenterTarget = target
+        ballsOffCenter++
+        //option 2 + 3?
+        if (target.yaw.degrees.absoluteValue < 0.degrees){
+          ballsOnLeft = true
+        }
+        else {
+          ballsOnRight = true
+        }
       }
     }
 
@@ -71,7 +76,7 @@ object BallVision : SubsystemBase() {
 
     //if the robot starts in front of path B/D balls - should be a little bit faster
     //change trajectories accordingly!
-    //Option 2 - this formatting is awful
+    //Option 2 Method 1
     /*return when (Pair(ballsOnLeft, ballsOnRight)){
       Pair(true,true) -> if (centerTarget.area < Constants.BallVision.PATH_A_AREA_THRESHOLD) PathStore.galacticSearchABlue
       else PathStore.galacticSearchARed
@@ -80,8 +85,8 @@ object BallVision : SubsystemBase() {
       else -> PathStore.galacticSearchARed
     }*/
 
-    //Option 2 again
-    if (ballsOnLeft && ballsOnRight){
+    //Option 2 Method 2
+    /*if (ballsOnLeft && ballsOnRight){
       if (centerTarget.area < Constants.BallVision.PATH_A_AREA_THRESHOLD) {
         return PathStore.galacticSearchABlue
       } else {
@@ -96,8 +101,31 @@ object BallVision : SubsystemBase() {
     }
     else{
       return PathStore.galacticSearchARed
-    }
+    }*/
 
+    //Option 3
+    //Make sure trajectories are updated to match if this is chosen
+    //for path A, start on row C for red and row E for blue
+    //for path B, start on row B for red and row D for blue
+    if (ballsOffCenter == 1) {
+      if (ballsOnLeft){
+      //if (offCenterTarget.yaw.degrees.absoluteValue < 0.degrees){
+        return PathStore.galacticSearchBBlue
+      }
+      else /*if (ballsOnRight)*/ {
+        return PathStore.galacticSearchBRed
+      }
+    }
+    else /*if (ballsOffCenter == 2)*/ {
+      if (ballsOnRight) {
+        return PathStore.galacticSearchARed
+      }
+      else {
+        return PathStore.galacticSearchABlue
+      }
+    }
   }
+
+  //we could also add the alternative logic for clearer option 3
 
 }
