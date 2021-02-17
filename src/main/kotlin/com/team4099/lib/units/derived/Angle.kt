@@ -28,10 +28,10 @@ val Number.rotations: Angle
   get() = toDouble().rotations
 
 val Angle.inDegrees: Double
-  get() = value
+  get() = Math.toDegrees(value)
 
 val Angle.inRadians: Double
-  get() = Math.toDegrees(value)
+  get() = value
 
 val Angle.inRotations: Double
   get() = value / (2 * PI)
