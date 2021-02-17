@@ -7,9 +7,11 @@ import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.rotations
+import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.perMinute
 import com.team4099.lib.units.perSecond
 import edu.wpi.first.wpilibj.DoubleSolenoid
+import com.team4099.lib.units.derived.div
 
 object Constants {
   object Universal {
@@ -98,6 +100,9 @@ object Constants {
       const val DRIVE_KI = 0.0
       const val DRIVE_KD = 0.0
       const val DRIVE_KFF = 0.0
+      val DRIVE_KS = 1.0.volts
+      val DRIVE_KV = 1.0.volts / 1.0.meters.perSecond
+      val DRIVE_KA = 1.0.volts / 1.0.meters.perSecond.perSecond
     }
   }
 
