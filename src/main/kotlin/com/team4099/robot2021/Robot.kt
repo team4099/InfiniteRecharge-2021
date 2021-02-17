@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.InstantCommand
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
+import kotlin.math.abs
 import kotlin.math.pow
 
 object Robot : TimedRobot() {
@@ -68,7 +69,7 @@ object Robot : TimedRobot() {
 //    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
 //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
 
-    Drivetrain.defaultCommand = TeleopDriveCommand({ ControlBoard.strafe }, { ControlBoard.forward }, { ControlBoard.turn })
+    Drivetrain.defaultCommand = TeleopDriveCommand({ if (abs(ControlBoard.strafe) < Constants.Joysticks.THROTTLE_DEADBAND) {0.0} else {ControlBoard.strafe} }, { if (abs(ControlBoard.forward) < Constants.Joysticks.THROTTLE_DEADBAND) {0.0} else {ControlBoard.forward} }, { if (abs(ControlBoard.turn) < Constants.Joysticks.TURN_DEADBAND) {ControlBoard.turn} else {ControlBoard.turn} })
 
 //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
   }
