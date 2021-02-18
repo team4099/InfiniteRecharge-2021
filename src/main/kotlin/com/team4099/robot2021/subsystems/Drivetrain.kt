@@ -137,23 +137,23 @@ object Drivetrain : SubsystemBase() {
 
   init {
     // Wheel speeds
-    Logger.addSource("Drivetrain", "Front Left Wheel Speed") { wheelSpeeds[0] }
-    Logger.addSource("Drivetrain", "Front Right Wheel Speed") { wheelSpeeds[1] }
-    Logger.addSource("Drivetrain", "Back Left Wheel Speed") { wheelSpeeds[2] }
-    Logger.addSource("Drivetrain", "Back Right Wheel Speed") { wheelSpeeds[3] }
+    Logger.addSource("Drivetrain", "Front Left Wheel Speed") { wheelSpeeds[0].inFeetPerSecond }
+    Logger.addSource("Drivetrain", "Front Right Wheel Speed") { wheelSpeeds[1].inFeetPerSecond }
+    Logger.addSource("Drivetrain", "Back Left Wheel Speed") { wheelSpeeds[2].inFeetPerSecond }
+    Logger.addSource("Drivetrain", "Back Right Wheel Speed") { wheelSpeeds[3].inFeetPerSecond }
 
     // Wheel angles
-    Logger.addSource("Drivetrain", "Front Left Wheel Angles") { wheelAngles[0] }
-    Logger.addSource("Drivetrain", "Front Right Wheel Angles") { wheelAngles[1] }
-    Logger.addSource("Drivetrain", "Back Left Wheel Angles") { wheelAngles[2] }
-    Logger.addSource("Drivetrain", "Back Right Wheel Angles") { wheelAngles[3] }
+    Logger.addSource("Drivetrain", "Front Left Wheel Angles") { wheelAngles[0].inDegrees }
+    Logger.addSource("Drivetrain", "Front Right Wheel Angles") { wheelAngles[1].inDegrees }
+    Logger.addSource("Drivetrain", "Back Left Wheel Angles") { wheelAngles[2].inDegrees }
+    Logger.addSource("Drivetrain", "Back Right Wheel Angles") { wheelAngles[3].inDegrees }
 
     //  gyro angle
-    Logger.addSource("Drivetrain", "Gyro Angle") { gyroAngle }
+    Logger.addSource("Drivetrain", "Gyro Angle") { gyroAngle.inDegrees }
 
-    Logger.addSource("Drivetrain", "Path Follow Start Timestamp") { trajStartTime }
-    Logger.addSource("Drivetrain", "Path Follow Duration") { trajDuration }
-    Logger.addSource("Drivetrain", "Path Follow Current Timestamp") { trajCurTime }
+    Logger.addSource("Drivetrain", "Path Follow Start Timestamp") { trajStartTime.inSeconds }
+    Logger.addSource("Drivetrain", "Path Follow Duration") { trajDuration.inSeconds }
+    Logger.addSource("Drivetrain", "Path Follow Current Timestamp") { trajCurTime.inSeconds }
 
     //  if gyro is connected boolean
     Logger.addSource("Drivetrain", "Gyro Connected") { }
@@ -172,7 +172,7 @@ object Drivetrain : SubsystemBase() {
   fun set(
     angularVelocity: AngularVelocity,
     driveVector: Pair<LinearVelocity, LinearVelocity>,
-    fieldOriented: Boolean = true
+    fieldOriented: Boolean = false
   ) {
     Logger.addEvent("Drivetrain", "gyro angle: ${gyroAngle.inDegrees}")
     val vX = if (fieldOriented) {

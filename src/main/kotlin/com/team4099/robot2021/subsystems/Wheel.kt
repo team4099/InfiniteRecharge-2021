@@ -113,7 +113,7 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     }
     speedSetPoint = if (isInverted) { speed * -1 } else { speed }
     directionSetPoint = direction + directionDifference
-    Logger.addEvent("Drivetrain", "label: $label, direction sensor: ${directionSensor.position.inDegrees}")
+    //Logger.addEvent("Drivetrain", "label: $label, direction sensor: ${directionSensor.position.inDegrees}")
   }
 
   fun setVelocitySetpoint(velocity: LinearVelocity, acceleration: LinearAcceleration) {
@@ -138,8 +138,8 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
   }
 
   fun zeroDirection(){
-    directionSpark.encoder.position = directionSensor.positionToRawUnits((encoder.absolutePosition.degrees + zeroOffset))
-    Logger.addEvent("DriveTrain", "label: $label, encoder position: ${directionSensor.positionToRawUnits(directionAbsolute.position + zeroOffset)}, absolute position, ${directionAbsolute.position}, zero offset, $zeroOffset, encoder absolute position: ${encoder.absolutePosition.degrees}, encoder abs pos zer off: ${(encoder.absolutePosition.degrees + zeroOffset).inDegrees}")
+    directionSpark.encoder.position = directionSensor.positionToRawUnits(encoder.absolutePosition.degrees + zeroOffset)
+    Logger.addEvent("DriveTrain", "label: $label, encoder position: ${directionSensor.positionToRawUnits(encoder.absolutePosition.degrees + zeroOffset)}, encoder absolute position: ${encoder.absolutePosition}, encoder abs pos zer off: ${(encoder.absolutePosition.degrees + zeroOffset).inDegrees}")
   }
 
   fun zeroDrive(){
