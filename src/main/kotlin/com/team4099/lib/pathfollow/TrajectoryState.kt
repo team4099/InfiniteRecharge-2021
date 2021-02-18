@@ -11,7 +11,5 @@ data class TrajectoryState(
   val timestamp: Time,
   var pose: Pose,
   val linearVelocity: LinearVelocity,
-  val linearAcceleration: LinearAcceleration,
-  var angularVelocity: AngularVelocity,
-  var angularAcceleration: AngularAcceleration
+  val linearAcceleration: LinearAcceleration
 )

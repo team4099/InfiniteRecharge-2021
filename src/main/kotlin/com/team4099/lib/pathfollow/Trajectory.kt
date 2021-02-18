@@ -57,9 +57,7 @@ class Trajectory(
         state.timeSeconds.seconds,
         Pose(Translation(state.poseMeters.translation), headingTarget),
         state.velocityMetersPerSecond.meters.perSecond,
-        state.accelerationMetersPerSecondSq.meters.perSecond.perSecond,
-        0.degrees.perSecond,
-        0.degrees.perSecond.perSecond
+        state.accelerationMetersPerSecondSq.meters.perSecond.perSecond
       )
     }
   }

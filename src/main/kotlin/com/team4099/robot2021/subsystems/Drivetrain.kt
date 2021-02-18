@@ -149,6 +149,10 @@ object Drivetrain : SubsystemBase() {
 
   }
 
+  override fun periodic() {
+    this.updateOdometry()
+  }
+
   /**
    * Sets the drivetrain to the specified angular and X & Y velocities.
    * Calculates angular and linear velocities and calls set for each Wheel object.
