@@ -39,8 +39,8 @@ object Constants {
     const val SHOTGUN_PORT = 1
 
     const val QUICK_TURN_THROTTLE_TOLERANCE = 0.1
-    const val THROTTLE_DEADBAND = 0.04
-    const val TURN_DEADBAND = 0.035
+    const val THROTTLE_DEADBAND = 0.1
+    const val TURN_DEADBAND = 0.1
   }
 
   object Drivetrain {
@@ -70,7 +70,7 @@ object Constants {
     val TURN_SETPOINT_MAX = 90.degrees.perSecond // TODO: Make sure this value is something good
 
     val DIRECTION_VEL_MAX = 900.degrees.perSecond
-    val DIRECTION_ACCEL_MAX = 9000.degrees.perSecond.perSecond
+    val DIRECTION_ACCEL_MAX = 4500.degrees.perSecond.perSecond
 
     const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
 
@@ -83,7 +83,7 @@ object Constants {
 
     const val ABSOLUTE_GEAR_RATIO = 1.0
     const val DRIVE_SENSOR_GEAR_RATIO = (12.0/21.0)*(15.0/45.0)
-    const val DIRECTION_SENSOR_GEAR_RATIO = 12.0/64.0
+    const val DIRECTION_SENSOR_GEAR_RATIO = (12.0/64.0)*(1.0/10.0)
 
     object Gains {
       const val RAMSETE_B = 2.0
@@ -93,7 +93,7 @@ object Constants {
     object PID {
       const val DIRECTION_KP = 0.00001
       const val DIRECTION_KI = 0.0
-      const val DIRECTION_KD = 3.0
+      const val DIRECTION_KD = 12.0
       const val DIRECTION_KFF = 0.000078
 
       const val DRIVE_KP = 0.0

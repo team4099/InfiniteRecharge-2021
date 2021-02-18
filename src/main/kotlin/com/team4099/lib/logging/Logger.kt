@@ -98,29 +98,29 @@ object Logger {
    * changed.
    */
   fun <T> addSource(tab: String, name: String, supplier: () -> T, setter: ((T) -> Unit)?) {
-    dataSources.add(LogSource(tab, name) { supplier().toString() })
-    val shuffleboardEntry = Shuffleboard.getTab(tab).add(name, supplier)
-
-    if (setter != null) {
-      shuffleboardEntry.entry
-          .addListener(
-              {
-                val newValue = it.getEntry().value
-
-                try {
-                  // Unchecked cast since we don't know the type of this
-                  // source due to type erasure
-                  @Suppress("UNCHECKED_CAST")
-                  setter(newValue as T)
-                } catch (e: ClassCastException) {
-                  addEvent(
-                      "Logger",
-                      "Could not change value for $tab/$name due to invalid type cast.",
-                      Severity.ERROR)
-                }
-              },
-              EntryListenerFlags.kUpdate)
-    }
+//    dataSources.add(LogSource(tab, name) { supplier().toString() })
+//    val shuffleboardEntry = Shuffleboard.getTab(tab).add(name, supplier)
+//
+//    if (setter != null) {
+//      shuffleboardEntry.entry
+//          .addListener(
+//              {
+//                val newValue = it.getEntry().value
+//
+//                try {
+//                  // Unchecked cast since we don't know the type of this
+//                  // source due to type erasure
+//                  @Suppress("UNCHECKED_CAST")
+//                  setter(newValue as T)
+//                } catch (e: ClassCastException) {
+//                  addEvent(
+//                      "Logger",
+//                      "Could not change value for $tab/$name due to invalid type cast.",
+//                      Severity.ERROR)
+//                }
+//              },
+//              EntryListenerFlags.kUpdate)
+//    }
   }
 
   /**

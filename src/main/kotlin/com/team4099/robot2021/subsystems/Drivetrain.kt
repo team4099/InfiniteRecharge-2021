@@ -49,7 +49,7 @@ object Drivetrain : SubsystemBase() {
         Constants.Drivetrain.BACK_LEFT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless
       ),
       CANCoder(Constants.Drivetrain.BACK_LEFT_CANCODER_ID),
-      (-180).degrees,
+      (-270).degrees,
       "Back Left Wheel"
     ),
     Wheel(
@@ -60,7 +60,7 @@ object Drivetrain : SubsystemBase() {
         Constants.Drivetrain.BACK_RIGHT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless
       ),
       CANCoder(Constants.Drivetrain.BACK_RIGHT_CANCODER_ID),
-      (-270).degrees,
+      (-180).degrees,
       "Back Right Wheel"
     )
   )
@@ -179,6 +179,7 @@ object Drivetrain : SubsystemBase() {
     angularAcceleration: AngularAcceleration = 0.0.radians.perSecond.perSecond,
     driveAcceleration: Pair<LinearAcceleration, LinearAcceleration> = Pair(0.0.meters.perSecond.perSecond, 0.0.meters.perSecond.perSecond)
   ) {
+    Logger.addEvent("Drivetrain", "gyro angle: ${gyroAngle.inDegrees}")
     val vX = if (fieldOriented) {
       driveVector.first * gyroAngle.cos -
         driveVector.second * gyroAngle.sin
@@ -213,6 +214,7 @@ object Drivetrain : SubsystemBase() {
       vY - angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
     val d =
       vY + angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
+    //Logger.addEvent("Drivetrain", "vX: $vX, angular velocity: $angularVelocity")
 
     wheelSpeeds[0] = hypot(b, d)
     wheelSpeeds[1] = hypot(b, c)
@@ -243,6 +245,7 @@ object Drivetrain : SubsystemBase() {
     wheelAngles[1] = atan2(b, c)
     wheelAngles[2] = atan2(a, d)
     wheelAngles[3] = atan2(a, c)
+    Logger.addEvent("Drivetrain", "wheel angle: $wheelAngles")
 
     if(angularAcceleration == 0.0.meters.perSecond.perSecond) {
       wheels[0].set(wheelAngles[0], wheelSpeeds[0])
@@ -255,8 +258,6 @@ object Drivetrain : SubsystemBase() {
       wheels[2].set(wheelAngles[2], wheelSpeeds[2], wheelAccelerations[2])
       wheels[3].set(wheelAngles[3], wheelSpeeds[3], wheelAccelerations[3])
     }
-
-
   }
 
   fun updateOdometry() {
