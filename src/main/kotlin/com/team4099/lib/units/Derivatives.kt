@@ -61,3 +61,15 @@ val LinearAcceleration.inFeetPerMinutePerSecond: Double
 
 val LinearAcceleration.inInchesPerSecondPerSecond: Double
   get() = value / METERS_PER_INCH
+
+val AngularAcceleration.inRadiansPerSecondPerSecond: Double
+  get() = value
+
+val AngularAcceleration.inDegreesPerSecondPerSecond: Double
+  get() = Math.toDegrees(value)
+
+val AngularAcceleration.inRotationsPerSecondPerSecond: Double
+  get() = value / (2 * PI)
+
+val AngularAcceleration.inRotationsPerMinutePerMinute: Double
+  get() = value * SECONDS_PER_MINUTE  * SECONDS_PER_MINUTE / (2 * PI)
