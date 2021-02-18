@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.Notifier
 import edu.wpi.first.wpilibj.RobotBase
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardWidget
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget
 import java.io.File
 import java.io.IOException
@@ -100,32 +99,30 @@ object Logger {
    * @param setter An optional function which will be called when the value in Shuffleboard is
    * changed.
    */
-  fun <T: Any> addSource(tab: String, name: String, supplier: () -> T, setter: ((T) -> Unit)?) {
-    var shuffleboardEntry: SimpleWidget? = null;
+  fun <T : Any> addSource(tab: String, name: String, supplier: () -> T, setter: ((T) -> Unit)?) {
+    var shuffleboardEntry: SimpleWidget? = null
     try {
       shuffleboardEntry = Shuffleboard.getTab(tab).add(name, supplier())
       if (setter != null) {
         // Listen for changes to the entry if it is configurable
         shuffleboardEntry.entry
-          .addListener(
-            {
-              val newValue = it.getEntry().value
+            .addListener(
+                {
+                  val newValue = it.getEntry().value
 
-              try {
-                // Unchecked cast since we don't know the type of this
-                // source due to type erasure
-                @Suppress("UNCHECKED_CAST")
-                setter(newValue as T)
-              } catch (e: ClassCastException) {
-                addEvent(
-                  "Logger",
-                  "Could not change value for $tab/$name due to invalid type cast.",
-                  Severity.ERROR
-                )
-              }
-            },
-            EntryListenerFlags.kUpdate
-          )
+                  try {
+                    // Unchecked cast since we don't know the type of this
+                    // source due to type erasure
+                    @Suppress("UNCHECKED_CAST")
+                    setter(newValue as T)
+                  } catch (e: ClassCastException) {
+                    addEvent(
+                        "Logger",
+                        "Could not change value for $tab/$name due to invalid type cast.",
+                        Severity.ERROR)
+                  }
+                },
+                EntryListenerFlags.kUpdate)
       }
     } catch (e: Error) {
       addEvent("Logger", "Could not add $tab/$name to Shuffleboard due to invalid type")
@@ -142,7 +139,7 @@ object Logger {
    * @param setter An optional function which will be called when the value in Shuffleboard is
    * changed.
    */
-  fun <T: Any> addSource(tab: String, name: String, supplier: () -> T) {
+  fun <T : Any> addSource(tab: String, name: String, supplier: () -> T) {
     addSource(tab, name, supplier, null)
   }
 
