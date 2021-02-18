@@ -84,5 +84,6 @@ object Robot : TimedRobot() {
   override fun robotPeriodic() {
     CommandScheduler.getInstance().run()
     Logger.saveLogs()
+    Logger.updateShuffleboard()
   }
 }
