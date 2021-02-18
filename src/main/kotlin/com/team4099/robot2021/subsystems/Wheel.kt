@@ -102,7 +102,7 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
   }
 
 
-  fun set(direction: Angle, speed: LinearVelocity, acceleration: LinearAcceleration ?= 0.0.meters.perSecond.perSecond) {
+  fun set(direction: Angle, speed: LinearVelocity, acceleration: LinearAcceleration = 0.0.meters.perSecond.perSecond) {
     if(speed == 0.feet.perSecond){
       driveSpark.set(speed / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
     }
@@ -121,12 +121,12 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     driveSpark.set(speedSetPoint / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
 
     if(acceleration == 0.0.meters.perSecond.perSecond) {
-      directionPID.setReference(
+      /*directionPID.setReference(
         directionSensor.positionToRawUnits(directionSetPoint),
         ControlType.kSmartMotion
-      )
+        )
+       */
     } else {
-      if (acceleration != null) {
         drivePID.setReference(
           driveSensor.velocityToRawUnits(speed),
           ControlType.kVelocity,
@@ -136,20 +136,7 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
             acceleration * Constants.Drivetrain.PID.DRIVE_KA).inVolts,
           CANPIDController.ArbFFUnits.kVoltage
           )
-      }
     }
-  }
-
-  fun setVelocitySetpoint(velocity: LinearVelocity, acceleration: LinearAcceleration) {
-    drivePID.setReference(
-      driveSensor.velocityToRawUnits(velocity),
-      ControlType.kVelocity,
-      0,
-      (Constants.Drivetrain.PID.DRIVE_KS * sign(velocity.value) +
-        velocity * Constants.Drivetrain.PID.DRIVE_KV +
-        acceleration * Constants.Drivetrain.PID.DRIVE_KA).inVolts,
-      CANPIDController.ArbFFUnits.kVoltage
-    )
   }
 
   fun resetModuleZero () {

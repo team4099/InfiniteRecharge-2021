@@ -247,17 +247,10 @@ object Drivetrain : SubsystemBase() {
     wheelAngles[3] = atan2(a, c)
     Logger.addEvent("Drivetrain", "wheel angle: $wheelAngles")
 
-    if(angularAcceleration == 0.0.meters.perSecond.perSecond) {
-      wheels[0].set(wheelAngles[0], wheelSpeeds[0])
-      wheels[1].set(wheelAngles[1], wheelSpeeds[1])
-      wheels[2].set(wheelAngles[2], wheelSpeeds[2])
-      wheels[3].set(wheelAngles[3], wheelSpeeds[3])
-    } else {
-      wheels[0].set(wheelAngles[0], wheelSpeeds[0], wheelAccelerations[0])
-      wheels[1].set(wheelAngles[1], wheelSpeeds[1], wheelAccelerations[1])
-      wheels[2].set(wheelAngles[2], wheelSpeeds[2], wheelAccelerations[2])
-      wheels[3].set(wheelAngles[3], wheelSpeeds[3], wheelAccelerations[3])
-    }
+    wheels[0].set(wheelAngles[0], wheelSpeeds[0], wheelAccelerations[0])
+    wheels[1].set(wheelAngles[1], wheelSpeeds[1], wheelAccelerations[1])
+    wheels[2].set(wheelAngles[2], wheelSpeeds[2], wheelAccelerations[2])
+    wheels[3].set(wheelAngles[3], wheelSpeeds[3], wheelAccelerations[3])
   }
 
   fun updateOdometry() {
