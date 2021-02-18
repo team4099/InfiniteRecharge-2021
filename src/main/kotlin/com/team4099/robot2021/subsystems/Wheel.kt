@@ -9,9 +9,11 @@ import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.*
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
+import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.*
 import com.team4099.robot2021.config.Constants
 import kotlin.math.IEEErem
+import kotlin.math.sign
 import kotlin.math.withSign
 
 class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CANSparkMax,  private val encoder: CANCoder, private val zeroOffset: Angle, public val label: String) {
@@ -100,9 +102,9 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
   }
 
 
-  fun set(direction: Angle, speed: LinearVelocity) {
+  fun set(direction: Angle, speed: LinearVelocity, acceleration: LinearAcceleration = 0.0.meters.perSecond.perSecond) {
     if(speed == 0.feet.perSecond){
-      speedSetPoint = 0.feet.perSecond
+      driveSpark.set(speed / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
     }
     var directionDifference =
       (direction - directionSensor.position).inRadians.IEEErem(2 * Math.PI).radians
@@ -111,21 +113,31 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     if (isInverted) {
       directionDifference -= Math.PI.withSign(directionDifference.inRadians).radians
     }
+
     speedSetPoint = if (isInverted) { speed * -1 } else { speed }
     directionSetPoint = direction + directionDifference
-    //Logger.addEvent("Drivetrain", "label: $label, direction sensor: ${directionSensor.position.inDegrees}")
-  }
+    Logger.addEvent("Drivetrain", "label: $label, direction sensor: ${directionSensor.position.inDegrees}")
+    driveSpark.set(speedSetPoint / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
 
-  fun setVelocitySetpoint(velocity: LinearVelocity, acceleration: LinearAcceleration) {
-    drivePID.setReference(
-      driveSensor.velocityToRawUnits(velocity),
-      ControlType.kVelocity,
-      0,
-      (Constants.Drivetrain.PID.DRIVE_KS +
-        velocity * Constants.Drivetrain.PID.DRIVE_KV +
-        acceleration * Constants.Drivetrain.PID.DRIVE_KA).inVolts,
-      CANPIDController.ArbFFUnits.kVoltage
-    )
+    /*if(acceleration == 0.0.meters.perSecond.perSecond) {
+      directionPID.setReference(
+        directionSensor.positionToRawUnits(directionSetPoint),
+        ControlType.kSmartMotion
+        )
+
+    } else {
+        drivePID.setReference(
+          driveSensor.velocityToRawUnits(speed),
+          ControlType.kVelocity,
+          0,
+          (Constants.Drivetrain.PID.DRIVE_KS * sign(speed.value) +
+            speed * Constants.Drivetrain.PID.DRIVE_KV +
+            acceleration * Constants.Drivetrain.PID.DRIVE_KA).inVolts,
+          CANPIDController.ArbFFUnits.kVoltage
+          )
+    }
+
+     */
   }
 
   fun resetModuleZero () {

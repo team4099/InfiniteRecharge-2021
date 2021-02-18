@@ -124,8 +124,8 @@ object Logger {
                 },
                 EntryListenerFlags.kUpdate)
       }
-    } catch (e: Error) {
-      addEvent("Logger", "Could not add $tab/$name to Shuffleboard due to invalid type")
+    } catch (e: IllegalAccessException) {
+      addEvent("Logger", "Could not add $tab/$name to Shuffleboard due to invalid type", Severity.WARN)
     }
     dataSources.add(LogSource(tab, name, supplier, shuffleboardEntry))
   }
