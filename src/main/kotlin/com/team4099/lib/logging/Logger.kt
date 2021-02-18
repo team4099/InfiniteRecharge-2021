@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget
 import java.io.File
 import java.io.IOException
 import java.lang.ClassCastException
+import java.lang.IllegalArgumentException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -124,7 +125,7 @@ object Logger {
                 },
                 EntryListenerFlags.kUpdate)
       }
-    } catch (e: IllegalAccessException) {
+    } catch (e: IllegalArgumentException) {
       addEvent("Logger", "Could not add $tab/$name to Shuffleboard due to invalid type", Severity.WARN)
     }
     dataSources.add(LogSource(tab, name, supplier, shuffleboardEntry))
