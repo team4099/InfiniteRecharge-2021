@@ -71,6 +71,9 @@ object Drivetrain : SubsystemBase() {
   private val wheelAngles =
     mutableListOf(0.radians, 0.radians, 0.radians, 0.radians)
 
+  private val wheelAccelerations =
+    mutableListOf(0.feet.perSecond.perSecond, 0.feet.perSecond.perSecond, 0.feet.perSecond.perSecond, 0.feet.perSecond.perSecond)
+
   private val gyro = ADIS16470_IMU()
 
   private val gyroAngle: Angle
@@ -172,7 +175,9 @@ object Drivetrain : SubsystemBase() {
   fun set(
     angularVelocity: AngularVelocity,
     driveVector: Pair<LinearVelocity, LinearVelocity>,
-    fieldOriented: Boolean = true
+    fieldOriented: Boolean = true,
+    angularAcceleration: AngularAcceleration = 0.0.radians.perSecond.perSecond,
+    driveAcceleration: Pair<LinearAcceleration, LinearAcceleration> = Pair(0.0.meters.perSecond.perSecond, 0.0.meters.perSecond.perSecond)
   ) {
     Logger.addEvent("Drivetrain", "gyro angle: ${gyroAngle.inDegrees}")
     val vX = if (fieldOriented) {
@@ -186,6 +191,19 @@ object Drivetrain : SubsystemBase() {
         driveVector.first * gyroAngle.sin
     } else {
       driveVector.second
+    }
+
+    val aY = if (fieldOriented) {
+      driveAcceleration.second * gyroAngle.cos +
+        driveAcceleration.first * gyroAngle.sin
+    } else {
+      driveAcceleration.second
+    }
+    val aX = if (fieldOriented) {
+      driveAcceleration.first * gyroAngle.cos -
+        driveAcceleration.second * gyroAngle.sin
+    } else {
+      driveAcceleration.first
     }
 
     val a =
@@ -203,6 +221,20 @@ object Drivetrain : SubsystemBase() {
     wheelSpeeds[2] = hypot(a, d)
     wheelSpeeds[3] = hypot(a, c)
 
+    val aA =
+      aX - (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_LENGTH.value / 2).inches.perSecond.perSecond
+    val aB =
+      aX + (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_LENGTH.value / 2).inches.perSecond.perSecond
+    val aC =
+      aY - (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_WIDTH.value / 2).inches.perSecond.perSecond
+    val aD =
+      aY - (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_WIDTH.value / 2).inches.perSecond.perSecond
+
+    wheelAccelerations[0] = kotlin.math.hypot(aB.value, aD.value).feet.perSecond.perSecond
+    wheelAccelerations[1] = kotlin.math.hypot(aB.value, aC.value).feet.perSecond.perSecond
+    wheelAccelerations[2] = kotlin.math.hypot(aA.value, aD.value).feet.perSecond.perSecond
+    wheelAccelerations[3] = kotlin.math.hypot(aA.value, aC.value).feet.perSecond.perSecond
+
     val maxWheelSpeed = wheelSpeeds.max()
     if (maxWheelSpeed != null && maxWheelSpeed > Constants.Drivetrain.DRIVE_SETPOINT_MAX) {
       for (i in 0 until Constants.Drivetrain.WHEEL_COUNT) {
@@ -215,11 +247,10 @@ object Drivetrain : SubsystemBase() {
     wheelAngles[3] = atan2(a, c)
     Logger.addEvent("Drivetrain", "wheel angle: $wheelAngles")
 
-    wheels[0].set(wheelAngles[0], wheelSpeeds[0])
-    wheels[1].set(wheelAngles[1], wheelSpeeds[1])
-    wheels[2].set(wheelAngles[2], wheelSpeeds[2])
-    wheels[3].set(wheelAngles[3], wheelSpeeds[3])
-
+    wheels[0].set(wheelAngles[0], wheelSpeeds[0], wheelAccelerations[0])
+    wheels[1].set(wheelAngles[1], wheelSpeeds[1], wheelAccelerations[1])
+    wheels[2].set(wheelAngles[2], wheelSpeeds[2], wheelAccelerations[2])
+    wheels[3].set(wheelAngles[3], wheelSpeeds[3], wheelAccelerations[3])
   }
 
   fun updateOdometry() {
