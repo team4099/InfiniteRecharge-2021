@@ -90,7 +90,8 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     directionPID.setOutputRange(-1.0, 1.0)
     directionPID.setIZone(0.0)
     directionPID.setSmartMotionMinOutputVelocity(0.0, 0)
-    directionPID.setSmartMotionAllowedClosedLoopError(5.0, 0)
+    directionPID.setSmartMotionAllowedClosedLoopError(directionSensor.positionToRawUnits(Constants.Drivetrain.ALLOWED_ANGLE_ERROR), 0)
+    directionSpark.setSmartCurrentLimit(Constants.Drivetrain.DIRECTION_SMART_CURRENT_LIMIT)
 
     directionSpark.burnFlash()
 
@@ -98,6 +99,7 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     drivePID.i = Constants.Drivetrain.PID.DRIVE_KI
     drivePID.d = Constants.Drivetrain.PID.DRIVE_KD
     drivePID.ff = Constants.Drivetrain.PID.DRIVE_KFF
+    driveSpark.setSmartCurrentLimit(Constants.Drivetrain.DRIVE_SMART_CURRENT_LIMIT)
     driveSpark.burnFlash()
   }
 
@@ -115,7 +117,7 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     }
 
     speedSetPoint = if (isInverted) { speed * -1 } else { speed }
-    directionSetPoint = direction + directionDifference
+    directionSetPoint = directionSensor.position + directionDifference
     Logger.addEvent("Drivetrain", "label: $label, direction sensor: ${directionSensor.position.inDegrees}")
     driveSpark.set(speedSetPoint / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
 
