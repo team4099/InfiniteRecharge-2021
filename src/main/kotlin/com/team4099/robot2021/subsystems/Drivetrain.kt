@@ -175,33 +175,33 @@ object Drivetrain : SubsystemBase() {
   fun set(
     angularVelocity: AngularVelocity,
     driveVector: Pair<LinearVelocity, LinearVelocity>,
-    fieldOriented: Boolean = false,
+    fieldOriented: Boolean = true,
     angularAcceleration: AngularAcceleration = 0.0.radians.perSecond.perSecond,
     driveAcceleration: Pair<LinearAcceleration, LinearAcceleration> = Pair(0.0.meters.perSecond.perSecond, 0.0.meters.perSecond.perSecond)
   ) {
-    Logger.addEvent("Drivetrain", "gyro angle: ${gyroAngle.inDegrees}")
+    Logger.addEvent("Drivetrain", "gyro angle: ${(-gyroAngle).inDegrees}")
     val vX = if (fieldOriented) {
-      driveVector.first * gyroAngle.cos -
-        driveVector.second * gyroAngle.sin
+      driveVector.first * (-gyroAngle).cos -
+        driveVector.second * (-gyroAngle).sin
     } else {
       driveVector.first
     }
     val vY = if (fieldOriented) {
-      driveVector.second * gyroAngle.cos +
-        driveVector.first * gyroAngle.sin
+      driveVector.second * (-gyroAngle).cos +
+        driveVector.first * (-gyroAngle).sin
     } else {
       driveVector.second
     }
 
     val aY = if (fieldOriented) {
-      driveAcceleration.second * gyroAngle.cos +
-        driveAcceleration.first * gyroAngle.sin
+      driveAcceleration.second * (-gyroAngle).cos +
+        driveAcceleration.first * (-gyroAngle).sin
     } else {
       driveAcceleration.second
     }
     val aX = if (fieldOriented) {
-      driveAcceleration.first * gyroAngle.cos -
-        driveAcceleration.second * gyroAngle.sin
+      driveAcceleration.first * (-gyroAngle).cos -
+        driveAcceleration.second * (-gyroAngle).sin
     } else {
       driveAcceleration.first
     }

@@ -53,11 +53,7 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
 
 
   private var speedSetPoint: LinearVelocity = 0.feet.perSecond
-    set(value) {
-      driveSpark.set(value / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
-//      drivePID.setReference(driveSensor.velocityToRawUnits(value), ControlType.kVelocity)
-      field = value
-    }
+
   private var directionSetPoint: Angle = 0.degrees
     set(value) {
       //Logger.addEvent("Drivetrain", "label: $label, value: ${value.inDegrees}, reference raw position: ${directionSensor.positionToRawUnits(value)}, current raw position: ${directionSensor.getRawPosition()}")
@@ -66,20 +62,29 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     }
 
   init {
-    directionSpark.restoreFactoryDefaults()
     driveSpark.restoreFactoryDefaults()
+    directionSpark.restoreFactoryDefaults()
 
-    Logger.addSource("Drivetrain", "$label Drive Output Current") { driveOutputCurrent }
-    Logger.addSource("Drivetrain", "$label Direction Output Current") { directionOutputCurrent }
+    driveSpark.clearFaults()
+    directionSpark.clearFaults()
 
-    Logger.addSource("Drivetrain", "$label Drive Temperature") { driveTemp }
-    Logger.addSource("Drivetrain", "$label Direction Temperature") { directionTemp }
+    Logger.addSource("$label Drivetrain", "Drive Faults") { driveSpark.faults }
+    Logger.addSource("$label Drivetrain", "Direction Faults") { directionSpark.faults }
 
-    Logger.addSource("Drivetrain", "$label Drive Percent Output") { drivePercentOutput }
-    Logger.addSource("Drivetrain", "$label Direction Percent Output") { directionPercentOutput }
+    Logger.addSource("$label Drivetrain", "Drive Output Current") { driveOutputCurrent }
+    Logger.addSource("$label Drivetrain", "Direction Output Current") { directionOutputCurrent }
 
-    Logger.addSource("Drivetrain", "$label Drive Bus Voltage") { driveBusVoltage }
-    Logger.addSource("Drivetrain", "$label Direction Bus Voltage") { directionBusVoltage }
+    Logger.addSource("$label Drivetrain", "Drive Temperature") { driveTemp }
+    Logger.addSource("$label Drivetrain", "Direction Temperature") { directionTemp }
+
+    Logger.addSource("$label Drivetrain", "Drive Percent Output") { drivePercentOutput }
+    Logger.addSource("$label Drivetrain", "Direction Percent Output") { directionPercentOutput }
+
+    Logger.addSource("$label Drivetrain", "Drive Bus Voltage") { driveBusVoltage }
+    Logger.addSource("$label Drivetrain", "Direction Bus Voltage") { directionBusVoltage }
+
+    Logger.addSource("$label Drivetrain", "Drive SetPoint") { speedSetPoint.inFeetPerSecond }
+    Logger.addSource("$label Drivetrain", "Direction SetPoint") { directionSetPoint.inDegrees }
 
     directionPID.p = Constants.Drivetrain.PID.DIRECTION_KP
     directionPID.i = Constants.Drivetrain.PID.DIRECTION_KI
