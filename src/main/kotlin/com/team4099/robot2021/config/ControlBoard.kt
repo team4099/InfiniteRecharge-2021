@@ -4,8 +4,8 @@ import com.team4099.lib.joystick.XboxOneGamepad
 import edu.wpi.first.wpilibj2.command.button.Trigger
 
 /**
- * Maps buttons on the driver and operator controllers to specific actions
- * with meaningful variable names.
+ * Maps buttons on the driver and operator controllers to specific actions with meaningful variable
+ * names.
  */
 object ControlBoard {
   private val driver = XboxOneGamepad(Constants.Joysticks.DRIVER_PORT)
@@ -44,16 +44,21 @@ object ControlBoard {
   val climberDown: Boolean
     get() = driver.dPadDown
 
-  val runIntakeIn = Trigger {operator.aButton}
+  val runIntakeIn = Trigger { operator.aButton }
 
-  val runIntakeOut = Trigger { operator.bButton}
+  val runIntakeOut = Trigger { operator.bButton }
 
   val slowMode: Boolean
     get() = driver.dPadDown
 
-  val runFeederIn = Trigger{ operator.dPadDown};
-  val runFeederOut = Trigger{ operator.dPadUp};
-  
+  val runFeederIn = Trigger { operator.dPadDown }
+  val runFeederOut = Trigger { operator.dPadUp }
+  val shoot = Trigger { operator.xButton }
+
+  val stopShooting = Trigger { operator.yButton }
+
+  val spinUpShooter = Trigger { operator.dPadRight }
+
   val climberHigh = Trigger { driver.dPadUp }
   val climberLow = Trigger { driver.dPadDown }
 }

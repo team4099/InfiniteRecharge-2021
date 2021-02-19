@@ -12,7 +12,15 @@ import kotlin.math.min
  * @return If [around] is within [tolerance] of this Double.
  */
 fun Double.around(around: Double, tolerance: Double): Boolean {
-    return abs(this - around) < tolerance
+  return abs(this - around) < tolerance
+}
+
+fun Double.smoothDeadband(deadband: Double): Double {
+  return if (abs(this) < deadband) {
+    0.0
+  } else {
+    (this - deadband) / (1 - deadband)
+  }
 }
 
 /**
@@ -23,7 +31,7 @@ fun Double.around(around: Double, tolerance: Double): Boolean {
  * @return Return this Double if it is in the range otherwise return [lowerBound] or [upperBound].
  */
 fun Double.limit(lowerBound: Double, upperBound: Double): Double {
-    return min(upperBound, max(lowerBound, this))
+  return min(upperBound, max(lowerBound, this))
 }
 
 /**
@@ -34,5 +42,5 @@ fun Double.limit(lowerBound: Double, upperBound: Double): Double {
  * @return Return this Int if it is in the range otherwise return [lowerBound] or [upperBound].
  */
 fun Int.limit(lowerBound: Int, upperBound: Int): Int {
-    return min(upperBound, max(lowerBound, this))
+  return min(upperBound, max(lowerBound, this))
 }

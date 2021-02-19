@@ -1,10 +1,19 @@
 package com.team4099.lib.units
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.can.BaseTalon
 import com.revrobotics.CANSparkMax
-import com.team4099.lib.units.base.*
-import com.team4099.lib.units.derived.*
+import com.team4099.lib.units.base.Length
+import com.team4099.lib.units.base.Meter
+import com.team4099.lib.units.base.Time
+import com.team4099.lib.units.base.inMeters
+import com.team4099.lib.units.base.inSeconds
+import com.team4099.lib.units.base.meters
+import com.team4099.lib.units.base.minutes
+import com.team4099.lib.units.base.seconds
+import com.team4099.lib.units.derived.Radian
+import com.team4099.lib.units.derived.inRotations
+import com.team4099.lib.units.derived.radians
+import com.team4099.lib.units.derived.rotations
 import kotlin.math.PI
 
 enum class Timescale(val velocity: Time, val acceleration: Time) {
@@ -12,7 +21,7 @@ enum class Timescale(val velocity: Time, val acceleration: Time) {
   CTRE(100.milli.seconds, 1.seconds),
 }
 
-interface MechanismSensor<U: UnitKey> {
+interface MechanismSensor<U : UnitKey> {
   val position: Value<U>
   val velocity: Value<Velocity<U>>
 
@@ -27,7 +36,7 @@ class LinearMechanismSensor(
   private val timescale: Timescale,
   val getRawVelocity: () -> Double,
   val getRawPosition: () -> Double
-): MechanismSensor<Meter> {
+) : MechanismSensor<Meter> {
   override val position: Value<Meter>
     get() = diameter * getRawPosition() * ratio * PI
 
@@ -37,8 +46,7 @@ class LinearMechanismSensor(
       return (linearUnscaledVelocity / timescale.velocity.inSeconds).meters.perSecond
     }
 
-  override fun positionToRawUnits(position: Value<Meter>): Double =
-    position / diameter / ratio / PI
+  override fun positionToRawUnits(position: Value<Meter>): Double = position / diameter / ratio / PI
 
   override fun velocityToRawUnits(velocity: Value<Velocity<Meter>>): Double {
     val linearUnscaledVelocity = velocity.inMetersPerSecond * timescale.velocity.inSeconds
@@ -46,7 +54,8 @@ class LinearMechanismSensor(
   }
 
   override fun accelerationToRawUnits(acceleration: Value<Acceleration<Meter>>): Double {
-    val linearUnscaledVelocity = velocity.inMetersPerSecond * timescale.velocity.inSeconds * timescale.acceleration.inSeconds
+    val linearUnscaledVelocity =
+        velocity.inMetersPerSecond * timescale.velocity.inSeconds * timescale.acceleration.inSeconds
     return linearUnscaledVelocity / diameter.inMeters / ratio / PI
   }
 }
@@ -56,61 +65,64 @@ class AngularMechanismSensor(
   private val timescale: Timescale,
   val getRawVelocity: () -> Double,
   val getRawPosition: () -> Double
-): MechanismSensor<Radian> {
+) : MechanismSensor<Radian> {
   override val position: Value<Radian>
     get() = (getRawPosition() * ratio).rotations
 
   override val velocity: Value<Velocity<Radian>>
     get() = (getRawVelocity() * ratio / timescale.velocity.inSeconds).radians.perSecond
 
-  override fun positionToRawUnits(position: Value<Radian>): Double =
-    position.inRotations / ratio
+  override fun positionToRawUnits(position: Value<Radian>): Double = position.inRotations / ratio
 
   override fun velocityToRawUnits(velocity: Value<Velocity<Radian>>): Double =
-    (velocity.inRotationsPerSecond * timescale.velocity.inSeconds) / ratio
+      (velocity.inRotationsPerSecond * timescale.velocity.inSeconds) / ratio
 
   override fun accelerationToRawUnits(acceleration: Value<Acceleration<Radian>>): Double =
-    (velocity.inRotationsPerSecond * timescale.velocity.inSeconds * timescale.acceleration.inSeconds) / ratio
+      (acceleration.inRotationsPerSecondPerSecond *
+          timescale.velocity.inSeconds *
+          timescale.acceleration.inSeconds) / ratio
 }
 
-fun ctreAngularMechanismSensor(controller: BaseTalon, sensorCpr: Int, ratio: Double): AngularMechanismSensor {
+fun ctreAngularMechanismSensor(
+  controller: BaseTalon,
+  sensorCpr: Int,
+  ratio: Double
+): AngularMechanismSensor {
   return AngularMechanismSensor(
-    ratio * sensorCpr,
-    Timescale.CTRE,
-    { controller.selectedSensorPosition.toDouble() },
-    { controller.selectedSensorVelocity.toDouble() }
-  )
+      ratio * sensorCpr,
+      Timescale.CTRE,
+      { controller.selectedSensorPosition.toDouble() },
+      { controller.selectedSensorVelocity.toDouble() })
 }
 
-fun ctreLinearMechanismSensor(controller: BaseTalon, sensorCpr: Int, ratio: Double, diameter: Length): LinearMechanismSensor {
+fun ctreLinearMechanismSensor(
+  controller: BaseTalon,
+  sensorCpr: Int,
+  ratio: Double,
+  diameter: Length
+): LinearMechanismSensor {
   return LinearMechanismSensor(
-    diameter,
-    ratio * sensorCpr,
-    Timescale.CTRE,
-    { controller.selectedSensorPosition.toDouble() },
-    { controller.selectedSensorVelocity.toDouble() }
-  )
+      diameter,
+      ratio * sensorCpr,
+      Timescale.CTRE,
+      { controller.selectedSensorPosition.toDouble() },
+      { controller.selectedSensorVelocity.toDouble() })
 }
 
 fun sparkMaxAngularMechanismSensor(controller: CANSparkMax, ratio: Double): AngularMechanismSensor {
   val encoder = controller.encoder
 
   return AngularMechanismSensor(
-    ratio,
-    Timescale.REV_NEO,
-    { encoder.velocity },
-    { encoder.position }
-  )
+      ratio, Timescale.REV_NEO, { encoder.velocity }, { encoder.position })
 }
 
-fun sparkMaxLinearMechanismSensor(controller: CANSparkMax, ratio: Double, diameter: Length): LinearMechanismSensor {
+fun sparkMaxLinearMechanismSensor(
+  controller: CANSparkMax,
+  ratio: Double,
+  diameter: Length
+): LinearMechanismSensor {
   val encoder = controller.encoder
 
   return LinearMechanismSensor(
-    diameter,
-    ratio,
-    Timescale.REV_NEO,
-    { encoder.velocity },
-    { encoder.position }
-  )
+      diameter, ratio, Timescale.REV_NEO, { encoder.velocity }, { encoder.position })
 }

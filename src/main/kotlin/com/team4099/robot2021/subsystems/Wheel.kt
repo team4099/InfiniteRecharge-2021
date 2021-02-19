@@ -1,16 +1,19 @@
 package com.team4099.robot2021.subsystems
 
 import com.ctre.phoenix.sensors.CANCoder
+import com.ctre.phoenix.sensors.SensorInitializationStrategy
+import com.revrobotics.CANPIDController
 import com.revrobotics.CANSparkMax
 import com.revrobotics.ControlType
-import com.revrobotics.SparkMax
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.*
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
+import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.*
 import com.team4099.robot2021.config.Constants
 import kotlin.math.IEEErem
+import kotlin.math.sign
 import kotlin.math.withSign
 
 class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CANSparkMax,  private val encoder: CANCoder, private val zeroOffset: Angle, public val label: String) {
@@ -18,10 +21,10 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
   private val directionPID = directionSpark.pidController
   private val drivePID = driveSpark.pidController
 
-  private val directionSensor = sparkMaxAngularMechanismSensor(directionSpark, 1.0)
-  private val driveSensor = sparkMaxLinearMechanismSensor(driveSpark, 1.0, 3.inches)
+  private val directionSensor = sparkMaxAngularMechanismSensor(directionSpark, Constants.Drivetrain.DIRECTION_SENSOR_GEAR_RATIO)
+  private val driveSensor = sparkMaxLinearMechanismSensor(driveSpark, Constants.Drivetrain.DRIVE_SENSOR_GEAR_RATIO, 3.inches)
 
-  private val directionAbsolute = AngularMechanismSensor(1.0,Timescale.CTRE,{encoder.velocity},{encoder.absolutePosition})
+  private val directionAbsolute = AngularMechanismSensor(Constants.Drivetrain.ABSOLUTE_GEAR_RATIO,Timescale.CTRE, { encoder.velocity }, { Math.toRadians(encoder.absolutePosition) })
 
   // motor params
   private val driveTemp: Double
@@ -50,35 +53,65 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
 
 
   private var speedSetPoint: LinearVelocity = 0.feet.perSecond
-    set(value) {
-      drivePID.setReference(driveSensor.velocityToRawUnits(value), ControlType.kVelocity)
-      field = value
-    }
+
   private var directionSetPoint: Angle = 0.degrees
     set(value) {
+      //Logger.addEvent("Drivetrain", "label: $label, value: ${value.inDegrees}, reference raw position: ${directionSensor.positionToRawUnits(value)}, current raw position: ${directionSensor.getRawPosition()}")
       directionPID.setReference(directionSensor.positionToRawUnits(value), ControlType.kSmartMotion)
       field = value
     }
 
   init {
-    Logger.addSource("Drivetrain", "$label Drive Output Current") { driveOutputCurrent}
-    Logger.addSource("Drivetrain", "$label Direction Output Current") { directionOutputCurrent }
+    driveSpark.restoreFactoryDefaults()
+    directionSpark.restoreFactoryDefaults()
 
-    Logger.addSource("Drivetrain", "$label Drive Temperature") { driveTemp }
-    Logger.addSource("Drivetrain", "$label Direction Temperature") { directionTemp }
+    driveSpark.clearFaults()
+    directionSpark.clearFaults()
 
-    Logger.addSource("Drivetrain", "$label Drive Percent Output") { drivePercentOutput }
-    Logger.addSource("Drivetrain", "$label Direction Percent Output") { directionPercentOutput }
+    Logger.addSource("$label Drivetrain", "Drive Faults") { driveSpark.faults }
+    Logger.addSource("$label Drivetrain", "Direction Faults") { directionSpark.faults }
 
-    Logger.addSource("Drivetrain", "$label Drive Bus Voltage") { driveBusVoltage }
-    Logger.addSource("Drivetrain", "$label Direction Bus Voltage") { directionBusVoltage }
+    Logger.addSource("$label Drivetrain", "Drive Output Current") { driveOutputCurrent }
+    Logger.addSource("$label Drivetrain", "Direction Output Current") { directionOutputCurrent }
 
+    Logger.addSource("$label Drivetrain", "Drive Temperature") { driveTemp }
+    Logger.addSource("$label Drivetrain", "Direction Temperature") { directionTemp }
+
+    Logger.addSource("$label Drivetrain", "Drive Percent Output") { drivePercentOutput }
+    Logger.addSource("$label Drivetrain", "Direction Percent Output") { directionPercentOutput }
+
+    Logger.addSource("$label Drivetrain", "Drive Bus Voltage") { driveBusVoltage }
+    Logger.addSource("$label Drivetrain", "Direction Bus Voltage") { directionBusVoltage }
+
+    Logger.addSource("$label Drivetrain", "Drive SetPoint") { speedSetPoint.inFeetPerSecond }
+    Logger.addSource("$label Drivetrain", "Direction SetPoint") { directionSetPoint.inDegrees }
+
+    directionPID.p = Constants.Drivetrain.PID.DIRECTION_KP
+    directionPID.i = Constants.Drivetrain.PID.DIRECTION_KI
+    directionPID.d = Constants.Drivetrain.PID.DIRECTION_KD
+    directionPID.ff = Constants.Drivetrain.PID.DIRECTION_KFF
+    directionPID.setSmartMotionMaxVelocity(directionSensor.velocityToRawUnits(Constants.Drivetrain.DIRECTION_VEL_MAX), 0)
+    directionPID.setSmartMotionMaxAccel(directionSensor.accelerationToRawUnits(Constants.Drivetrain.DIRECTION_ACCEL_MAX), 0)
+    directionPID.setOutputRange(-1.0, 1.0)
+    directionPID.setIZone(0.0)
+    directionPID.setSmartMotionMinOutputVelocity(0.0, 0)
+    directionPID.setSmartMotionAllowedClosedLoopError(directionSensor.positionToRawUnits(Constants.Drivetrain.ALLOWED_ANGLE_ERROR), 0)
+    directionSpark.setSmartCurrentLimit(Constants.Drivetrain.DIRECTION_SMART_CURRENT_LIMIT)
+
+    directionSpark.burnFlash()
+
+    drivePID.p = Constants.Drivetrain.PID.DRIVE_KP
+    drivePID.i = Constants.Drivetrain.PID.DRIVE_KI
+    drivePID.d = Constants.Drivetrain.PID.DRIVE_KD
+    drivePID.ff = Constants.Drivetrain.PID.DRIVE_KFF
+    driveSpark.setSmartCurrentLimit(Constants.Drivetrain.DRIVE_SMART_CURRENT_LIMIT)
+    driveSpark.burnFlash()
   }
 
 
-  fun set(direction: Angle, speed: LinearVelocity) {
+  fun set(direction: Angle, speed: LinearVelocity, acceleration: LinearAcceleration = 0.0.meters.perSecond.perSecond) {
     if(speed == 0.feet.perSecond){
-      speedSetPoint = 0.feet.perSecond
+      driveSpark.set(speed / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
     }
     var directionDifference =
       (direction - directionSensor.position).inRadians.IEEErem(2 * Math.PI).radians
@@ -87,12 +120,45 @@ class Wheel(private val directionSpark: CANSparkMax, private val driveSpark: CAN
     if (isInverted) {
       directionDifference -= Math.PI.withSign(directionDifference.inRadians).radians
     }
+
     speedSetPoint = if (isInverted) { speed * -1 } else { speed }
-    directionSetPoint = direction + directionDifference
+    directionSetPoint = directionSensor.position + directionDifference
+    Logger.addEvent("Drivetrain", "label: $label, direction sensor: ${directionSensor.position.inDegrees}")
+    driveSpark.set(speedSetPoint / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+
+    /*if(acceleration == 0.0.meters.perSecond.perSecond) {
+      directionPID.setReference(
+        directionSensor.positionToRawUnits(directionSetPoint),
+        ControlType.kSmartMotion
+        )
+
+    } else {
+        drivePID.setReference(
+          driveSensor.velocityToRawUnits(speed),
+          ControlType.kVelocity,
+          0,
+          (Constants.Drivetrain.PID.DRIVE_KS * sign(speed.value) +
+            speed * Constants.Drivetrain.PID.DRIVE_KV +
+            acceleration * Constants.Drivetrain.PID.DRIVE_KA).inVolts,
+          CANPIDController.ArbFFUnits.kVoltage
+          )
+    }
+
+     */
+  }
+
+  fun resetModuleZero () {
+    encoder.configFactoryDefault()
+    encoder.configMagnetOffset(0.0)
+    Logger.addEvent("Drivetrain", "label: $label, offset: ${+encoder.absolutePosition + zeroOffset.inDegrees - encoder.configGetMagnetOffset()}, position: ${encoder.position}, lasttimestamp: ${encoder.lastTimestamp}, absolute position: ${encoder.absolutePosition}")
+    encoder.configMagnetOffset(-encoder.absolutePosition - zeroOffset.inDegrees - encoder.configGetMagnetOffset())
+    encoder.setPositionToAbsolute()
+    encoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition)
   }
 
   fun zeroDirection(){
-    directionSpark.encoder.position = directionSensor.positionToRawUnits(directionAbsolute.position + zeroOffset)
+    directionSpark.encoder.position = directionSensor.positionToRawUnits(encoder.absolutePosition.degrees + zeroOffset)
+    Logger.addEvent("DriveTrain", "label: $label, encoder position: ${directionSensor.positionToRawUnits(encoder.absolutePosition.degrees + zeroOffset)}, encoder absolute position: ${encoder.absolutePosition}, encoder abs pos zer off: ${(encoder.absolutePosition.degrees + zeroOffset).inDegrees}")
   }
 
   fun zeroDrive(){
