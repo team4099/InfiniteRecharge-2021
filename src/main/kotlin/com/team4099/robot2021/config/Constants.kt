@@ -84,6 +84,10 @@ object Constants {
     const val DRIVE_SENSOR_GEAR_RATIO = (12.0/21.0)*(15.0/45.0)
     const val DIRECTION_SENSOR_GEAR_RATIO = (12.0/64.0)*(1.0/10.0)
 
+    val ALLOWED_ANGLE_ERROR = 5.degrees
+    const val DIRECTION_SMART_CURRENT_LIMIT = 20
+    const val DRIVE_SMART_CURRENT_LIMIT = 80
+
     object Gains {
       const val RAMSETE_B = 2.0
       const val RAMSETE_ZETA = 0.7
