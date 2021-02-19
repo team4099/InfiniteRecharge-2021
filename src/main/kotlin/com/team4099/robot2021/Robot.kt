@@ -1,6 +1,7 @@
 package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.commands.MoveClimber
 import com.team4099.robot2021.commands.climber.LockClimber
 import com.team4099.robot2021.commands.climber.UnlockClimber
@@ -69,7 +70,11 @@ object Robot : TimedRobot() {
 //    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
 //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
 
-    Drivetrain.defaultCommand = TeleopDriveCommand({ if (abs(ControlBoard.strafe) < Constants.Joysticks.THROTTLE_DEADBAND) {0.0} else {ControlBoard.strafe} }, { if (abs(ControlBoard.forward) < Constants.Joysticks.THROTTLE_DEADBAND) {0.0} else {ControlBoard.forward} }, { if (abs(ControlBoard.turn) < Constants.Joysticks.TURN_DEADBAND) {0.0} else {ControlBoard.turn} })
+    Drivetrain.defaultCommand = TeleopDriveCommand(
+      { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
+      { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
+      { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) }
+    )
 
 //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
   }
