@@ -6,6 +6,7 @@ import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.degrees
+import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.perMinute
@@ -73,10 +74,13 @@ object Constants {
 
     const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
 
-    const val MAX_VEL_METERS_PER_SEC = 4.0
-    const val SLOW_VEL_METERS_PER_SEC = 0.66
-    const val MAX_ACCEL_METERS_PER_SEC_SQ = 2.0
-    const val SLOW_ACCEL_METERS_PER_SEC_SQ = 2.0
+    val MAX_VEL_METERS_PER_SEC = 4.0.meters.perSecond
+    val SLOW_VEL_METERS_PER_SEC = 0.66.meters.perSecond
+    val MAX_ACCEL_METERS_PER_SEC_SQ = 2.0.meters.perSecond.perSecond
+    val SLOW_ACCEL_METERS_PER_SEC_SQ = 2.0.meters.perSecond.perSecond
+
+    val MAX_VEL_ANGULAR_PER_SEC = 1.0.radians.perSecond
+    val MAX_ACCEL_ANGULAR_PER_SEC_SQ = 1.0.radians.perSecond.perSecond
 
     const val CENTRIPETAL_ACCEL_METERS_PER_SEC_SQ = 1.0
 

@@ -10,18 +10,18 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.Subsystem
 
 class AutoDriveCommand(private val path: Trajectory) : CommandBase() {
+
   init {
     addRequirements(Drivetrain)
   }
 
   override fun initialize() {
     Drivetrain.path = this.path
+    Drivetrain.isFieldOriented = false
   }
 
   override fun execute() {
     Drivetrain.updatePathFollowing(Clock.fpgaTime)
-    Drivetrain.updateOdometry()
-
   }
 
   override fun isFinished(): Boolean {
