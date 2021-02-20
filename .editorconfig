@@ -7,5 +7,5 @@ insert_final_newline=true
 # it's automatically set to 100 on `ktlint --android ...` (per Android Kotlin Style Guide)
 max_line_length=100
 # avoid wildcard imports
-ij_kotlin_name_count_to_use_star_import = 999
-ij_kotlin_name_count_to_use_star_import_for_members = 999
+# ij_kotlin_name_count_to_use_star_import = 999
+# ij_kotlin_name_count_to_use_star_import_for_members = 999

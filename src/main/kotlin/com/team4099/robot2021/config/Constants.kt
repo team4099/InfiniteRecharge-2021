@@ -1,17 +1,17 @@
 package com.team4099.robot2021.config
 
 import com.team4099.lib.units.base.Length
-import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.feet
+import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.degrees
+import com.team4099.lib.units.derived.div
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.perMinute
 import com.team4099.lib.units.perSecond
 import edu.wpi.first.wpilibj.DoubleSolenoid
-import com.team4099.lib.units.derived.div
 
 object Constants {
   object Universal {
@@ -81,8 +81,8 @@ object Constants {
     const val CENTRIPETAL_ACCEL_METERS_PER_SEC_SQ = 1.0
 
     const val ABSOLUTE_GEAR_RATIO = 1.0
-    const val DRIVE_SENSOR_GEAR_RATIO = (12.0/21.0)*(15.0/45.0)
-    const val DIRECTION_SENSOR_GEAR_RATIO = (12.0/64.0)*(1.0/10.0)
+    const val DRIVE_SENSOR_GEAR_RATIO = (12.0 / 21.0) * (15.0 / 45.0)
+    const val DIRECTION_SENSOR_GEAR_RATIO = (12.0 / 64.0) * (1.0 / 10.0)
 
     val ALLOWED_ANGLE_ERROR = 5.degrees
     const val DIRECTION_SMART_CURRENT_LIMIT = 20
@@ -211,6 +211,6 @@ object Constants {
 
   enum class ClimberPosition(val length: Length) {
     LOW(0.meters),
-    HIGH(1.0414.meters) //Climber fulled extended: 1.0414 meters = 41 in
+    HIGH(1.0414.meters) // Climber fulled extended: 1.0414 meters = 41 in
   }
 }

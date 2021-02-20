@@ -4,75 +4,95 @@ import com.analog.adis16470.frc.ADIS16470_IMU
 import com.ctre.phoenix.sensors.CANCoder
 import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel
-import com.team4099.lib.geometry.*
+import com.team4099.lib.geometry.Pose
+import com.team4099.lib.geometry.Translation
 import com.team4099.lib.hal.Clock
 import com.team4099.lib.logging.Logger
-import com.team4099.lib.units.*
-import com.team4099.lib.units.base.*
-import com.team4099.lib.units.derived.*
+import com.team4099.lib.units.AngularAcceleration
+import com.team4099.lib.units.AngularVelocity
+import com.team4099.lib.units.LinearAcceleration
+import com.team4099.lib.units.LinearVelocity
+import com.team4099.lib.units.base.Time
+import com.team4099.lib.units.base.feet
+import com.team4099.lib.units.base.inSeconds
+import com.team4099.lib.units.base.inches
+import com.team4099.lib.units.base.meters
+import com.team4099.lib.units.base.seconds
+import com.team4099.lib.units.derived.Angle
+import com.team4099.lib.units.derived.cos
+import com.team4099.lib.units.derived.degrees
+import com.team4099.lib.units.derived.inDegrees
+import com.team4099.lib.units.derived.inRotation2ds
+import com.team4099.lib.units.derived.radians
+import com.team4099.lib.units.derived.sin
+import com.team4099.lib.units.derived.times
+import com.team4099.lib.units.inFeetPerSecond
+import com.team4099.lib.units.inMetersPerSecond
+import com.team4099.lib.units.perSecond
 import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj.controller.RamseteController
-import edu.wpi.first.wpilibj.kinematics.*
+import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics
+import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry
+import edu.wpi.first.wpilibj.kinematics.SwerveModuleState
 import edu.wpi.first.wpilibj.trajectory.Trajectory
 import edu.wpi.first.wpilibj2.command.SubsystemBase
-import kotlin.math.*
+import kotlin.math.IEEErem
 
 object Drivetrain : SubsystemBase() {
-  private val wheels = listOf(
-    Wheel(
-      CANSparkMax(
-        Constants.Drivetrain.FRONT_LEFT_DIRECTION_ID, CANSparkMaxLowLevel.MotorType.kBrushless
-      ),
-      CANSparkMax(
-        Constants.Drivetrain.FRONT_LEFT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless
-      ),
-      CANCoder(Constants.Drivetrain.FRONT_LEFT_CANCODER_ID),
-      0.degrees,
-      "Front Left Wheel"
-    ),
-    Wheel(
-      CANSparkMax(
-        Constants.Drivetrain.FRONT_RIGHT_DIRECTION_ID, CANSparkMaxLowLevel.MotorType.kBrushless
-      ),
-      CANSparkMax(
-        Constants.Drivetrain.FRONT_RIGHT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless
-      ),
-      CANCoder(Constants.Drivetrain.FRONT_RIGHT_CANCODER_ID),
-      (-90).degrees,
-      "Front Right Wheel"
-    ),
-    Wheel(
-      CANSparkMax(
-        Constants.Drivetrain.BACK_LEFT_DIRECTION_ID, CANSparkMaxLowLevel.MotorType.kBrushless
-      ),
-      CANSparkMax(
-        Constants.Drivetrain.BACK_LEFT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless
-      ),
-      CANCoder(Constants.Drivetrain.BACK_LEFT_CANCODER_ID),
-      (-270).degrees,
-      "Back Left Wheel"
-    ),
-    Wheel(
-      CANSparkMax(
-        Constants.Drivetrain.BACK_RIGHT_DIRECTION_ID, CANSparkMaxLowLevel.MotorType.kBrushless
-      ),
-      CANSparkMax(
-        Constants.Drivetrain.BACK_RIGHT_SPEED_ID, CANSparkMaxLowLevel.MotorType.kBrushless
-      ),
-      CANCoder(Constants.Drivetrain.BACK_RIGHT_CANCODER_ID),
-      (-180).degrees,
-      "Back Right Wheel"
-    )
-  )
+  private val wheels =
+      listOf(
+          Wheel(
+              CANSparkMax(
+                  Constants.Drivetrain.FRONT_LEFT_DIRECTION_ID,
+                  CANSparkMaxLowLevel.MotorType.kBrushless),
+              CANSparkMax(
+                  Constants.Drivetrain.FRONT_LEFT_SPEED_ID,
+                  CANSparkMaxLowLevel.MotorType.kBrushless),
+              CANCoder(Constants.Drivetrain.FRONT_LEFT_CANCODER_ID),
+              0.degrees,
+              "Front Left Wheel"),
+          Wheel(
+              CANSparkMax(
+                  Constants.Drivetrain.FRONT_RIGHT_DIRECTION_ID,
+                  CANSparkMaxLowLevel.MotorType.kBrushless),
+              CANSparkMax(
+                  Constants.Drivetrain.FRONT_RIGHT_SPEED_ID,
+                  CANSparkMaxLowLevel.MotorType.kBrushless),
+              CANCoder(Constants.Drivetrain.FRONT_RIGHT_CANCODER_ID),
+              (-90).degrees,
+              "Front Right Wheel"),
+          Wheel(
+              CANSparkMax(
+                  Constants.Drivetrain.BACK_LEFT_DIRECTION_ID,
+                  CANSparkMaxLowLevel.MotorType.kBrushless),
+              CANSparkMax(
+                  Constants.Drivetrain.BACK_LEFT_SPEED_ID,
+                  CANSparkMaxLowLevel.MotorType.kBrushless),
+              CANCoder(Constants.Drivetrain.BACK_LEFT_CANCODER_ID),
+              (-270).degrees,
+              "Back Left Wheel"),
+          Wheel(
+              CANSparkMax(
+                  Constants.Drivetrain.BACK_RIGHT_DIRECTION_ID,
+                  CANSparkMaxLowLevel.MotorType.kBrushless),
+              CANSparkMax(
+                  Constants.Drivetrain.BACK_RIGHT_SPEED_ID,
+                  CANSparkMaxLowLevel.MotorType.kBrushless),
+              CANCoder(Constants.Drivetrain.BACK_RIGHT_CANCODER_ID),
+              (-180).degrees,
+              "Back Right Wheel"))
 
   private val wheelSpeeds =
-    mutableListOf(0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond)
+      mutableListOf(0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond, 0.feet.perSecond)
 
-  private val wheelAngles =
-    mutableListOf(0.radians, 0.radians, 0.radians, 0.radians)
+  private val wheelAngles = mutableListOf(0.radians, 0.radians, 0.radians, 0.radians)
 
   private val wheelAccelerations =
-    mutableListOf(0.feet.perSecond.perSecond, 0.feet.perSecond.perSecond, 0.feet.perSecond.perSecond, 0.feet.perSecond.perSecond)
+      mutableListOf(
+          0.feet.perSecond.perSecond,
+          0.feet.perSecond.perSecond,
+          0.feet.perSecond.perSecond,
+          0.feet.perSecond.perSecond)
 
   private val gyro = ADIS16470_IMU()
 
@@ -83,36 +103,31 @@ object Drivetrain : SubsystemBase() {
       return rawAngle.IEEErem(360.0).degrees
     }
 
+  private val frontLeftWheelLocation =
+      Translation(
+          -Constants.Drivetrain.DRIVETRAIN_WIDTH / 2, Constants.Drivetrain.DRIVETRAIN_LENGTH / 2)
+  private val frontRightWheelLocation =
+      Translation(
+          Constants.Drivetrain.DRIVETRAIN_WIDTH / 2, Constants.Drivetrain.DRIVETRAIN_LENGTH / 2)
+  private val backLeftWheelLocation =
+      Translation(
+          -Constants.Drivetrain.DRIVETRAIN_WIDTH / 2, -Constants.Drivetrain.DRIVETRAIN_LENGTH / 2)
+  private val backRightWheelLocation =
+      Translation(
+          Constants.Drivetrain.DRIVETRAIN_WIDTH / 2, -Constants.Drivetrain.DRIVETRAIN_LENGTH / 2)
 
-  private val frontLeftWheelLocation = Translation(
-    -Constants.Drivetrain.DRIVETRAIN_WIDTH / 2,
-    Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
-  )
-  private val frontRightWheelLocation = Translation(
-    Constants.Drivetrain.DRIVETRAIN_WIDTH / 2,
-    Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
-  )
-  private val backLeftWheelLocation = Translation(
-    -Constants.Drivetrain.DRIVETRAIN_WIDTH / 2,
-    -Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
-  )
-  private val backRightWheelLocation = Translation(
-    Constants.Drivetrain.DRIVETRAIN_WIDTH / 2,
-    -Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
-  )
+  var swerveDriveKinematics =
+      SwerveDriveKinematics(
+          frontLeftWheelLocation.translation2d,
+          frontRightWheelLocation.translation2d,
+          backLeftWheelLocation.translation2d,
+          backRightWheelLocation.translation2d)
 
-  var swerveDriveKinematics = SwerveDriveKinematics(
-    frontLeftWheelLocation.translation2d,
-    frontRightWheelLocation.translation2d,
-    backLeftWheelLocation.translation2d,
-    backRightWheelLocation.translation2d
-  )
-
-  private var swerveDriveOdometry = SwerveDriveOdometry(
-    swerveDriveKinematics,
-    gyroAngle.inRotation2ds,
-    Pose(0.meters, 0.meters, 0.degrees).pose2d
-  )
+  private var swerveDriveOdometry =
+      SwerveDriveOdometry(
+          swerveDriveKinematics,
+          gyroAngle.inRotation2ds,
+          Pose(0.meters, 0.meters, 0.degrees).pose2d)
 
   private var trajDuration = 0.0.seconds
   private var trajCurTime = 0.0.seconds
@@ -128,10 +143,9 @@ object Drivetrain : SubsystemBase() {
 
       val initialSample = value.sample(0.0)
       swerveDriveOdometry.resetPosition(initialSample.poseMeters, -gyroAngle.inRotation2ds)
-      pathFollowController = RamseteController(
-        Constants.Drivetrain.Gains.RAMSETE_B,
-        Constants.Drivetrain.Gains.RAMSETE_ZETA
-      )
+      pathFollowController =
+          RamseteController(
+              Constants.Drivetrain.Gains.RAMSETE_B, Constants.Drivetrain.Gains.RAMSETE_ZETA)
 
       Logger.addEvent("Drivetrain", "Path Following Started")
 
@@ -159,62 +173,58 @@ object Drivetrain : SubsystemBase() {
     Logger.addSource("Drivetrain", "Path Follow Current Timestamp") { trajCurTime.inSeconds }
 
     //  if gyro is connected boolean
-    Logger.addSource("Drivetrain", "Gyro Connected") { }
+    Logger.addSource("Drivetrain", "Gyro Connected") {}
     zeroDirection()
   }
 
   /**
-   * Sets the drivetrain to the specified angular and X & Y velocities.
-   * Calculates angular and linear velocities and calls set for each Wheel object.
+   * Sets the drivetrain to the specified angular and X & Y velocities. Calculates angular and
+   * linear velocities and calls set for each Wheel object.
    *
    * @param angularVelocity The angular velocity of a specified drive
    * @param driveVector.first The linear velocity on the X axis
    * @param driveVector.second The linear velocity on the Y axis
-   *
    */
   fun set(
     angularVelocity: AngularVelocity,
     driveVector: Pair<LinearVelocity, LinearVelocity>,
     fieldOriented: Boolean = true,
     angularAcceleration: AngularAcceleration = 0.0.radians.perSecond.perSecond,
-    driveAcceleration: Pair<LinearAcceleration, LinearAcceleration> = Pair(0.0.meters.perSecond.perSecond, 0.0.meters.perSecond.perSecond)
+    driveAcceleration: Pair<LinearAcceleration, LinearAcceleration> =
+        Pair(0.0.meters.perSecond.perSecond, 0.0.meters.perSecond.perSecond)
   ) {
     Logger.addEvent("Drivetrain", "gyro angle: ${(-gyroAngle).inDegrees}")
-    val vX = if (fieldOriented) {
-      driveVector.first * (-gyroAngle).cos -
-        driveVector.second * (-gyroAngle).sin
-    } else {
-      driveVector.first
-    }
-    val vY = if (fieldOriented) {
-      driveVector.second * (-gyroAngle).cos +
-        driveVector.first * (-gyroAngle).sin
-    } else {
-      driveVector.second
-    }
+    val vX =
+        if (fieldOriented) {
+          driveVector.first * (-gyroAngle).cos - driveVector.second * (-gyroAngle).sin
+        } else {
+          driveVector.first
+        }
+    val vY =
+        if (fieldOriented) {
+          driveVector.second * (-gyroAngle).cos + driveVector.first * (-gyroAngle).sin
+        } else {
+          driveVector.second
+        }
 
-    val aY = if (fieldOriented) {
-      driveAcceleration.second * (-gyroAngle).cos +
-        driveAcceleration.first * (-gyroAngle).sin
-    } else {
-      driveAcceleration.second
-    }
-    val aX = if (fieldOriented) {
-      driveAcceleration.first * (-gyroAngle).cos -
-        driveAcceleration.second * (-gyroAngle).sin
-    } else {
-      driveAcceleration.first
-    }
+    val aY =
+        if (fieldOriented) {
+          driveAcceleration.second * (-gyroAngle).cos + driveAcceleration.first * (-gyroAngle).sin
+        } else {
+          driveAcceleration.second
+        }
+    val aX =
+        if (fieldOriented) {
+          driveAcceleration.first * (-gyroAngle).cos - driveAcceleration.second * (-gyroAngle).sin
+        } else {
+          driveAcceleration.first
+        }
 
-    val a =
-      vX - angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
-    val b =
-      vX + angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
-    val c =
-      vY - angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
-    val d =
-      vY + angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
-    //Logger.addEvent("Drivetrain", "vX: $vX, angular velocity: $angularVelocity")
+    val a = vX - angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
+    val b = vX + angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
+    val c = vY - angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
+    val d = vY + angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
+    // Logger.addEvent("Drivetrain", "vX: $vX, angular velocity: $angularVelocity")
 
     wheelSpeeds[0] = hypot(b, d)
     wheelSpeeds[1] = hypot(b, c)
@@ -222,13 +232,25 @@ object Drivetrain : SubsystemBase() {
     wheelSpeeds[3] = hypot(a, c)
 
     val aA =
-      aX - (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_LENGTH.value / 2).inches.perSecond.perSecond
+        aX -
+            (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_LENGTH.value / 2).inches
+                .perSecond
+                .perSecond
     val aB =
-      aX + (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_LENGTH.value / 2).inches.perSecond.perSecond
+        aX +
+            (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_LENGTH.value / 2).inches
+                .perSecond
+                .perSecond
     val aC =
-      aY - (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_WIDTH.value / 2).inches.perSecond.perSecond
+        aY -
+            (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_WIDTH.value / 2).inches
+                .perSecond
+                .perSecond
     val aD =
-      aY - (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_WIDTH.value / 2).inches.perSecond.perSecond
+        aY -
+            (angularAcceleration.value * Constants.Drivetrain.DRIVETRAIN_WIDTH.value / 2).inches
+                .perSecond
+                .perSecond
 
     wheelAccelerations[0] = kotlin.math.hypot(aB.value, aD.value).feet.perSecond.perSecond
     wheelAccelerations[1] = kotlin.math.hypot(aB.value, aC.value).feet.perSecond.perSecond
@@ -255,12 +277,11 @@ object Drivetrain : SubsystemBase() {
 
   fun updateOdometry() {
     swerveDriveOdometry.update(
-      gyroAngle.inRotation2ds,
-      SwerveModuleState(wheelSpeeds[0].inMetersPerSecond, wheelAngles[0].inRotation2ds),
-      SwerveModuleState(wheelSpeeds[1].inMetersPerSecond, wheelAngles[1].inRotation2ds),
-      SwerveModuleState(wheelSpeeds[2].inMetersPerSecond, wheelAngles[2].inRotation2ds),
-      SwerveModuleState(wheelSpeeds[3].inMetersPerSecond, wheelAngles[3].inRotation2ds)
-    )
+        gyroAngle.inRotation2ds,
+        SwerveModuleState(wheelSpeeds[0].inMetersPerSecond, wheelAngles[0].inRotation2ds),
+        SwerveModuleState(wheelSpeeds[1].inMetersPerSecond, wheelAngles[1].inRotation2ds),
+        SwerveModuleState(wheelSpeeds[2].inMetersPerSecond, wheelAngles[2].inRotation2ds),
+        SwerveModuleState(wheelSpeeds[3].inMetersPerSecond, wheelAngles[3].inRotation2ds))
   }
 
   fun updatePathFollowing(timestamp: Time) {
@@ -270,15 +291,12 @@ object Drivetrain : SubsystemBase() {
     val drivetrainSpeeds = pathFollowController.calculate(swerveDriveOdometry.poseMeters, sample)
     // Note: ChassisSpeeds takes x as forward so it is swapped
     set(
-      drivetrainSpeeds.omegaRadiansPerSecond.radians.perSecond,
-      Pair(
-        drivetrainSpeeds.vyMetersPerSecond.meters.perSecond,
-        drivetrainSpeeds.vxMetersPerSecond.meters.perSecond
-      ),
-      fieldOriented = false
-    )
+        drivetrainSpeeds.omegaRadiansPerSecond.radians.perSecond,
+        Pair(
+            drivetrainSpeeds.vyMetersPerSecond.meters.perSecond,
+            drivetrainSpeeds.vxMetersPerSecond.meters.perSecond),
+        fieldOriented = false)
   }
-
 
   /**
    * Checks if path following has reached the end of the path.
@@ -300,9 +318,7 @@ object Drivetrain : SubsystemBase() {
   }
 
   fun resetModuleZero() {
-    wheels.forEach {
-      it.resetModuleZero()
-    }
+    wheels.forEach { it.resetModuleZero() }
   }
 
   fun zeroSensors() {
@@ -312,14 +328,10 @@ object Drivetrain : SubsystemBase() {
   }
 
   private fun zeroDirection() {
-    wheels.forEach {
-      it.zeroDirection()
-    }
+    wheels.forEach { it.zeroDirection() }
   }
 
   private fun zeroDrive() {
-    wheels.forEach {
-      it.zeroDrive()
-    }
+    wheels.forEach { it.zeroDrive() }
   }
 }
