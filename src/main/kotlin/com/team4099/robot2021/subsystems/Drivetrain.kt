@@ -83,6 +83,7 @@ object Drivetrain : SubsystemBase() {
       return rawAngle.IEEErem(360.0).degrees
     }
 
+
   private val frontLeftWheelLocation = Translation(
     -Constants.Drivetrain.DRIVETRAIN_WIDTH / 2,
     Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
@@ -160,10 +161,6 @@ object Drivetrain : SubsystemBase() {
     //  if gyro is connected boolean
     Logger.addSource("Drivetrain", "Gyro Connected") { }
     zeroDirection()
-  }
-
-  override fun periodic() {
-    this.updateOdometry()
   }
 
   /**
