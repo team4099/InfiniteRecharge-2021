@@ -78,7 +78,7 @@ class AngularMechanismSensor(
       (velocity.inRotationsPerSecond * timescale.velocity.inSeconds) / ratio
 
   override fun accelerationToRawUnits(acceleration: Value<Acceleration<Radian>>): Double =
-      (velocity.inRotationsPerSecond *
+      (acceleration.inRotationsPerSecondPerSecond *
           timescale.velocity.inSeconds *
           timescale.acceleration.inSeconds) / ratio
 }

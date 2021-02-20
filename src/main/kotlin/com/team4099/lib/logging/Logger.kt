@@ -5,9 +5,11 @@ import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.Notifier
 import edu.wpi.first.wpilibj.RobotBase
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget
 import java.io.File
 import java.io.IOException
 import java.lang.ClassCastException
+import java.lang.IllegalArgumentException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -20,7 +22,7 @@ import java.time.Instant
  * Manages Shuffleboard entries and CSV logging of values.
  */
 object Logger {
-  private val dataSources = mutableListOf<LogSource>()
+  private val dataSources = mutableListOf<LogSource<Any>>()
   private val logNotifier = Notifier(this::saveEvents)
   private lateinit var file: Path
   private lateinit var eventsFile: Path
@@ -33,15 +35,16 @@ object Logger {
 
   private var values: String = ""
     get() {
-      field = dataSources.joinToString(",") { it.supplier() }
+      field = dataSources.joinToString(",") { it.supplier().toString() }
       return field
     }
   private val events = mutableListOf<String>()
 
   /** Severity of an event. */
   enum class Severity {
-    INFO,
     DEBUG,
+    INFO,
+    WARN,
     ERROR
   }
 
@@ -97,30 +100,36 @@ object Logger {
    * @param setter An optional function which will be called when the value in Shuffleboard is
    * changed.
    */
-  fun <T> addSource(tab: String, name: String, supplier: () -> T, setter: ((T) -> Unit)?) {
-    dataSources.add(LogSource(tab, name) { supplier().toString() })
-    val shuffleboardEntry = Shuffleboard.getTab(tab).add(name, supplier)
+  fun <T : Any> addSource(tab: String, name: String, supplier: () -> T, setter: ((T) -> Unit)?) {
+    var shuffleboardEntry: SimpleWidget? = null
+    try {
+      shuffleboardEntry = Shuffleboard.getTab(tab).add(name, supplier())
+      if (setter != null) {
+        // Listen for changes to the entry if it is configurable
+        shuffleboardEntry.entry
+            .addListener(
+                {
+                  val newValue = it.getEntry().value
 
-    if (setter != null) {
-      shuffleboardEntry.entry
-          .addListener(
-              {
-                val newValue = it.getEntry().value
-
-                try {
-                  // Unchecked cast since we don't know the type of this
-                  // source due to type erasure
-                  @Suppress("UNCHECKED_CAST")
-                  setter(newValue as T)
-                } catch (e: ClassCastException) {
-                  addEvent(
-                      "Logger",
-                      "Could not change value for $tab/$name due to invalid type cast.",
-                      Severity.ERROR)
-                }
-              },
-              EntryListenerFlags.kUpdate)
+                  try {
+                    // Unchecked cast since we don't know the type of this
+                    // source due to type erasure
+                    @Suppress("UNCHECKED_CAST")
+                    setter(newValue as T)
+                  } catch (e: ClassCastException) {
+                    addEvent(
+                        "Logger",
+                        "Could not change value for $tab/$name due to invalid type cast.",
+                        Severity.ERROR)
+                  }
+                },
+                EntryListenerFlags.kUpdate)
+      }
+    } catch (e: IllegalArgumentException) {
+      addEvent(
+          "Logger", "Could not add $tab/$name to Shuffleboard due to invalid type", Severity.WARN)
     }
+    dataSources.add(LogSource(tab, name, supplier, shuffleboardEntry))
   }
 
   /**
@@ -132,7 +141,7 @@ object Logger {
    * @param setter An optional function which will be called when the value in Shuffleboard is
    * changed.
    */
-  fun <T> addSource(tab: String, name: String, supplier: () -> T) {
+  fun <T : Any> addSource(tab: String, name: String, supplier: () -> T) {
     addSource(tab, name, supplier, null)
   }
 
@@ -143,6 +152,15 @@ object Logger {
       Files.write(file, listOf(data), StandardOpenOption.APPEND)
     } catch (e: Exception) {
       e.printStackTrace()
+    }
+  }
+
+  /** Update values for logged data on Shuffleboard. */
+  fun updateShuffleboard() {
+    dataSources.forEach {
+      if (it.shuffleboardWidget != null) {
+        it.shuffleboardWidget.entry.setValue(it.supplier())
+      }
     }
   }
 
@@ -176,6 +194,7 @@ object Logger {
     when (severity) {
       Severity.INFO -> println(consoleString)
       Severity.DEBUG -> println(consoleString)
+      Severity.WARN -> println(consoleString)
       Severity.ERROR -> System.err.println(consoleString)
     }
   }

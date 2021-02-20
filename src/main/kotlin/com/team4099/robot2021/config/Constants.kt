@@ -1,11 +1,14 @@
 package com.team4099.robot2021.config
 
 import com.team4099.lib.units.base.Length
+import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.degrees
+import com.team4099.lib.units.derived.div
 import com.team4099.lib.units.derived.rotations
+import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.perMinute
 import com.team4099.lib.units.perSecond
 import edu.wpi.first.wpilibj.DoubleSolenoid
@@ -35,9 +38,75 @@ object Constants {
     const val DRIVER_PORT = 0
     const val SHOTGUN_PORT = 1
 
-    const val QUICK_TURN_THROTTLE_TOLERANCE = 0.1
-    const val THROTTLE_DEADBAND = 0.04
-    const val TURN_DEADBAND = 0.035
+    const val THROTTLE_DEADBAND = 0.05
+    const val TURN_DEADBAND = 0.05
+  }
+
+  object Drivetrain {
+    const val TICKS = 4096
+
+    const val FRONT_LEFT_SPEED_ID = 11
+    const val FRONT_LEFT_DIRECTION_ID = 21
+    const val FRONT_LEFT_CANCODER_ID = 1
+
+    const val FRONT_RIGHT_SPEED_ID = 12
+    const val FRONT_RIGHT_DIRECTION_ID = 22
+    const val FRONT_RIGHT_CANCODER_ID = 2
+
+    const val BACK_RIGHT_SPEED_ID = 13
+    const val BACK_RIGHT_DIRECTION_ID = 23
+    const val BACK_RIGHT_CANCODER_ID = 3
+
+    const val BACK_LEFT_SPEED_ID = 14
+    const val BACK_LEFT_DIRECTION_ID = 24
+    const val BACK_LEFT_CANCODER_ID = 4
+
+    const val WHEEL_COUNT = 4
+    val DRIVETRAIN_LENGTH = 22.173.inches
+    val DRIVETRAIN_WIDTH = 22.173.inches
+
+    val DRIVE_SETPOINT_MAX = 15.feet.perSecond
+    val TURN_SETPOINT_MAX = 90.degrees.perSecond // TODO: Make sure this value is something good
+
+    val DIRECTION_VEL_MAX = 900.degrees.perSecond
+    val DIRECTION_ACCEL_MAX = 4500.degrees.perSecond.perSecond
+
+    const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
+
+    const val MAX_VEL_METERS_PER_SEC = 4.0
+    const val SLOW_VEL_METERS_PER_SEC = 0.66
+    const val MAX_ACCEL_METERS_PER_SEC_SQ = 2.0
+    const val SLOW_ACCEL_METERS_PER_SEC_SQ = 2.0
+
+    const val CENTRIPETAL_ACCEL_METERS_PER_SEC_SQ = 1.0
+
+    const val ABSOLUTE_GEAR_RATIO = 1.0
+    const val DRIVE_SENSOR_GEAR_RATIO = (12.0 / 21.0) * (15.0 / 45.0)
+    const val DIRECTION_SENSOR_GEAR_RATIO = (12.0 / 64.0) * (1.0 / 10.0)
+
+    val ALLOWED_ANGLE_ERROR = 5.degrees
+    const val DIRECTION_SMART_CURRENT_LIMIT = 20
+    const val DRIVE_SMART_CURRENT_LIMIT = 80
+
+    object Gains {
+      const val RAMSETE_B = 2.0
+      const val RAMSETE_ZETA = 0.7
+    }
+
+    object PID {
+      const val DIRECTION_KP = 0.00001
+      const val DIRECTION_KI = 0.0
+      const val DIRECTION_KD = 12.0
+      const val DIRECTION_KFF = 0.000078
+
+      const val DRIVE_KP = 0.0
+      const val DRIVE_KI = 0.0
+      const val DRIVE_KD = 0.0
+      const val DRIVE_KFF = 0.0
+      val DRIVE_KS = 1.0.volts
+      val DRIVE_KV = 1.0.volts / 1.0.meters.perSecond
+      val DRIVE_KA = 1.0.volts / 1.0.meters.perSecond.perSecond
+    }
   }
 
   object Feeder {

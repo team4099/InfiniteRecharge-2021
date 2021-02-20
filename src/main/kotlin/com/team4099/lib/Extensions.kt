@@ -15,6 +15,14 @@ fun Double.around(around: Double, tolerance: Double): Boolean {
   return abs(this - around) < tolerance
 }
 
+fun Double.smoothDeadband(deadband: Double): Double {
+  return if (abs(this) < deadband) {
+    0.0
+  } else {
+    (this - deadband) / (1 - deadband)
+  }
+}
+
 /**
  * Constrains this Double between the given bounds.
  *

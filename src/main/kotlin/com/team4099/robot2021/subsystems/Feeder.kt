@@ -81,4 +81,22 @@ object Feeder : SubsystemBase() {
       floorMotor.set(ControlMode.PercentOutput, feederState.floorMotorPower)
       verticalMotor.set(ControlMode.PercentOutput, feederState.verticalMotorPower)
     }
+
+  var ballCount: Int = 0
+  private var bottomLastStage: Boolean = bottomBeamBroken
+  private var topLastStage: Boolean = topBeamBroken
+  override fun periodic() {
+    if (bottomLastStage != bottomBeamBroken && !bottomBeamBroken) {
+      if (floorMotor.motorOutputPercent > 0) {
+        ballCount++
+      } else if (floorMotor.motorOutputPercent < 0) {
+        ballCount--
+      }
+    }
+    if (topLastStage != topBeamBroken && !topBeamBroken && verticalMotor.motorOutputPercent > 0) {
+      ballCount--
+    }
+    bottomLastStage = bottomBeamBroken
+    topLastStage = topBeamBroken
+  }
 }

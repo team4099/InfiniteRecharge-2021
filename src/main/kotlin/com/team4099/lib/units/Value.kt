@@ -13,9 +13,24 @@ inline class Value<T : UnitKey>(internal val value: Double) : Comparable<Value<T
   operator fun times(k: Number): Value<T> = div(k.toDouble())
   operator fun <K : UnitKey> times(o: Value<Fraction<K, T>>): Value<K> = Value(value * o.value)
 
+  operator fun unaryMinus(): Value<T> = Value(-value)
+
   operator fun div(k: Double): Value<T> = Value(value / k)
   operator fun div(k: Number): Value<T> = div(k.toDouble())
   operator fun div(o: Value<T>): Double = value / o.value
 
   override operator fun compareTo(other: Value<T>): Int = value.compareTo(other.value)
+}
+
+infix fun <T : UnitKey> ClosedRange<Value<T>>.step(step: Value<T>): Iterable<Value<T>> {
+  require(start.value.isFinite())
+  require(endInclusive.value.isFinite())
+  require(step.value > 0.0) { "Step must be positive, was: $step." }
+  val sequence =
+      generateSequence(start) { previous ->
+        if (previous.value == Double.POSITIVE_INFINITY) return@generateSequence null
+        val next = previous + step
+        if (next > endInclusive) null else next
+      }
+  return sequence.asIterable()
 }
