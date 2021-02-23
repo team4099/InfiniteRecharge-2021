@@ -1,10 +1,9 @@
 package com.team4099.robot2021.commands.drivetrain
 
 import com.team4099.lib.hal.Clock
-
-import com.team4099.lib.pathfollow.Trajectory
-import edu.wpi.first.wpilibj2.command.CommandBase
 import com.team4099.robot2021.subsystems.Drivetrain
+import edu.wpi.first.wpilibj.trajectory.Trajectory
+import edu.wpi.first.wpilibj2.command.CommandBase
 
 class AutoDriveCommand(private val path: Trajectory) : CommandBase() {
   init {
