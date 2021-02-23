@@ -72,4 +72,4 @@ val AngularAcceleration.inRotationsPerSecondPerSecond: Double
   get() = value / (2 * PI)
 
 val AngularAcceleration.inRotationsPerMinutePerMinute: Double
-  get() = value * SECONDS_PER_MINUTE * SECONDS_PER_MINUTE / (2 * PI)
+  get() = value * SECONDS_PER_MINUTE  * SECONDS_PER_MINUTE / (2 * PI)

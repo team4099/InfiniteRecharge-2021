@@ -26,11 +26,10 @@ infix fun <T : UnitKey> ClosedRange<Value<T>>.step(step: Value<T>): Iterable<Val
   require(start.value.isFinite())
   require(endInclusive.value.isFinite())
   require(step.value > 0.0) { "Step must be positive, was: $step." }
-  val sequence =
-      generateSequence(start) { previous ->
-        if (previous.value == Double.POSITIVE_INFINITY) return@generateSequence null
-        val next = previous + step
-        if (next > endInclusive) null else next
-      }
+  val sequence = generateSequence(start) { previous ->
+    if (previous.value == Double.POSITIVE_INFINITY) return@generateSequence null
+    val next = previous + step
+    if (next > endInclusive) null else next
+  }
   return sequence.asIterable()
 }
