@@ -6,7 +6,6 @@ import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.degrees
-import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.perSecond
 import com.team4099.lib.units.step
 import com.team4099.robot2021.config.Constants
@@ -24,20 +23,11 @@ object PathStore {
     "E" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(12.5.feet, x) }
   )
 
-  private val initLinePowerPort = Pose(3.627.meters, (-2.429).meters, 0.0.radians)
-  private val initLineFarTrench = Pose(3.627.meters, (-6.824).meters, 0.0.radians)
-  private val nearTrenchEdge = Pose(5.0.meters, (-0.869).meters, 0.0.radians)
-  private val nearTrenchEnd = Pose(7.5.meters, (-0.869).meters, 0.0.radians)
-  private val farTrench = Pose(5.794.meters, (-7.243).meters, (-20.0).radians)
-  private val rendezvousPoint2Balls = Pose(5.878.meters, (-2.755).meters, (-20.0).radians)
-
   private val reintroductionZone = Pose(navPoints["C"]!![10] + Translation(15.inches, 0.feet), 0.degrees)
   private val green = Pose(navPoints["C"]!![2] + Translation(15.inches, 0.feet), 0.degrees)
   private val yellow = Pose(navPoints["C"]!![5] + Translation(15.inches, 0.feet), 0.degrees)
   private val red = Pose(navPoints["C"]!![8] + Translation(15.inches, 0.feet), 0.degrees)
   private val blue = Pose(navPoints["C"]!![6] + Translation(15.inches, 0.feet), 0.degrees)
-
-
 
   val galacticSearchARed: Trajectory = Trajectory(
     0.0.meters.perSecond,
