@@ -36,9 +36,7 @@ class DriveCharacterizeCommand : CommandBase() {
   override fun execute() {
     val autoSpeed = autoSpeedEntry.getDouble(0.0)
 
-    Drivetrain.wheels.forEach {
-      it.setOpenLoop(0.degrees, autoSpeed)
-    }
+    Drivetrain.wheels.forEach { it.setOpenLoop(0.degrees, autoSpeed) }
 
     numberArray[0] = Clock.fpgaTime.inSeconds
     numberArray[1] = RobotController.getBatteryVoltage()

@@ -194,12 +194,9 @@ class Wheel(
      */
   }
 
-  fun setOpenLoop(
-    direction: Angle,
-    speed: Double
-  ) {
+  fun setOpenLoop(direction: Angle, speed: Double) {
     var directionDifference =
-      (direction - directionSensor.position).inRadians.IEEErem(2 * Math.PI).radians
+        (direction - directionSensor.position).inRadians.IEEErem(2 * Math.PI).radians
 
     val isInverted = directionDifference.absoluteValue > (Math.PI / 2).radians
     if (isInverted) {
@@ -207,11 +204,11 @@ class Wheel(
     }
 
     val outputPower =
-      if (isInverted) {
-        speed * -1
-      } else {
-        speed
-      }
+        if (isInverted) {
+          speed * -1
+        } else {
+          speed
+        }
     directionSetPoint = directionSensor.position + directionDifference
     driveSpark.set(outputPower)
   }
