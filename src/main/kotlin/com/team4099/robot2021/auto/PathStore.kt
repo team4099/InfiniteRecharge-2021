@@ -16,6 +16,83 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig
 object PathStore {
   private val trajectoryConfig = TrajectoryConfig(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC, Constants.Drivetrain.MAX_ACCEL_METERS_PER_SEC_SQ)
 
+  private val initLinePowerPort = Pose(3.627.meters, (-2.429).meters, 0.0.radians)
+  private val initLineFarTrench = Pose(3.627.meters, (-6.824).meters, 0.0.radians)
+  private val nearTrenchEdge = Pose(5.0.meters, (-0.869).meters, 0.0.radians)
+  private val nearTrenchEnd = Pose(7.5.meters, (-0.869).meters, 0.0.radians)
+  private val farTrench = Pose(5.794.meters, (-7.243).meters, (-20.0).radians)
+  private val rendezvousPoint2Balls = Pose(5.878.meters, (-2.755).meters, (-20.0).radians)
+
+  val toNearTrench: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      initLinePowerPort,
+      nearTrenchEdge
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+
+  val intakeInNearTrench: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      nearTrenchEdge,
+      nearTrenchEnd
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+
+  val fromNearTrench: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      nearTrenchEnd,
+      initLinePowerPort
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+
+  val toFarTrench: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      initLineFarTrench,
+      farTrench
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+
+  val fromFarTrench: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      farTrench,
+      initLinePowerPort
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+
+  val toRendezvousPoint2Balls = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      initLinePowerPort,
+      rendezvousPoint2Balls
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+
+  val fromRendezvousPoint2Balls = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      rendezvousPoint2Balls,
+      initLinePowerPort
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+
   private val navPoints = mapOf(
     "A" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(2.5.feet, x) },
     "B" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(5.feet, x) },
