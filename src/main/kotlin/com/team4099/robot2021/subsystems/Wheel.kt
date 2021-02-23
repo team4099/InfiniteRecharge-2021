@@ -9,14 +9,17 @@ import com.team4099.lib.units.AngularMechanismSensor
 import com.team4099.lib.units.LinearAcceleration
 import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.Timescale
+import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.Angle
+import com.team4099.lib.units.derived.ElectricalPotential
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inDegrees
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.derived.radians
+import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inFeetPerSecond
 import com.team4099.lib.units.perSecond
 import com.team4099.lib.units.sparkMaxAngularMechanismSensor
@@ -30,7 +33,7 @@ class Wheel(
   private val driveSpark: CANSparkMax,
   private val encoder: CANCoder,
   private val zeroOffset: Angle,
-  public val label: String
+  private val label: String
 ) {
 
   private val directionPID = directionSpark.pidController
@@ -69,11 +72,20 @@ class Wheel(
   private val directionPercentOutput: Double
     get() = directionSpark.get()
 
-  private val driveBusVoltage: Double
-    get() = driveSpark.busVoltage
+  private val driveBusVoltage: ElectricalPotential
+    get() = driveSpark.busVoltage.volts
 
-  private val directionBusVoltage: Double
-    get() = directionSpark.busVoltage
+  private val directionBusVoltage: ElectricalPotential
+    get() = directionSpark.busVoltage.volts
+
+  val driveOutputVoltage: ElectricalPotential
+    get() = driveBusVoltage * drivePercentOutput
+
+  val driveDistance: Length
+    get() = driveSensor.position
+
+  val driveVelocity: LinearVelocity
+    get() = driveSensor.velocity
 
   private var speedSetPoint: LinearVelocity = 0.feet.perSecond
 
@@ -180,6 +192,28 @@ class Wheel(
     }
 
      */
+  }
+
+  fun setOpenLoop(
+    direction: Angle,
+    speed: Double
+  ) {
+    var directionDifference =
+      (direction - directionSensor.position).inRadians.IEEErem(2 * Math.PI).radians
+
+    val isInverted = directionDifference.absoluteValue > (Math.PI / 2).radians
+    if (isInverted) {
+      directionDifference -= Math.PI.withSign(directionDifference.inRadians).radians
+    }
+
+    val outputPower =
+      if (isInverted) {
+        speed * -1
+      } else {
+        speed
+      }
+    directionSetPoint = directionSensor.position + directionDifference
+    driveSpark.set(outputPower)
   }
 
   fun resetModuleZero() {
