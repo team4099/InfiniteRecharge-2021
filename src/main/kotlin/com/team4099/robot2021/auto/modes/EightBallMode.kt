@@ -17,24 +17,17 @@ class EightBallMode : SequentialCommandGroup() {
     addRequirements(Drivetrain, Intake, Shooter)
 
     addCommands(
-      ParallelRaceGroup(
-        AutoDriveCommand(PathStore.toRendezvousPoint2Balls),
-        IntakeCommand(Constants.Intake.IntakeState.IN,Constants.Intake.ArmPosition.OUT)
-      ),
-
-      AutoDriveCommand(PathStore.fromRendezvousPoint2BallsToPowerPort),
-
-      ShootCommand(),
-
-      ParallelRaceGroup(
-        SequentialCommandGroup(AutoDriveCommand(PathStore.toNearTrench),AutoDriveCommand(PathStore.intakeInNearTrench)),
-        IntakeCommand(Constants.Intake.IntakeState.IN,Constants.Intake.ArmPosition.IN)
-      ),
-
-      AutoDriveCommand(PathStore.fromRendezvousPoint2BallsToPowerPort),
-
-      ShootCommand()
-
-    )
+        ParallelRaceGroup(
+            AutoDriveCommand(PathStore.toRendezvousPoint2Balls),
+            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)),
+        AutoDriveCommand(PathStore.fromRendezvousPoint2BallsToPowerPort),
+        ShootCommand(),
+        ParallelRaceGroup(
+            SequentialCommandGroup(
+                AutoDriveCommand(PathStore.toNearTrench),
+                AutoDriveCommand(PathStore.intakeInNearTrench)),
+            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.IN)),
+        AutoDriveCommand(PathStore.fromRendezvousPoint2BallsToPowerPort),
+        ShootCommand())
   }
 }

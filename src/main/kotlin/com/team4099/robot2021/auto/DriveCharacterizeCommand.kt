@@ -6,14 +6,15 @@ import com.team4099.robot2021.subsystems.Drivetrain
 import edu.wpi.first.networktables.NetworkTableEntry
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.RobotController
-import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj2.command.CommandBase
-import java.lang.Math.toRadians
 
 class DriveCharacterizeCommand : CommandBase() {
-  private val autoSpeedEntry: NetworkTableEntry = NetworkTableInstance.getDefault().getEntry("/robot/autospeed")
-  private val telemetryEntry: NetworkTableEntry = NetworkTableInstance.getDefault().getEntry("/robot/telemetry")
-  private val rotateEntry: NetworkTableEntry = NetworkTableInstance.getDefault().getEntry("/robot/rotate")
+  private val autoSpeedEntry: NetworkTableEntry =
+      NetworkTableInstance.getDefault().getEntry("/robot/autospeed")
+  private val telemetryEntry: NetworkTableEntry =
+      NetworkTableInstance.getDefault().getEntry("/robot/telemetry")
+  private val rotateEntry: NetworkTableEntry =
+      NetworkTableInstance.getDefault().getEntry("/robot/rotate")
   private var numberArray = arrayOfNulls<Number>(10)
 
   override fun isFinished(): Boolean {
@@ -29,7 +30,6 @@ class DriveCharacterizeCommand : CommandBase() {
 
   override fun execute() {
     val autoSpeed = autoSpeedEntry.getDouble(0.0)
-
 
     numberArray[0] = Clock.fpgaTime.inSeconds
     numberArray[1] = RobotController.getBatteryVoltage()
