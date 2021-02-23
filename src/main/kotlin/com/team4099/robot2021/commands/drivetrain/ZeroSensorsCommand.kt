@@ -1,19 +1,21 @@
 package com.team4099.robot2021.commands.drivetrain
 
-import com.team4099.robot2021.subsystems.Drivetrain
 import edu.wpi.first.wpilibj2.command.CommandBase
+import com.team4099.robot2021.subsystems.Drivetrain
 
-class ZeroSensorsCommand : CommandBase() {
+class ZeroSensorsCommand: CommandBase() {
 
-  init {
+  init{
     addRequirements(Drivetrain)
   }
 
-  override fun initialize() {
+  override fun initialize(){
     Drivetrain.zeroSensors()
   }
 
-  override fun isFinished(): Boolean {
+  override fun isFinished() : Boolean {
     return true
   }
+
+
 }

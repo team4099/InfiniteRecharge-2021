@@ -1,12 +1,12 @@
 package com.team4099.robot2021.commands.drivetrain
 
 import com.team4099.lib.hal.Clock
-
 import com.team4099.lib.pathfollow.Trajectory
 import edu.wpi.first.wpilibj2.command.CommandBase
 import com.team4099.robot2021.subsystems.Drivetrain
 
 class AutoDriveCommand(private val path: Trajectory) : CommandBase() {
+
   init {
     addRequirements(Drivetrain)
   }
@@ -17,7 +17,6 @@ class AutoDriveCommand(private val path: Trajectory) : CommandBase() {
 
   override fun execute() {
     Drivetrain.updatePathFollowing(Clock.fpgaTime)
-    Drivetrain.updateOdometry()
   }
 
   override fun isFinished(): Boolean {
