@@ -79,6 +79,14 @@ object PathStore {
   private val farTrench = Pose(5.794.meters, (-7.243).meters, (-20.0).radians)
   private val rendezvousPoint2Balls = Pose(5.878.meters, (-2.755).meters, (-20.0).radians)
 
+  private val reintroductionZone = Pose(navPoints["C"]!![10] + Translation(15.inches, 0.feet), 0.degrees)
+  private val green = Pose(navPoints["C"]!![2] + Translation(15.inches, 0.feet), 0.degrees)
+  private val yellow = Pose(navPoints["C"]!![5] + Translation(15.inches, 0.feet), 0.degrees)
+  private val red = Pose(navPoints["C"]!![8] + Translation(15.inches, 0.feet), 0.degrees)
+  private val blue = Pose(navPoints["C"]!![6] + Translation(15.inches, 0.feet), 0.degrees)
+
+
+
   val galacticSearchARed: Trajectory = Trajectory(
     0.0.meters.perSecond,
     Path(
@@ -154,6 +162,85 @@ object PathStore {
     Path(
       rendezvousPoint2Balls,
       initLinePowerPort
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+
+  val fromGreentoReintroduction = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      green,
+      reintroductionZone
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+
+  val fromYellowtoReintroduction = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      yellow,
+      reintroductionZone
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+  val fromBluetoReintroduction = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      blue,
+      reintroductionZone
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+
+  val fromRedtoReintroduction = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      red,
+      reintroductionZone
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+
+  val fromIntrotoGreen = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      reintroductionZone,
+      green
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+
+  val fromIntrotoYellow = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      reintroductionZone,
+      yellow
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+
+  val fromIntrotoBlue = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      reintroductionZone,
+      blue
+    ),
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )
+
+  val fromIntrotoRed = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      reintroductionZone,
+      red
     ),
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
     trajectoryConstant
