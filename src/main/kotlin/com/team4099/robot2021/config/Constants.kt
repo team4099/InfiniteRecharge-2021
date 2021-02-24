@@ -1,5 +1,6 @@
 package com.team4099.robot2021.config
 
+import com.revrobotics.SparkMax
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.feet
@@ -110,6 +111,20 @@ object Constants {
       val DRIVE_KS = 1.0.volts
       val DRIVE_KV = 1.0.volts / 1.0.meters.perSecond
       val DRIVE_KA = 1.0.volts / 1.0.meters.perSecond.perSecond
+
+      const val DRIVE_X_PID_KP = 0.0
+      const val DRIVE_X_PID_KI = 0.0
+      const val DRIVE_X_PID_KD = 0.0
+
+      const val DRIVE_Y_PID_KP = 0.0
+      const val DRIVE_Y_PID_KI = 0.0
+      const val DRIVE_Y_PID_KD = 0.0
+
+      const val DRIVE_THETA_PID_KP = 0.0
+      const val DRIVE_THETA_PID_KI = 0.0
+      const val DRIVE_THETA_PID_KD = 0.0
+      val DRIVE_THETA_PID_MAX_VEL = 0.0.meters.perSecond
+      val DRIVE_THETA_PID_MAX_ACCEL = 0.0.meters.perSecond.perSecond
     }
   }
 
