@@ -2,7 +2,7 @@ package com.team4099.robot2021.auto
 
 import com.team4099.lib.hal.Clock
 import com.team4099.lib.units.base.inMeters
-import com.team4099.lib.units.base.inSeconds
+import com.team4099.lib.units.base.inMicroseconds
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.derived.inVolts
@@ -42,7 +42,7 @@ class DriveCharacterizeCommand : CommandBase() {
 
     Drivetrain.wheels.forEach { it.setOpenLoop(0.degrees, autoSpeed) }
 
-    numberArray[0] = Clock.fpgaTime.inSeconds
+    numberArray[0] = Clock.fpgaTime.inMicroseconds
     numberArray[1] = RobotController.getBatteryVoltage()
     numberArray[2] = autoSpeed
     numberArray[3] = Drivetrain.wheels[0].driveOutputVoltage.inVolts
