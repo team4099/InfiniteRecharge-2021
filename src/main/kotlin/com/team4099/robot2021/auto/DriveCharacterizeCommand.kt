@@ -22,6 +22,10 @@ class DriveCharacterizeCommand : CommandBase() {
       NetworkTableInstance.getDefault().getEntry("/robot/rotate")
   private var numberArray = arrayOfNulls<Number>(10)
 
+  init {
+    addRequirements(Drivetrain)
+  }
+
   override fun isFinished(): Boolean {
     return false
   }
@@ -29,7 +33,7 @@ class DriveCharacterizeCommand : CommandBase() {
   override fun initialize() {
     // Set the update rate instead of using flush because of a ntcore bug
     // -> probably don't want to do this on a robot in competition
-    NetworkTableInstance.getDefault().setUpdateRate(0.010)
+    //NetworkTableInstance.getDefault().setUpdateRate(0.010)
     Drivetrain.zeroSensors()
   }
 
