@@ -70,6 +70,10 @@ object Robot : TimedRobot() {
     autonomousCommand.schedule()
   }
 
+  override fun disabledInit() {
+    autonomousCommand.cancel()
+  }
+
   override fun teleopInit() {
     autonomousCommand.cancel()
   }

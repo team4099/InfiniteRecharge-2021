@@ -20,7 +20,8 @@ class DriveCharacterizeCommand : CommandBase() {
       NetworkTableInstance.getDefault().getEntry("/robot/telemetry")
   private val rotateEntry: NetworkTableEntry =
       NetworkTableInstance.getDefault().getEntry("/robot/rotate")
-  private var numberArray = arrayOfNulls<Number>(10)
+  private var numberArray = arrayOfNulls<Double>(10)
+  private var entries = mutableListOf<Double>()
 
   init {
     addRequirements(Drivetrain)
@@ -54,9 +55,21 @@ class DriveCharacterizeCommand : CommandBase() {
     numberArray[9] = Drivetrain.gyroAngle.inRadians
 
     telemetryEntry.setNumberArray(numberArray)
+
+    // Add data to a string that is uploaded to NT
+    for (num in numberArray) {
+      if (num != null) {
+        entries.add(num)
+      }
+    }
   }
 
   override fun end(interrupted: Boolean) {
-    //NetworkTableInstance.getDefault().setUpdateRate(0.1)
+    // data processing step
+    var data = entries.toString()
+    data = data.substring(1, data.length - 1) + ", "
+    telemetryEntry.setString(data)
+    entries.clear()
+    NetworkTableInstance.getDefault().setUpdateRate(0.1)
   }
 }
