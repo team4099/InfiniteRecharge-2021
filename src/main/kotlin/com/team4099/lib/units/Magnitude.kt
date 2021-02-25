@@ -24,121 +24,121 @@ object Magnitude {
 }
 
 val Double.yotta: Double
-  get() = this * Magnitude.YOTTA
+  get() = this / Magnitude.YOTTA
 
 val Double.zeta: Double
-  get() = this * Magnitude.ZETA
+  get() = this / Magnitude.ZETA
 
 val Double.exa: Double
-  get() = this * Magnitude.EXA
+  get() = this / Magnitude.EXA
 
 val Double.peta: Double
-  get() = this * Magnitude.PETA
+  get() = this / Magnitude.PETA
 
 val Double.tera: Double
-  get() = this * Magnitude.TERA
+  get() = this / Magnitude.TERA
 
 val Double.giga: Double
-  get() = this * Magnitude.GIGA
+  get() = this / Magnitude.GIGA
 
 val Double.mega: Double
-  get() = this * Magnitude.MEGA
+  get() = this / Magnitude.MEGA
 
 val Double.kilo: Double
-  get() = this * Magnitude.KILO
+  get() = this / Magnitude.KILO
 
 val Double.hecto: Double
-  get() = this * Magnitude.HECTO
+  get() = this / Magnitude.HECTO
 
 val Double.deca: Double
-  get() = this * Magnitude.DECA
+  get() = this / Magnitude.DECA
 
 val Double.deci: Double
-  get() = this * Magnitude.DECI
+  get() = this / Magnitude.DECI
 
 val Double.centi: Double
-  get() = this * Magnitude.CENTI
+  get() = this / Magnitude.CENTI
 
 val Double.milli: Double
-  get() = this * Magnitude.MILLI
+  get() = this / Magnitude.MILLI
 
 val Double.micro: Double
-  get() = this * Magnitude.MICRO
+  get() = this / Magnitude.MICRO
 
 val Double.nano: Double
-  get() = this * Magnitude.NANO
+  get() = this / Magnitude.NANO
 
 val Double.pico: Double
-  get() = this * Magnitude.PICO
+  get() = this / Magnitude.PICO
 
 val Double.femto: Double
-  get() = this * Magnitude.FEMTO
+  get() = this / Magnitude.FEMTO
 
 val Double.atto: Double
-  get() = this * Magnitude.ATTO
+  get() = this / Magnitude.ATTO
 
 val Double.zepto: Double
-  get() = this * Magnitude.ZEPTO
+  get() = this / Magnitude.ZEPTO
 
 val Double.yocto: Double
-  get() = this * Magnitude.YOCTO
+  get() = this / Magnitude.YOCTO
 
 val Number.yotta: Double
-  get() = this.toDouble() * Magnitude.YOTTA
+  get() = this.toDouble() / Magnitude.YOTTA
 
 val Number.zeta: Double
-  get() = this.toDouble() * Magnitude.ZETA
+  get() = this.toDouble() / Magnitude.ZETA
 
 val Number.exa: Double
-  get() = this.toDouble() * Magnitude.EXA
+  get() = this.toDouble() / Magnitude.EXA
 
 val Number.peta: Double
-  get() = this.toDouble() * Magnitude.PETA
+  get() = this.toDouble() / Magnitude.PETA
 
 val Number.tera: Double
-  get() = this.toDouble() * Magnitude.TERA
+  get() = this.toDouble() / Magnitude.TERA
 
 val Number.giga: Double
-  get() = this.toDouble() * Magnitude.GIGA
+  get() = this.toDouble() / Magnitude.GIGA
 
 val Number.mega: Double
-  get() = this.toDouble() * Magnitude.MEGA
+  get() = this.toDouble() / Magnitude.MEGA
 
 val Number.kilo: Double
-  get() = this.toDouble() * Magnitude.KILO
+  get() = this.toDouble() / Magnitude.KILO
 
 val Number.hecto: Double
-  get() = this.toDouble() * Magnitude.HECTO
+  get() = this.toDouble() / Magnitude.HECTO
 
 val Number.deca: Double
-  get() = this.toDouble() * Magnitude.DECA
+  get() = this.toDouble() / Magnitude.DECA
 
 val Number.deci: Double
-  get() = this.toDouble() * Magnitude.DECI
+  get() = this.toDouble() / Magnitude.DECI
 
 val Number.centi: Double
-  get() = this.toDouble() * Magnitude.CENTI
+  get() = this.toDouble() / Magnitude.CENTI
 
 val Number.milli: Double
-  get() = this.toDouble() * Magnitude.MILLI
+  get() = this.toDouble() / Magnitude.MILLI
 
 val Number.micro: Double
-  get() = this.toDouble() * Magnitude.MICRO
+  get() = this.toDouble() / Magnitude.MICRO
 
 val Number.nano: Double
-  get() = this.toDouble() * Magnitude.NANO
+  get() = this.toDouble() / Magnitude.NANO
 
 val Number.pico: Double
-  get() = this.toDouble() * Magnitude.PICO
+  get() = this.toDouble() / Magnitude.PICO
 
 val Number.femto: Double
-  get() = this.toDouble() * Magnitude.FEMTO
+  get() = this.toDouble() / Magnitude.FEMTO
 
 val Number.atto: Double
-  get() = this.toDouble() * Magnitude.ATTO
+  get() = this.toDouble() / Magnitude.ATTO
 
 val Number.zepto: Double
-  get() = this.toDouble() * Magnitude.ZEPTO
+  get() = this.toDouble() / Magnitude.ZEPTO
 
 val Number.yocto: Double
-  get() = this.toDouble() * Magnitude.YOCTO
+  get() = this.toDouble() / Magnitude.YOCTO
