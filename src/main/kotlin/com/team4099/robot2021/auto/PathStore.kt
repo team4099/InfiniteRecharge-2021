@@ -30,7 +30,7 @@ object PathStore {
       nearTrenchEdge
     ),
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-    trajectoryConstant
+    trajectoryConfig
   )
 
   val intakeInNearTrench: Trajectory = Trajectory(
@@ -40,7 +40,7 @@ object PathStore {
       nearTrenchEnd
     ),
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-    trajectoryConstant
+    trajectoryConfig
   )
 
   val fromNearTrench: Trajectory = Trajectory(
@@ -50,7 +50,7 @@ object PathStore {
       initLinePowerPort
     ),
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-    trajectoryConstant
+    trajectoryConfig
   )
 
   val toFarTrench: Trajectory = Trajectory(
@@ -60,7 +60,7 @@ object PathStore {
       farTrench
     ),
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-    trajectoryConstant
+    trajectoryConfig
   )
 
   val fromFarTrench: Trajectory = Trajectory(
@@ -70,7 +70,7 @@ object PathStore {
       initLinePowerPort
     ),
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-    trajectoryConstant
+    trajectoryConfig
   )
 
   val toRendezvousPoint2Balls = Trajectory(
@@ -80,7 +80,7 @@ object PathStore {
       rendezvousPoint2Balls
     ),
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-    trajectoryConstant
+    trajectoryConfig
   )
 
   val fromRendezvousPoint2Balls = Trajectory(
@@ -90,7 +90,7 @@ object PathStore {
       initLinePowerPort
     ),
     Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-    trajectoryConstant
+    trajectoryConfig
   )
 
   private val navPoints = mapOf(
