@@ -23,6 +23,16 @@ object PathStore {
   private val farTrench = Pose(5.794.meters, (-7.243).meters, (-20.0).radians)
   private val rendezvousPoint2Balls = Pose(5.878.meters, (-2.755).meters, (-20.0).radians)
 
+  val driveForward: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      Pose(0.meters, 0.meters, 0.radians),
+      Pose(1.meters, 0.meters, 0.radians)
+    ),
+    0.0.meters.perSecond,
+    trajectoryConstant
+  )
+
   val toNearTrench: Trajectory = Trajectory(
     0.0.meters.perSecond,
     Path(
