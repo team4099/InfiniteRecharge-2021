@@ -61,11 +61,9 @@ class DriveCharacterizeCommand : CommandBase() {
   }
 
   override fun end(interrupted: Boolean) {
-    println("end")
     // data processing step
     var data = entries.toString()
     data = data.substring(1, data.length - 1) + ", "
-    print(data)
     telemetryEntry.setString(data)
     entries.clear()
     NetworkTableInstance.getDefault().setUpdateRate(0.1)

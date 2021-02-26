@@ -71,7 +71,6 @@ object Robot : TimedRobot() {
   }
 
   override fun disabledInit() {
-    println("disabled")
     autonomousCommand.cancel()
   }
 
