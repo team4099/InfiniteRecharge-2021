@@ -123,6 +123,10 @@ class Wheel(
     Logger.addSource("$label Drivetrain", "Drive SetPoint") { speedSetPoint.inFeetPerSecond }
     Logger.addSource("$label Drivetrain", "Direction SetPoint") { directionSetPoint.inDegrees }
 
+    Logger.addSource("Drivetrain Tuning", "$label kP", {directionPID.p}) { newP ->
+      directionPID.p = newP
+    }
+
     directionPID.p = Constants.Drivetrain.PID.DIRECTION_KP
     directionPID.i = Constants.Drivetrain.PID.DIRECTION_KI
     directionPID.iZone = 0.0
