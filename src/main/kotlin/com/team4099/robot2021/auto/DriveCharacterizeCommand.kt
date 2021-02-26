@@ -22,6 +22,7 @@ class DriveCharacterizeCommand : CommandBase() {
       NetworkTableInstance.getDefault().getEntry("/robot/rotate")
   private var numberArray = arrayOfNulls<Double>(10)
   private var entries = mutableListOf<Double>()
+  private var autoSpeed = 0.0
 
   init {
     addRequirements(Drivetrain)
@@ -39,10 +40,6 @@ class DriveCharacterizeCommand : CommandBase() {
   }
 
   override fun execute() {
-    val autoSpeed = autoSpeedEntry.getDouble(0.0)
-
-    Drivetrain.wheels.forEach { it.setOpenLoop(0.degrees, autoSpeed) }
-
     numberArray[0] = Clock.fpgaTime.inMicroseconds
     numberArray[1] = RobotController.getBatteryVoltage()
     numberArray[2] = autoSpeed
@@ -55,6 +52,9 @@ class DriveCharacterizeCommand : CommandBase() {
     numberArray[9] = Drivetrain.gyroAngle.inRadians
 
     telemetryEntry.setNumberArray(numberArray)
+
+    autoSpeed = autoSpeedEntry.getDouble(0.0)
+    Drivetrain.wheels.forEach { it.setOpenLoop(0.degrees, autoSpeed) }
 
     // Add data to a string that is uploaded to NT
     for (num in numberArray) {
