@@ -99,8 +99,9 @@ object Logger {
    * @param supplier A function which returns the value to be logged.
    * @param setter An optional function which will be called when the value in Shuffleboard is
    * changed.
+   * @param followSupplier If false, the supplier will not be passed through to the Shuffleboard value.
    */
-  fun <T : Any> addSource(tab: String, name: String, supplier: () -> T, setter: ((T) -> Unit)?) {
+  fun <T : Any> addSource(tab: String, name: String, supplier: () -> T, setter: ((T) -> Unit)?, followSupplier: Boolean = true) {
     var shuffleboardEntry: SimpleWidget? = null
     try {
       shuffleboardEntry = Shuffleboard.getTab(tab).add(name, supplier())
@@ -115,11 +116,11 @@ object Logger {
                     // Unchecked cast since we don't know the type of this
                     // source due to type erasure
                     @Suppress("UNCHECKED_CAST")
-                    setter(newValue as T)
+                    setter(newValue.value as T)
                   } catch (e: ClassCastException) {
                     addEvent(
                         "Logger",
-                        "Could not change value for $tab/$name due to invalid type cast.",
+                        "Could not change value for $tab/$name due to invalid type cast ${e.message}.",
                         Severity.ERROR)
                   }
                 },
@@ -129,7 +130,7 @@ object Logger {
       addEvent(
           "Logger", "Could not add $tab/$name to Shuffleboard due to invalid type", Severity.WARN)
     }
-    dataSources.add(LogSource(tab, name, supplier, shuffleboardEntry))
+    dataSources.add(LogSource(tab, name, supplier, shuffleboardEntry, followSupplier))
   }
 
   /**
@@ -158,7 +159,7 @@ object Logger {
   /** Update values for logged data on Shuffleboard. */
   fun updateShuffleboard() {
     dataSources.forEach {
-      if (it.shuffleboardWidget != null) {
+      if (it.shuffleboardWidget != null && it.followSupplier) {
         it.shuffleboardWidget.entry.setValue(it.supplier())
       }
     }
