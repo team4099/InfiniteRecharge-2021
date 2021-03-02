@@ -4,6 +4,7 @@ import com.ctre.phoenix.sensors.CANCoder
 import com.ctre.phoenix.sensors.SensorInitializationStrategy
 import com.revrobotics.CANSparkMax
 import com.revrobotics.ControlType
+import com.team4099.lib.around
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.AngularMechanismSensor
 import com.team4099.lib.units.LinearAcceleration
@@ -25,6 +26,7 @@ import com.team4099.lib.units.perSecond
 import com.team4099.lib.units.sparkMaxAngularMechanismSensor
 import com.team4099.lib.units.sparkMaxLinearMechanismSensor
 import com.team4099.robot2021.config.Constants
+import edu.wpi.first.wpilibj.MedianFilter
 import kotlin.math.IEEErem
 import kotlin.math.withSign
 
@@ -52,6 +54,9 @@ class Wheel(
           Timescale.CTRE,
           { encoder.velocity },
           { Math.toRadians(encoder.absolutePosition) })
+
+  private val filter = MedianFilter(10)
+
 
   // motor params
   private val driveTemp: Double
@@ -94,7 +99,12 @@ class Wheel(
       // Logger.addEvent("Drivetrain", "label: $label, value: ${value.inDegrees}, reference raw
       // position: ${directionSensor.positionToRawUnits(value)}, current raw position:
       // ${directionSensor.getRawPosition()}")
-      directionPID.setReference(directionSensor.positionToRawUnits(value), ControlType.kSmartMotion)
+      if (filter.calculate((directionSensor.position).inRadians).around(value.inRadians, (Constants.Drivetrain.ALLOWED_ANGLE_ERROR).inRadians)) {
+        directionSpark.set(0.0)
+      }else {
+        directionPID.setReference(directionSensor.positionToRawUnits(value), ControlType.kSmartMotion)
+      }
+
       field = value
     }
 
