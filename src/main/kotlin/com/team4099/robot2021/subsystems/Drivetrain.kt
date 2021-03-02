@@ -115,29 +115,6 @@ object Drivetrain : SubsystemBase() {
 
   val pose: Pose
     get() = Pose(swerveDriveOdometry.poseMeters)
-  private var trajDuration = 0.0.seconds
-  private var trajCurTime = 0.0.seconds
-  private var trajStartTime = 0.0.seconds
-
-  private lateinit var lastModuleSpeeds: Array<SwerveModuleState>
-
-  private var pathFollowController = RamseteController()
-  var path: Trajectory = Trajectory(listOf(Trajectory.State()))
-    set(value) {
-      trajDuration = value.totalTimeSeconds.seconds
-      trajStartTime = Clock.fpgaTime
-
-      val initialSample = value.sample(0.0)
-      swerveDriveOdometry.resetPosition(initialSample.poseMeters, -gyroAngle.inRotation2ds)
-      pathFollowController = RamseteController(
-        Constants.Drivetrain.Gains.RAMSETE_B,
-        Constants.Drivetrain.Gains.RAMSETE_ZETA
-      )
-
-      Logger.addEvent("Drivetrain", "Path Following Started")
-
-      field = value
-    }
 
   init {
     // Wheel speeds
@@ -154,10 +131,6 @@ object Drivetrain : SubsystemBase() {
 
     //  gyro angle
     Logger.addSource("Drivetrain", "Gyro Angle") { gyroAngle.inDegrees }
-
-    Logger.addSource("Drivetrain", "Path Follow Start Timestamp") { trajStartTime.inSeconds }
-    Logger.addSource("Drivetrain", "Path Follow Duration") { trajDuration.inSeconds }
-    Logger.addSource("Drivetrain", "Path Follow Current Timestamp") { trajCurTime.inSeconds }
 
     //  if gyro is connected boolean
     Logger.addSource("Drivetrain", "Gyro Connected") { }
@@ -258,29 +231,13 @@ object Drivetrain : SubsystemBase() {
     wheels[3].set(wheelAngles[3], wheelSpeeds[3], wheelAccelerations[3])
   }
 
-  fun updateOdometry() {
+  private fun updateOdometry() {
     swerveDriveOdometry.update(
       gyroAngle.inRotation2ds,
       SwerveModuleState(wheelSpeeds[0].inMetersPerSecond, wheelAngles[0].inRotation2ds),
       SwerveModuleState(wheelSpeeds[1].inMetersPerSecond, wheelAngles[1].inRotation2ds),
       SwerveModuleState(wheelSpeeds[2].inMetersPerSecond, wheelAngles[2].inRotation2ds),
       SwerveModuleState(wheelSpeeds[3].inMetersPerSecond, wheelAngles[3].inRotation2ds)
-    )
-  }
-
-  fun updatePathFollowing(timestamp: Time) {
-    trajCurTime = timestamp - trajStartTime
-    val sample = path.sample(trajCurTime.inSeconds)
-
-    val drivetrainSpeeds = pathFollowController.calculate(swerveDriveOdometry.poseMeters, sample)
-    // Note: ChassisSpeeds takes x as forward so it is swapped
-    set(
-      drivetrainSpeeds.omegaRadiansPerSecond.radians.perSecond,
-      Pair(
-        drivetrainSpeeds.vyMetersPerSecond.meters.perSecond,
-        drivetrainSpeeds.vxMetersPerSecond.meters.perSecond
-      ),
-      fieldOriented = false
     )
   }
 

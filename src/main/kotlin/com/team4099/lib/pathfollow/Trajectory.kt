@@ -3,6 +3,7 @@ package com.team4099.lib.pathfollow
 import com.team4099.lib.geometry.Pose
 import com.team4099.lib.geometry.Translation
 import com.team4099.lib.geometry.interpolate
+import com.team4099.lib.interpolate
 import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.base.Time
 import com.team4099.lib.units.base.meters
@@ -78,9 +79,28 @@ class Trajectory(
       return states[states.size - 1]
     }
 
+    var low = 1
+    var high = states.size - 1
+
+    // Binary search to find the closest timestamp
+    while (low != high) {
+      val mid= (low + high) / 2
+      if (states[mid].timestamp < time) {
+        low = mid + 1
+      } else {
+        high = mid
+      }
+    }
+
+    val lowState = states[low - 1]
+    val highState = states[low]
+    val lerpScalar = (time - lowState.timestamp) / (highState.timestamp - lowState.timestamp)
+
     return TrajectoryState(
       time,
-      interpolate()
+      interpolate(lowState.pose, highState.pose, lerpScalar),
+      interpolate(lowState.linearVelocity, highState.linearVelocity, lerpScalar),
+      interpolate(lowState.linearAcceleration, highState.linearAcceleration, lerpScalar)
     )
   }
 }

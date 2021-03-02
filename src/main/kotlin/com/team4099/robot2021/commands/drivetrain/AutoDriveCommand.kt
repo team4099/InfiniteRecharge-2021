@@ -1,12 +1,16 @@
 package com.team4099.robot2021.commands.drivetrain
 
 import com.team4099.lib.hal.Clock
+import com.team4099.lib.logging.Logger
 import com.team4099.lib.pathfollow.Trajectory
 import com.team4099.lib.units.base.inMeters
+import com.team4099.lib.units.base.inSeconds
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
+import com.team4099.lib.units.derived.cos
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.derived.radians
+import com.team4099.lib.units.derived.sin
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj2.command.CommandBase
@@ -15,12 +19,8 @@ import edu.wpi.first.wpilibj.controller.HolonomicDriveController
 import edu.wpi.first.wpilibj.controller.PIDController
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile
-import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds
 
-
-
-
-class AutoDriveCommand(private val path: Trajectory) : CommandBase() {
+class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
   private val xPID = PIDController(
     Constants.Drivetrain.PID.DRIVE_X_PID_KP,
     Constants.Drivetrain.PID.DRIVE_X_PID_KI,
@@ -41,7 +41,6 @@ class AutoDriveCommand(private val path: Trajectory) : CommandBase() {
     )
   )
 
-  private var trajDuration = 0.0.seconds
   private var trajCurTime = 0.0.seconds
   private var trajStartTime = 0.0.seconds
 
@@ -49,35 +48,34 @@ class AutoDriveCommand(private val path: Trajectory) : CommandBase() {
 
   init {
     addRequirements(Drivetrain)
+
+    Logger.addSource("Drivetrain", "Path Follow Start Timestamp") { trajStartTime.inSeconds }
+    Logger.addSource("Drivetrain", "Path Follow Current Timestamp") { trajCurTime.inSeconds }
   }
 
   override fun initialize() {
-    trajStartTime = Clock.fpgaTime
+    trajStartTime = Clock.fpgaTime + trajectory.startTime
   }
 
   override fun execute() {
     trajCurTime = Clock.fpgaTime - trajStartTime
-    var desiredState = path
-    Drivetrain.updatePathFollowing(Clock.fpgaTime)
-    val xFF: Double = linearVelocityRefMeters * poseRef.getRotation().getCos()
-    val yFF: Double = linearVelocityRefMeters * poseRef.getRotation().getSin()
-    val thetaFF: Double = thetaPID.calculate(Drivetrain.pose.theta.inRadians, angleRef.getRadians())
+    val desiredState = trajectory.sample(trajCurTime)
+    val xFF = desiredState.linearVelocity * desiredState.pose.theta.cos
+    val yFF = desiredState.linearVelocity * desiredState.pose.theta.sin
+    val thetaFF = thetaPID.calculate(Drivetrain.pose.theta.inRadians, desiredState.pose.theta.inRadians).radians.perSecond
 
     // Calculate feedback velocities (based on position error).
-    val xFeedback: Double = xPID.calculate(Drivetrain.pose.x.inMeters, poseRef.getX())
-    val yFeedback: Double = yPID.calculate(Drivetrain.pose.y.inMeters, poseRef.getY())
+    val xFeedback = xPID.calculate(Drivetrain.pose.x.inMeters, desiredState.pose.x.inMeters).meters.perSecond
+    val yFeedback = yPID.calculate(Drivetrain.pose.y.inMeters, desiredState.pose.x.inMeters).meters.perSecond
 
     Drivetrain.set(
-      thetaFF.radians.perSecond,
-      Pair(
-        (xFF+xFeedback).meters.perSecond,
-        (yFF + yFeedback).meters.perSecond
-      )
+      thetaFF,
+      Pair(xFF + xFeedback, yFF + yFeedback)
     )
   }
 
   override fun isFinished(): Boolean {
     trajCurTime = Clock.fpgaTime - trajStartTime
-    return trajCurTime > trajDuration
+    return trajCurTime > trajectory.endTime
   }
 }
