@@ -17,16 +17,29 @@ object BallVision : SubsystemBase() {
     get() = ballCamera.getLatestResult()
   private val targets = ballCameraResult.getTargets()
 
-  var ballPath: Trajectory = PathStore.galacticSearchARed
+  enum class BallPath(val path: Trajectory){
+    A_RED(PathStore.galacticSearchARed),
+    A_BLUE(PathStore.galacticSearchABlue),
+    B_RED(PathStore.galacticSearchBRed),
+    B_BLUE(PathStore.galacticSearchBBlue)
+  }
+
+  var ballPath = BallPath.A_RED
     get() = choosePath()
 
   init {
     ballCamera.setPipelineIndex(Constants.Vision.DRIVER_PIPELINE_ID)
 
-    Logger.addSource("BallVision", "Best Ball Path") { ballPath }
+    Logger.addSource("BallVision","Ball Camera Pipeline") {ballCamera.pipelineIndex}
+    Logger.addSource("BallVision", "Best Ball Path") { ballPath.name }
   }
 
-  private fun choosePath() : Trajectory {
+  private fun choosePath() : BallPath {
+    if (targets.isEmpty()){
+      //return PathStore.galacticSearchARed
+      return BallPath.A_RED
+    }
+
     var centerTarget: PhotonTrackedTarget = targets[0]
     var offCenterTarget: PhotonTrackedTarget = targets[0]
     var pathA = false
@@ -110,18 +123,18 @@ object BallVision : SubsystemBase() {
     if (ballsOffCenter == 1) {
       if (ballsOnLeft){
       //if (offCenterTarget.yaw.degrees.absoluteValue < 0.degrees){
-        return PathStore.galacticSearchBBlue
+        return BallPath.B_BLUE
       }
       else /*if (ballsOnRight)*/ {
-        return PathStore.galacticSearchBRed
+        return BallPath.B_RED
       }
     }
     else /*if (ballsOffCenter == 2)*/ {
       if (ballsOnRight) {
-        return PathStore.galacticSearchARed
+        return BallPath.A_RED
       }
       else {
-        return PathStore.galacticSearchABlue
+        return BallPath.A_BLUE
       }
     }
   }
