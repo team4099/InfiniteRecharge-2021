@@ -30,7 +30,7 @@ class Wheel(
   private val driveSpark: CANSparkMax,
   private val encoder: CANCoder,
   private val zeroOffset: Angle,
-  public val label: String
+  val label: String
 ) {
 
   private val directionPID = directionSpark.pidController
@@ -52,16 +52,16 @@ class Wheel(
 
   // motor params
   private val driveTemp: Double
-    get() = driveSpark.getMotorTemperature()
+    get() = driveSpark.motorTemperature
 
   private val directionTemp: Double
-    get() = directionSpark.getMotorTemperature()
+    get() = directionSpark.motorTemperature
 
   private val driveOutputCurrent: Double
-    get() = directionSpark.getOutputCurrent()
+    get() = directionSpark.outputCurrent
 
   private val directionOutputCurrent: Double
-    get() = directionSpark.getOutputCurrent()
+    get() = directionSpark.outputCurrent
 
   private val drivePercentOutput: Double
     get() = driveSpark.get()
@@ -70,10 +70,10 @@ class Wheel(
     get() = directionSpark.get()
 
   private val driveBusVoltage: Double
-    get() = driveSpark.getBusVoltage()
+    get() = driveSpark.busVoltage
 
   private val directionBusVoltage: Double
-    get() = directionSpark.getBusVoltage()
+    get() = directionSpark.busVoltage
 
   private var speedSetPoint: LinearVelocity = 0.feet.perSecond
 
@@ -113,6 +113,7 @@ class Wheel(
 
     directionPID.p = Constants.Drivetrain.PID.DIRECTION_KP
     directionPID.i = Constants.Drivetrain.PID.DIRECTION_KI
+    directionPID.iZone = 0.0
     directionPID.d = Constants.Drivetrain.PID.DIRECTION_KD
     directionPID.ff = Constants.Drivetrain.PID.DIRECTION_KFF
     directionPID.setSmartMotionMaxVelocity(
@@ -120,7 +121,6 @@ class Wheel(
     directionPID.setSmartMotionMaxAccel(
         directionSensor.accelerationToRawUnits(Constants.Drivetrain.DIRECTION_ACCEL_MAX), 0)
     directionPID.setOutputRange(-1.0, 1.0)
-    directionPID.setIZone(0.0)
     directionPID.setSmartMotionMinOutputVelocity(0.0, 0)
     directionPID.setSmartMotionAllowedClosedLoopError(
         directionSensor.positionToRawUnits(Constants.Drivetrain.ALLOWED_ANGLE_ERROR), 0)
