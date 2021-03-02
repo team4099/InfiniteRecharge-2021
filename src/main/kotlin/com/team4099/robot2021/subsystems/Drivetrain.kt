@@ -282,18 +282,6 @@ object Drivetrain : SubsystemBase() {
     )
   }
 
-
-  /**
-   * Checks if path following has reached the end of the path.
-   *
-   * @param timestamp The current time. Value originates from Timer.getFPGATimestamp.
-   * @return If path following is finished.
-   */
-  fun isPathFinished(timestamp: Time): Boolean {
-    trajCurTime = timestamp - trajStartTime
-    return trajCurTime > trajDuration
-  }
-
   private fun hypot(a: LinearVelocity, b: LinearVelocity): LinearVelocity {
     return kotlin.math.hypot(a.inMetersPerSecond, b.inMetersPerSecond).meters.perSecond
   }
