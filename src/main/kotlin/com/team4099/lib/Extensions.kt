@@ -44,3 +44,16 @@ fun Double.limit(lowerBound: Double, upperBound: Double): Double {
 fun Int.limit(lowerBound: Int, upperBound: Int): Int {
   return min(upperBound, max(lowerBound, this))
 }
+
+/**
+ * Linearly interpolate between two values.
+ *
+ * @param a The first value to interpolate between.
+ * @param b The second value to interpolate between.
+ * @param x The scalar that determines where the returned value falls between [a] and [b]. Limited to between
+ * 0 and 1 inclusive.
+ * @return A value between [a] and [b] determined by [x].
+ */
+fun interpolate(a: Double, b: Double, x: Double): Double {
+  return a + (b - a) * x
+}

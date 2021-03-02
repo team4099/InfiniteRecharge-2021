@@ -100,19 +100,21 @@ object Drivetrain : SubsystemBase() {
     -Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
   )
 
-  var swerveDriveKinematics = SwerveDriveKinematics(
+  val swerveDriveKinematics = SwerveDriveKinematics(
     frontLeftWheelLocation.translation2d,
     frontRightWheelLocation.translation2d,
     backLeftWheelLocation.translation2d,
     backRightWheelLocation.translation2d
   )
 
-  private var swerveDriveOdometry = SwerveDriveOdometry(
+  private val swerveDriveOdometry = SwerveDriveOdometry(
     swerveDriveKinematics,
     gyroAngle.inRotation2ds,
     Pose(0.meters, 0.meters, 0.degrees).pose2d
   )
 
+  val pose: Pose
+    get() = Pose(swerveDriveOdometry.poseMeters)
   private var trajDuration = 0.0.seconds
   private var trajCurTime = 0.0.seconds
   private var trajStartTime = 0.0.seconds

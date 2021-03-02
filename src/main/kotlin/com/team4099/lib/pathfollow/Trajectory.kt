@@ -2,6 +2,7 @@ package com.team4099.lib.pathfollow
 
 import com.team4099.lib.geometry.Pose
 import com.team4099.lib.geometry.Translation
+import com.team4099.lib.geometry.interpolate
 import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.base.Time
 import com.team4099.lib.units.base.meters
@@ -24,8 +25,14 @@ class Trajectory(
   private val endVelocity: LinearVelocity,
   private val trajectoryConfig: TrajectoryConfig
 ) {
+  val states: List<TrajectoryState>
+  val startTime: Time
+    get() = states[0].timestamp
+  val endTime: Time
+    get() = states[states.size - 1].timestamp
+
   init {
-    val states = TrajectoryParameterizer.timeParameterizeTrajectory(
+    val wpilibStates = TrajectoryParameterizer.timeParameterizeTrajectory(
       path.splinePoints,
       trajectoryConfig.constraints,
       startVelocity.inMetersPerSecond,
@@ -35,10 +42,10 @@ class Trajectory(
       false
     ).states
 
-    states.mapIndexed { index, state ->
+    states = wpilibStates.mapIndexed { index, state ->
       var headingTarget = if (index == 0) {
         path.startingPose.theta
-      } else if (index == states.size - 1) {
+      } else if (index == wpilibStates.size - 1) {
         path.endingPose.theta
       } else {
         val tailMap = path.headingPointMap.tailMap(index)
@@ -60,5 +67,20 @@ class Trajectory(
         state.accelerationMetersPerSecondSq.meters.perSecond.perSecond
       )
     }
+  }
+
+  fun sample(time: Time): TrajectoryState {
+    if (time <= startTime) {
+      return states[0]
+    }
+
+    if (time >= endTime) {
+      return states[states.size - 1]
+    }
+
+    return TrajectoryState(
+      time,
+      interpolate()
+    )
   }
 }
