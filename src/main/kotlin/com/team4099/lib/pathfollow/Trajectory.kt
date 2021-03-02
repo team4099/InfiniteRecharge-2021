@@ -8,17 +8,14 @@ import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.base.Time
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
-import com.team4099.lib.units.derived.Angle
-import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inMetersPerSecondPerSecond
 import com.team4099.lib.units.perSecond
 import edu.wpi.first.wpilibj.trajectory.TrajectoryParameterizer
-import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile
 
 /**
- * A wrapper around the WPILib trajectory class that handles smooth
- * heading changes for holonomic drivetrains.
+ * A wrapper around the WPILib trajectory class that handles smooth heading changes for holonomic
+ * drivetrains.
  */
 class Trajectory(
   private val startVelocity: LinearVelocity,
@@ -33,41 +30,43 @@ class Trajectory(
     get() = states[states.size - 1].timestamp
 
   init {
-    val wpilibStates = TrajectoryParameterizer.timeParameterizeTrajectory(
-      path.splinePoints,
-      trajectoryConfig.constraints,
-      startVelocity.inMetersPerSecond,
-      endVelocity.inMetersPerSecond,
-      trajectoryConfig.maxLinearVelocity.inMetersPerSecond,
-      trajectoryConfig.maxLinearAcceleration.inMetersPerSecondPerSecond,
-      false
-    ).states
+    val wpilibStates =
+        TrajectoryParameterizer.timeParameterizeTrajectory(
+                path.splinePoints,
+                trajectoryConfig.constraints,
+                startVelocity.inMetersPerSecond,
+                endVelocity.inMetersPerSecond,
+                trajectoryConfig.maxLinearVelocity.inMetersPerSecond,
+                trajectoryConfig.maxLinearAcceleration.inMetersPerSecondPerSecond,
+                false)
+            .states
 
-    states = wpilibStates.mapIndexed { index, state ->
-      var headingTarget = if (index == 0) {
-        path.startingPose.theta
-      } else if (index == wpilibStates.size - 1) {
-        path.endingPose.theta
-      } else {
-        val tailMap = path.headingPointMap.tailMap(index)
-        if (tailMap.size == 0) {
-          path.endingPose.theta
-        } else {
-          path.headingPointMap[tailMap.firstKey()]
+    states =
+        wpilibStates.mapIndexed { index, state ->
+          var headingTarget =
+              if (index == 0) {
+                path.startingPose.theta
+              } else if (index == wpilibStates.size - 1) {
+                path.endingPose.theta
+              } else {
+                val tailMap = path.headingPointMap.tailMap(index)
+                if (tailMap.size == 0) {
+                  path.endingPose.theta
+                } else {
+                  path.headingPointMap[tailMap.firstKey()]
+                }
+              }
+
+          if (headingTarget == null) {
+            headingTarget = path.endingPose.theta
+          }
+
+          TrajectoryState(
+              state.timeSeconds.seconds,
+              Pose(Translation(state.poseMeters.translation), headingTarget),
+              state.velocityMetersPerSecond.meters.perSecond,
+              state.accelerationMetersPerSecondSq.meters.perSecond.perSecond)
         }
-      }
-
-      if (headingTarget == null) {
-        headingTarget = path.endingPose.theta
-      }
-
-      TrajectoryState(
-        state.timeSeconds.seconds,
-        Pose(Translation(state.poseMeters.translation), headingTarget),
-        state.velocityMetersPerSecond.meters.perSecond,
-        state.accelerationMetersPerSecondSq.meters.perSecond.perSecond
-      )
-    }
   }
 
   fun sample(time: Time): TrajectoryState {
@@ -84,7 +83,7 @@ class Trajectory(
 
     // Binary search to find the closest timestamp
     while (low != high) {
-      val mid= (low + high) / 2
+      val mid = (low + high) / 2
       if (states[mid].timestamp < time) {
         low = mid + 1
       } else {
@@ -97,10 +96,9 @@ class Trajectory(
     val lerpScalar = (time - lowState.timestamp) / (highState.timestamp - lowState.timestamp)
 
     return TrajectoryState(
-      time,
-      interpolate(lowState.pose, highState.pose, lerpScalar),
-      interpolate(lowState.linearVelocity, highState.linearVelocity, lerpScalar),
-      interpolate(lowState.linearAcceleration, highState.linearAcceleration, lerpScalar)
-    )
+        time,
+        interpolate(lowState.pose, highState.pose, lerpScalar),
+        interpolate(lowState.linearVelocity, highState.linearVelocity, lerpScalar),
+        interpolate(lowState.linearAcceleration, highState.linearAcceleration, lerpScalar))
   }
 }

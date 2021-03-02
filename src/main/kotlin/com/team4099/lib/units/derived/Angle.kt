@@ -1,7 +1,12 @@
 package com.team4099.lib.units.derived
 
-import com.team4099.lib.units.*
+import com.team4099.lib.units.AngularVelocity
+import com.team4099.lib.units.LinearVelocity
+import com.team4099.lib.units.UnitKey
+import com.team4099.lib.units.Value
 import com.team4099.lib.units.base.Length
+import com.team4099.lib.units.inRadiansPerSecond
+import com.team4099.lib.units.perSecond
 import edu.wpi.first.wpilibj.geometry.Rotation2d
 import kotlin.math.PI
 
@@ -36,7 +41,8 @@ val Angle.inRadians: Double
 val Angle.inRotations: Double
   get() = value / (2 * PI)
 
-val Angle.inRotation2ds: Rotation2d get() = Rotation2d(value)
+val Angle.inRotation2ds: Rotation2d
+  get() = Rotation2d(value)
 
 val Angle.sin: Double
   get() = kotlin.math.sin(value)

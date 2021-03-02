@@ -5,16 +5,13 @@ import com.team4099.lib.geometry.Translation
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.derived.Angle
 import edu.wpi.first.wpilibj.spline.PoseWithCurvature
-import edu.wpi.first.wpilibj.spline.Spline
 import edu.wpi.first.wpilibj.spline.SplineHelper
 import edu.wpi.first.wpilibj.spline.SplineParameterizer
-import java.util.ArrayList
 
 /**
  * A path on the XY plane constructed with cubic splines.
  *
- * Heading of holonomic drivetrains can be controlled at
- * any waypoint.
+ * Heading of holonomic drivetrains can be controlled at any waypoint.
  */
 class Path constructor(val startingPose: Pose, val endingPose: Pose) {
   val headingPointMap = sortedMapOf<Int, Angle>()
@@ -26,14 +23,13 @@ class Path constructor(val startingPose: Pose, val endingPose: Pose) {
   /**
    * Add a waypoint to the middle of this path.
    *
-   * The robot will pass through [nextTranslation] as it travels
-   * along the path. If [heading] is set the robot will have that
-   * heading at this location, otherwise heading will be interpolated
-   * between the previous waypoint with heading specified and the next
-   * waypoint with heading specified, including the start and end poses.
+   * The robot will pass through [nextTranslation] as it travels along the path. If [heading] is set
+   * the robot will have that heading at this location, otherwise heading will be interpolated
+   * between the previous waypoint with heading specified and the next waypoint with heading
+   * specified, including the start and end poses.
    * @param nextTranslation The location of the waypoint.
-   * @param heading The target heading at this waypoint, null if the
-   * heading at this waypoint does not matter.
+   * @param heading The target heading at this waypoint, null if the heading at this waypoint does
+   * not matter.
    */
   fun addWaypoint(nextTranslation: Translation, heading: Angle? = null) {
     if (built) {
@@ -47,24 +43,19 @@ class Path constructor(val startingPose: Pose, val endingPose: Pose) {
     waypoints.add(nextTranslation)
   }
 
-  /**
-   * Build the path after all desired waypoints have been added.
-   */
+  /** Build the path after all desired waypoints have been added. */
   fun build() {
     // Create control vectors from the start and end waypoint
     val waypointTranslation2ds = waypoints.map { it.translation2d }.toTypedArray()
-    val controlVectors = SplineHelper.getCubicControlVectorsFromWaypoints(
-      startingPose.pose2d,
-      waypointTranslation2ds,
-      endingPose.pose2d
-    )
+    val controlVectors =
+        SplineHelper.getCubicControlVectorsFromWaypoints(
+            startingPose.pose2d, waypointTranslation2ds, endingPose.pose2d)
 
     // Create a list of splines
-    val splines = listOf(*SplineHelper.getCubicSplinesFromControlVectors(
-      controlVectors.first(),
-      waypointTranslation2ds,
-      controlVectors.last()
-    ))
+    val splines =
+        listOf(
+            *SplineHelper.getCubicSplinesFromControlVectors(
+                controlVectors.first(), waypointTranslation2ds, controlVectors.last()))
 
     // Create the vector of spline points.
     splinePoints = mutableListOf()

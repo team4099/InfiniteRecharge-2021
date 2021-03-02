@@ -13,33 +13,32 @@ import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.sin
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2021.config.Constants
-import edu.wpi.first.wpilibj2.command.CommandBase
 import com.team4099.robot2021.subsystems.Drivetrain
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController
 import edu.wpi.first.wpilibj.controller.PIDController
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile
+import edu.wpi.first.wpilibj2.command.CommandBase
 
 class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
-  private val xPID = PIDController(
-    Constants.Drivetrain.PID.DRIVE_X_PID_KP,
-    Constants.Drivetrain.PID.DRIVE_X_PID_KI,
-    Constants.Drivetrain.PID.DRIVE_X_PID_KD
-  )
-  private val yPID = PIDController(
-    Constants.Drivetrain.PID.DRIVE_Y_PID_KP,
-    Constants.Drivetrain.PID.DRIVE_Y_PID_KI,
-    Constants.Drivetrain.PID.DRIVE_Y_PID_KD
-  )
-  private val thetaPID = ProfiledPIDController(
-    Constants.Drivetrain.PID.DRIVE_THETA_PID_KP,
-    Constants.Drivetrain.PID.DRIVE_THETA_PID_KI,
-    Constants.Drivetrain.PID.DRIVE_THETA_PID_KD,
-    TrapezoidProfile.Constraints(
-      Constants.Drivetrain.PID.DRIVE_THETA_PID_MAX_VEL.value,
-      Constants.Drivetrain.PID.DRIVE_THETA_PID_MAX_ACCEL.value
-    )
-  )
+  private val xPID =
+      PIDController(
+          Constants.Drivetrain.PID.DRIVE_X_PID_KP,
+          Constants.Drivetrain.PID.DRIVE_X_PID_KI,
+          Constants.Drivetrain.PID.DRIVE_X_PID_KD)
+  private val yPID =
+      PIDController(
+          Constants.Drivetrain.PID.DRIVE_Y_PID_KP,
+          Constants.Drivetrain.PID.DRIVE_Y_PID_KI,
+          Constants.Drivetrain.PID.DRIVE_Y_PID_KD)
+  private val thetaPID =
+      ProfiledPIDController(
+          Constants.Drivetrain.PID.DRIVE_THETA_PID_KP,
+          Constants.Drivetrain.PID.DRIVE_THETA_PID_KI,
+          Constants.Drivetrain.PID.DRIVE_THETA_PID_KD,
+          TrapezoidProfile.Constraints(
+              Constants.Drivetrain.PID.DRIVE_THETA_PID_MAX_VEL.value,
+              Constants.Drivetrain.PID.DRIVE_THETA_PID_MAX_ACCEL.value))
 
   private var trajCurTime = 0.0.seconds
   private var trajStartTime = 0.0.seconds
@@ -62,16 +61,18 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
     val desiredState = trajectory.sample(trajCurTime)
     val xFF = desiredState.linearVelocity * desiredState.pose.theta.cos
     val yFF = desiredState.linearVelocity * desiredState.pose.theta.sin
-    val thetaFF = thetaPID.calculate(Drivetrain.pose.theta.inRadians, desiredState.pose.theta.inRadians).radians.perSecond
+    val thetaFF =
+        thetaPID.calculate(Drivetrain.pose.theta.inRadians, desiredState.pose.theta.inRadians)
+            .radians
+            .perSecond
 
     // Calculate feedback velocities (based on position error).
-    val xFeedback = xPID.calculate(Drivetrain.pose.x.inMeters, desiredState.pose.x.inMeters).meters.perSecond
-    val yFeedback = yPID.calculate(Drivetrain.pose.y.inMeters, desiredState.pose.x.inMeters).meters.perSecond
+    val xFeedback =
+        xPID.calculate(Drivetrain.pose.x.inMeters, desiredState.pose.x.inMeters).meters.perSecond
+    val yFeedback =
+        yPID.calculate(Drivetrain.pose.y.inMeters, desiredState.pose.x.inMeters).meters.perSecond
 
-    Drivetrain.set(
-      thetaFF,
-      Pair(xFF + xFeedback, yFF + yFeedback)
-    )
+    Drivetrain.set(thetaFF, Pair(xFF + xFeedback, yFF + yFeedback))
   }
 
   override fun isFinished(): Boolean {

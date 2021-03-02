@@ -21,8 +21,8 @@ fun Double.around(around: Double, tolerance: Double): Boolean {
  * Smoothly deadbands a value.
  *
  * @param deadband The range in which the value will be forced to zero.
- * @return This value adjusted to smoothly increase from zero if outside the deadband,
- * zero if inside the deadband.
+ * @return This value adjusted to smoothly increase from zero if outside the deadband, zero if
+ * inside the deadband.
  */
 fun Double.smoothDeadband(deadband: Double): Double {
   return if (abs(this) < deadband) {
@@ -59,8 +59,8 @@ fun Int.limit(lowerBound: Int, upperBound: Int): Int {
  *
  * @param a The first value to interpolate between.
  * @param b The second value to interpolate between.
- * @param x The scalar that determines where the returned value falls between [a] and [b]. Limited to between
- * 0 and 1 inclusive.
+ * @param x The scalar that determines where the returned value falls between [a] and [b]. Limited
+ * to between 0 and 1 inclusive.
  * @return A value between [a] and [b] determined by [x].
  */
 fun interpolate(a: Double, b: Double, x: Double): Double {
@@ -72,11 +72,10 @@ fun interpolate(a: Double, b: Double, x: Double): Double {
  *
  * @param a The first value to interpolate between.
  * @param b The second value to interpolate between.
- * @param x The scalar that determines where the returned value falls between [a] and [b]. Limited to between
- * 0 and 1 inclusive.
+ * @param x The scalar that determines where the returned value falls between [a] and [b]. Limited
+ * to between 0 and 1 inclusive.
  * @return A value between [a] and [b] determined by [x].
  */
-fun <T: UnitKey> interpolate(a: Value<T>, b: Value<T>, x: Double): Value<T> {
+fun <T : UnitKey> interpolate(a: Value<T>, b: Value<T>, x: Double): Value<T> {
   return Value(a.value + (b.value - a.value) * x)
 }
-

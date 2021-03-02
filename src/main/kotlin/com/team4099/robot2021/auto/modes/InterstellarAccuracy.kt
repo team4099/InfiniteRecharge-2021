@@ -10,37 +10,37 @@ import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2021.subsystems.Shooter
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 
-class InterstellarAccuracy: SequentialCommandGroup() {
+class InterstellarAccuracy : SequentialCommandGroup() {
   init {
     addRequirements(Drivetrain, Intake, Shooter)
 
     addCommands(
-      ShootCommand(),
-      AutoDriveCommand(PathStore.fromGreentoReintroduction),
-      IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT).withTimeout(15.0),
+        ShootCommand(),
+        AutoDriveCommand(PathStore.fromGreenToReintroduction),
+        IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+            .withTimeout(15.0),
+        AutoDriveCommand(PathStore.fromIntroToRed),
+        ShootCommand(),
+        AutoDriveCommand(PathStore.fromRedToReintroduction),
+        IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+            .withTimeout(15.0),
+        AutoDriveCommand(PathStore.fromIntroToBlue),
+        ShootCommand(),
+        AutoDriveCommand(PathStore.fromBlueToReintroduction),
+        IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+            .withTimeout(15.0),
+        AutoDriveCommand(PathStore.fromIntroToYellow),
+        ShootCommand(),
+        AutoDriveCommand(PathStore.fromYellowToReintroduction),
+        IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+            .withTimeout(15.0),
 
-      AutoDriveCommand(PathStore.fromIntrotoRed),
-      ShootCommand(),
-      AutoDriveCommand(PathStore.fromRedtoReintroduction),
-      IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT).withTimeout(15.0),
+        // Change to most optiable zone
 
-      AutoDriveCommand(PathStore.fromIntrotoBlue),
-      ShootCommand(),
-      AutoDriveCommand(PathStore.fromBluetoReintroduction),
-      IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT).withTimeout(15.0),
-
-      AutoDriveCommand(PathStore.fromIntrotoYellow),
-      ShootCommand(),
-      AutoDriveCommand(PathStore.fromYellowtoReintroduction),
-      IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT).withTimeout(15.0),
-
-      //Change to most optiable zone
-
-      // make it red so less time is spent going to zones?
-      AutoDriveCommand(PathStore.fromIntrotoRed),
-      ShootCommand(),
-      ShootCommand(),
-      ShootCommand()
-    )
+        // make it red so less time is spent going to zones?
+        AutoDriveCommand(PathStore.fromIntroToRed),
+        ShootCommand(),
+        ShootCommand(),
+        ShootCommand())
   }
 }
