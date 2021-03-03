@@ -94,7 +94,7 @@ object Constants {
     }
 
     object PID {
-      const val DIRECTION_KP = 0.000001
+      const val DIRECTION_KP = 0.00001
       const val DIRECTION_KI = 0.0
       const val DIRECTION_KD = 12.0
       const val DIRECTION_KFF = 0.000078
