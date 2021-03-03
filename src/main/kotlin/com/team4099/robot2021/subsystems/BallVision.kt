@@ -16,7 +16,8 @@ object BallVision : SubsystemBase() {
   private val ballCamera: PhotonCamera = PhotonCamera("ballcam")
   private val ballCameraResult
     get() = ballCamera.getLatestResult()
-  private val targets = ballCameraResult.getTargets()
+  private val targets
+    get() = ballCameraResult.getTargets()
 
   enum class BallPath(val path: Trajectory){
     NONE(PathStore.moveBack),
@@ -26,19 +27,16 @@ object BallVision : SubsystemBase() {
     B_BLUE(PathStore.galacticSearchBBlue)
   }
 
-  var ballPath = BallPath.NONE
-    get() = choosePath()
-
   init {
     ballCamera.setPipelineIndex(Constants.Vision.DRIVER_PIPELINE_ID)
 
-    Logger.addSource("BallVision","Ball Camera Pipeline") {ballCamera.pipelineIndex}
-    Logger.addSource("BallVision", "Best Ball Path") { ballPath.name }
+    Logger.addSource("BallVision","Ball Camera Pipeline") { ballCamera.pipelineIndex }
+    Logger.addSource("BallVision", "Best Ball Path") { choosePath().name }
+    Logger.addSource("BallVision","Number of Targets") { targets.size }
   }
 
-  private fun choosePath() : BallPath {
+  fun choosePath() : BallPath {
     if (targets.isEmpty()){
-      //return BallPath.A_RED
       return BallPath.NONE
     }
 
