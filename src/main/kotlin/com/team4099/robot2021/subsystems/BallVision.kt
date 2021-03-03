@@ -5,6 +5,7 @@ import com.team4099.lib.units.derived.degrees
 import com.team4099.robot2021.auto.PathStore
 import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj.trajectory.Trajectory
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.photonvision.PhotonCamera
 import org.photonvision.PhotonTrackedTarget
@@ -18,13 +19,14 @@ object BallVision : SubsystemBase() {
   private val targets = ballCameraResult.getTargets()
 
   enum class BallPath(val path: Trajectory){
+    NONE(PathStore.moveBack),
     A_RED(PathStore.galacticSearchARed),
     A_BLUE(PathStore.galacticSearchABlue),
     B_RED(PathStore.galacticSearchBRed),
     B_BLUE(PathStore.galacticSearchBBlue)
   }
 
-  var ballPath = BallPath.A_RED
+  var ballPath = BallPath.NONE
     get() = choosePath()
 
   init {
@@ -36,8 +38,8 @@ object BallVision : SubsystemBase() {
 
   private fun choosePath() : BallPath {
     if (targets.isEmpty()){
-      //return PathStore.galacticSearchARed
-      return BallPath.A_RED
+      //return BallPath.A_RED
+      return BallPath.NONE
     }
 
     var centerTarget: PhotonTrackedTarget = targets[0]
@@ -68,59 +70,59 @@ object BallVision : SubsystemBase() {
     }
 
     //Option 1 & 2
-    /*if (pathA) {
+    if (pathA) {
       //balls in center means path A
       //check area of target (distance of ball) to see if it is red or blue - test to find values for this
       //could use pitch instead if camera is high enough on the robot
       if (centerTarget.area < Constants.BallVision.PATH_A_AREA_THRESHOLD) {
-        return PathStore.galacticSearchABlue
+        return BallPath.A_BLUE
       } else {
-        return PathStore.galacticSearchARed
+        return BallPath.A_RED
       }
     } else { //ELSE: Option 1 Only
       //no balls in center means path B
       //assume the robot was placed accordingly - above row B if red, below row D if blue
       if (centerTarget.yaw < 0) {
-        return PathStore.galacticSearchBBlue
+        return BallPath.B_BLUE
       } else {
-        return PathStore.galacticSearchBRed
+        return BallPath.B_RED
       }
-    }*/ //End Else 1
+    } //End Else 1
 
     //if the robot starts in front of path B/D balls - should be a little bit faster
     //change trajectories accordingly!
     //Option 2 Method 1
     /*return when (Pair(ballsOnLeft, ballsOnRight)){
-      Pair(true,true) -> if (centerTarget.area < Constants.BallVision.PATH_A_AREA_THRESHOLD) PathStore.galacticSearchABlue
-      else PathStore.galacticSearchARed
-      Pair(true,false) -> PathStore.galacticSearchBBlue //only on left
-      Pair(false,true) -> PathStore.galacticSearchBRed //only on right
-      else -> PathStore.galacticSearchARed
+      Pair(true,true) -> if (centerTarget.area < Constants.BallVision.PATH_A_AREA_THRESHOLD) BallPath.A_BLUE
+      else BallPath.A_RED
+      Pair(true,false) -> BallPath.B_BLUE //only on left
+      Pair(false,true) -> BallPath.B_RED //only on right
+      else -> BallPath.NONE
     }*/
 
     //Option 2 Method 2
     /*if (ballsOnLeft && ballsOnRight){
       if (centerTarget.area < Constants.BallVision.PATH_A_AREA_THRESHOLD) {
-        return PathStore.galacticSearchABlue
+        return BallPath.A_BLUE
       } else {
-        return PathStore.galacticSearchARed
+        return BallPath.A_RED
       }
     }
     else if (ballsOnLeft && !ballsOnRight){
-      return PathStore.galacticSearchBBlue
+      return BallPath.B_BLUE
     }
     else if (!ballsOnLeft && ballsOnRight){
-      return PathStore.galacticSearchBRed
+      return BallPath.B_RED
     }
     else{
-      return PathStore.galacticSearchARed
+      return BallPath.NONE
     }*/
 
     //Option 3
     //Make sure trajectories are updated to match if this is chosen
     //for path A, start on row C for red and row E for blue
     //for path B, start on row B for red and row D for blue
-    if (ballsOffCenter == 1) {
+    /*if (ballsOffCenter == 1) {
       if (ballsOnLeft){
       //if (offCenterTarget.yaw.degrees.absoluteValue < 0.degrees){
         return BallPath.B_BLUE
@@ -136,9 +138,10 @@ object BallVision : SubsystemBase() {
       else {
         return BallPath.A_BLUE
       }
-    }
-  }
+    }*/
 
-  //we could also add the alternative logic for clearer option 3
+    //we could also add the alternative logic for clearer option 3
+
+  }
 
 }

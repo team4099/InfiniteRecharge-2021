@@ -78,6 +78,23 @@ object PathStore {
   private val red = Pose(navPoints["C"]!![8] + Translation(15.inches, 0.feet), 0.degrees).pose2d
   private val blue = Pose(navPoints["C"]!![6] + Translation(15.inches, 0.feet), 0.degrees).pose2d
 
+  val moveBack: Trajectory = TrajectoryGenerator.generateTrajectory(
+    Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
+    listOf(),
+    Pose(navPoints["C"]!![0], 0.degrees).pose2d,
+    config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC)
+  )
+  /*val moveBackPath = Path(
+    Pose(navPoints["C"]!![1] + Translation(30.inches, 0.feet), 0.degrees),
+    Pose(navPoints["C"]!![1] - Translation(30.inches, 0.feet), 0.degrees)
+  ).build()
+  val moveBack: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    stayInPlacePath,
+    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    trajectoryConstant
+  )*/
+
   val galacticSearchARed: Trajectory = TrajectoryGenerator.generateTrajectory(
     Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
     listOf(
@@ -101,7 +118,7 @@ object PathStore {
   val galacticSearchARed: Trajectory = Trajectory(
     0.0.meters.perSecond,
     ARedPath,
-    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    Constants.Drivetrain.MAX_VEL_METERS_PER_SEC,
     trajectoryConstant
   )*/
 
@@ -128,7 +145,7 @@ object PathStore {
   val galacticSearchABlue: Trajectory = Trajectory(
     0.0.meters.perSecond,
     ABluePath,
-    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    Constants.Drivetrain.MAX_VEL_METERS_PER_SEC,
     trajectoryConstant
   )*/
 
@@ -155,7 +172,7 @@ object PathStore {
   val galacticSearchBRed: Trajectory = Trajectory(
     0.0.meters.perSecond,
     BRedPath,
-    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    Constants.Drivetrain.MAX_VEL_METERS_PER_SEC,
     trajectoryConstant
   )*/
 
@@ -182,7 +199,7 @@ object PathStore {
   val galacticSearchBBlue: Trajectory = Trajectory(
     0.0.meters.perSecond,
     BBluePath,
-    Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
+    Constants.Drivetrain.MAX_VEL_METERS_PER_SEC,
     trajectoryConstant
   )*/
 
