@@ -3,6 +3,7 @@ package com.team4099.lib.pathfollow
 import com.team4099.lib.geometry.Pose
 import com.team4099.lib.geometry.Translation
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.logging.Logger.Severity.ERROR
 import com.team4099.lib.units.derived.Angle
 import edu.wpi.first.wpilibj.spline.PoseWithCurvature
 import edu.wpi.first.wpilibj.spline.SplineHelper
@@ -33,13 +34,14 @@ class Path constructor(val startingPose: Pose, val endingPose: Pose) {
    */
   fun addWaypoint(nextTranslation: Translation, heading: Angle? = null) {
     if (built) {
-      Logger.addEvent("Path", "Tried to add translation to built path")
+      Logger.addEvent("Path", "Failed to add translation to built path", ERROR)
       return
     }
 
-    if (heading != null) {
-      headingSplineMap[waypoints.size] = heading
-    }
+    // If a heading isn't specified, use either the previous waypoint's heading or
+    // the heading of the starting pose
+    headingSplineMap[waypoints.size] = heading
+      ?: (headingSplineMap[waypoints.size - 1] ?: startingPose.theta)
     waypoints.add(nextTranslation)
   }
 
@@ -75,9 +77,8 @@ class Path constructor(val startingPose: Pose, val endingPose: Pose) {
 
       // Map spline index for heading to point index
       val splineHeading = headingSplineMap[index]
-      if (splineHeading != null) {
-        headingPointMap[splinePoints.size - 1] = splineHeading
-      }
+      headingPointMap[splinePoints.size - 1] = splineHeading
     }
+    built = true
   }
 }
