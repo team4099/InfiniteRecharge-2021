@@ -38,10 +38,9 @@ class Path constructor(val startingPose: Pose, val endingPose: Pose) {
       return
     }
 
-    // If a heading isn't specified, use either the previous waypoint's heading or
-    // the heading of the starting pose
-    headingSplineMap[waypoints.size] = heading
-      ?: (headingSplineMap[waypoints.size - 1] ?: startingPose.theta)
+    if (heading != null) {
+      headingSplineMap[waypoints.size] = heading
+    }
     waypoints.add(nextTranslation)
   }
 
@@ -77,7 +76,9 @@ class Path constructor(val startingPose: Pose, val endingPose: Pose) {
 
       // Map spline index for heading to point index
       val splineHeading = headingSplineMap[index]
-      headingPointMap[splinePoints.size - 1] = splineHeading
+      if (splineHeading != null) {
+        headingPointMap[splinePoints.size - 1] = splineHeading
+      }
     }
     built = true
   }
