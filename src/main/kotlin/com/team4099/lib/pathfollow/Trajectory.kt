@@ -30,6 +30,8 @@ class Trajectory(
     get() = states[states.size - 1].timestamp
 
   init {
+    if (!path.built) path.build()
+
     val wpilibStates =
         TrajectoryParameterizer.timeParameterizeTrajectory(
                 path.splinePoints,

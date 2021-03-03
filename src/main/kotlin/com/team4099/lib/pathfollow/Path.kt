@@ -19,7 +19,7 @@ class Path constructor(val startingPose: Pose, val endingPose: Pose) {
   var splinePoints = mutableListOf<PoseWithCurvature>()
   private val headingSplineMap = mutableMapOf<Int, Angle>()
   private val waypoints = mutableListOf<Translation>()
-  private var built = false
+  var built = false
 
   /**
    * Add a waypoint to the middle of this path.
@@ -46,6 +46,11 @@ class Path constructor(val startingPose: Pose, val endingPose: Pose) {
 
   /** Build the path after all desired waypoints have been added. */
   fun build() {
+    if (built) {
+      Logger.addEvent("Path", "Failed build already built path", ERROR)
+      return
+    }
+
     // Create control vectors from the start and end waypoint
     val waypointTranslation2ds = waypoints.map { it.translation2d }.toTypedArray()
     val controlVectors =
