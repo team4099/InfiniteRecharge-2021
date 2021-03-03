@@ -43,8 +43,6 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
   private var trajCurTime = 0.0.seconds
   private var trajStartTime = 0.0.seconds
 
-  private val pathFollowController = HolonomicDriveController(xPID, yPID, thetaPID)
-
   init {
     addRequirements(Drivetrain)
 
@@ -72,7 +70,10 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
     val yFeedback =
         yPID.calculate(Drivetrain.pose.y.inMeters, desiredState.pose.x.inMeters).meters.perSecond
 
-    Drivetrain.set(thetaFF, Pair(xFF + xFeedback, yFF + yFeedback))
+    val xAccel = desiredState.linearAcceleration * desiredState.pose.theta.cos
+    val yAccel = desiredState.linearAcceleration * desiredState.pose.theta.sin
+
+    Drivetrain.set(thetaFF, Pair(xFF + xFeedback, yFF + yFeedback), true, 0.radians.perSecond.perSecond, Pair(xAccel, yAccel))
   }
 
   override fun isFinished(): Boolean {
