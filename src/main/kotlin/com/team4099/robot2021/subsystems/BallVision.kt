@@ -5,11 +5,10 @@ import com.team4099.lib.units.derived.degrees
 import com.team4099.robot2021.auto.PathStore
 import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj.trajectory.Trajectory
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator
 import edu.wpi.first.wpilibj2.command.SubsystemBase
+import kotlin.math.absoluteValue
 import org.photonvision.PhotonCamera
 import org.photonvision.PhotonTrackedTarget
-import kotlin.math.absoluteValue
 
 object BallVision : SubsystemBase() {
 
@@ -19,7 +18,7 @@ object BallVision : SubsystemBase() {
   private val targets
     get() = ballCameraResult.getTargets()
 
-  enum class BallPath(val path: Trajectory){
+  enum class BallPath(val path: Trajectory) {
     NONE(PathStore.moveBack),
     A_RED(PathStore.galacticSearchARed),
     A_BLUE(PathStore.galacticSearchABlue),
@@ -30,45 +29,43 @@ object BallVision : SubsystemBase() {
   init {
     ballCamera.setPipelineIndex(Constants.Vision.DRIVER_PIPELINE_ID)
 
-    Logger.addSource("BallVision","Ball Camera Pipeline") { ballCamera.pipelineIndex }
+    Logger.addSource("BallVision", "Ball Camera Pipeline") { ballCamera.pipelineIndex }
     Logger.addSource("BallVision", "Best Ball Path") { choosePath().name }
-    Logger.addSource("BallVision","Number of Targets") { targets.size }
+    Logger.addSource("BallVision", "Number of Targets") { targets.size }
   }
 
-  fun choosePath() : BallPath {
-    if (targets.isEmpty()){
+  fun choosePath(): BallPath {
+    if (targets.isEmpty()) {
       return BallPath.NONE
     }
 
     var centerTarget: PhotonTrackedTarget = targets[0]
-    var offCenterTarget: PhotonTrackedTarget = targets[0]
-    var pathA = false
+    // var offCenterTarget: PhotonTrackedTarget = targets[0]
+    // var pathA = false
     var ballsOnLeft = false
     var ballsOnRight = true
     var ballsOffCenter = 0
 
     for (target in targets) {
       if (target.yaw.degrees.absoluteValue < Constants.BallVision.CENTER_YAW_THRESHOLD) {
-        //comment path if using option 2
-        pathA = true
+        // comment path if using option 2
+        // pathA = true
         centerTarget = target
-      }
-      else{
-        //lines for option 3
-        offCenterTarget = target
+      } else {
+        // lines for option 3
+        // offCenterTarget = target
         ballsOffCenter++
-        //option 2 + 3?
-        if (target.yaw.degrees.absoluteValue < 0.degrees){
+        // option 2 + 3?
+        if (target.yaw.degrees.absoluteValue < 0.degrees) {
           ballsOnLeft = true
-        }
-        else {
+        } else {
           ballsOnRight = true
         }
       }
     }
 
-    //Option 1 & 2
-    if (pathA) {
+    // Option 1 & 2
+    /*if (pathA) {
       //balls in center means path A
       //check area of target (distance of ball) to see if it is red or blue - test to find values for this
       //could use pitch instead if camera is high enough on the robot
@@ -85,20 +82,22 @@ object BallVision : SubsystemBase() {
       } else {
         return BallPath.B_RED
       }
-    } //End Else 1
-
-    //if the robot starts in front of path B/D balls - should be a little bit faster
-    //change trajectories accordingly!
-    //Option 2 Method 1
-    /*return when (Pair(ballsOnLeft, ballsOnRight)){
-      Pair(true,true) -> if (centerTarget.area < Constants.BallVision.PATH_A_AREA_THRESHOLD) BallPath.A_BLUE
-      else BallPath.A_RED
-      Pair(true,false) -> BallPath.B_BLUE //only on left
-      Pair(false,true) -> BallPath.B_RED //only on right
-      else -> BallPath.NONE
     }*/
+    // End Else 1
 
-    //Option 2 Method 2
+    // if the robot starts in front of path B/D balls - should be a little bit faster
+    // change trajectories accordingly!
+    // Option 2 Method 1
+    return when (Pair(ballsOnLeft, ballsOnRight)) {
+      Pair(true, true) ->
+          if (centerTarget.area < Constants.BallVision.PATH_A_AREA_THRESHOLD) BallPath.A_BLUE
+          else BallPath.A_RED
+      Pair(true, false) -> BallPath.B_BLUE // only on left
+      Pair(false, true) -> BallPath.B_RED // only on right
+      else -> BallPath.NONE
+    }
+
+    // Option 2 Method 2
     /*if (ballsOnLeft && ballsOnRight){
       if (centerTarget.area < Constants.BallVision.PATH_A_AREA_THRESHOLD) {
         return BallPath.A_BLUE
@@ -116,10 +115,10 @@ object BallVision : SubsystemBase() {
       return BallPath.NONE
     }*/
 
-    //Option 3
-    //Make sure trajectories are updated to match if this is chosen
-    //for path A, start on row C for red and row E for blue
-    //for path B, start on row B for red and row D for blue
+    // Option 3
+    // Make sure trajectories are updated to match if this is chosen
+    // for path A, start on row C for red and row E for blue
+    // for path B, start on row B for red and row D for blue
     /*if (ballsOffCenter == 1) {
       if (ballsOnLeft){
       //if (offCenterTarget.yaw.degrees.absoluteValue < 0.degrees){
@@ -138,8 +137,6 @@ object BallVision : SubsystemBase() {
       }
     }*/
 
-    //we could also add the alternative logic for clearer option 3
-
+    // we could also add the alternative logic for clearer option 3
   }
-
 }

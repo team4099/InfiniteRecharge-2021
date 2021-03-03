@@ -8,8 +8,8 @@ import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Drivetrain
 import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2021.subsystems.Shooter
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 
 class SixBallMode : SequentialCommandGroup() {
 
@@ -17,20 +17,13 @@ class SixBallMode : SequentialCommandGroup() {
     addRequirements(Shooter, Drivetrain, Intake)
 
     addCommands(
-      ShootAllCommand(),
-
-      ParallelRaceGroup(
-        SequentialCommandGroup(
-          AutoDriveCommand(PathStore.toNearTrench),
-          AutoDriveCommand(PathStore.intakeInNearTrench)
-        ),
-
-        IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
-      ),
-
-      AutoDriveCommand(PathStore.fromNearTrench),
-
-      ShootAllCommand()
-    )
+        ShootAllCommand(),
+        ParallelRaceGroup(
+            SequentialCommandGroup(
+                AutoDriveCommand(PathStore.toNearTrench),
+                AutoDriveCommand(PathStore.intakeInNearTrench)),
+            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)),
+        AutoDriveCommand(PathStore.fromNearTrench),
+        ShootAllCommand())
   }
 }

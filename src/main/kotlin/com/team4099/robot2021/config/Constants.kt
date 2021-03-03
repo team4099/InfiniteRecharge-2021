@@ -215,7 +215,7 @@ object Constants {
   }
 
   object BallVision {
-    //TODO: change these values based on testing
+    // TODO: change these values based on testing
     val CENTER_YAW_THRESHOLD = 5.degrees
     val PATH_A_AREA_THRESHOLD = 0.2
   }

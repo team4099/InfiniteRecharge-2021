@@ -10,10 +10,6 @@ class Shoot3Mode : SequentialCommandGroup() {
   init {
     addRequirements(Shooter)
 
-
-    addCommands(
-      ShootAllCommand(),
-      AutoDriveCommand(PathStore.driveForward)
-    )
+    addCommands(ShootAllCommand(), AutoDriveCommand(PathStore.driveForward))
   }
 }

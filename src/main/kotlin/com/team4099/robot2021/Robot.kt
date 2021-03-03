@@ -3,7 +3,6 @@ package com.team4099.robot2021
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.auto.modes.GalacticSearch
-import com.team4099.robot2021.commands.drivetrain.ResetZeroCommand
 import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
@@ -65,7 +64,7 @@ object Robot : TimedRobot() {
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
   }
 
-  private val autonomousCommand = GalacticSearch() //ResetZeroCommand()
+  private val autonomousCommand = GalacticSearch() // ResetZeroCommand()
 
   override fun autonomousInit() {
     autonomousCommand.schedule()
