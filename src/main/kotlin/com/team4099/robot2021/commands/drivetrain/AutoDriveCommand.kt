@@ -14,7 +14,6 @@ import com.team4099.lib.units.derived.sin
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Drivetrain
-import edu.wpi.first.wpilibj.controller.HolonomicDriveController
 import edu.wpi.first.wpilibj.controller.PIDController
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile
@@ -73,7 +72,12 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
     val xAccel = desiredState.linearAcceleration * desiredState.pose.theta.cos
     val yAccel = desiredState.linearAcceleration * desiredState.pose.theta.sin
 
-    Drivetrain.set(thetaFF, Pair(xFF + xFeedback, yFF + yFeedback), true, 0.radians.perSecond.perSecond, Pair(xAccel, yAccel))
+    Drivetrain.set(
+        thetaFF,
+        Pair(xFF + xFeedback, yFF + yFeedback),
+        true,
+        0.radians.perSecond.perSecond,
+        Pair(xAccel, yAccel))
   }
 
   override fun isFinished(): Boolean {
