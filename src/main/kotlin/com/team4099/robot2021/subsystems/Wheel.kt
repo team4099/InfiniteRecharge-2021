@@ -2,6 +2,7 @@ package com.team4099.robot2021.subsystems
 
 import com.ctre.phoenix.sensors.CANCoder
 import com.ctre.phoenix.sensors.SensorInitializationStrategy
+import com.revrobotics.CANPIDController
 import com.revrobotics.CANSparkMax
 import com.revrobotics.ControlType
 import com.team4099.lib.around
@@ -14,13 +15,7 @@ import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
-import com.team4099.lib.units.derived.Angle
-import com.team4099.lib.units.derived.ElectricalPotential
-import com.team4099.lib.units.derived.degrees
-import com.team4099.lib.units.derived.inDegrees
-import com.team4099.lib.units.derived.inRadians
-import com.team4099.lib.units.derived.radians
-import com.team4099.lib.units.derived.volts
+import com.team4099.lib.units.derived.*
 import com.team4099.lib.units.inFeetPerSecond
 import com.team4099.lib.units.perSecond
 import com.team4099.lib.units.sparkMaxAngularMechanismSensor
@@ -28,6 +23,7 @@ import com.team4099.lib.units.sparkMaxLinearMechanismSensor
 import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj.MedianFilter
 import kotlin.math.IEEErem
+import kotlin.math.sign
 import kotlin.math.withSign
 
 class Wheel(
@@ -93,6 +89,7 @@ class Wheel(
     get() = driveSensor.velocity
 
   private var speedSetPoint: LinearVelocity = 0.feet.perSecond
+  private var accelerationSetPoint: LinearAcceleration = 0.feet.perSecond.perSecond
 
   private var directionSetPoint: Angle = 0.degrees
     set(value) {
@@ -168,7 +165,7 @@ class Wheel(
     acceleration: LinearAcceleration = 0.0.meters.perSecond.perSecond
   ) {
     if (speed == 0.feet.perSecond) {
-      driveSpark.set(speed / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+      driveSpark.set(0.0)
     }
     var directionDifference =
         (direction - directionSensor.position).inRadians.IEEErem(2 * Math.PI).radians
@@ -184,28 +181,24 @@ class Wheel(
         } else {
           speed
         }
+    accelerationSetPoint =
+      if (isInverted) {
+        acceleration * -1
+      } else {
+        acceleration
+      }
     directionSetPoint = directionSensor.position + directionDifference
-    driveSpark.set(speedSetPoint / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+//    driveSpark.set(speedSetPoint / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
 
-    /*if(acceleration == 0.0.meters.perSecond.perSecond) {
-      directionPID.setReference(
-        directionSensor.positionToRawUnits(directionSetPoint),
-        ControlType.kSmartMotion
-        )
-
-    } else {
-        drivePID.setReference(
-          driveSensor.velocityToRawUnits(speed),
-          ControlType.kVelocity,
-          0,
-          (Constants.Drivetrain.PID.DRIVE_KS * sign(speed.value) +
-            speed * Constants.Drivetrain.PID.DRIVE_KV +
-            acceleration * Constants.Drivetrain.PID.DRIVE_KA).inVolts,
-          CANPIDController.ArbFFUnits.kVoltage
-          )
-    }
-
-     */
+    drivePID.setReference(
+      driveSensor.velocityToRawUnits(speedSetPoint),
+      ControlType.kVelocity,
+      0,
+      (Constants.Drivetrain.PID.DRIVE_KS * sign(speedSetPoint.value) +
+        speedSetPoint * Constants.Drivetrain.PID.DRIVE_KV +
+        acceleration * Constants.Drivetrain.PID.DRIVE_KA).inVolts,
+      CANPIDController.ArbFFUnits.kVoltage
+      )
   }
 
   fun setOpenLoop(direction: Angle, speed: Double) {

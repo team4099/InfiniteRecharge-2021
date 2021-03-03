@@ -99,13 +99,13 @@ object Constants {
       const val DIRECTION_KD = 12.0
       const val DIRECTION_KFF = 0.000078
 
-      const val DRIVE_KP = 0.0
+      const val DRIVE_KP = 0.00011490689
       const val DRIVE_KI = 0.0
       const val DRIVE_KD = 0.0
       const val DRIVE_KFF = 0.0
-      val DRIVE_KS = 1.0.volts
-      val DRIVE_KV = 1.0.volts / 1.0.meters.perSecond
-      val DRIVE_KA = 1.0.volts / 1.0.meters.perSecond.perSecond
+      val DRIVE_KS = 0.0991.volts
+      val DRIVE_KV = 2.79.volts / 1.0.meters.perSecond
+      val DRIVE_KA = 0.296.volts / 1.0.meters.perSecond.perSecond
     }
   }
 
