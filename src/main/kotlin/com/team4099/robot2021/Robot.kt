@@ -2,7 +2,7 @@ package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
-import com.team4099.robot2021.commands.drivetrain.ResetZeroCommand
+import com.team4099.robot2021.auto.DriveCharacterizeCommand
 import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
@@ -64,10 +64,14 @@ object Robot : TimedRobot() {
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
   }
 
-  private val autonomousCommand = ResetZeroCommand()
+  private val autonomousCommand = DriveCharacterizeCommand()
 
   override fun autonomousInit() {
     autonomousCommand.schedule()
+  }
+
+  override fun disabledInit() {
+    autonomousCommand.cancel()
   }
 
   override fun teleopInit() {
