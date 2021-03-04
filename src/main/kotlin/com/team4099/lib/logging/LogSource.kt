@@ -6,5 +6,6 @@ data class LogSource<T>(
   val tab: String,
   val name: String,
   val supplier: () -> T,
-  val shuffleboardWidget: SimpleWidget?
+  val shuffleboardWidget: SimpleWidget?,
+  val followSupplier: Boolean
 )

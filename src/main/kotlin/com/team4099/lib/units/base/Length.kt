@@ -70,61 +70,61 @@ val Length.inFeet: Double
   get() = value / METERS_PER_FOOT
 
 val Length.inYottameters: Double
-  get() = value.yotta
+  get() = value / 1.yotta
 
 val Length.inZetameters: Double
-  get() = value.zeta
+  get() = value / 1.zeta
 
 val Length.inExameters: Double
-  get() = value.exa
+  get() = value / 1.exa
 
 val Length.inPetameters: Double
-  get() = value.peta
+  get() = value / 1.peta
 
 val Length.inTerameters: Double
-  get() = value.tera
+  get() = value / 1.tera
 
 val Length.inGigameters: Double
-  get() = value.giga
+  get() = value / 1.giga
 
 val Length.inMegameters: Double
-  get() = value.mega
+  get() = value / 1.mega
 
 val Length.inKilometers: Double
-  get() = value.kilo
+  get() = value / 1.kilo
 
 val Length.inHectometers: Double
-  get() = value.hecto
+  get() = value / 1.hecto
 
 val Length.inDecameters: Double
-  get() = value.deca
+  get() = value / 1.deca
 
 val Length.inDecimeters: Double
-  get() = value.deci
+  get() = value / 1.deci
 
 val Length.inCentimeters: Double
-  get() = value.centi
+  get() = value / 1.centi
 
 val Length.inMillimeters: Double
-  get() = value.milli
+  get() = value / 1.milli
 
 val Length.inMicrometers: Double
-  get() = value.micro
+  get() = value / 1.micro
 
 val Length.inNanometers: Double
-  get() = value.nano
+  get() = value / 1.nano
 
 val Length.inPicometers: Double
-  get() = value.pico
+  get() = value / 1.pico
 
 val Length.inFemtometers: Double
-  get() = value.femto
+  get() = value / 1.femto
 
 val Length.inAttometers: Double
-  get() = value.atto
+  get() = value / 1.atto
 
 val Length.inZeptometers: Double
-  get() = value.zepto
+  get() = value / 1.zepto
 
 val Length.inYoctometers: Double
-  get() = value.yocto
+  get() = value / 1.yocto
