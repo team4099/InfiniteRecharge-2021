@@ -51,6 +51,13 @@ object PathStore {
           0.0.meters.perSecond,
           trajectoryConfig)
 
+  val driveForwardRotation =
+    Trajectory(
+      0.0.meters.perSecond,
+      Path(Pose(0.meters, 0.meters, 0.degrees), Pose(1.meters, 0.meters, 90.degrees)),
+      0.0.meters.perSecond,
+      trajectoryConfig)
+
   val galacticSearchARed: Trajectory =
       Trajectory(
           0.0.meters.perSecond,

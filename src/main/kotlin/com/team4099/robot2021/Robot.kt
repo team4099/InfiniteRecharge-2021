@@ -66,7 +66,7 @@ object Robot : TimedRobot() {
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
   }
 
-  private val autonomousCommand = AutoDriveCommand(PathStore.driveForward)
+  private val autonomousCommand = AutoDriveCommand(PathStore.driveForwardRotation)
 
   override fun autonomousInit() {
     autonomousCommand.schedule()
