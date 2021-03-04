@@ -4,7 +4,7 @@ import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.subsystems.Feeder
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class FeederBeamBreak : CommandBase() {
+class FeederSerialize : CommandBase() {
   init {
     addRequirements(Feeder)
   }

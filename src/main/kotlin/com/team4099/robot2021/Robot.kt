@@ -4,7 +4,7 @@ import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.auto.DriveCharacterizeCommand
 import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
-import com.team4099.robot2021.commands.feeder.FeederBeamBreak
+import com.team4099.robot2021.commands.feeder.FeederSerialize
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.commands.intake.IntakeCommand
 import com.team4099.robot2021.commands.shooter.ShootCommand
@@ -42,7 +42,7 @@ object Robot : TimedRobot() {
     Logger.startLogging()
 
     // Link between feeder Trigger and Command
-    Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
+    Feeder.defaultCommand = FeederSerialize()
     ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_FLOOR))
     ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
 
@@ -51,7 +51,7 @@ object Robot : TimedRobot() {
     ControlBoard.runIntakeIn
       .whileActiveContinuous(
         IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
-          .alongWith(FeederBeamBreak()))
+          .alongWith(FeederSerialize()))
     ControlBoard.runIntakeOut
       .whileActiveContinuous(
         IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)

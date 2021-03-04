@@ -23,20 +23,20 @@ object ControlBoard {
   //val sampleClimberVelocity: Double
   //  get() = operator.leftTriggerAxis - operator.rightTriggerAxis
 
-  val wristVertical: Boolean
-    get() = operator.leftShoulderButton
+  //val wristVertical: Boolean
+  //  get() = operator.leftShoulderButton
 
-  val wristHorizontal: Boolean
-    get() = operator.rightShoulderButton
+ // val wristHorizontal: Boolean
+  //  get() = operator.rightShoulderButton
 
-  val enableVisionAlignment: Boolean
-    get() = driver.aButton
+  //val enableVisionAlignment: Boolean
+  //  get() = driver.aButton
 
   val runIntakeIn = Trigger { operator.aButton }
   val runIntakeOut = Trigger { operator.bButton }
 
-  val slowMode: Boolean
-    get() = driver.dPadDown
+  //val slowMode: Boolean
+   // get() = driver.dPadDown
 
   val runFeederIn = Trigger { operator.dPadDown }
   val runFeederOut = Trigger { operator.dPadUp }

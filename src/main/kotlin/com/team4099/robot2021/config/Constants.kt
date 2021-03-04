@@ -165,6 +165,8 @@ object Constants {
     val MID_DISTANCE = 249.0.inches
 
     // val HOOD_THRESHOLD = 0.0.inches
+
+    const val TAB = "Shooter"
   }
 
   object Vision {
