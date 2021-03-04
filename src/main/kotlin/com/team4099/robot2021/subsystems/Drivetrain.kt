@@ -59,7 +59,7 @@ object Drivetrain : SubsystemBase() {
                   Constants.Drivetrain.FRONT_RIGHT_SPEED_ID,
                   CANSparkMaxLowLevel.MotorType.kBrushless),
               CANCoder(Constants.Drivetrain.FRONT_RIGHT_CANCODER_ID),
-              (-90).degrees,
+              0.degrees,
               "Front Right Wheel"),
           Wheel(
               CANSparkMax(
@@ -69,7 +69,7 @@ object Drivetrain : SubsystemBase() {
                   Constants.Drivetrain.BACK_LEFT_SPEED_ID,
                   CANSparkMaxLowLevel.MotorType.kBrushless),
               CANCoder(Constants.Drivetrain.BACK_LEFT_CANCODER_ID),
-              (-270).degrees,
+              0.degrees,
               "Back Left Wheel"),
           Wheel(
               CANSparkMax(
@@ -79,7 +79,7 @@ object Drivetrain : SubsystemBase() {
                   Constants.Drivetrain.BACK_RIGHT_SPEED_ID,
                   CANSparkMaxLowLevel.MotorType.kBrushless),
               CANCoder(Constants.Drivetrain.BACK_RIGHT_CANCODER_ID),
-              (-180).degrees,
+              0.degrees,
               "Back Right Wheel"))
 
   private val wheelSpeeds =

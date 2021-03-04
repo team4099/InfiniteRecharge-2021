@@ -110,19 +110,19 @@ object Constants {
   }
 
   object Feeder {
-    const val FLOOR_ID = 0
-    const val VERTICAL_ID = 0
+    const val FLOOR_ID = 41 //assuming this would be hopper
+    const val VERTICAL_ID = 42 //assuming this would be feeder
     const val FEEDER_POWER = 1.0
 
-    const val TOP_DIO_PIN = 4
-    const val BOTTOM_DIO_PIN = 9
+    const val TOP_DIO_PIN = 0 //may be swapped with bottom
+    const val BOTTOM_DIO_PIN = 1
     const val TAB = "Feeder"
   }
 
   object Intake {
-    const val INTAKE_MOTOR = 0 // temp
-    const val ARM_SOLENOID_PORT_1 = 0 // temp
-    const val ARM_SOLENOID_PORT_2 = 1 // temp
+    const val INTAKE_MOTOR = 31
+    const val ARM_SOLENOID_FORWARD = 5
+    const val ARM_SOLENOID_REVERSE = 2
     const val TAB = "Intake"
 
     enum class IntakeState(val speed: Double) {
@@ -142,7 +142,7 @@ object Constants {
     const val SHOOTER_MOTOR_ID = 0
     const val SHOOTER_FOLLOWER_ID = 0
 
-    const val SOLENOID_FORWARD_CHANNEL = 0
+    const val SOLENOID_FORWARD_CHANNEL = 6
     const val SOLENOID_REVERSE_CHANNEL = 1
 
     val TARGET_VELOCITY = 0.rotations.perMinute
@@ -195,18 +195,18 @@ object Constants {
   }
 
   object Climber {
-    val CLIMBER_R_ARM_SPARKMAX_ID = 6 // right arm
-    val CLIMBER_L_ARM_SPARKMAX_ID = 5 // left arm
+    val CLIMBER_R_ARM_SPARKMAX_ID = 62
+    val CLIMBER_L_ARM_SPARKMAX_ID = 61
     val CLIMBER_SENSOR_LINEARMECH_GEARRATIO = 8.4
     val CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER = .0508.meters // diameter: .0508 meters = 2 in
-    val CLIMBER_SOLENOID_ACTUATIONSTATE = 0 // this is prolly not the right name for this parameter
+    val CLIMBER_SOLENOID_ACTUATIONSTATE = 7
     val CLIMBER_P = 0.1
     val CLIMBER_I = 0.1
     val CLIMBER_D = 0.1
     val CLIMBER_SPARKMAX_VEL = 0.5.meters.perSecond
     val CLIMBER_SPARKMAX_ACC = 0.5.meters.perSecond.perSecond
     val BRAKE_RELEASE_TIMEOUT = 0.1.seconds
-    val TAB = "Climber"
+    const val TAB = "Climber"
   }
 
   enum class ClimberPosition(val length: Length) {
