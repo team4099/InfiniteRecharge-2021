@@ -99,9 +99,16 @@ object Logger {
    * @param supplier A function which returns the value to be logged.
    * @param setter An optional function which will be called when the value in Shuffleboard is
    * changed.
-   * @param followSupplier If false, the supplier will not be passed through to the Shuffleboard value.
+   * @param followSupplier If false, the supplier will not be passed through to the Shuffleboard
+   * value.
    */
-  fun <T : Any> addSource(tab: String, name: String, supplier: () -> T, setter: ((T) -> Unit)?, followSupplier: Boolean = true) {
+  fun <T : Any> addSource(
+    tab: String,
+    name: String,
+    supplier: () -> T,
+    setter: ((T) -> Unit)?,
+    followSupplier: Boolean = true
+  ) {
     var shuffleboardEntry: SimpleWidget? = null
     try {
       shuffleboardEntry = Shuffleboard.getTab(tab).add(name, supplier())
@@ -120,7 +127,9 @@ object Logger {
                   } catch (e: ClassCastException) {
                     addEvent(
                         "Logger",
-                        "Could not change value for $tab/$name due to invalid type cast ${e.message}.",
+                        "Could not change value for $tab/$name due to invalid type cast ${
+                          e.message
+                        }.",
                         Severity.ERROR)
                   }
                 },
