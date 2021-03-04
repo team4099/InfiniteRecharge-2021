@@ -5,6 +5,7 @@ import com.team4099.lib.geometry.Translation
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.logging.Logger.Severity.ERROR
 import com.team4099.lib.units.derived.Angle
+import com.team4099.lib.units.derived.degrees
 import edu.wpi.first.wpilibj.spline.PoseWithCurvature
 import edu.wpi.first.wpilibj.spline.SplineHelper
 import edu.wpi.first.wpilibj.spline.SplineParameterizer
@@ -55,7 +56,9 @@ class Path constructor(val startingPose: Pose, val endingPose: Pose) {
     val waypointTranslation2ds = waypoints.map { it.translation2d }.toTypedArray()
     val controlVectors =
         SplineHelper.getCubicControlVectorsFromWaypoints(
-            startingPose.pose2d, waypointTranslation2ds, endingPose.pose2d)
+            startingPose.copy(theta = 0.degrees).pose2d,
+            waypointTranslation2ds,
+            endingPose.copy(theta = 0.degrees).pose2d)
 
     // Create a list of splines
     val splines =
