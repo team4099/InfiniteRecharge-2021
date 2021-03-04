@@ -85,7 +85,7 @@ object Constants {
     const val DRIVE_SENSOR_GEAR_RATIO = (12.0 / 21.0) * (15.0 / 45.0)
     const val DIRECTION_SENSOR_GEAR_RATIO = (12.0 / 64.0) * (1.0 / 10.0)
 
-    val ALLOWED_ANGLE_ERROR = 5.degrees
+    val ALLOWED_ANGLE_ERROR = 1.degrees
     const val DIRECTION_SMART_CURRENT_LIMIT = 20
     const val DRIVE_SMART_CURRENT_LIMIT = 80
 
@@ -100,13 +100,10 @@ object Constants {
       const val DIRECTION_KD = 12.0
       const val DIRECTION_KFF = 0.000078
 
-      const val DRIVE_KP = 0.0
+      const val DRIVE_KP = 0.00011490689
       const val DRIVE_KI = 0.0
       const val DRIVE_KD = 0.0
       const val DRIVE_KFF = 0.0
-      val DRIVE_KS = 1.0.volts
-      val DRIVE_KV = 1.0.volts / 1.0.meters.perSecond
-      val DRIVE_KA = 1.0.volts / 1.0.meters.perSecond.perSecond
 
       const val DRIVE_X_PID_KP = 0.0
       const val DRIVE_X_PID_KI = 0.0
@@ -121,6 +118,10 @@ object Constants {
       const val DRIVE_THETA_PID_KD = 0.0
       val DRIVE_THETA_PID_MAX_VEL = 0.0.meters.perSecond
       val DRIVE_THETA_PID_MAX_ACCEL = 0.0.meters.perSecond.perSecond
+
+      val DRIVE_KS = 0.0991.volts
+      val DRIVE_KV = 2.79.volts / 1.0.meters.perSecond
+      val DRIVE_KA = 0.296.volts / 1.0.meters.perSecond.perSecond
     }
   }
 

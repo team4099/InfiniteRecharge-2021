@@ -33,7 +33,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import kotlin.math.IEEErem
 
 object Drivetrain : SubsystemBase() {
-  private val wheels =
+  val wheels =
       listOf(
           Wheel(
               CANSparkMax(
@@ -90,7 +90,7 @@ object Drivetrain : SubsystemBase() {
 
   private val gyro = ADIS16470_IMU()
 
-  private val gyroAngle: Angle
+  val gyroAngle: Angle
     get() {
       var rawAngle = gyro.angle
       rawAngle += Constants.Drivetrain.GYRO_RATE_COEFFICIENT * gyro.rate
