@@ -17,10 +17,10 @@ import com.team4099.robot2021.config.Constants
 object PathStore {
   private val trajectoryConfig =
       TrajectoryConfig(
-          Constants.Drivetrain.SLOW_AUTO_VEL,
-          Constants.Drivetrain.MAX_AUTO_ACCEL,
-          Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL,
-          Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)
+        Constants.Drivetrain.MAX_AUTO_VEL,
+        Constants.Drivetrain.MAX_AUTO_ACCEL,
+        Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL,
+        Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)
 
   private val initLinePowerPort = Pose(3.627.meters, (-2.429).meters, 0.0.radians)
   private val initLineFarTrench = Pose(3.627.meters, (-6.824).meters, 0.0.radians)
@@ -31,11 +31,11 @@ object PathStore {
 
   private val navPoints =
       mapOf(
-          "A" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(2.5.feet, x) },
-          "B" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(5.feet, x) },
-          "C" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(7.5.feet, x) },
-          "D" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(10.feet, x) },
-          "E" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(12.5.feet, x) })
+          "A" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 2.5.feet) },
+          "B" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 5.feet) },
+          "C" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 7.5.feet) },
+          "D" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 10.feet) },
+          "E" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 12.5.feet) })
 
   private val reintroductionZone =
       Pose(navPoints["C"]!![10] + Translation(15.inches, 0.feet), 0.degrees)
@@ -67,10 +67,10 @@ object PathStore {
 
   private val redAPath = Path(
     Pose(navPoints["B"]!![1], 0.degrees),
-    Pose(navPoints["B"]!![11], 0.degrees)
+    Pose(navPoints["B"]!![11], 180.degrees)
   ).apply {
-    addWaypoint(navPoints["B"]!![3])
-    addWaypoint(navPoints["D"]!![5])
+    addWaypoint(navPoints["B"]!![3], 0.degrees)
+    addWaypoint(navPoints["D"]!![5], 90.degrees)
     addWaypoint(navPoints["B"]!![7])
     build()
   }

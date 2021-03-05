@@ -11,6 +11,8 @@ import com.team4099.lib.units.derived.cos
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.sin
+import com.team4099.lib.units.inRadiansPerSecond
+import com.team4099.lib.units.inRadiansPerSecondPerSecond
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Drivetrain
@@ -18,6 +20,7 @@ import edu.wpi.first.wpilibj.controller.PIDController
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.CommandBase
+import kotlin.math.PI
 
 class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
   private val xPID =
@@ -36,14 +39,15 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
           Constants.Drivetrain.PID.DRIVE_THETA_PID_KI,
           Constants.Drivetrain.PID.DRIVE_THETA_PID_KD,
           TrapezoidProfile.Constraints(
-              Constants.Drivetrain.PID.DRIVE_THETA_PID_MAX_VEL.value,
-              Constants.Drivetrain.PID.DRIVE_THETA_PID_MAX_ACCEL.value))
+              Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL.inRadiansPerSecond,
+              Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL.inRadiansPerSecondPerSecond))
 
   private var trajCurTime = 0.0.seconds
   private var trajStartTime = 0.0.seconds
 
   init {
     addRequirements(Drivetrain)
+    thetaPID.enableContinuousInput(-PI, PI)
 
     Logger.addSource("Drivetrain", "Path Follow Start Timestamp") { trajStartTime.inSeconds }
     Logger.addSource("Drivetrain", "Path Follow Current Timestamp") { trajCurTime.inSeconds }
