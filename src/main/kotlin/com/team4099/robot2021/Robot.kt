@@ -3,6 +3,7 @@ package com.team4099.robot2021
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.auto.PathStore
+import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
 import com.team4099.robot2021.commands.drivetrain.LoopPathCommand
 import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2021.config.Constants
@@ -65,7 +66,7 @@ object Robot : TimedRobot() {
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
   }
 
-  private val autonomousCommand = LoopPathCommand(PathStore.driveForward, PathStore.driveBackwards)
+  private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchABlue)
 
   override fun autonomousInit() {
     autonomousCommand.schedule()

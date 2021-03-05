@@ -65,14 +65,22 @@ object PathStore {
           0.0.meters.perSecond,
           trajectoryConfig)
 
-  val galacticSearchARed: Trajectory =
-      Trajectory(
-          0.0.meters.perSecond,
-          Path(
-              Pose(navPoints["C"]!![1] + Translation(30.inches, 0.feet), 0.degrees),
-              Pose(navPoints["C"]!![11] - Translation(30.inches, 0.feet), 0.degrees)),
-          Constants.Drivetrain.SLOW_AUTO_VEL,
-          trajectoryConfig)
+  val blueAPath = Path(
+    Pose(navPoints["C"]!![1] + Translation(30.inches, 0.feet), 0.degrees),
+    Pose(navPoints["C"]!![11] - Translation(30.inches, 0.feet), 0.degrees)
+  ).apply {
+    addWaypoint(navPoints["E"]!![6])
+    addWaypoint(navPoints["B"]!![7])
+    addWaypoint(navPoints["C"]!![9])
+    build()
+  }
+
+  val galacticSearchABlue: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    blueAPath,
+    0.0.meters.perSecond,
+    trajectoryConfig
+  )
 
   val toNearTrench: Trajectory =
       Trajectory(
