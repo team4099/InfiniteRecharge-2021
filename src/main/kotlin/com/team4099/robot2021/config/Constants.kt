@@ -100,20 +100,16 @@ object Constants {
       const val DIRECTION_KD = 12.0
       const val DIRECTION_KFF = 0.000078
 
-      const val DRIVE_KP = 0.0 // 0.00011490689
+      const val DRIVE_KP = 0.00011490689
       const val DRIVE_KI = 0.0
       const val DRIVE_KD = 0.0
       const val DRIVE_KFF = 0.0
 
-      const val DRIVE_X_PID_KP = 0.0
-      const val DRIVE_X_PID_KI = 0.0
-      const val DRIVE_X_PID_KD = 0.0
+      const val AUTO_POS_KP = 0.0
+      const val AUTO_POS_KI = 0.0
+      const val AUTO_POS_KD = 0.0
 
-      const val DRIVE_Y_PID_KP = 0.0
-      const val DRIVE_Y_PID_KI = 0.0
-      const val DRIVE_Y_PID_KD = 0.0
-
-      const val DRIVE_THETA_PID_KP = 0.0
+      const val DRIVE_THETA_PID_KP = 7.0
       const val DRIVE_THETA_PID_KI = 0.0
       const val DRIVE_THETA_PID_KD = 0.0
       val DRIVE_THETA_PID_MAX_VEL = 0.0.meters.perSecond
