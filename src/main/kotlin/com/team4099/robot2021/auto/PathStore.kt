@@ -17,7 +17,7 @@ import com.team4099.robot2021.config.Constants
 object PathStore {
   private val trajectoryConfig =
       TrajectoryConfig(
-          Constants.Drivetrain.MAX_AUTO_VEL,
+          Constants.Drivetrain.SLOW_AUTO_VEL,
           Constants.Drivetrain.MAX_AUTO_ACCEL,
           Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL,
           Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)
@@ -65,19 +65,19 @@ object PathStore {
           0.0.meters.perSecond,
           trajectoryConfig)
 
-  val blueAPath = Path(
-    Pose(navPoints["C"]!![1] + Translation(30.inches, 0.feet), 0.degrees),
-    Pose(navPoints["C"]!![11] - Translation(30.inches, 0.feet), 0.degrees)
+  private val redAPath = Path(
+    Pose(navPoints["B"]!![1], 0.degrees),
+    Pose(navPoints["B"]!![11], 0.degrees)
   ).apply {
-    addWaypoint(navPoints["E"]!![6])
+    addWaypoint(navPoints["B"]!![3])
+    addWaypoint(navPoints["D"]!![5])
     addWaypoint(navPoints["B"]!![7])
-    addWaypoint(navPoints["C"]!![9])
     build()
   }
 
-  val galacticSearchABlue: Trajectory = Trajectory(
+  val galacticSearchARed: Trajectory = Trajectory(
     0.0.meters.perSecond,
-    blueAPath,
+    redAPath,
     0.0.meters.perSecond,
     trajectoryConfig
   )

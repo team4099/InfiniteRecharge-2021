@@ -66,7 +66,7 @@ object Robot : TimedRobot() {
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
   }
 
-  private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchABlue)
+  private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchARed)
 
   override fun autonomousInit() {
     autonomousCommand.schedule()
