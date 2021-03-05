@@ -8,6 +8,7 @@ import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.base.Time
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
+import com.team4099.lib.units.derived.angle
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.inMetersPerSecondPerSecond
 import com.team4099.lib.units.perSecond
@@ -66,6 +67,7 @@ class Trajectory(
           TrajectoryState(
               state.timeSeconds.seconds,
               Pose(Translation(state.poseMeters.translation), headingTarget),
+              state.poseMeters.rotation.angle,
               state.velocityMetersPerSecond.meters.perSecond,
               state.accelerationMetersPerSecondSq.meters.perSecond.perSecond)
         }
@@ -100,6 +102,7 @@ class Trajectory(
     return TrajectoryState(
         time,
         interpolate(lowState.pose, highState.pose, lerpScalar),
+        interpolate(lowState.curvature, highState.curvature, lerpScalar),
         interpolate(lowState.linearVelocity, highState.linearVelocity, lerpScalar),
         interpolate(lowState.linearAcceleration, highState.linearAcceleration, lerpScalar))
   }

@@ -56,8 +56,8 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
   override fun execute() {
     trajCurTime = Clock.fpgaTime - trajStartTime
     val desiredState = trajectory.sample(trajCurTime)
-    val xFF = desiredState.linearVelocity * desiredState.pose.theta.cos
-    val yFF = desiredState.linearVelocity * desiredState.pose.theta.sin
+    val xFF = desiredState.linearVelocity * desiredState.curvature.cos
+    val yFF = desiredState.linearVelocity * desiredState.curvature.sin
     val thetaFF =
         thetaPID.calculate(Drivetrain.pose.theta.inRadians, desiredState.pose.theta.inRadians)
             .radians
@@ -69,8 +69,8 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
     val yFeedback =
         yPID.calculate(Drivetrain.pose.y.inMeters, desiredState.pose.x.inMeters).meters.perSecond
 
-    val xAccel = desiredState.linearAcceleration * desiredState.pose.theta.cos
-    val yAccel = desiredState.linearAcceleration * desiredState.pose.theta.sin
+    val xAccel = desiredState.linearAcceleration * desiredState.curvature.cos
+    val yAccel = desiredState.linearAcceleration * desiredState.curvature.sin
 
     Drivetrain.set(
         thetaFF,

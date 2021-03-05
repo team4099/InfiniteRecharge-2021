@@ -6,7 +6,6 @@ import com.team4099.lib.logging.Logger
 import com.team4099.lib.logging.Logger.Severity.ERROR
 import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.derived.Angle
-import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.radians
 import edu.wpi.first.wpilibj.spline.PoseWithCurvature
 import edu.wpi.first.wpilibj.spline.SplineHelper
@@ -60,15 +59,17 @@ class Path constructor(val startingPose: Pose, val endingPose: Pose) {
     val waypointTranslation2ds = waypoints.map { it.translation2d }.toTypedArray()
 
     // Make the starting curvature directly towards the first point
-    val startHeading = atan2(
-      ((waypoints.firstOrNull()?: endingPose.translation).y - startingPose.y).inMeters,
-      ((waypoints.firstOrNull()?: endingPose.translation).x - startingPose.x).inMeters
-    ).radians
+    val startHeading =
+        atan2(
+                ((waypoints.firstOrNull() ?: endingPose.translation).y - startingPose.y).inMeters,
+                ((waypoints.firstOrNull() ?: endingPose.translation).x - startingPose.x).inMeters)
+            .radians
 
-    val endHeading = ((atan2(
-      ((waypoints.lastOrNull()?: startingPose.translation).y - endingPose.y).inMeters,
-      ((waypoints.lastOrNull()?: startingPose.translation).x - endingPose.x).inMeters
-    ) + PI) % (2 * PI)).radians
+    val endHeading =
+        ((atan2(
+                ((waypoints.lastOrNull() ?: startingPose.translation).y - endingPose.y).inMeters,
+                ((waypoints.lastOrNull() ?: startingPose.translation).x - endingPose.x).inMeters) +
+                PI) % (2 * PI)).radians
 
     val controlVectors =
         SplineHelper.getCubicControlVectorsFromWaypoints(
