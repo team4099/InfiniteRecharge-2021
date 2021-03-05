@@ -12,6 +12,7 @@ import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.LinearAcceleration
 import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.base.feet
+import com.team4099.lib.units.base.inFeet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.Angle
@@ -147,7 +148,13 @@ object Drivetrain : SubsystemBase() {
 
     //  if gyro is connected boolean
     Logger.addSource("Drivetrain", "Gyro Connected") {}
+
+    Logger.addSource("Drivetrain", "pos x") { pose.x.inFeet }
+    Logger.addSource("Drivetrain", "pos y") { pose.y.inFeet }
+
     zeroDirection()
+
+
   }
 
   override fun periodic() {
@@ -255,10 +262,10 @@ object Drivetrain : SubsystemBase() {
   private fun updateOdometry() {
     swerveDriveOdometry.update(
         gyroAngle.inRotation2ds,
-        SwerveModuleState(wheelSpeeds[0].inMetersPerSecond, wheelAngles[0].inRotation2ds),
-        SwerveModuleState(wheelSpeeds[1].inMetersPerSecond, wheelAngles[1].inRotation2ds),
-        SwerveModuleState(wheelSpeeds[2].inMetersPerSecond, wheelAngles[2].inRotation2ds),
-        SwerveModuleState(wheelSpeeds[3].inMetersPerSecond, wheelAngles[3].inRotation2ds))
+        SwerveModuleState(wheels[0].driveVelocity.inMetersPerSecond, wheels[0].directionPosition.inRotation2ds),
+        SwerveModuleState(wheels[1].driveVelocity.inMetersPerSecond, wheels[1].directionPosition.inRotation2ds),
+        SwerveModuleState(wheels[2].driveVelocity.inMetersPerSecond, wheels[1].directionPosition.inRotation2ds),
+        SwerveModuleState(wheels[3].driveVelocity.inMetersPerSecond, wheels[3].directionPosition.inRotation2ds))
   }
 
   private fun hypot(a: LinearVelocity, b: LinearVelocity): LinearVelocity {

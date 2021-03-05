@@ -94,6 +94,9 @@ class Wheel(
   val driveVelocity: LinearVelocity
     get() = driveSensor.velocity
 
+  val directionPosition: Angle
+    get() = directionSensor.position
+
   private var speedSetPoint: LinearVelocity = 0.feet.perSecond
   private var accelerationSetPoint: LinearAcceleration = 0.feet.perSecond.perSecond
 

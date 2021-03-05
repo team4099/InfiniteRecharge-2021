@@ -105,7 +105,7 @@ object Constants {
       const val DRIVE_KD = 0.0
       const val DRIVE_KFF = 0.0
 
-      const val AUTO_POS_KP = 0.0
+      const val AUTO_POS_KP = 2.0
       const val AUTO_POS_KI = 0.0
       const val AUTO_POS_KD = 0.0
 
