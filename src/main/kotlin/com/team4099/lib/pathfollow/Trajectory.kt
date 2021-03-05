@@ -30,6 +30,9 @@ class Trajectory(
   val endTime: Time
     get() = states[states.size - 1].timestamp
 
+  val startingPose = path.startingPose
+  val endingPose = path.endingPose
+
   init {
     if (!path.built) path.build()
 

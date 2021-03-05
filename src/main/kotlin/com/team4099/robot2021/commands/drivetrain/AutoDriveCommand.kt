@@ -50,6 +50,7 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
   }
 
   override fun initialize() {
+    Drivetrain.pose = trajectory.startingPose
     trajStartTime = Clock.fpgaTime + trajectory.startTime
   }
 

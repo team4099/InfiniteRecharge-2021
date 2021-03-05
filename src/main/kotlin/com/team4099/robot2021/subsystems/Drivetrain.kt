@@ -123,8 +123,11 @@ object Drivetrain : SubsystemBase() {
           gyroAngle.inRotation2ds,
           Pose(0.meters, 0.meters, 0.degrees).pose2d)
 
-  val pose: Pose
+  var pose: Pose
     get() = Pose(swerveDriveOdometry.poseMeters)
+    set (value) {
+      swerveDriveOdometry.resetPosition(value.pose2d, gyroAngle.inRotation2ds)
+    }
 
   init {
     // Wheel speeds

@@ -142,7 +142,9 @@ class Wheel(
         "Drivetrain Tuning",
         "$label Azimuth kP",
         { Constants.Drivetrain.PID.DIRECTION_KP },
-        { newP -> directionPID.p = newP },
+        { newP ->
+          directionPID.p = newP
+        },
         false)
 
     directionPID.p = Constants.Drivetrain.PID.DIRECTION_KP
