@@ -44,7 +44,7 @@ object Constants {
 
   object Drivetrain {
     const val TICKS = 4096
-
+    //drive and azimuth swapped
     const val FRONT_LEFT_SPEED_ID = 11
     const val FRONT_LEFT_DIRECTION_ID = 21
     const val FRONT_LEFT_CANCODER_ID = 1
@@ -110,12 +110,12 @@ object Constants {
   }
 
   object Feeder {
-    const val FLOOR_ID = 41 //assuming this would be hopper
-    const val VERTICAL_ID = 42 //assuming this would be feeder
-    const val FEEDER_POWER = 1.0
+    const val FLOOR_ID = 41
+    const val VERTICAL_ID = 42
+    const val FEEDER_POWER = 0.5
 
-    const val TOP_DIO_PIN = 0 //may be swapped with bottom
-    const val BOTTOM_DIO_PIN = 1
+    const val TOP_DIO_PIN = 9 //may be swapped with bottom
+    const val BOTTOM_DIO_PIN = 8
     const val TAB = "Feeder"
   }
 
@@ -139,8 +139,8 @@ object Constants {
   }
 
   object Shooter {
-    const val SHOOTER_MOTOR_ID = 0
-    const val SHOOTER_FOLLOWER_ID = 0
+    const val SHOOTER_MOTOR_ID = 51
+    const val SHOOTER_FOLLOWER_ID = 52
 
     const val SOLENOID_FORWARD_CHANNEL = 6
     const val SOLENOID_REVERSE_CHANNEL = 1
