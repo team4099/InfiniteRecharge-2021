@@ -193,7 +193,7 @@ object Drivetrain : SubsystemBase() {
     driveAcceleration: Pair<LinearAcceleration, LinearAcceleration> =
         Pair(0.0.meters.perSecond.perSecond, 0.0.meters.perSecond.perSecond)
   ) {
-//    Logger.addEvent("Drivetrain", "gyro angle: ${(-gyroAngle).inDegrees}")
+    //    Logger.addEvent("Drivetrain", "gyro angle: ${(-gyroAngle).inDegrees}")
     val vX =
         if (fieldOriented) {
           driveVector.first * (-gyroAngle).cos - driveVector.second * (-gyroAngle).sin
@@ -267,12 +267,57 @@ object Drivetrain : SubsystemBase() {
     wheelAngles[1] = atan2(b, c)
     wheelAngles[2] = atan2(a, d)
     wheelAngles[3] = atan2(a, c)
-//    Logger.addEvent("Drivetrain", "wheel angle: $wheelAngles")
+    //    Logger.addEvent("Drivetrain", "wheel angle: $wheelAngles")
 
     wheels[0].set(wheelAngles[0], wheelSpeeds[0], wheelAccelerations[0])
     wheels[1].set(wheelAngles[1], wheelSpeeds[1], wheelAccelerations[1])
     wheels[2].set(wheelAngles[2], wheelSpeeds[2], wheelAccelerations[2])
     wheels[3].set(wheelAngles[3], wheelSpeeds[3], wheelAccelerations[3])
+  }
+
+  fun setOpenLoop(
+    angularVelocity: AngularVelocity,
+    driveVector: Pair<LinearVelocity, LinearVelocity>,
+    fieldOriented: Boolean = true
+  ) {
+    val vX =
+        if (fieldOriented) {
+          driveVector.first * (-gyroAngle).cos - driveVector.second * (-gyroAngle).sin
+        } else {
+          driveVector.first
+        }
+    val vY =
+        if (fieldOriented) {
+          driveVector.second * (-gyroAngle).cos + driveVector.first * (-gyroAngle).sin
+        } else {
+          driveVector.second
+        }
+
+    val a = vX - angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
+    val b = vX + angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
+    val c = vY - angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
+    val d = vY + angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
+
+    wheelSpeeds[0] = hypot(b, d)
+    wheelSpeeds[1] = hypot(b, c)
+    wheelSpeeds[2] = hypot(a, d)
+    wheelSpeeds[3] = hypot(a, c)
+
+    val maxWheelSpeed = wheelSpeeds.max()
+    if (maxWheelSpeed != null && maxWheelSpeed > Constants.Drivetrain.DRIVE_SETPOINT_MAX) {
+      for (i in 0 until Constants.Drivetrain.WHEEL_COUNT) {
+        wheelSpeeds[i] = wheelSpeeds[i] / maxWheelSpeed.inMetersPerSecond
+      }
+    }
+    wheelAngles[0] = atan2(b, d)
+    wheelAngles[1] = atan2(b, c)
+    wheelAngles[2] = atan2(a, d)
+    wheelAngles[3] = atan2(a, c)
+
+    wheels[0].setOpenLoop(wheelAngles[0], wheelSpeeds[0] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    wheels[1].setOpenLoop(wheelAngles[1], wheelSpeeds[1] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    wheels[2].setOpenLoop(wheelAngles[2], wheelSpeeds[2] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    wheels[3].setOpenLoop(wheelAngles[3], wheelSpeeds[3] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
   }
 
   fun updateOdometry() {

@@ -50,16 +50,32 @@ object Shooter : SubsystemBase() {
       targetVelocity.inRotationsPerMinute
     }
 
-    Logger.addSource(Constants.Shooter.TAB, "Shooter Motor Power") { shooterMotor.motorOutputPercent }
-    Logger.addSource(Constants.Shooter.TAB, "Shooter Motor Stator Current") { shooterMotor.statorCurrent }
-    Logger.addSource(Constants.Shooter.TAB, "Shooter Motor Supply Current") { shooterMotor.supplyCurrent }
-    Logger.addSource(Constants.Shooter.TAB, "Shooter Motor Voltage") { shooterMotor.motorOutputVoltage }
+    Logger.addSource(Constants.Shooter.TAB, "Shooter Motor Power") {
+      shooterMotor.motorOutputPercent
+    }
+    Logger.addSource(Constants.Shooter.TAB, "Shooter Motor Stator Current") {
+      shooterMotor.statorCurrent
+    }
+    Logger.addSource(Constants.Shooter.TAB, "Shooter Motor Supply Current") {
+      shooterMotor.supplyCurrent
+    }
+    Logger.addSource(Constants.Shooter.TAB, "Shooter Motor Voltage") {
+      shooterMotor.motorOutputVoltage
+    }
 
-    Logger.addSource(Constants.Shooter.TAB,
-      "Shooter Azimuth kP",
-      { Constants.Shooter.SHOOTER_KP },
-      { newP -> shooterMotor.config_kP(0, newP, 0)},
-      false)
+    Logger.addSource(
+        Constants.Shooter.TAB,
+        "Shooter kP",
+        { Constants.Shooter.SHOOTER_KP },
+        { newP -> shooterMotor.config_kP(0, newP, 0) },
+        false)
+
+    Logger.addSource(
+        Constants.Shooter.TAB,
+        "Shooter kD",
+        { Constants.Shooter.SHOOTER_KD },
+        { newD -> shooterMotor.config_kD(0, newD, 0) },
+        false)
   }
 
   val currentVelocity
