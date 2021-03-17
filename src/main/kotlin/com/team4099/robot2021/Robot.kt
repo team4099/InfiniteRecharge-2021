@@ -4,8 +4,8 @@ import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.auto.DriveCharacterizeCommand
 import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
-import com.team4099.robot2021.commands.feeder.FeederSerialize
 import com.team4099.robot2021.commands.feeder.FeederCommand
+import com.team4099.robot2021.commands.feeder.FeederSerialize
 import com.team4099.robot2021.commands.intake.IntakeCommand
 import com.team4099.robot2021.commands.shooter.ShootCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
@@ -47,15 +47,15 @@ object Robot : TimedRobot() {
     ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
 
     Intake.defaultCommand =
-      IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
+        IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
     ControlBoard.runIntakeIn
-      .whileActiveContinuous(
-        IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
-          .alongWith(FeederSerialize()))
+        .whileActiveContinuous(
+            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+                .alongWith(FeederSerialize()))
     ControlBoard.runIntakeOut
-      .whileActiveContinuous(
-        IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
-          .alongWith(FeederCommand(Feeder.FeederState.BACKWARD)))
+        .whileActiveContinuous(
+            IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
+                .alongWith(FeederCommand(Feeder.FeederState.BACKWARD)))
 
     //    Climber.defaultCommand = LockClimber()
     //    ControlBoard.climberHigh
@@ -69,11 +69,10 @@ object Robot : TimedRobot() {
     ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 
     Drivetrain.defaultCommand =
-      TeleopDriveCommand(
-        { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
-        { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
-        { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
-
+        TeleopDriveCommand(
+            { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
+            { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
+            { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
   }
 
   private val autonomousCommand = DriveCharacterizeCommand()

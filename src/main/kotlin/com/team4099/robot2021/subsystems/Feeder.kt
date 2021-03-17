@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object Feeder : SubsystemBase() {
 
-
   /** An enum representing the state of the feeder floorMotor power, verticalMotor power */
   enum class FeederState(val floorMotorPower: Double, val verticalMotorPower: Double) {
     FORWARD_ALL(Constants.Feeder.FEEDER_POWER, -Constants.Feeder.FEEDER_POWER),
@@ -69,7 +68,6 @@ object Feeder : SubsystemBase() {
     topLastStage = topBeamBroken
   }
 
-
   init {
     Logger.addSource(Constants.Feeder.TAB, "Feeder State") { feederState.toString() }
 
@@ -105,10 +103,9 @@ object Feeder : SubsystemBase() {
     floorMotor.configFactoryDefault()
     verticalMotor.configFactoryDefault()
 
-    floorMotor.configContinuousCurrentLimit(20, 10);
+    floorMotor.configContinuousCurrentLimit(20, 10)
     floorMotor.enableCurrentLimit(true)
-    verticalMotor.configContinuousCurrentLimit(20, 10);
+    verticalMotor.configContinuousCurrentLimit(20, 10)
     verticalMotor.enableCurrentLimit(true)
-
   }
 }

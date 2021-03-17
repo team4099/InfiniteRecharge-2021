@@ -193,7 +193,7 @@ object Drivetrain : SubsystemBase() {
     driveAcceleration: Pair<LinearAcceleration, LinearAcceleration> =
         Pair(0.0.meters.perSecond.perSecond, 0.0.meters.perSecond.perSecond)
   ) {
-//    Logger.addEvent("Drivetrain", "gyro angle: ${(-gyroAngle).inDegrees}")
+    //    Logger.addEvent("Drivetrain", "gyro angle: ${(-gyroAngle).inDegrees}")
     val vX =
         if (fieldOriented) {
           driveVector.first * (-gyroAngle).cos - driveVector.second * (-gyroAngle).sin
@@ -267,7 +267,7 @@ object Drivetrain : SubsystemBase() {
     wheelAngles[1] = atan2(b, c)
     wheelAngles[2] = atan2(a, d)
     wheelAngles[3] = atan2(a, c)
-//    Logger.addEvent("Drivetrain", "wheel angle: $wheelAngles")
+    //    Logger.addEvent("Drivetrain", "wheel angle: $wheelAngles")
 
     wheels[0].set(wheelAngles[0], wheelSpeeds[0], wheelAccelerations[0])
     wheels[1].set(wheelAngles[1], wheelSpeeds[1], wheelAccelerations[1])
@@ -278,20 +278,20 @@ object Drivetrain : SubsystemBase() {
   fun setOpenLoop(
     angularVelocity: AngularVelocity,
     driveVector: Pair<LinearVelocity, LinearVelocity>,
-    fieldOriented: Boolean = true,
+    fieldOriented: Boolean = true
   ) {
     val vX =
-      if (fieldOriented) {
-        driveVector.first * (-gyroAngle).cos - driveVector.second * (-gyroAngle).sin
-      } else {
-        driveVector.first
-      }
+        if (fieldOriented) {
+          driveVector.first * (-gyroAngle).cos - driveVector.second * (-gyroAngle).sin
+        } else {
+          driveVector.first
+        }
     val vY =
-      if (fieldOriented) {
-        driveVector.second * (-gyroAngle).cos + driveVector.first * (-gyroAngle).sin
-      } else {
-        driveVector.second
-      }
+        if (fieldOriented) {
+          driveVector.second * (-gyroAngle).cos + driveVector.first * (-gyroAngle).sin
+        } else {
+          driveVector.second
+        }
 
     val a = vX - angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
     val b = vX + angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2

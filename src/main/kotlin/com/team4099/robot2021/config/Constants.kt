@@ -44,7 +44,7 @@ object Constants {
 
   object Drivetrain {
     const val TICKS = 4096
-    //drive and azimuth swapped
+    // drive and azimuth swapped
     const val FRONT_LEFT_SPEED_ID = 11
     const val FRONT_LEFT_DIRECTION_ID = 21
     const val FRONT_LEFT_CANCODER_ID = 1
@@ -114,7 +114,7 @@ object Constants {
     const val VERTICAL_ID = 42
     const val FEEDER_POWER = 0.5
 
-    const val TOP_DIO_PIN = 9 //may be swapped with bottom
+    const val TOP_DIO_PIN = 9 // may be swapped with bottom
     const val BOTTOM_DIO_PIN = 8
     const val TAB = "Feeder"
   }
