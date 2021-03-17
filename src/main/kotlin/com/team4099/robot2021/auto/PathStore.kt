@@ -242,4 +242,19 @@ object PathStore {
     Constants.Drivetrain.SLOW_AUTO_VEL,
     trajectoryConfig
   )
+
+  val slalomPath = Path(
+    Pose(navPoints["E"]!![2] - Translation(15.inches, 0.feet), 0.degrees),
+    Pose(navPoints["C"]!![1], 180.degrees)
+  ).apply {
+    addWaypoint(navPoints["D"]!![3], 45.degrees)
+    addWaypoint(navPoints["C"]!![6], 0.degrees)
+    addWaypoint(navPoints["D"]!![9], 315.degrees)
+    addWaypoint(navPoints["E"]!![10], 0.degrees)
+    addWaypoint(navPoints["D"]!![11], 90.degrees)
+    addWaypoint(navPoints["D"]!![9], 225.degrees)
+    addWaypoint(navPoints["E"]!![6], 180.degrees)
+    addWaypoint(navPoints["D"]!![3], 135.degrees)
+  }
+
 }
