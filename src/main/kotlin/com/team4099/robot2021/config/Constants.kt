@@ -142,16 +142,16 @@ object Constants {
     const val SHOOTER_MOTOR_ID = 51
     const val SHOOTER_FOLLOWER_ID = 52
 
-    const val SOLENOID_FORWARD_CHANNEL = 6
-    const val SOLENOID_REVERSE_CHANNEL = 1
+    const val SOLENOID_FORWARD_CHANNEL = 1
+    const val SOLENOID_REVERSE_CHANNEL = 6
 
     val TARGET_VELOCITY = 0.rotations.perMinute
     val VELOCITY_TOLERANCE = 60.rotations.perMinute
 
-    const val SHOOTER_KS = 0.0
-    const val SHOOTER_KV = 0.0
+    const val SHOOTER_KS = 0.939
+    const val SHOOTER_KV = 0.114
 
-    const val SHOOTER_KP = 0.0
+    const val SHOOTER_KP = 0.0201
     const val SHOOTER_KI = 0.0
     const val SHOOTER_KD = 0.0
 

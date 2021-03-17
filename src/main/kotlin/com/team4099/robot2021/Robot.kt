@@ -42,8 +42,8 @@ object Robot : TimedRobot() {
     Logger.startLogging()
 
     // Link between feeder Trigger and Command
-    Feeder.defaultCommand = FeederSerialize()
-    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_FLOOR))
+    Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
+    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_ALL))
     ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
 
     Intake.defaultCommand =
