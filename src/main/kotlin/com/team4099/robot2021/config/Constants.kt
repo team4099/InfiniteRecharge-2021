@@ -74,12 +74,12 @@ object Constants {
 
     const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
 
-    val MAX_AUTO_VEL = 4.0.meters.perSecond
+    val MAX_AUTO_VEL = 3.0.meters.perSecond
     val SLOW_AUTO_VEL = 0.66.meters.perSecond
     val MAX_AUTO_ACCEL = 2.0.meters.perSecond.perSecond
 
-    val MAX_AUTO_ANGULAR_VEL = 1.0.radians.perSecond
-    val MAX_AUTO_ANGULAR_ACCEL = 1.0.radians.perSecond.perSecond
+    val MAX_AUTO_ANGULAR_VEL = 90.0.degrees.perSecond
+    val MAX_AUTO_ANGULAR_ACCEL = 90.0.degrees.perSecond.perSecond
 
     const val ABSOLUTE_GEAR_RATIO = 1.0
     const val DRIVE_SENSOR_GEAR_RATIO = (12.0 / 21.0) * (15.0 / 45.0)
@@ -105,7 +105,7 @@ object Constants {
       const val DRIVE_KD = 0.0
       const val DRIVE_KFF = 0.0
 
-      const val AUTO_POS_KP = 2.0
+      const val AUTO_POS_KP = 0.0
       const val AUTO_POS_KI = 0.0
       const val AUTO_POS_KD = 0.0
 
