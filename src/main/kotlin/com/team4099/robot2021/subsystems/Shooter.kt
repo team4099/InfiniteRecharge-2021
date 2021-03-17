@@ -71,11 +71,11 @@ object Shooter : SubsystemBase() {
         false)
 
     Logger.addSource(
-      Constants.Shooter.TAB,
-      "Shooter kD",
-      { Constants.Shooter.SHOOTER_KD },
-      { newD -> shooterMotor.config_kD(0, newD, 0) },
-      false)
+        Constants.Shooter.TAB,
+        "Shooter kD",
+        { Constants.Shooter.SHOOTER_KD },
+        { newD -> shooterMotor.config_kD(0, newD, 0) },
+        false)
   }
 
   val currentVelocity
