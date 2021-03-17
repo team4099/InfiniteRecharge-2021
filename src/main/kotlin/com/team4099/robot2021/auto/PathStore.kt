@@ -243,19 +243,23 @@ object PathStore {
     trajectoryConfig
   )
 
-  val slalomPath = Path(
-    Pose(navPoints["E"]!![2] - Translation(15.inches, 0.feet), 0.degrees),
-    Pose(navPoints["C"]!![1], 0.degrees)
-  ).apply {
-    addWaypoint(navPoints["D"]!![3], 0.degrees)
-    addWaypoint(navPoints["C"]!![6], 0.degrees)
-    addWaypoint(navPoints["D"]!![9], 0.degrees)
-    addWaypoint(navPoints["E"]!![10], 0.degrees)
-    addWaypoint(navPoints["D"]!![11], 0.degrees)
-    addWaypoint(navPoints["C"]!![10], 0.degrees)
-    addWaypoint(navPoints["D"]!![9], 0.degrees)
-    addWaypoint(navPoints["E"]!![6], 0.degrees)
-    addWaypoint(navPoints["D"]!![3], 0.degrees)
-  }
-
+  val slalomPath: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      Pose(navPoints["E"]!![2] - Translation(15.inches, 0.feet), 0.degrees),
+      Pose(navPoints["C"]!![1], 0.degrees)
+    ).apply {
+      addWaypoint(navPoints["D"]!![3])
+      addWaypoint(navPoints["C"]!![6])
+      addWaypoint(navPoints["D"]!![9])
+      addWaypoint(navPoints["E"]!![10])
+      addWaypoint(navPoints["D"]!![11])
+      addWaypoint(navPoints["C"]!![10])
+      addWaypoint(navPoints["D"]!![9])
+      addWaypoint(navPoints["E"]!![6])
+      addWaypoint(navPoints["D"]!![3])
+    },
+    Constants.Drivetrain.SLOW_AUTO_VEL,
+    trajectoryConfig
+  )
 }
