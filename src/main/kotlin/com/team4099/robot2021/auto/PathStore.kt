@@ -65,15 +65,16 @@ object PathStore {
           0.0.meters.perSecond,
           trajectoryConfig)
 
-  private val redAPath = Path(
-    Pose(navPoints["B"]!![1], 0.degrees),
-    Pose(navPoints["B"]!![11], 180.degrees)
-  ).apply {
-    addWaypoint(navPoints["B"]!![3], 0.degrees)
-    addWaypoint(navPoints["D"]!![5], 90.degrees)
-    addWaypoint(navPoints["B"]!![7])
-    build()
-  }
+  // use this default path if no path was chosen
+  val galacticSearchMoveBack: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      Pose(navPoints["C"]!![1], 0.degrees),
+      Pose(navPoints["C"]!![1] - Translation(15.inches, 0.feet), 0.degrees)
+    ),
+    0.0.meters.perSecond,
+    trajectoryConfig
+  )
 
 
   val barrelPath = Path(
@@ -95,7 +96,60 @@ object PathStore {
 
   val galacticSearchARed: Trajectory = Trajectory(
     0.0.meters.perSecond,
-    redAPath,
+    Path(
+      Pose(navPoints["B"]!![1], 0.degrees),
+      Pose(navPoints["B"]!![11], 180.degrees)
+    ).apply {
+      addWaypoint(navPoints["B"]!![3], 0.degrees)
+      addWaypoint(navPoints["D"]!![5], 90.degrees)
+      addWaypoint(navPoints["B"]!![7])
+      build()
+    },
+    0.0.meters.perSecond,
+    trajectoryConfig
+  )
+
+  val galacticSearchABlue: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      Pose(navPoints["C"]!![1], 0.degrees),
+      Pose(navPoints["C"]!![11], 0.degrees)
+    ).apply {
+      addWaypoint(navPoints["E"]!![6])
+      addWaypoint(navPoints["B"]!![7])
+      addWaypoint(navPoints["C"]!![9])
+      build()
+    },
+    0.0.meters.perSecond,
+    trajectoryConfig
+  )
+
+  val galacticSearchBRed: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      Pose(navPoints["B"]!![1], 0.degrees),
+      Pose(navPoints["B"]!![11], 0.degrees)
+    ).apply {
+      addWaypoint(navPoints["B"]!![3])
+      addWaypoint(navPoints["D"]!![5])
+      addWaypoint(navPoints["B"]!![7])
+      build()
+    },
+    0.0.meters.perSecond,
+    trajectoryConfig
+  )
+
+  val galacticSearchBBlue: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      Pose(navPoints["E"]!![1], 0.degrees),
+      Pose(navPoints["D"]!![11], 0.degrees)
+    ).apply {
+      addWaypoint(navPoints["D"]!![6])
+      addWaypoint(navPoints["B"]!![8])
+      addWaypoint(navPoints["D"]!![10])
+      build()
+    },
     0.0.meters.perSecond,
     trajectoryConfig
   )
@@ -162,6 +216,7 @@ object PathStore {
           Path(yellow, reintroductionZone),
           Constants.Drivetrain.SLOW_AUTO_VEL,
           trajectoryConfig)
+
   val fromBlueToReintroduction =
       Trajectory(
           0.0.meters.perSecond,
@@ -213,7 +268,7 @@ object PathStore {
       addWaypoint(navPoints["C"]!![2], 0.degrees)
       build()
     },
-    Constants.Drivetrain.SLOW_AUTO_VEL,
+    0.0.meters.perSecond,
     trajectoryConfig
   )
 
@@ -228,7 +283,7 @@ object PathStore {
       addWaypoint(navPoints["D"]!![6])
       build()
     },
-    Constants.Drivetrain.SLOW_AUTO_VEL,
+    0.0.meters.perSecond,
     trajectoryConfig
   )
 
@@ -244,7 +299,7 @@ object PathStore {
       addWaypoint(navPoints["D"]!![9])
       build()
     },
-    Constants.Drivetrain.SLOW_AUTO_VEL,
+    0.0.meters.perSecond,
     trajectoryConfig
   )
 
@@ -257,22 +312,27 @@ object PathStore {
       addWaypoint(navPoints["C"]!![10])
       build()
     },
-    Constants.Drivetrain.SLOW_AUTO_VEL,
+    0.0.meters.perSecond,
     trajectoryConfig
   )
 
-  val slalomPath = Path(
-    Pose(navPoints["E"]!![2] - Translation(15.inches, 0.feet), 0.degrees),
-    Pose(navPoints["C"]!![1], 180.degrees)
-  ).apply {
-    addWaypoint(navPoints["D"]!![3], 45.degrees)
-    addWaypoint(navPoints["C"]!![6], 0.degrees)
-    addWaypoint(navPoints["D"]!![9], 315.degrees)
-    addWaypoint(navPoints["E"]!![10], 0.degrees)
-    addWaypoint(navPoints["D"]!![11], 90.degrees)
-    addWaypoint(navPoints["D"]!![9], 225.degrees)
-    addWaypoint(navPoints["E"]!![6], 180.degrees)
-    addWaypoint(navPoints["D"]!![3], 135.degrees)
-  }
-
+  val slalomPath: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      Pose(navPoints["E"]!![2] - Translation(15.inches, 0.feet), 0.degrees),
+      Pose(navPoints["C"]!![1], 0.degrees)
+    ).apply {
+      addWaypoint(navPoints["D"]!![3])
+      addWaypoint(navPoints["C"]!![6])
+      addWaypoint(navPoints["D"]!![9])
+      addWaypoint(navPoints["E"]!![10])
+      addWaypoint(navPoints["D"]!![11])
+      addWaypoint(navPoints["C"]!![10])
+      addWaypoint(navPoints["D"]!![9])
+      addWaypoint(navPoints["E"]!![6])
+      addWaypoint(navPoints["D"]!![3])
+    },
+    Constants.Drivetrain.SLOW_AUTO_VEL,
+    trajectoryConfig
+  )
 }
