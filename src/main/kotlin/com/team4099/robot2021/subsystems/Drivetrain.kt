@@ -185,7 +185,7 @@ object Drivetrain : SubsystemBase() {
    * @param driveVector.first The linear velocity on the X axis
    * @param driveVector.second The linear velocity on the Y axis
    */
-  fun setOpenLoop(
+  fun set(
     angularVelocity: AngularVelocity,
     driveVector: Pair<LinearVelocity, LinearVelocity>,
     fieldOriented: Boolean = true,
@@ -280,7 +280,6 @@ object Drivetrain : SubsystemBase() {
     driveVector: Pair<LinearVelocity, LinearVelocity>,
     fieldOriented: Boolean = true,
   ) {
-//    Logger.addEvent("Drivetrain", "gyro angle: ${(-gyroAngle).inDegrees}")
     val vX =
       if (fieldOriented) {
         driveVector.first * (-gyroAngle).cos - driveVector.second * (-gyroAngle).sin
