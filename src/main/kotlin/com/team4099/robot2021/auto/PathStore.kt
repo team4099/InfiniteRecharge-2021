@@ -185,4 +185,61 @@ object PathStore {
           Path(reintroductionZone, red),
           Constants.Drivetrain.SLOW_AUTO_VEL,
           trajectoryConfig)
+
+  val autonavBounce1: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      Pose(navPoints["C"]!![1], 0.degrees),
+      Pose(navPoints["A"]!![3], 0.degrees)
+    ).apply{
+      addWaypoint(navPoints["C"]!![2], 0.degrees)
+      build()
+    },
+    Constants.Drivetrain.SLOW_AUTO_VEL,
+    trajectoryConfig
+  )
+
+  val autonavBounce2: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      Pose(navPoints["A"]!![3], 0.degrees),
+      Pose(navPoints["A"]!![6], 0.degrees)
+    ).apply{
+      addWaypoint(navPoints["D"]!![4])
+      addWaypoint(navPoints["E"]!![5])
+      addWaypoint(navPoints["D"]!![6])
+      build()
+    },
+    Constants.Drivetrain.SLOW_AUTO_VEL,
+    trajectoryConfig
+  )
+
+  val autonavBounce3: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      Pose(navPoints["A"]!![6], 0.degrees),
+      Pose(navPoints["A"]!![9], 0.degrees)
+    ).apply{
+      addWaypoint(navPoints["D"]!![6])
+      addWaypoint(navPoints["E"]!![7])
+      addWaypoint(navPoints["E"]!![8])
+      addWaypoint(navPoints["D"]!![9])
+      build()
+    },
+    Constants.Drivetrain.SLOW_AUTO_VEL,
+    trajectoryConfig
+  )
+
+  val autonavBounce4: Trajectory = Trajectory(
+    0.0.meters.perSecond,
+    Path(
+      Pose(navPoints["A"]!![9], 0.degrees),
+      Pose(navPoints["C"]!![11], 0.degrees)
+    ).apply{
+      addWaypoint(navPoints["C"]!![10])
+      build()
+    },
+    Constants.Drivetrain.SLOW_AUTO_VEL,
+    trajectoryConfig
+  )
 }
