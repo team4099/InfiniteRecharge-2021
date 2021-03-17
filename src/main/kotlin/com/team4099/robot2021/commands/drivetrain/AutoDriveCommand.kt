@@ -8,6 +8,7 @@ import com.team4099.lib.units.base.inSeconds
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.cos
+import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inRadians
 import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.sin
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj.controller.PIDController
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.CommandBase
+import kotlin.math.PI
 
 class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
   private val xPID =
@@ -78,6 +80,7 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
       },
       false)
 
+    thetaPID.enableContinuousInput(-PI, PI)
   }
 
   override fun initialize() {
@@ -115,5 +118,16 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
   override fun isFinished(): Boolean {
     trajCurTime = Clock.fpgaTime - trajStartTime
     return trajCurTime > trajectory.endTime
+  }
+
+  override fun end(interrupted: Boolean) {
+    if (interrupted) {
+      // Stop where we are if interrupted
+      Drivetrain.set(0.degrees.perSecond, Pair(0.meters.perSecond, 0.meters.perSecond))
+    } else {
+      // Execute one last time to end up in the final state of the trajectory
+      // Since we weren't interrupted, we know curTime > endTime
+      execute()
+    }
   }
 }
