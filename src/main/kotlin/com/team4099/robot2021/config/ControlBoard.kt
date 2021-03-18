@@ -20,6 +20,8 @@ object ControlBoard {
   val turn: Double
     get() = driver.rightXAxis
 
+  val resetGyro = Trigger { driver.startButton && driver.selectButton }
+
   val sampleClimberVelocity: Double
     get() = operator.leftTriggerAxis - operator.rightTriggerAxis
 

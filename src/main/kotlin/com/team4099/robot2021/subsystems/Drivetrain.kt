@@ -373,9 +373,13 @@ object Drivetrain : SubsystemBase() {
   }
 
   fun zeroSensors() {
-    gyro.reset()
+    zeroGyro()
     zeroDirection()
     zeroDrive()
+  }
+
+  fun zeroGyro() {
+    gyro.reset();
   }
 
   private fun zeroDirection() {

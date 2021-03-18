@@ -49,6 +49,12 @@ class LogitechF310Gamepad(port: Int) : Joystick(port), Gamepad {
   override val rightShoulderButton: Boolean
     get() = this.getRawButton(6)
 
+  override val startButton: Boolean
+    get() = this.getRawButton(7)
+
+  override val selectButton: Boolean
+    get() = this.getRawButton(8)
+
   override val dPadUp: Boolean
     get() = this.pov == 0 || this.pov == 360
 
