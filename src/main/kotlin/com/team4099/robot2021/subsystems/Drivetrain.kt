@@ -279,7 +279,7 @@ object Drivetrain : SubsystemBase() {
   fun setOpenLoop(
     angularVelocity: AngularVelocity,
     driveVector: Pair<Double, Double>,
-    fieldOriented: Boolean = true,
+    fieldOriented: Boolean = true
   ) {
     Logger.addEvent("Drivetrain", "gyro angle: ${(-gyroAngle).inDegrees}")
 
@@ -296,11 +296,12 @@ object Drivetrain : SubsystemBase() {
           driveVector.second
         }
 
-    val a = vX - angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
-    val b = vX + angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
-    val c = vY - angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
-    val d = vY + angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
+    val a = vX.meters.perSecond - angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
+    val b = vX.meters.perSecond + angularVelocity * Constants.Drivetrain.DRIVETRAIN_LENGTH / 2
+    val c = vY.meters.perSecond - angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
+    val d = vY.meters.perSecond + angularVelocity * Constants.Drivetrain.DRIVETRAIN_WIDTH / 2
     // Logger.addEvent("Drivetrain", "vX: $vX, angular velocity: $angularVelocity")
+
 
     wheelSpeeds[0] = hypot(b, d)
     wheelSpeeds[1] = hypot(b, c)
@@ -319,10 +320,10 @@ object Drivetrain : SubsystemBase() {
     wheelAngles[3] = atan2(a, c)
     Logger.addEvent("Drivetrain", "wheel angle: $wheelAngles")
 
-    wheels[0].setOpenLoop(wheelAngles[0], wheelSpeeds[0])
-    wheels[1].setOpenLoop(wheelAngles[1], wheelSpeeds[1])
-    wheels[2].setOpenLoop(wheelAngles[2], wheelSpeeds[2])
-    wheels[3].setOpenLoop(wheelAngles[3], wheelSpeeds[3])
+    wheels[0].setOpenLoop(wheelAngles[0], wheelSpeeds[0].inMetersPerSecond)
+    wheels[1].setOpenLoop(wheelAngles[1], wheelSpeeds[1].inMetersPerSecond)
+    wheels[2].setOpenLoop(wheelAngles[2], wheelSpeeds[2].inMetersPerSecond)
+    wheels[3].setOpenLoop(wheelAngles[3], wheelSpeeds[3].inMetersPerSecond)
   }
 
   fun updateOdometry() {

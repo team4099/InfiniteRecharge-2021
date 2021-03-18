@@ -20,10 +20,10 @@ class TeleopDriveCommand(
   override fun execute() {
     val speed =
         Pair(
-            Constants.Drivetrain.DRIVE_SETPOINT_MAX * driveX() * driveX() * sign(driveX()),
-            Constants.Drivetrain.DRIVE_SETPOINT_MAX * driveY() * driveY() * sign(driveY()))
+            driveX() * driveX() * sign(driveX()),
+            driveY() * driveY() * sign(driveY()))
     val direction = Constants.Drivetrain.TURN_SETPOINT_MAX * turn() * turn() * sign(turn())
-    Drivetrain.set(direction, speed, fieldOriented = true)
+    Drivetrain.setOpenLoop(direction, speed, fieldOriented = true)
   }
   override fun isFinished(): Boolean {
     return false
