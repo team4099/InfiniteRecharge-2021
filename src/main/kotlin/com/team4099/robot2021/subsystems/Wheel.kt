@@ -15,7 +15,14 @@ import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
-import com.team4099.lib.units.derived.*
+import com.team4099.lib.units.derived.Angle
+import com.team4099.lib.units.derived.ElectricalPotential
+import com.team4099.lib.units.derived.degrees
+import com.team4099.lib.units.derived.inDegrees
+import com.team4099.lib.units.derived.inRadians
+import com.team4099.lib.units.derived.inVolts
+import com.team4099.lib.units.derived.radians
+import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.inFeetPerSecond
 import com.team4099.lib.units.perSecond
 import com.team4099.lib.units.sparkMaxAngularMechanismSensor
@@ -52,7 +59,6 @@ class Wheel(
           { Math.toRadians(encoder.absolutePosition) })
 
   private val filter = MedianFilter(10)
-
 
   // motor params
   private val driveTemp: Double
@@ -96,10 +102,12 @@ class Wheel(
       // Logger.addEvent("Drivetrain", "label: $label, value: ${value.inDegrees}, reference raw
       // position: ${directionSensor.positionToRawUnits(value)}, current raw position:
       // ${directionSensor.getRawPosition()}")
-      if (filter.calculate((directionSensor.position).inRadians).around(value.inRadians, (Constants.Drivetrain.ALLOWED_ANGLE_ERROR).inRadians)) {
+      if (filter.calculate((directionSensor.position).inRadians)
+          .around(value.inRadians, (Constants.Drivetrain.ALLOWED_ANGLE_ERROR).inRadians)) {
         directionSpark.set(0.0)
-      }else {
-        directionPID.setReference(directionSensor.positionToRawUnits(value), ControlType.kSmartMotion)
+      } else {
+        directionPID.setReference(
+            directionSensor.positionToRawUnits(value), ControlType.kSmartMotion)
       }
 
       field = value
@@ -130,9 +138,12 @@ class Wheel(
     Logger.addSource("$label Drivetrain", "Drive SetPoint") { speedSetPoint.inFeetPerSecond }
     Logger.addSource("$label Drivetrain", "Direction SetPoint") { directionSetPoint.inDegrees }
 
-    Logger.addSource("Drivetrain Tuning", "$label Azimuth kP", {Constants.Drivetrain.PID.DIRECTION_KP}, { newP ->
-      directionPID.p = newP
-    }, false)
+    Logger.addSource(
+        "Drivetrain Tuning",
+        "$label Azimuth kP",
+        { Constants.Drivetrain.PID.DIRECTION_KP },
+        { newP -> directionPID.p = newP },
+        false)
 
     directionPID.p = Constants.Drivetrain.PID.DIRECTION_KP
     directionPID.i = Constants.Drivetrain.PID.DIRECTION_KI
@@ -182,23 +193,22 @@ class Wheel(
           speed
         }
     accelerationSetPoint =
-      if (isInverted) {
-        acceleration * -1
-      } else {
-        acceleration
-      }
+        if (isInverted) {
+          acceleration * -1
+        } else {
+          acceleration
+        }
     directionSetPoint = directionSensor.position + directionDifference
-//    driveSpark.set(speedSetPoint / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
+    //    driveSpark.set(speedSetPoint / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
 
     drivePID.setReference(
-      driveSensor.velocityToRawUnits(speedSetPoint),
-      ControlType.kVelocity,
-      0,
-      (Constants.Drivetrain.PID.DRIVE_KS * sign(speedSetPoint.value) +
-        speedSetPoint * Constants.Drivetrain.PID.DRIVE_KV +
-        acceleration * Constants.Drivetrain.PID.DRIVE_KA).inVolts,
-      CANPIDController.ArbFFUnits.kVoltage
-      )
+        driveSensor.velocityToRawUnits(speedSetPoint),
+        ControlType.kVelocity,
+        0,
+        (Constants.Drivetrain.PID.DRIVE_KS * sign(speedSetPoint.value) +
+                speedSetPoint * Constants.Drivetrain.PID.DRIVE_KV +
+                acceleration * Constants.Drivetrain.PID.DRIVE_KA).inVolts,
+        CANPIDController.ArbFFUnits.kVoltage)
   }
 
   fun setOpenLoop(direction: Angle, speed: Double) {

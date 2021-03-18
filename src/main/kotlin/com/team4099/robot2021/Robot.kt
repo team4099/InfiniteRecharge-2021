@@ -5,6 +5,7 @@ import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.auto.DriveCharacterizeCommand
 import com.team4099.robot2021.auto.PathStore
 import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
+import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
@@ -62,6 +63,8 @@ object Robot : TimedRobot() {
             { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
+
+    ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
 
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
   }
