@@ -3,6 +3,7 @@ package com.team4099.robot2021
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.auto.DriveCharacterizeCommand
+import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.commands.feeder.FeederSerialize
@@ -73,6 +74,10 @@ object Robot : TimedRobot() {
             { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
+
+    ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
+
+    //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
   }
 
   private val autonomousCommand = DriveCharacterizeCommand()
