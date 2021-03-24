@@ -70,7 +70,7 @@ class AngularMechanismSensor(
     get() = (getRawPosition() * ratio).rotations
 
   override val velocity: Value<Velocity<Radian>>
-    get() = (getRawVelocity() * ratio / timescale.velocity.inSeconds).radians.perSecond
+    get() = (getRawVelocity() * ratio / timescale.velocity.inSeconds).rotations.perSecond
 
   override fun positionToRawUnits(position: Value<Radian>): Double = position.inRotations / ratio
 
@@ -89,10 +89,10 @@ fun ctreAngularMechanismSensor(
   ratio: Double
 ): AngularMechanismSensor {
   return AngularMechanismSensor(
-      ratio * sensorCpr,
+      ratio / sensorCpr,
       Timescale.CTRE,
-      { controller.selectedSensorPosition.toDouble() },
-      { controller.selectedSensorVelocity.toDouble() })
+      { controller.selectedSensorVelocity.toDouble() },
+      { controller.selectedSensorPosition.toDouble() })
 }
 
 fun ctreLinearMechanismSensor(

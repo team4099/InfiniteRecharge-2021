@@ -193,6 +193,8 @@ object Drivetrain : SubsystemBase() {
     driveAcceleration: Pair<LinearAcceleration, LinearAcceleration> =
         Pair(0.0.meters.perSecond.perSecond, 0.0.meters.perSecond.perSecond)
   ) {
+
+    Logger.addEvent("Drivetrain", "setting with $driveVector and $angularVelocity")
     //    Logger.addEvent("Drivetrain", "gyro angle: ${(-gyroAngle).inDegrees}")
     val vX =
         if (fieldOriented) {
@@ -280,6 +282,8 @@ object Drivetrain : SubsystemBase() {
     driveVector: Pair<LinearVelocity, LinearVelocity>,
     fieldOriented: Boolean = true
   ) {
+    Logger.addEvent("Drivetrain", "setting open loop with $driveVector and $angularVelocity")
+
     val vX =
         if (fieldOriented) {
           driveVector.first * (-gyroAngle).cos - driveVector.second * (-gyroAngle).sin
@@ -306,7 +310,7 @@ object Drivetrain : SubsystemBase() {
     val maxWheelSpeed = wheelSpeeds.max()
     if (maxWheelSpeed != null && maxWheelSpeed > Constants.Drivetrain.DRIVE_SETPOINT_MAX) {
       for (i in 0 until Constants.Drivetrain.WHEEL_COUNT) {
-        wheelSpeeds[i] = wheelSpeeds[i] / maxWheelSpeed.inMetersPerSecond
+        wheelSpeeds[i] = wheelSpeeds[i] / maxWheelSpeed.inMetersPerSecond * Constants.Drivetrain.DRIVE_SETPOINT_MAX.inMetersPerSecond
       }
     }
     wheelAngles[0] = atan2(b, d)

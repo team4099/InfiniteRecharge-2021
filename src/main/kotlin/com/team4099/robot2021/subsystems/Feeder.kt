@@ -11,8 +11,8 @@ object Feeder : SubsystemBase() {
 
   /** An enum representing the state of the feeder floorMotor power, verticalMotor power */
   enum class FeederState(val floorMotorPower: Double, val verticalMotorPower: Double) {
-    FORWARD_ALL(Constants.Feeder.FEEDER_POWER, -Constants.Feeder.FEEDER_POWER * 2),
-    FORWARD_FLOOR(Constants.Feeder.FEEDER_POWER*2, 0.0),
+    FORWARD_ALL(Constants.Feeder.FEEDER_POWER, -Constants.Feeder.FEEDER_POWER),
+    FORWARD_FLOOR(Constants.Feeder.FEEDER_POWER, 0.0),
     BACKWARD(-Constants.Feeder.FEEDER_POWER, +Constants.Feeder.FEEDER_POWER),
     NEUTRAL(0.0, 0.0)
   }
@@ -105,7 +105,7 @@ object Feeder : SubsystemBase() {
 
     floorMotor.configContinuousCurrentLimit(20, 10)
     floorMotor.enableCurrentLimit(true)
-    verticalMotor.configContinuousCurrentLimit(20, 10)
+    verticalMotor.configContinuousCurrentLimit(40, 10)
     verticalMotor.enableCurrentLimit(true)
   }
 }

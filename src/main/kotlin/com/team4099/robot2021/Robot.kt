@@ -4,6 +4,7 @@ import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.auto.DriveCharacterizeCommand
 import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
+import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.commands.feeder.FeederSerialize
@@ -50,9 +51,9 @@ object Robot : TimedRobot() {
     Intake.defaultCommand =
         IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
     ControlBoard.runIntakeIn
-        .whileActiveContinuous(
-            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
-                .alongWith(FeederSerialize()))
+        .whileActiveContinuous(FeederSerialize())
+//            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+//                .alongWith(FeederSerialize()))
     ControlBoard.runIntakeOut
         .whileActiveContinuous(
             IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
@@ -65,12 +66,13 @@ object Robot : TimedRobot() {
     //        .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
 
     Shooter.defaultCommand = ShooterIdleCommand()
-    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
-    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
-    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
+//    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
+    ControlBoard.shoot.whileActiveOnce(ShootCommand())
+//    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
+//    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 
     Drivetrain.defaultCommand =
-        TeleopDriveCommand(
+        OpenLoopDriveCommand(
             { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
@@ -78,6 +80,8 @@ object Robot : TimedRobot() {
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
 
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
+
+    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
   }
 
   private val autonomousCommand = DriveCharacterizeCommand()

@@ -66,7 +66,7 @@ object Constants {
     val DRIVETRAIN_WIDTH = 22.173.inches
 
     val DRIVE_SETPOINT_MAX = 15.feet.perSecond
-    val TURN_SETPOINT_MAX = 90.degrees.perSecond // TODO: Make sure this value is something good
+    val TURN_SETPOINT_MAX = 360.degrees.perSecond // TODO: Make sure this value is something good
 
     val DIRECTION_VEL_MAX = 900.degrees.perSecond
     val DIRECTION_ACCEL_MAX = 4500.degrees.perSecond.perSecond
@@ -145,13 +145,12 @@ object Constants {
     const val SOLENOID_FORWARD_CHANNEL = 1
     const val SOLENOID_REVERSE_CHANNEL = 6
 
-    val TARGET_VELOCITY = 0.rotations.perMinute
-    val VELOCITY_TOLERANCE = 60.rotations.perMinute
+    val VELOCITY_TOLERANCE = 100.rotations.perMinute
 
     const val SHOOTER_KS = 0.939
     const val SHOOTER_KV = 0.114
 
-    const val SHOOTER_KP = 0.0201
+    const val SHOOTER_KP = 0.5
     const val SHOOTER_KI = 0.0
     const val SHOOTER_KD = 0.0
 
@@ -184,15 +183,15 @@ object Constants {
     val MAX_DIST_ERROR = 0.1.inches
     val MAX_ANGLE_ERROR = 1.0.degrees
 
-    const val MIN_TURN_COMMAND = 0.0
+    const val MIN_TURN_COMMAND = 40.0
 
     object TurnGains {
-      const val KP = 0.0
+      const val KP = 1.0
       const val KI = 0.0
       const val KD = 0.0
 
-      val MAX_VELOCITY = 0.0.degrees.perSecond
-      val MAX_ACCEL = 0.0.degrees.perSecond.perSecond
+      val MAX_VELOCITY = 90.0.degrees.perSecond
+      val MAX_ACCEL = 450.0.degrees.perSecond.perSecond
     }
   }
 

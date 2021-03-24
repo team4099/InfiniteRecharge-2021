@@ -46,6 +46,7 @@ object ControlBoard {
   val shoot = Trigger { operator.xButton }
   val stopShooting = Trigger { operator.yButton }
   val spinUpShooter = Trigger { operator.dPadRight }
+  val visionButton = Trigger { driver.aButton }
 
   // val climberHigh = Trigger { driver.dPadUp }
   // val climberLow = Trigger { driver.dPadDown }

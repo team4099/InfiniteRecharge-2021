@@ -1,8 +1,12 @@
 package com.team4099.robot2021.commands.shooter
 
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.units.base.meters
+import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inDegrees
+import com.team4099.lib.units.perSecond
 import com.team4099.robot2021.config.Constants
+import com.team4099.robot2021.subsystems.Drivetrain
 import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile
@@ -11,21 +15,15 @@ import kotlin.math.sign
 
 class VisionCommand : CommandBase() {
 
-  val visionPIDcontroller =
-      ProfiledPIDController(
-          Constants.Vision.TurnGains.KP,
-          Constants.Vision.TurnGains.KI,
-          Constants.Vision.TurnGains.KD,
-          TrapezoidProfile.Constraints(
-              Constants.Vision.TurnGains.MAX_VELOCITY.value,
-              Constants.Vision.TurnGains.MAX_ACCEL.value))
-
   init {
     addRequirements(Vision)
+    addRequirements(Drivetrain)
+
   }
 
   override fun initialize() {
     Vision.pipeline = Constants.Vision.TARGETING_PIPELINE_ID
+    Vision.visionPIDcontroller.reset(0.0);
     // Vision.camera.setDriverMode(false)
     Logger.addEvent("VisionCommand", "Started vision command")
   }
@@ -44,11 +42,12 @@ class VisionCommand : CommandBase() {
     if (!Vision.hasCloseTargets && !Vision.hasFarTargets) {
       Vision.steeringAdjust = 0.0
     } else {
-      Vision.steeringAdjust = visionPIDcontroller.calculate(Vision.yawToUse.inDegrees, 0.0)
-      Vision.steeringAdjust += sign(Vision.yawToUse.inDegrees) * Constants.Vision.MIN_TURN_COMMAND
+      Vision.steeringAdjust = Vision.visionPIDcontroller.calculate(Vision.yawToUse.inDegrees, 0.0)
+      Vision.steeringAdjust += -sign(Vision.yawToUse.inDegrees) * Constants.Vision.MIN_TURN_COMMAND
       // TODO: implement when shooter or drivetrain exists in master
-      // Drivetrain.set(Vision.steeringAdjust, Pair(0.0,0.0))
+      Drivetrain.set(Vision.steeringAdjust.degrees.perSecond, Pair(0.0.meters.perSecond, 0.0.meters.perSecond))
     }
+
   }
 
   override fun isFinished(): Boolean {
