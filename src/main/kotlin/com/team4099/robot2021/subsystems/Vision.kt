@@ -12,13 +12,14 @@ import edu.wpi.first.wpilibj.controller.ProfiledPIDController
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.photonvision.PhotonCamera
+import org.photonvision.PhotonTrackedTarget
 
 object Vision : SubsystemBase() {
   // for up close
   private val closeCamera: PhotonCamera = PhotonCamera("gloworm-near")
   private val closeCameraResult
     get() = closeCamera.getLatestResult()
-  private val target
+  private val target: PhotonTrackedTarget?
     get() = closeCameraResult.bestTarget
 
   // tv
@@ -28,31 +29,31 @@ object Vision : SubsystemBase() {
   // tx
   // negative: target on left of screen
   var closeYaw = 0.0.degrees
-    get() = if (target != null) target.yaw.degrees else 0.0.degrees
+    get() = target?.yaw?.degrees ?: 0.0.degrees
   // ty
   // negative: target on bottom of screen
   var closePitch = 0.0.degrees
-    get() = if (target != null) target.pitch.degrees else 0.0.degrees
+    get() = target?.pitch?.degrees ?: 0.0.degrees
   // ta
   // area is 0-100%
   var closeArea = 0.0
-    get() = if (target != null) target.area else 0.0
+    get() = target?.area ?: 0.0
 
   // from farther away
   private val farCamera: PhotonCamera = PhotonCamera("gloworm-far")
   private val farCameraResult
     get() = farCamera.getLatestResult()
-  private val farTarget
+  private val farTarget: PhotonTrackedTarget?
     get() = farCameraResult.bestTarget
 
   var hasFarTargets = false
     get() = farCamera.hasTargets()
   var farYaw = 0.0.degrees
-    get() = if (farTarget != null) farTarget.yaw.degrees else 0.0.degrees
+    get() = farTarget?.yaw?.degrees ?: 0.0.degrees
   var farPitch = 0.0.degrees
-    get() = if (farTarget != null) farTarget.pitch.degrees else 0.0.degrees
+    get() = farTarget?.pitch?.degrees ?: 0.0.degrees
   var farArea = 0.0
-    get() = if (farTarget != null) farTarget.area else 0.0
+    get() = farTarget?.area ?: 0.0
 
   enum class DistanceState {
     LINE,

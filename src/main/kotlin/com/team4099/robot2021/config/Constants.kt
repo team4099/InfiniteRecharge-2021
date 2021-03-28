@@ -163,6 +163,8 @@ object Constants {
     val NEAR_DISTANCE = 130.0.inches
     val MID_DISTANCE = 249.0.inches
 
+    val POWER_CELL_CHALLENGE_RPM = 3100.rotations.perMinute
+
     // val HOOD_THRESHOLD = 0.0.inches
 
     const val TAB = "Shooter"
@@ -181,14 +183,15 @@ object Constants {
     val CAMERA_DIST_THRESHOLD = 55.0.inches
 
     val MAX_DIST_ERROR = 0.1.inches
-    val MAX_ANGLE_ERROR = 1.0.degrees
+    val MAX_ANGLE_ERROR = 2.0.degrees
 
-    const val MIN_TURN_COMMAND = 40.0
+    const val MIN_TURN_COMMAND = 30.0
 
     object TurnGains {
-      const val KP = 1.0
+      const val KP = 10.0
       const val KI = 0.0
-      const val KD = 0.0
+      const val KD = 0.46
+
 
       val MAX_VELOCITY = 90.0.degrees.perSecond
       val MAX_ACCEL = 450.0.degrees.perSecond.perSecond

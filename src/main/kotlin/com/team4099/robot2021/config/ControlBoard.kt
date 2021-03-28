@@ -34,8 +34,8 @@ object ControlBoard {
   // val enableVisionAlignment: Boolean
   //  get() = driver.aButton
 
-  val runIntakeIn = Trigger { operator.aButton }
-  val runIntakeOut = Trigger { operator.bButton }
+  val runIntakeIn = Trigger { driver.aButton }
+  val runIntakeOut = Trigger { driver.bButton }
 
   // val slowMode: Boolean
   // get() = driver.dPadDown
@@ -43,10 +43,10 @@ object ControlBoard {
   val runFeederIn = Trigger { operator.dPadDown }
   val runFeederOut = Trigger { operator.dPadUp }
 
-  val shoot = Trigger { operator.xButton }
+  val shoot = Trigger { driver.xButton }
   val stopShooting = Trigger { operator.yButton }
   val spinUpShooter = Trigger { operator.dPadRight }
-  val visionButton = Trigger { driver.aButton }
+//  val visionButton = Trigger { driver.aButton }
 
   // val climberHigh = Trigger { driver.dPadUp }
   // val climberLow = Trigger { driver.dPadDown }

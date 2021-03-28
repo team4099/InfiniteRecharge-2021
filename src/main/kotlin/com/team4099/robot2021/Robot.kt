@@ -51,9 +51,9 @@ object Robot : TimedRobot() {
     Intake.defaultCommand =
         IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
     ControlBoard.runIntakeIn
-        .whileActiveContinuous(FeederSerialize())
-//            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
-//                .alongWith(FeederSerialize()))
+//        .whileActiveContinuous(FeederSerialize())
+      .whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+                .alongWith(FeederSerialize()))
     ControlBoard.runIntakeOut
         .whileActiveContinuous(
             IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
@@ -65,9 +65,10 @@ object Robot : TimedRobot() {
     //    ControlBoard.climberLow
     //        .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
 
-    Shooter.defaultCommand = ShooterIdleCommand()
+//    Shooter.defaultCommand = ShooterIdleCommand()
+    Shooter.defaultCommand = SpinUpCommand()
 //    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
-    ControlBoard.shoot.whileActiveOnce(ShootCommand())
+    ControlBoard.shoot.whileActiveOnce(VisionCommand().andThen(ShootCommand()))
 //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
 //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 
@@ -81,7 +82,7 @@ object Robot : TimedRobot() {
 
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 
-    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
+//    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
   }
 
   private val autonomousCommand = DriveCharacterizeCommand()

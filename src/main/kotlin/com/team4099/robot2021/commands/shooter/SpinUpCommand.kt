@@ -8,7 +8,7 @@ import com.team4099.robot2021.subsystems.Shooter
 import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class SpinUpCommand(var withVision: Boolean) : CommandBase() {
+class SpinUpCommand(private val withVision: Boolean = false) : CommandBase() {
   init {
     addRequirements(Shooter)
   }
@@ -26,7 +26,7 @@ class SpinUpCommand(var withVision: Boolean) : CommandBase() {
             Vision.DistanceState.FAR -> Constants.Shooter.FAR_VELOCITY
           }
     } else {
-      Shooter.targetVelocity = 5000.rotations.perMinute
+      Shooter.targetVelocity = Constants.Shooter.POWER_CELL_CHALLENGE_RPM
     }
   }
   override fun isFinished(): Boolean {
