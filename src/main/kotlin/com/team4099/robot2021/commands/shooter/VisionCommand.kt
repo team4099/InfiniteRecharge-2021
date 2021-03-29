@@ -69,4 +69,8 @@ class VisionCommand : CommandBase() {
 //    return medianYaw.around(0.0, Constants.Vision.MAX_ANGLE_ERROR.inDegrees)
     return contCloseIterations > 10
   }
+
+  override fun end(interrupted: Boolean) {
+    Drivetrain.setOpenLoop(0.degrees.perSecond, Pair(0.0.meters.perSecond, 0.0.meters.perSecond))
+  }
 }

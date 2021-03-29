@@ -42,6 +42,10 @@ object Shooter : SubsystemBase() {
     shooterFollower.setInverted(InvertType.OpposeMaster)
     shooterFollower.follow(shooterMotor)
 
+    shooterMotor.enableVoltageCompensation(true)
+    shooterFollower.enableVoltageCompensation(true)
+
+
     shooterMotor.config_kP(0, Constants.Shooter.SHOOTER_KP, 0)
     shooterMotor.config_kI(0, Constants.Shooter.SHOOTER_KI, 0)
     shooterMotor.config_kD(0, Constants.Shooter.SHOOTER_KD, 0)
