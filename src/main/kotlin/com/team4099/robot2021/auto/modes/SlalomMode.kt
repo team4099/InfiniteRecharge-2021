@@ -9,8 +9,6 @@ class SlalomMode : SequentialCommandGroup() {
   init {
     addRequirements(Drivetrain)
 
-    addCommands(
-      AutoDriveCommand(PathStore.slalomPath)
-    )
+    addCommands(AutoDriveCommand(PathStore.slalomPath))
   }
 }

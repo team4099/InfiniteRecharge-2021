@@ -7,7 +7,6 @@ import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.div
-import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.perMinute
@@ -203,7 +202,6 @@ object Constants {
       const val KP = 10.0
       const val KI = 0.0
       const val KD = 0.46
-
 
       val MAX_VELOCITY = 90.0.degrees.perSecond
       val MAX_ACCEL = 450.0.degrees.perSecond.perSecond

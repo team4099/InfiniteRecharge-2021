@@ -23,8 +23,7 @@ object Vision : SubsystemBase() {
     get() = closeCameraResult.bestTarget
 
   // tv
-  var
-    hasCloseTargets = false
+  var hasCloseTargets = false
     get() = closeCamera.hasTargets()
   // tx
   // negative: target on left of screen
@@ -63,13 +62,13 @@ object Vision : SubsystemBase() {
   }
 
   val visionPIDcontroller =
-    ProfiledPIDController(
-      Constants.Vision.TurnGains.KP,
-      Constants.Vision.TurnGains.KI,
-      Constants.Vision.TurnGains.KD,
-      TrapezoidProfile.Constraints(
-        Constants.Vision.TurnGains.MAX_VELOCITY.value,
-        Constants.Vision.TurnGains.MAX_ACCEL.value))
+      ProfiledPIDController(
+          Constants.Vision.TurnGains.KP,
+          Constants.Vision.TurnGains.KI,
+          Constants.Vision.TurnGains.KD,
+          TrapezoidProfile.Constraints(
+              Constants.Vision.TurnGains.MAX_VELOCITY.value,
+              Constants.Vision.TurnGains.MAX_ACCEL.value))
 
   init {
     Logger.addSource("Vision", "Pipeline") { pipeline }
@@ -78,27 +77,27 @@ object Vision : SubsystemBase() {
     Logger.addSource("Vision", "Yaw to use") { yawToUse.inDegrees }
 
     Logger.addSource(
-      "Vision",
-      "Vision Aim kP",
-      { Constants.Vision.TurnGains.KP },
-      { newP -> visionPIDcontroller.p = newP },
-      false)
+        "Vision",
+        "Vision Aim kP",
+        { Constants.Vision.TurnGains.KP },
+        { newP -> visionPIDcontroller.p = newP },
+        false)
 
     Logger.addSource(
-      "Vision",
-      "Vision Aim kI",
-      { Constants.Vision.TurnGains.KI },
-      { newI -> visionPIDcontroller.i = newI },
-      false)
+        "Vision",
+        "Vision Aim kI",
+        { Constants.Vision.TurnGains.KI },
+        { newI -> visionPIDcontroller.i = newI },
+        false)
 
     Logger.addSource(
-      "Vision",
-      "Vision Aim kD",
-      { Constants.Vision.TurnGains.KD },
-      { newD -> visionPIDcontroller.d = newD },
-      false)
+        "Vision",
+        "Vision Aim kD",
+        { Constants.Vision.TurnGains.KD },
+        { newD -> visionPIDcontroller.d = newD },
+        false)
 
-//    Logger.addSource("Vision", "Vision Camera Found") { if farCamera. }
+    //    Logger.addSource("Vision", "Vision Camera Found") { if farCamera. }
   }
 
   var yawToUse = 0.0.degrees

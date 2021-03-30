@@ -43,7 +43,7 @@ object Robot : TimedRobot() {
     Logger.startLogging()
 
     // Link between feeder Trigger and Command
-//    Feeder.defaultCommand = FeederSerialize()
+    //    Feeder.defaultCommand = FeederSerialize()
     Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
     ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_ALL))
     ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
@@ -51,8 +51,9 @@ object Robot : TimedRobot() {
     Intake.defaultCommand =
         IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
     ControlBoard.runIntakeIn
-//        .whileActiveContinuous(FeederSerialize())
-      .whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+        //        .whileActiveContinuous(FeederSerialize())
+        .whileActiveContinuous(
+            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
                 .alongWith(FeederSerialize()))
     ControlBoard.runIntakeOut
         .whileActiveContinuous(
@@ -66,12 +67,12 @@ object Robot : TimedRobot() {
     //        .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
 
     Shooter.defaultCommand = ShooterIdleCommand()
-//    Shooter.defaultCommand = SpinUpCommand()
-//    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
-//    ControlBoard.shoot.whileActiveOnce(VisionCommand().andThen(ShootCommand()))
+    //    Shooter.defaultCommand = SpinUpCommand()
+    //    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
+    //    ControlBoard.shoot.whileActiveOnce(VisionCommand().andThen(ShootCommand()))
     ControlBoard.shoot.whileActiveOnce(VisionCommand())
-//    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
-//    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
+    //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
+    //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 
     Drivetrain.defaultCommand =
         OpenLoopDriveCommand(
@@ -83,13 +84,16 @@ object Robot : TimedRobot() {
 
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 
-//    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
+    //    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
 
-    ControlBoard.nearSpin.whileActiveOnce(SpinUpCommand(accuracy = true,distance = Vision.DistanceState.NEAR))
-    ControlBoard.lineSpin.whileActiveOnce(SpinUpCommand(accuracy = true,distance = Vision.DistanceState.LINE))
-    ControlBoard.midSpin.whileActiveOnce(SpinUpCommand(accuracy = true,distance = Vision.DistanceState.MID))
-    ControlBoard.farSpin.whileActiveOnce(SpinUpCommand(accuracy = true,distance = Vision.DistanceState.FAR))
-
+    ControlBoard.nearSpin
+        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.NEAR))
+    ControlBoard.lineSpin
+        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.LINE))
+    ControlBoard.midSpin
+        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.MID))
+    ControlBoard.farSpin
+        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.FAR))
   }
 
   private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchARed)

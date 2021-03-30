@@ -126,7 +126,7 @@ object Drivetrain : SubsystemBase() {
 
   var pose: Pose
     get() = Pose(swerveDriveOdometry.poseMeters)
-    set (value) {
+    set(value) {
       swerveDriveOdometry.resetPosition(value.pose2d, gyroAngle.inRotation2ds)
     }
 
@@ -153,7 +153,6 @@ object Drivetrain : SubsystemBase() {
     Logger.addSource("Drivetrain", "pos y") { pose.y.inFeet }
 
     zeroDirection()
-
   }
 
   override fun periodic() {
@@ -293,7 +292,9 @@ object Drivetrain : SubsystemBase() {
     val maxWheelSpeed = wheelSpeeds.max()
     if (maxWheelSpeed != null && maxWheelSpeed > Constants.Drivetrain.DRIVE_SETPOINT_MAX) {
       for (i in 0 until Constants.Drivetrain.WHEEL_COUNT) {
-        wheelSpeeds[i] = wheelSpeeds[i] / maxWheelSpeed.inMetersPerSecond * Constants.Drivetrain.DRIVE_SETPOINT_MAX.inMetersPerSecond
+        wheelSpeeds[i] =
+            wheelSpeeds[i] / maxWheelSpeed.inMetersPerSecond *
+                Constants.Drivetrain.DRIVE_SETPOINT_MAX.inMetersPerSecond
       }
     }
     wheelAngles[0] = atan2(b, d)
@@ -310,14 +311,14 @@ object Drivetrain : SubsystemBase() {
   private fun updateOdometry() {
     swerveDriveOdometry.update(
         gyroAngle.inRotation2ds,
-        SwerveModuleState(wheels[0].driveVelocity.inMetersPerSecond,
-          wheels[0].directionPosition.inRotation2ds),
-        SwerveModuleState(wheels[1].driveVelocity.inMetersPerSecond,
-          wheels[1].directionPosition.inRotation2ds),
-        SwerveModuleState(wheels[2].driveVelocity.inMetersPerSecond,
-          wheels[1].directionPosition.inRotation2ds),
-        SwerveModuleState(wheels[3].driveVelocity.inMetersPerSecond,
-          wheels[3].directionPosition.inRotation2ds))
+        SwerveModuleState(
+            wheels[0].driveVelocity.inMetersPerSecond, wheels[0].directionPosition.inRotation2ds),
+        SwerveModuleState(
+            wheels[1].driveVelocity.inMetersPerSecond, wheels[1].directionPosition.inRotation2ds),
+        SwerveModuleState(
+            wheels[2].driveVelocity.inMetersPerSecond, wheels[1].directionPosition.inRotation2ds),
+        SwerveModuleState(
+            wheels[3].driveVelocity.inMetersPerSecond, wheels[3].directionPosition.inRotation2ds))
   }
 
   private fun hypot(a: LinearVelocity, b: LinearVelocity): LinearVelocity {
@@ -339,7 +340,7 @@ object Drivetrain : SubsystemBase() {
   }
 
   fun zeroGyro() {
-    gyro.reset();
+    gyro.reset()
   }
 
   private fun zeroDirection() {

@@ -53,35 +53,35 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
     Logger.addSource("Drivetrain", "Path Follow Start Timestamp") { trajStartTime.inSeconds }
     Logger.addSource("Drivetrain", "Path Follow Current Timestamp") { trajCurTime.inSeconds }
     Logger.addSource(
-      "Drivetrain Tuning",
-      "theta kP",
-      { Constants.Drivetrain.PID.DRIVE_THETA_PID_KP },
-      { newP -> thetaPID.p = newP },
-      false)
+        "Drivetrain Tuning",
+        "theta kP",
+        { Constants.Drivetrain.PID.DRIVE_THETA_PID_KP },
+        { newP -> thetaPID.p = newP },
+        false)
     Logger.addSource(
-      "Drivetrain Tuning",
-      "theta kD",
-      { Constants.Drivetrain.PID.DRIVE_THETA_PID_KD },
-      { newD -> thetaPID.d = newD },
-      false)
+        "Drivetrain Tuning",
+        "theta kD",
+        { Constants.Drivetrain.PID.DRIVE_THETA_PID_KD },
+        { newD -> thetaPID.d = newD },
+        false)
     Logger.addSource(
-      "Drivetrain Tuning",
-      "auto position kp",
-      { Constants.Drivetrain.PID.AUTO_POS_KP },
-      { newP ->
-        xPID.p = newP
-        yPID.p = newP
-      },
-      false)
+        "Drivetrain Tuning",
+        "auto position kp",
+        { Constants.Drivetrain.PID.AUTO_POS_KP },
+        { newP ->
+          xPID.p = newP
+          yPID.p = newP
+        },
+        false)
     Logger.addSource(
-      "Drivetrain Tuning",
-      "auto position kd",
-      { Constants.Drivetrain.PID.AUTO_POS_KD },
-      { newD ->
-        xPID.d = newD
-        yPID.d = newD
-      },
-      false)
+        "Drivetrain Tuning",
+        "auto position kd",
+        { Constants.Drivetrain.PID.AUTO_POS_KD },
+        { newD ->
+          xPID.d = newD
+          yPID.d = newD
+        },
+        false)
 
     thetaPID.enableContinuousInput(-PI, PI)
   }

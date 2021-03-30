@@ -10,11 +10,9 @@ class AutoNavBounceMode : SequentialCommandGroup() {
     addRequirements(Drivetrain)
 
     addCommands(
-      AutoDriveCommand(PathStore.autonavBounce1),
-      AutoDriveCommand(PathStore.autonavBounce2),
-      AutoDriveCommand(PathStore.autonavBounce3),
-      AutoDriveCommand(PathStore.autonavBounce4)
-    )
-
+        AutoDriveCommand(PathStore.autonavBounce1),
+        AutoDriveCommand(PathStore.autonavBounce2),
+        AutoDriveCommand(PathStore.autonavBounce3),
+        AutoDriveCommand(PathStore.autonavBounce4))
   }
 }
