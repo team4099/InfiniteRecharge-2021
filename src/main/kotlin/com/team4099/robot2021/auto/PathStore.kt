@@ -75,22 +75,6 @@ object PathStore {
           0.0.meters.perSecond,
           trajectoryConfig)
 
-  val barrelPath =
-      Path(Pose(navPoints["D"]!![2], 0.degrees), Pose(navPoints["B"]!![2], 0.degrees)).apply {
-        addWaypoint(navPoints["C"]!![5])
-        addWaypoint(navPoints["D"]!![6])
-        addWaypoint(navPoints["E"]!![5])
-        addWaypoint(navPoints["D"]!![4])
-        addWaypoint(navPoints["C"]!![5])
-        addWaypoint(navPoints["B"]!![9])
-        addWaypoint(navPoints["A"]!![8])
-        addWaypoint(navPoints["B"]!![7])
-        addWaypoint(navPoints["D"]!![9])
-        addWaypoint(navPoints["E"]!![10])
-        addWaypoint(navPoints["D"]!![11])
-        addWaypoint(navPoints["B"]!![2])
-      }
-
   val galacticSearchARed: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
@@ -309,4 +293,26 @@ object PathStore {
           },
           Constants.Drivetrain.SLOW_AUTO_VEL,
           trajectoryConfig)
+
+  val barrelPath: Trajectory =
+    Trajectory(
+      0.0.meters.perSecond,
+      Path(Pose(navPoints["D"]!![2], 0.degrees), Pose(navPoints["B"]!![2], 0.degrees)).apply {
+        addWaypoint(navPoints["C"]!![5])
+        addWaypoint(navPoints["D"]!![6])
+        addWaypoint(navPoints["E"]!![5])
+        addWaypoint(navPoints["D"]!![4])
+        addWaypoint(navPoints["C"]!![5])
+        addWaypoint(navPoints["B"]!![9])
+        addWaypoint(navPoints["A"]!![8])
+        addWaypoint(navPoints["B"]!![7])
+        addWaypoint(navPoints["D"]!![9])
+        addWaypoint(navPoints["E"]!![10])
+        addWaypoint(navPoints["D"]!![11])
+        addWaypoint(navPoints["B"]!![2])
+      },
+      Constants.Drivetrain.SLOW_AUTO_VEL,
+      trajectoryConfig
+    )
+
 }
