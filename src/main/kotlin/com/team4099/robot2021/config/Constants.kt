@@ -7,6 +7,7 @@ import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.div
+import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.perMinute
@@ -73,12 +74,12 @@ object Constants {
 
     const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
 
-    const val MAX_VEL_METERS_PER_SEC = 4.0
-    const val SLOW_VEL_METERS_PER_SEC = 0.66
-    const val MAX_ACCEL_METERS_PER_SEC_SQ = 2.0
-    const val SLOW_ACCEL_METERS_PER_SEC_SQ = 2.0
+    val MAX_AUTO_VEL = 3.0.meters.perSecond
+    val SLOW_AUTO_VEL = 0.66.meters.perSecond
+    val MAX_AUTO_ACCEL = 2.0.meters.perSecond.perSecond
 
-    const val CENTRIPETAL_ACCEL_METERS_PER_SEC_SQ = 1.0
+    val MAX_AUTO_ANGULAR_VEL = 90.0.degrees.perSecond
+    val MAX_AUTO_ANGULAR_ACCEL = 90.0.degrees.perSecond.perSecond
 
     const val ABSOLUTE_GEAR_RATIO = 1.0
     const val DRIVE_SENSOR_GEAR_RATIO = (12.0 / 21.0) * (15.0 / 45.0)
@@ -103,6 +104,17 @@ object Constants {
       const val DRIVE_KI = 0.0
       const val DRIVE_KD = 0.0
       const val DRIVE_KFF = 0.0
+
+      const val AUTO_POS_KP = 0.0
+      const val AUTO_POS_KI = 0.0
+      const val AUTO_POS_KD = 0.0
+
+      const val DRIVE_THETA_PID_KP = 7.0
+      const val DRIVE_THETA_PID_KI = 0.0
+      const val DRIVE_THETA_PID_KD = 0.0
+      val DRIVE_THETA_PID_MAX_VEL = 0.0.meters.perSecond
+      val DRIVE_THETA_PID_MAX_ACCEL = 0.0.meters.perSecond.perSecond
+
       val DRIVE_KS = 0.0991.volts
       val DRIVE_KV = 2.79.volts / 1.0.meters.perSecond
       val DRIVE_KA = 0.296.volts / 1.0.meters.perSecond.perSecond

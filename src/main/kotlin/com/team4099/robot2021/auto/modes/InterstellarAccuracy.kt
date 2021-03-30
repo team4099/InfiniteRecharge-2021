@@ -16,29 +16,29 @@ class InterstellarAccuracy : SequentialCommandGroup() {
 
     addCommands(
         ShootCommand(),
-        AutoDriveCommand(PathStore.fromGreentoReintroduction),
+        AutoDriveCommand(PathStore.fromGreenToReintroduction),
         IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
             .withTimeout(15.0),
-        AutoDriveCommand(PathStore.fromIntrotoRed),
+        AutoDriveCommand(PathStore.fromIntroToRed),
         ShootCommand(),
-        AutoDriveCommand(PathStore.fromRedtoReintroduction),
+        AutoDriveCommand(PathStore.fromRedToReintroduction),
         IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
             .withTimeout(15.0),
-        AutoDriveCommand(PathStore.fromIntrotoBlue),
+        AutoDriveCommand(PathStore.fromIntroToBlue),
         ShootCommand(),
-        AutoDriveCommand(PathStore.fromBluetoReintroduction),
+        AutoDriveCommand(PathStore.fromBlueToReintroduction),
         IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
             .withTimeout(15.0),
-        AutoDriveCommand(PathStore.fromIntrotoYellow),
+        AutoDriveCommand(PathStore.fromIntroToYellow),
         ShootCommand(),
-        AutoDriveCommand(PathStore.fromYellowtoReintroduction),
+        AutoDriveCommand(PathStore.fromYellowToReintroduction),
         IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
             .withTimeout(15.0),
 
         // Change to most optiable zone
 
         // make it red so less time is spent going to zones?
-        AutoDriveCommand(PathStore.fromIntrotoRed),
+        AutoDriveCommand(PathStore.fromIntroToRed),
         ShootCommand(),
         ShootCommand(),
         ShootCommand())

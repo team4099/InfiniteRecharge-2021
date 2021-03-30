@@ -6,18 +6,15 @@ import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel
 import com.team4099.lib.geometry.Pose
 import com.team4099.lib.geometry.Translation
-import com.team4099.lib.hal.Clock
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.AngularAcceleration
 import com.team4099.lib.units.AngularVelocity
 import com.team4099.lib.units.LinearAcceleration
 import com.team4099.lib.units.LinearVelocity
-import com.team4099.lib.units.base.Time
 import com.team4099.lib.units.base.feet
-import com.team4099.lib.units.base.inSeconds
+import com.team4099.lib.units.base.inFeet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
-import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.cos
 import com.team4099.lib.units.derived.degrees
@@ -30,11 +27,9 @@ import com.team4099.lib.units.inFeetPerSecond
 import com.team4099.lib.units.inMetersPerSecond
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2021.config.Constants
-import edu.wpi.first.wpilibj.controller.RamseteController
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState
-import edu.wpi.first.wpilibj.trajectory.Trajectory
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import kotlin.math.IEEErem
 
@@ -116,40 +111,23 @@ object Drivetrain : SubsystemBase() {
       Translation(
           Constants.Drivetrain.DRIVETRAIN_WIDTH / 2, -Constants.Drivetrain.DRIVETRAIN_LENGTH / 2)
 
-  var swerveDriveKinematics =
+  val swerveDriveKinematics =
       SwerveDriveKinematics(
           frontLeftWheelLocation.translation2d,
           frontRightWheelLocation.translation2d,
           backLeftWheelLocation.translation2d,
           backRightWheelLocation.translation2d)
 
-  private var swerveDriveOdometry =
+  private val swerveDriveOdometry =
       SwerveDriveOdometry(
           swerveDriveKinematics,
           gyroAngle.inRotation2ds,
           Pose(0.meters, 0.meters, 0.degrees).pose2d)
 
-  private var trajDuration = 0.0.seconds
-  private var trajCurTime = 0.0.seconds
-  private var trajStartTime = 0.0.seconds
-
-  private lateinit var lastModuleSpeeds: Array<SwerveModuleState>
-
-  private var pathFollowController = RamseteController()
-  var path: Trajectory = Trajectory(listOf(Trajectory.State()))
-    set(value) {
-      trajDuration = value.totalTimeSeconds.seconds
-      trajStartTime = Clock.fpgaTime
-
-      val initialSample = value.sample(0.0)
-      swerveDriveOdometry.resetPosition(initialSample.poseMeters, -gyroAngle.inRotation2ds)
-      pathFollowController =
-          RamseteController(
-              Constants.Drivetrain.Gains.RAMSETE_B, Constants.Drivetrain.Gains.RAMSETE_ZETA)
-
-      Logger.addEvent("Drivetrain", "Path Following Started")
-
-      field = value
+  var pose: Pose
+    get() = Pose(swerveDriveOdometry.poseMeters)
+    set (value) {
+      swerveDriveOdometry.resetPosition(value.pose2d, gyroAngle.inRotation2ds)
     }
 
   init {
@@ -168,13 +146,19 @@ object Drivetrain : SubsystemBase() {
     //  gyro angle
     Logger.addSource("Drivetrain", "Gyro Angle") { gyroAngle.inDegrees }
 
-    Logger.addSource("Drivetrain", "Path Follow Start Timestamp") { trajStartTime.inSeconds }
-    Logger.addSource("Drivetrain", "Path Follow Duration") { trajDuration.inSeconds }
-    Logger.addSource("Drivetrain", "Path Follow Current Timestamp") { trajCurTime.inSeconds }
-
     //  if gyro is connected boolean
     Logger.addSource("Drivetrain", "Gyro Connected") {}
+
+    Logger.addSource("Drivetrain", "pos x") { pose.x.inFeet }
+    Logger.addSource("Drivetrain", "pos y") { pose.y.inFeet }
+
     zeroDirection()
+
+
+  }
+
+  override fun periodic() {
+    this.updateOdometry()
   }
 
   /**
@@ -277,6 +261,7 @@ object Drivetrain : SubsystemBase() {
     wheels[3].set(wheelAngles[3], wheelSpeeds[3], wheelAccelerations[3])
   }
 
+<<<<<<< HEAD
   fun setOpenLoop(
     angularVelocity: AngularVelocity,
     driveVector: Pair<LinearVelocity, LinearVelocity>,
@@ -325,37 +310,15 @@ object Drivetrain : SubsystemBase() {
   }
 
   fun updateOdometry() {
+=======
+  private fun updateOdometry() {
+>>>>>>> pathfollow
     swerveDriveOdometry.update(
         gyroAngle.inRotation2ds,
-        SwerveModuleState(wheelSpeeds[0].inMetersPerSecond, wheelAngles[0].inRotation2ds),
-        SwerveModuleState(wheelSpeeds[1].inMetersPerSecond, wheelAngles[1].inRotation2ds),
-        SwerveModuleState(wheelSpeeds[2].inMetersPerSecond, wheelAngles[2].inRotation2ds),
-        SwerveModuleState(wheelSpeeds[3].inMetersPerSecond, wheelAngles[3].inRotation2ds))
-  }
-
-  fun updatePathFollowing(timestamp: Time) {
-    trajCurTime = timestamp - trajStartTime
-    val sample = path.sample(trajCurTime.inSeconds)
-
-    val drivetrainSpeeds = pathFollowController.calculate(swerveDriveOdometry.poseMeters, sample)
-    // Note: ChassisSpeeds takes x as forward so it is swapped
-    set(
-        drivetrainSpeeds.omegaRadiansPerSecond.radians.perSecond,
-        Pair(
-            drivetrainSpeeds.vyMetersPerSecond.meters.perSecond,
-            drivetrainSpeeds.vxMetersPerSecond.meters.perSecond),
-        fieldOriented = false)
-  }
-
-  /**
-   * Checks if path following has reached the end of the path.
-   *
-   * @param timestamp The current time. Value originates from Timer.getFPGATimestamp.
-   * @return If path following is finished.
-   */
-  fun isPathFinished(timestamp: Time): Boolean {
-    trajCurTime = timestamp - trajStartTime
-    return trajCurTime > trajDuration
+        SwerveModuleState(wheels[0].driveVelocity.inMetersPerSecond, wheels[0].directionPosition.inRotation2ds),
+        SwerveModuleState(wheels[1].driveVelocity.inMetersPerSecond, wheels[1].directionPosition.inRotation2ds),
+        SwerveModuleState(wheels[2].driveVelocity.inMetersPerSecond, wheels[1].directionPosition.inRotation2ds),
+        SwerveModuleState(wheels[3].driveVelocity.inMetersPerSecond, wheels[3].directionPosition.inRotation2ds))
   }
 
   private fun hypot(a: LinearVelocity, b: LinearVelocity): LinearVelocity {

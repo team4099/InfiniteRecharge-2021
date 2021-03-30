@@ -38,7 +38,7 @@ class Wheel(
   private val driveSpark: CANSparkMax,
   private val encoder: CANCoder,
   private val zeroOffset: Angle,
-  private val label: String
+  val label: String
 ) {
 
   private val directionPID = directionSpark.pidController
@@ -94,6 +94,9 @@ class Wheel(
   val driveVelocity: LinearVelocity
     get() = driveSensor.velocity
 
+  val directionPosition: Angle
+    get() = directionSensor.position
+
   private var speedSetPoint: LinearVelocity = 0.feet.perSecond
   private var accelerationSetPoint: LinearAcceleration = 0.feet.perSecond.perSecond
 
@@ -142,7 +145,9 @@ class Wheel(
         "Drivetrain Tuning",
         "$label Azimuth kP",
         { Constants.Drivetrain.PID.DIRECTION_KP },
-        { newP -> directionPID.p = newP },
+        { newP ->
+          directionPID.p = newP
+        },
         false)
 
     directionPID.p = Constants.Drivetrain.PID.DIRECTION_KP
@@ -233,6 +238,7 @@ class Wheel(
   fun resetModuleZero() {
     encoder.configFactoryDefault()
     encoder.configMagnetOffset(0.0)
+    Logger.addEvent("Drivetrain", "Configuring Zero for Module $label")
     encoder.configMagnetOffset(
         -encoder.absolutePosition - zeroOffset.inDegrees - encoder.configGetMagnetOffset())
     encoder.setPositionToAbsolute()
@@ -242,6 +248,7 @@ class Wheel(
   fun zeroDirection() {
     directionSpark.encoder.position =
         directionSensor.positionToRawUnits(encoder.absolutePosition.degrees + zeroOffset)
+    Logger.addEvent("Drivetrain", "Loading Zero for Module $label")
   }
 
   fun zeroDrive() {

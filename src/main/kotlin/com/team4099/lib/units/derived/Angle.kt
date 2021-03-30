@@ -23,6 +23,9 @@ val Double.degrees: Angle
 val Double.rotations: Angle
   get() = Angle(this * 2 * Math.PI)
 
+val Rotation2d.angle: Angle
+  get() = Angle(this.radians)
+
 val Number.radians: Angle
   get() = toDouble().radians
 
