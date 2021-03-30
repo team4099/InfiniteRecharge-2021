@@ -66,19 +66,19 @@ object Constants {
     val DRIVETRAIN_WIDTH = 22.173.inches
 
     val DRIVE_SETPOINT_MAX = 15.feet.perSecond
-    val TURN_SETPOINT_MAX = 90.degrees.perSecond // TODO: Make sure this value is something good
+    val TURN_SETPOINT_MAX = 360.degrees.perSecond // TODO: Make sure this value is something good
 
     val DIRECTION_VEL_MAX = 900.degrees.perSecond
     val DIRECTION_ACCEL_MAX = 4500.degrees.perSecond.perSecond
 
     const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
 
-    const val MAX_VEL_METERS_PER_SEC = 4.0
-    const val SLOW_VEL_METERS_PER_SEC = 0.66
-    const val MAX_ACCEL_METERS_PER_SEC_SQ = 2.0
-    const val SLOW_ACCEL_METERS_PER_SEC_SQ = 2.0
+    val MAX_AUTO_VEL = 3.0.meters.perSecond
+    val SLOW_AUTO_VEL = 0.66.meters.perSecond
+    val MAX_AUTO_ACCEL = 2.0.meters.perSecond.perSecond
 
-    const val CENTRIPETAL_ACCEL_METERS_PER_SEC_SQ = 1.0
+    val MAX_AUTO_ANGULAR_VEL = 90.0.degrees.perSecond
+    val MAX_AUTO_ANGULAR_ACCEL = 90.0.degrees.perSecond.perSecond
 
     const val ABSOLUTE_GEAR_RATIO = 1.0
     const val DRIVE_SENSOR_GEAR_RATIO = (12.0 / 21.0) * (15.0 / 45.0)
@@ -103,6 +103,17 @@ object Constants {
       const val DRIVE_KI = 0.0
       const val DRIVE_KD = 0.0
       const val DRIVE_KFF = 0.0
+
+      const val AUTO_POS_KP = 0.0
+      const val AUTO_POS_KI = 0.0
+      const val AUTO_POS_KD = 0.0
+
+      const val DRIVE_THETA_PID_KP = 7.0
+      const val DRIVE_THETA_PID_KI = 0.0
+      const val DRIVE_THETA_PID_KD = 0.0
+      val DRIVE_THETA_PID_MAX_VEL = 0.0.meters.perSecond
+      val DRIVE_THETA_PID_MAX_ACCEL = 0.0.meters.perSecond.perSecond
+
       val DRIVE_KS = 0.0991.volts
       val DRIVE_KV = 2.79.volts / 1.0.meters.perSecond
       val DRIVE_KA = 0.296.volts / 1.0.meters.perSecond.perSecond
@@ -142,27 +153,28 @@ object Constants {
     const val SHOOTER_MOTOR_ID = 51
     const val SHOOTER_FOLLOWER_ID = 52
 
-    const val SOLENOID_FORWARD_CHANNEL = 6
-    const val SOLENOID_REVERSE_CHANNEL = 1
+    const val SOLENOID_FORWARD_CHANNEL = 1
+    const val SOLENOID_REVERSE_CHANNEL = 6
 
-    val TARGET_VELOCITY = 0.rotations.perMinute
-    val VELOCITY_TOLERANCE = 60.rotations.perMinute
+    val VELOCITY_TOLERANCE = 100.rotations.perMinute
 
-    const val SHOOTER_KS = 0.0
-    const val SHOOTER_KV = 0.0
+    const val SHOOTER_KS = 0.939
+    const val SHOOTER_KV = 0.114
 
-    const val SHOOTER_KP = 0.0
+    const val SHOOTER_KP = 0.5
     const val SHOOTER_KI = 0.0
     const val SHOOTER_KD = 0.0
 
-    val LINE_VELOCITY = 4600.0.rotations.perMinute
-    val NEAR_VELOCITY = 4700.0.rotations.perMinute
-    val MID_VELOCITY = 5300.0.rotations.perMinute
-    val FAR_VELOCITY = 5700.0.rotations.perMinute
+    val NEAR_VELOCITY = 1500.0.rotations.perMinute
+    val LINE_VELOCITY = 2750.0.rotations.perMinute
+    val MID_VELOCITY = 2950.0.rotations.perMinute
+    val FAR_VELOCITY = 3500.0.rotations.perMinute
 
     val LINE_DISTANCE = 100.0.inches
     val NEAR_DISTANCE = 130.0.inches
     val MID_DISTANCE = 249.0.inches
+
+    val POWER_CELL_CHALLENGE_RPM = 3000.rotations.perMinute
 
     // val HOOD_THRESHOLD = 0.0.inches
 
@@ -182,17 +194,17 @@ object Constants {
     val CAMERA_DIST_THRESHOLD = 55.0.inches
 
     val MAX_DIST_ERROR = 0.1.inches
-    val MAX_ANGLE_ERROR = 1.0.degrees
+    val MAX_ANGLE_ERROR = 2.0.degrees
 
-    const val MIN_TURN_COMMAND = 0.0
+    const val MIN_TURN_COMMAND = 30.0
 
     object TurnGains {
-      const val KP = 0.0
+      const val KP = 10.0
       const val KI = 0.0
-      const val KD = 0.0
+      const val KD = 0.46
 
-      val MAX_VELOCITY = 0.0.degrees.perSecond
-      val MAX_ACCEL = 0.0.degrees.perSecond.perSecond
+      val MAX_VELOCITY = 90.0.degrees.perSecond
+      val MAX_ACCEL = 450.0.degrees.perSecond.perSecond
     }
   }
 

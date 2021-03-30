@@ -20,8 +20,10 @@ object ControlBoard {
   val turn: Double
     get() = driver.rightXAxis
 
-  // val sampleClimberVelocity: Double
-  //  get() = operator.leftTriggerAxis - operator.rightTriggerAxis
+  val resetGyro = Trigger { driver.startButton && driver.selectButton }
+
+  val sampleClimberVelocity: Double
+    get() = operator.leftTriggerAxis - operator.rightTriggerAxis
 
   // val wristVertical: Boolean
   //  get() = operator.leftShoulderButton
@@ -32,8 +34,8 @@ object ControlBoard {
   // val enableVisionAlignment: Boolean
   //  get() = driver.aButton
 
-  val runIntakeIn = Trigger { operator.aButton }
-  val runIntakeOut = Trigger { operator.bButton }
+  val runIntakeIn = Trigger { driver.aButton }
+  val runIntakeOut = Trigger { driver.bButton }
 
   // val slowMode: Boolean
   // get() = driver.dPadDown
@@ -41,10 +43,16 @@ object ControlBoard {
   val runFeederIn = Trigger { operator.dPadDown }
   val runFeederOut = Trigger { operator.dPadUp }
 
-  val shoot = Trigger { operator.xButton }
-  val stopShooting = Trigger { operator.yButton }
-  val spinUpShooter = Trigger { operator.dPadRight }
+  val shoot = Trigger { driver.xButton }
+  //  val stopShooting = Trigger { operator.yButton }
+  //  val spinUpShooter = Trigger { operator.dPadRight }
+  //  val visionButton = Trigger { driver.aButton }
 
   // val climberHigh = Trigger { driver.dPadUp }
   // val climberLow = Trigger { driver.dPadDown }
+
+  val nearSpin = Trigger { operator.aButton }
+  val lineSpin = Trigger { operator.bButton }
+  val midSpin = Trigger { operator.yButton }
+  val farSpin = Trigger { operator.xButton }
 }

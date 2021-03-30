@@ -2,12 +2,12 @@ package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
-import com.team4099.robot2021.auto.DriveCharacterizeCommand
-import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
+import com.team4099.robot2021.auto.modes.AutoNavBounceMode
+import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
+import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.commands.feeder.FeederSerialize
 import com.team4099.robot2021.commands.intake.IntakeCommand
-import com.team4099.robot2021.commands.shooter.ShootCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.shooter.SpinUpCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
@@ -17,11 +17,11 @@ import com.team4099.robot2021.subsystems.Drivetrain
 import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2021.subsystems.Shooter
+import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
 import kotlin.math.pow
 
 object Robot : TimedRobot() {
@@ -42,13 +42,15 @@ object Robot : TimedRobot() {
     Logger.startLogging()
 
     // Link between feeder Trigger and Command
-    Feeder.defaultCommand = FeederSerialize()
-    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_FLOOR))
+    //    Feeder.defaultCommand = FeederSerialize()
+    Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
+    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_ALL))
     ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
 
     Intake.defaultCommand =
         IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
     ControlBoard.runIntakeIn
+        //        .whileActiveContinuous(FeederSerialize())
         .whileActiveContinuous(
             IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
                 .alongWith(FeederSerialize()))
@@ -64,18 +66,37 @@ object Robot : TimedRobot() {
     //        .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
 
     Shooter.defaultCommand = ShooterIdleCommand()
-    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
-    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
-    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
+    //    Shooter.defaultCommand = SpinUpCommand()
+    //    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
+    //    ControlBoard.shoot.whileActiveOnce(VisionCommand().andThen(ShootCommand()))
+    ControlBoard.shoot.whileActiveOnce(VisionCommand())
+    //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
+    //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 
     Drivetrain.defaultCommand =
-        TeleopDriveCommand(
+        OpenLoopDriveCommand(
             { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
+
+    ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
+
+    //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
+
+    //    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
+
+    ControlBoard.nearSpin
+        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.NEAR))
+    ControlBoard.lineSpin
+        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.LINE))
+    ControlBoard.midSpin
+        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.MID))
+    ControlBoard.farSpin
+        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.FAR))
   }
 
-  private val autonomousCommand = DriveCharacterizeCommand()
+  // private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchARed)
+  private val autonomousCommand = AutoNavBounceMode()
 
   override fun autonomousInit() {
     autonomousCommand.schedule()

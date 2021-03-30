@@ -2,203 +2,317 @@ package com.team4099.robot2021.auto
 
 import com.team4099.lib.geometry.Pose
 import com.team4099.lib.geometry.Translation
+import com.team4099.lib.pathfollow.Path
+import com.team4099.lib.pathfollow.Trajectory
+import com.team4099.lib.pathfollow.TrajectoryConfig
 import com.team4099.lib.units.base.feet
 import com.team4099.lib.units.base.inches
+import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.degrees
+import com.team4099.lib.units.derived.radians
+import com.team4099.lib.units.perSecond
 import com.team4099.lib.units.step
 import com.team4099.robot2021.config.Constants
-import com.team4099.robot2021.subsystems.Drivetrain
-import edu.wpi.first.wpilibj.geometry.Pose2d
-import edu.wpi.first.wpilibj.geometry.Rotation2d
-import edu.wpi.first.wpilibj.trajectory.Trajectory
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator
-import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstraint
 
 object PathStore {
-  private val centripetalConstraint =
-      CentripetalAccelerationConstraint(Constants.Drivetrain.CENTRIPETAL_ACCEL_METERS_PER_SEC_SQ)
-
-  private val config: TrajectoryConfig =
+  private val trajectoryConfig =
       TrajectoryConfig(
-              Constants.Drivetrain.MAX_VEL_METERS_PER_SEC,
-              Constants.Drivetrain.MAX_ACCEL_METERS_PER_SEC_SQ)
-          .setKinematics(Drivetrain.swerveDriveKinematics)
-          .addConstraint(centripetalConstraint)
+          Constants.Drivetrain.MAX_AUTO_VEL,
+          Constants.Drivetrain.MAX_AUTO_ACCEL,
+          Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL,
+          Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)
 
-  private val slowConfig: TrajectoryConfig =
-      TrajectoryConfig(
-              Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-              Constants.Drivetrain.SLOW_ACCEL_METERS_PER_SEC_SQ)
-          .setKinematics(Drivetrain.swerveDriveKinematics)
-          .addConstraint(centripetalConstraint)
-
-  private val reversedConfig: TrajectoryConfig =
-      TrajectoryConfig(
-              Constants.Drivetrain.MAX_VEL_METERS_PER_SEC,
-              Constants.Drivetrain.MAX_ACCEL_METERS_PER_SEC_SQ)
-          .setKinematics(Drivetrain.swerveDriveKinematics)
-          .setReversed(true)
-
-  private val slowReversedConfig: TrajectoryConfig =
-      TrajectoryConfig(
-              Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC,
-              Constants.Drivetrain.SLOW_ACCEL_METERS_PER_SEC_SQ)
-          .setKinematics(Drivetrain.swerveDriveKinematics)
-          .setReversed(true)
-
-  val driveForward: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          Pose2d(0.0, 0.0, Rotation2d(0.0)),
-          listOf(),
-          Pose2d(1.0, 0.0, Rotation2d(0.0)),
-          config.setStartVelocity(0.0).setEndVelocity(0.0))
+  private val initLinePowerPort = Pose(3.627.meters, (-2.429).meters, 0.0.radians)
+  private val initLineFarTrench = Pose(3.627.meters, (-6.824).meters, 0.0.radians)
+  private val nearTrenchEdge = Pose(5.0.meters, (-0.869).meters, 0.0.radians)
+  private val nearTrenchEnd = Pose(7.5.meters, (-0.869).meters, 0.0.radians)
+  private val farTrench = Pose(5.794.meters, (-7.243).meters, (-20.0).radians)
+  private val rendezvousPoint2Balls = Pose(5.878.meters, (-2.755).meters, (-20.0).radians)
 
   private val navPoints =
       mapOf(
-          "A" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(2.5.feet, x) },
-          "B" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(5.feet, x) },
-          "C" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(7.5.feet, x) },
-          "D" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(10.feet, x) },
-          "E" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(12.5.feet, x) })
-
-  private val initLinePowerPort = Pose2d(3.627, -2.429, Rotation2d(0.0))
-  private val initLineFarTrench = Pose2d(3.627, -6.824, Rotation2d(0.0))
-  private val nearTrenchEdge = Pose2d(5.0, -0.869, Rotation2d(0.0))
-  private val nearTrenchEnd = Pose2d(7.5, -0.869, Rotation2d(0.0))
-  private val farTrench = Pose2d(5.794, -7.243, Rotation2d(-20.0))
-  private val rendezvousPoint2Balls = Pose2d(5.878, -2.755, Rotation2d(-20.0))
+          "A" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 2.5.feet) },
+          "B" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 5.feet) },
+          "C" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 7.5.feet) },
+          "D" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 10.feet) },
+          "E" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 12.5.feet) })
 
   private val reintroductionZone =
-      Pose(navPoints["C"]!![10] + Translation(15.inches, 0.feet), 0.degrees).pose2d
-  private val green = Pose(navPoints["C"]!![2] + Translation(15.inches, 0.feet), 0.degrees).pose2d
-  private val yellow = Pose(navPoints["C"]!![5] + Translation(15.inches, 0.feet), 0.degrees).pose2d
-  private val red = Pose(navPoints["C"]!![8] + Translation(15.inches, 0.feet), 0.degrees).pose2d
-  private val blue = Pose(navPoints["C"]!![6] + Translation(15.inches, 0.feet), 0.degrees).pose2d
+      Pose(navPoints["C"]!![10] + Translation(15.inches, 0.feet), 0.degrees)
+  private val green = Pose(navPoints["C"]!![2] + Translation(15.inches, 0.feet), 0.degrees)
+  private val yellow = Pose(navPoints["C"]!![5] + Translation(15.inches, 0.feet), 0.degrees)
+  private val red = Pose(navPoints["C"]!![8] + Translation(15.inches, 0.feet), 0.degrees)
+  private val blue = Pose(navPoints["C"]!![6] + Translation(15.inches, 0.feet), 0.degrees)
+
+  val driveForward =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(Pose(0.meters, 0.meters, 0.degrees), Pose(1.meters, 0.meters, 0.degrees)),
+          0.0.meters.perSecond,
+          trajectoryConfig)
+
+  val driveBackwards =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(Pose(1.meters, 0.meters, 0.degrees), Pose(0.meters, 0.meters, 0.degrees)),
+          0.0.meters.perSecond,
+          trajectoryConfig)
+
+  val driveForwardRotation =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(Pose(0.meters, 0.meters, 0.degrees), Pose(1.meters, 0.meters, 90.degrees)),
+          0.0.meters.perSecond,
+          trajectoryConfig)
+
+  // use this default path if no path was chosen
+  val galacticSearchMoveBack: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(
+              Pose(navPoints["C"]!![1], 0.degrees),
+              Pose(navPoints["C"]!![1] - Translation(15.inches, 0.feet), 0.degrees)),
+          0.0.meters.perSecond,
+          trajectoryConfig)
 
   val galacticSearchARed: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
-          listOf(
-              navPoints["C"]!![3].translation2d,
-              navPoints["D"]!![5].translation2d,
-              navPoints["A"]!![6].translation2d),
-          Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC))
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(Pose(navPoints["B"]!![1], 0.degrees), Pose(navPoints["B"]!![11], 180.degrees))
+              .apply {
+            addWaypoint(navPoints["B"]!![3], 0.degrees)
+            addWaypoint(navPoints["D"]!![5], 90.degrees)
+            addWaypoint(navPoints["B"]!![7])
+            build()
+          },
+          0.0.meters.perSecond,
+          trajectoryConfig)
 
   val galacticSearchABlue: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
-          listOf(
-              navPoints["B"]!![3].translation2d,
-              navPoints["D"]!![5].translation2d,
-              navPoints["B"]!![7].translation2d),
-          Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC))
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["C"]!![11], 0.degrees)).apply {
+            addWaypoint(navPoints["E"]!![6])
+            addWaypoint(navPoints["B"]!![7])
+            addWaypoint(navPoints["C"]!![9])
+            build()
+          },
+          0.0.meters.perSecond,
+          trajectoryConfig)
 
   val galacticSearchBRed: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          Pose(navPoints["C"]!![1] + Translation(15.inches, 0.feet), 0.degrees).pose2d,
-          listOf(
-              navPoints["D"]!![6].translation2d,
-              navPoints["B"]!![8].translation2d,
-              navPoints["D"]!![10].translation2d),
-          Pose(navPoints["C"]!![11] - Translation(15.inches, 0.feet), 0.degrees).pose2d,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC))
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(Pose(navPoints["B"]!![1], 0.degrees), Pose(navPoints["B"]!![11], 0.degrees)).apply {
+            addWaypoint(navPoints["B"]!![3])
+            addWaypoint(navPoints["D"]!![5])
+            addWaypoint(navPoints["B"]!![7])
+            build()
+          },
+          0.0.meters.perSecond,
+          trajectoryConfig)
+
+  val galacticSearchBBlue: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(Pose(navPoints["E"]!![1], 0.degrees), Pose(navPoints["D"]!![11], 0.degrees)).apply {
+            addWaypoint(navPoints["D"]!![6])
+            addWaypoint(navPoints["B"]!![8])
+            addWaypoint(navPoints["D"]!![10])
+            build()
+          },
+          0.0.meters.perSecond,
+          trajectoryConfig)
 
   val toNearTrench: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          initLinePowerPort,
-          listOf(),
-          nearTrenchEdge,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC))
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(initLinePowerPort, nearTrenchEdge),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
 
   val intakeInNearTrench: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          nearTrenchEdge,
-          listOf(),
-          nearTrenchEnd,
-          slowConfig.setStartVelocity(Constants.Drivetrain.SLOW_VEL_METERS_PER_SEC)
-              .setEndVelocity(0.0))
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(nearTrenchEdge, nearTrenchEnd),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
 
   val fromNearTrench: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          nearTrenchEnd,
-          listOf(),
-          initLinePowerPort,
-          reversedConfig.setStartVelocity(0.0).setEndVelocity(0.0))
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(nearTrenchEnd, initLinePowerPort),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
 
   val toFarTrench: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          initLineFarTrench, listOf(), farTrench, config.setStartVelocity(0.0).setEndVelocity(0.0))
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(initLineFarTrench, farTrench),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
 
   val fromFarTrench: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          farTrench,
-          listOf(),
-          initLinePowerPort,
-          reversedConfig.setStartVelocity(0.0).setEndVelocity(0.0))
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(farTrench, initLinePowerPort),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
 
-  val toRendezvousPoint2Balls: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          initLinePowerPort,
-          listOf(),
-          rendezvousPoint2Balls,
-          config.setStartVelocity(0.0).setEndVelocity(0.0))
+  val toRendezvousPoint2Balls =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(initLinePowerPort, rendezvousPoint2Balls),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
 
-  val fromRendezvousPoint2BallsToPowerPort: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          rendezvousPoint2Balls,
-          listOf(),
-          initLinePowerPort,
-          reversedConfig.setStartVelocity(0.0).setEndVelocity(0.0))
+  val fromRendezvousPoint2Balls =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(rendezvousPoint2Balls, initLinePowerPort),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
 
-  val fromGreentoReintroduction: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          green, listOf(), reintroductionZone, config.setStartVelocity(0.0).setEndVelocity(0.0))
+  val fromGreenToReintroduction =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(green, reintroductionZone),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
 
-  val fromYellowtoReintroduction: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          yellow, listOf(), reintroductionZone, config.setStartVelocity(0.0).setEndVelocity(0.0))
-  val fromBluetoReintroduction: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          blue,
-          listOf(navPoints["C"]!![6].translation2d),
-          reintroductionZone,
-          config.setStartVelocity(0.0).setEndVelocity(0.0))
+  val fromYellowToReintroduction =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(yellow, reintroductionZone),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
 
-  val fromRedtoReintroduction: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          red,
-          listOf(navPoints["C"]!![8].translation2d),
-          reintroductionZone,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC))
+  val fromBlueToReintroduction =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(blue, reintroductionZone),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
 
-  val fromIntrotoGreen: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          reintroductionZone,
-          listOf(navPoints["C"]!![10].translation2d),
-          green,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC))
+  val fromRedToReintroduction =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(red, reintroductionZone),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
 
-  val fromIntrotoYellow: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          reintroductionZone,
-          listOf(navPoints["C"]!![10].translation2d),
-          yellow,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC))
+  val fromIntroToGreen =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(reintroductionZone, green),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
 
-  val fromIntrotoBlue: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          reintroductionZone,
-          listOf(navPoints["C"]!![10].translation2d),
-          blue,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC))
+  val fromIntroToYellow =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(reintroductionZone, yellow),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
 
-  val fromIntrotoRed: Trajectory =
-      TrajectoryGenerator.generateTrajectory(
-          reintroductionZone,
-          listOf(navPoints["C"]!![10].translation2d),
-          red,
-          config.setStartVelocity(0.0).setEndVelocity(Constants.Drivetrain.MAX_VEL_METERS_PER_SEC))
+  val fromIntroToBlue =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(reintroductionZone, blue),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
+
+  val fromIntroToRed =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(reintroductionZone, red),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
+
+  val autonavBounce1: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["A"]!![3], 0.degrees)).apply {
+            addWaypoint(navPoints["C"]!![2], 0.degrees)
+            build()
+          },
+          0.0.meters.perSecond,
+          trajectoryConfig)
+
+  val autonavBounce2: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(Pose(navPoints["A"]!![3], 0.degrees), Pose(navPoints["A"]!![6], 0.degrees)).apply {
+            addWaypoint(navPoints["D"]!![4])
+            addWaypoint(navPoints["E"]!![5])
+            addWaypoint(navPoints["D"]!![6])
+            build()
+          },
+          0.0.meters.perSecond,
+          trajectoryConfig)
+
+  val autonavBounce3: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(Pose(navPoints["A"]!![6], 0.degrees), Pose(navPoints["A"]!![9], 0.degrees)).apply {
+            addWaypoint(navPoints["D"]!![6])
+            addWaypoint(navPoints["E"]!![7])
+            addWaypoint(navPoints["E"]!![8])
+            addWaypoint(navPoints["D"]!![9])
+            build()
+          },
+          0.0.meters.perSecond,
+          trajectoryConfig)
+
+  val autonavBounce4: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(Pose(navPoints["A"]!![9], 0.degrees), Pose(navPoints["C"]!![11], 0.degrees)).apply {
+            addWaypoint(navPoints["C"]!![10])
+            build()
+          },
+          0.0.meters.perSecond,
+          trajectoryConfig)
+
+  val slalomPath: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(
+                  Pose(navPoints["E"]!![2] - Translation(15.inches, 0.feet), 0.degrees),
+                  Pose(navPoints["C"]!![1], 0.degrees))
+              .apply {
+            addWaypoint(navPoints["D"]!![3])
+            addWaypoint(navPoints["C"]!![6])
+            addWaypoint(navPoints["D"]!![9])
+            addWaypoint(navPoints["E"]!![10])
+            addWaypoint(navPoints["D"]!![11])
+            addWaypoint(navPoints["C"]!![10])
+            addWaypoint(navPoints["D"]!![9])
+            addWaypoint(navPoints["E"]!![6])
+            addWaypoint(navPoints["D"]!![3])
+            build()
+          },
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
+
+  val barrelPath: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(Pose(navPoints["D"]!![2], 0.degrees), Pose(navPoints["B"]!![2], 0.degrees)).apply {
+            addWaypoint(navPoints["C"]!![5])
+            addWaypoint(navPoints["D"]!![6])
+            addWaypoint(navPoints["E"]!![5])
+            addWaypoint(navPoints["D"]!![4])
+            addWaypoint(navPoints["C"]!![5])
+            addWaypoint(navPoints["B"]!![9])
+            addWaypoint(navPoints["A"]!![8])
+            addWaypoint(navPoints["B"]!![7])
+            addWaypoint(navPoints["D"]!![9])
+            addWaypoint(navPoints["E"]!![10])
+            addWaypoint(navPoints["D"]!![11])
+            addWaypoint(navPoints["B"]!![2])
+            build()
+          },
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
 }

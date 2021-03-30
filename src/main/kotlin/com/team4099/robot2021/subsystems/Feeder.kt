@@ -103,9 +103,12 @@ object Feeder : SubsystemBase() {
     floorMotor.configFactoryDefault()
     verticalMotor.configFactoryDefault()
 
+    floorMotor.enableVoltageCompensation(true)
+    verticalMotor.enableVoltageCompensation(true)
+
     floorMotor.configContinuousCurrentLimit(20, 10)
     floorMotor.enableCurrentLimit(true)
-    verticalMotor.configContinuousCurrentLimit(20, 10)
+    verticalMotor.configContinuousCurrentLimit(40, 10)
     verticalMotor.enableCurrentLimit(true)
   }
 }
