@@ -154,7 +154,6 @@ object Drivetrain : SubsystemBase() {
 
     zeroDirection()
 
-
   }
 
   override fun periodic() {
@@ -261,7 +260,6 @@ object Drivetrain : SubsystemBase() {
     wheels[3].set(wheelAngles[3], wheelSpeeds[3], wheelAccelerations[3])
   }
 
-<<<<<<< HEAD
   fun setOpenLoop(
     angularVelocity: AngularVelocity,
     driveVector: Pair<LinearVelocity, LinearVelocity>,
@@ -309,10 +307,7 @@ object Drivetrain : SubsystemBase() {
     wheels[3].setOpenLoop(wheelAngles[3], wheelSpeeds[3] / Constants.Drivetrain.DRIVE_SETPOINT_MAX)
   }
 
-  fun updateOdometry() {
-=======
   private fun updateOdometry() {
->>>>>>> pathfollow
     swerveDriveOdometry.update(
         gyroAngle.inRotation2ds,
         SwerveModuleState(wheels[0].driveVelocity.inMetersPerSecond, wheels[0].directionPosition.inRotation2ds),
