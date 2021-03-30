@@ -310,10 +310,14 @@ object Drivetrain : SubsystemBase() {
   private fun updateOdometry() {
     swerveDriveOdometry.update(
         gyroAngle.inRotation2ds,
-        SwerveModuleState(wheels[0].driveVelocity.inMetersPerSecond, wheels[0].directionPosition.inRotation2ds),
-        SwerveModuleState(wheels[1].driveVelocity.inMetersPerSecond, wheels[1].directionPosition.inRotation2ds),
-        SwerveModuleState(wheels[2].driveVelocity.inMetersPerSecond, wheels[1].directionPosition.inRotation2ds),
-        SwerveModuleState(wheels[3].driveVelocity.inMetersPerSecond, wheels[3].directionPosition.inRotation2ds))
+        SwerveModuleState(wheels[0].driveVelocity.inMetersPerSecond,
+          wheels[0].directionPosition.inRotation2ds),
+        SwerveModuleState(wheels[1].driveVelocity.inMetersPerSecond,
+          wheels[1].directionPosition.inRotation2ds),
+        SwerveModuleState(wheels[2].driveVelocity.inMetersPerSecond,
+          wheels[1].directionPosition.inRotation2ds),
+        SwerveModuleState(wheels[3].driveVelocity.inMetersPerSecond,
+          wheels[3].directionPosition.inRotation2ds))
   }
 
   private fun hypot(a: LinearVelocity, b: LinearVelocity): LinearVelocity {

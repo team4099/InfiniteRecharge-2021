@@ -6,22 +6,23 @@ import com.team4099.robot2021.auto.PathStore
 import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
 import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
-import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.commands.feeder.FeederSerialize
 import com.team4099.robot2021.commands.intake.IntakeCommand
-import com.team4099.robot2021.commands.shooter.ShootCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.shooter.SpinUpCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
-import com.team4099.robot2021.subsystems.*
+import com.team4099.robot2021.subsystems.Drivetrain
+import com.team4099.robot2021.subsystems.Feeder
+import com.team4099.robot2021.subsystems.Intake
+import com.team4099.robot2021.subsystems.Shooter
+import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
 import kotlin.math.pow
 
 object Robot : TimedRobot() {
