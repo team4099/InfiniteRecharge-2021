@@ -22,6 +22,13 @@ object PathStore {
           Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL,
           Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)
 
+  private val slowTrajectoryConfig =
+    TrajectoryConfig(
+      Constants.Drivetrain.SLOW_AUTO_VEL,
+      Constants.Drivetrain.MAX_AUTO_ACCEL,
+      Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL,
+      Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)
+
   private val initLinePowerPort = Pose(3.627.meters, (-2.429).meters, 0.0.radians)
   private val initLineFarTrench = Pose(3.627.meters, (-6.824).meters, 0.0.radians)
   private val nearTrenchEdge = Pose(5.0.meters, (-0.869).meters, 0.0.radians)
@@ -293,9 +300,9 @@ object PathStore {
             build()
           },
           Constants.Drivetrain.SLOW_AUTO_VEL,
-          trajectoryConfig)
+          slowTrajectoryConfig)
 
-  val barrelPath: Trajectory =
+  /*val barrelPath: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
           Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["B"]!![2], 0.degrees)).apply {
@@ -316,5 +323,5 @@ object PathStore {
             build()
           },
           Constants.Drivetrain.SLOW_AUTO_VEL,
-          trajectoryConfig)
+          trajectoryConfig)*/
 }
