@@ -100,9 +100,9 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
 
     // Calculate feedback velocities (based on position error).
     val xFeedback =
-        xPID.calculate(Drivetrain.pose.x.inMeters, desiredState.pose.x.inMeters).meters.perSecond
+        - xPID.calculate(Drivetrain.pose.x.inMeters, desiredState.pose.x.inMeters).meters.perSecond
     val yFeedback =
-        yPID.calculate(Drivetrain.pose.y.inMeters, desiredState.pose.y.inMeters).meters.perSecond
+        - yPID.calculate(Drivetrain.pose.y.inMeters, desiredState.pose.y.inMeters).meters.perSecond
 
     val xAccel = desiredState.linearAcceleration * desiredState.curvature.cos
     val yAccel = desiredState.linearAcceleration * desiredState.curvature.sin
