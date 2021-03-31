@@ -102,7 +102,7 @@ fun ctreLinearMechanismSensor(
 ): LinearMechanismSensor {
   return LinearMechanismSensor(
       diameter,
-      ratio * sensorCpr,
+      ratio / sensorCpr,
       Timescale.CTRE,
       { controller.selectedSensorPosition.toDouble() },
       { controller.selectedSensorVelocity.toDouble() })

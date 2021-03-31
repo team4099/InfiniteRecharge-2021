@@ -3,15 +3,8 @@ package com.team4099.robot2021.commands.drivetrain
 import com.team4099.lib.hal.Clock
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.pathfollow.Trajectory
-import com.team4099.lib.units.base.inMeters
-import com.team4099.lib.units.base.inSeconds
-import com.team4099.lib.units.base.meters
-import com.team4099.lib.units.base.seconds
-import com.team4099.lib.units.derived.cos
-import com.team4099.lib.units.derived.degrees
-import com.team4099.lib.units.derived.inRadians
-import com.team4099.lib.units.derived.radians
-import com.team4099.lib.units.derived.sin
+import com.team4099.lib.units.base.*
+import com.team4099.lib.units.derived.*
 import com.team4099.lib.units.inRadiansPerSecond
 import com.team4099.lib.units.inRadiansPerSecondPerSecond
 import com.team4099.lib.units.perSecond
@@ -82,6 +75,10 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
           yPID.d = newD
         },
         false)
+    Logger.addSource("Drivetrain Tuning","desired x"){trajectory.sample(trajCurTime).pose.x.inFeet}
+    Logger.addSource("Drivetrain Tuning","desired y"){trajectory.sample(trajCurTime).pose.y.inFeet}
+
+    Logger.addSource("Drivetrain Tuning","desired theta"){trajectory.sample(trajCurTime).pose.theta.inDegrees}
 
     thetaPID.enableContinuousInput(-PI, PI)
   }

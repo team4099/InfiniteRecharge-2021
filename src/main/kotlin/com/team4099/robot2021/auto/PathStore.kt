@@ -54,14 +54,14 @@ object PathStore {
   val driveForward =
       Trajectory(
           0.0.meters.perSecond,
-          Path(Pose(0.meters, 0.meters, 0.degrees), Pose(1.meters, 0.meters, 0.degrees)),
+          Path(Pose(0.meters, 0.meters, 0.degrees), Pose(5.feet, 0.meters, 0.degrees)),
           0.0.meters.perSecond,
           trajectoryConfig)
 
   val driveBackwards =
       Trajectory(
           0.0.meters.perSecond,
-          Path(Pose(1.meters, 0.meters, 0.degrees), Pose(0.meters, 0.meters, 0.degrees)),
+          Path(Pose(5.feet, 0.meters, 0.degrees), Pose(0.meters, 0.meters, 0.degrees)),
           0.0.meters.perSecond,
           trajectoryConfig)
 
@@ -288,22 +288,25 @@ object PathStore {
                   Pose(navPoints["E"]!![2] - Translation(15.inches, 0.feet), 0.degrees),
                   Pose(navPoints["C"]!![1], 0.degrees))
               .apply {
-            addWaypoint(navPoints["E"]!![3] - Translation(30.inches, 0.feet))
-            addWaypoint(navPoints["D"]!![3])
-            addWaypoint(navPoints["C"]!![4])
-            addWaypoint(navPoints["B"]!![6] - Translation(0.feet,15.inches))
-            addWaypoint(navPoints["C"]!![8])
-            addWaypoint(navPoints["D"]!![9])
+            // addWaypoint(navPoints["E"]!![3] - Translation(30.inches, 0.feet))
+            //first intersection
+            // addWaypoint(navPoints["D"]!![3])
+            addWaypoint(navPoints["E"]!![3])
+            addWaypoint(navPoints["C"]!![3])
+//            addWaypoint(navPoints["C"]!![4])
+            // addWaypoint(navPoints["B"]!![6] - Translation(0.feet,15.inches))
+            addWaypoint(navPoints["C"]!![9])
+            addWaypoint(navPoints["E"]!![9])
             // top left of right circle
             // addWaypoint(navPoints["D"]!![9] - Translation(30.inches,30.inches))
-            addWaypoint(navPoints["E"]!![10])
-            addWaypoint(navPoints["D"]!![11])
-            addWaypoint(navPoints["C"]!![10])
-            addWaypoint(navPoints["D"]!![9])
-            addWaypoint(navPoints["E"]!![8])
-            addWaypoint(navPoints["E"]!![6])
-            addWaypoint(navPoints["E"]!![4])
-            addWaypoint(navPoints["D"]!![3])
+            addWaypoint(navPoints["E"]!![11] - Translation(30.inches, 0.feet))
+//            addWaypoint(navPoints["D"]!![11] - Translation(30.inches, 0.feet))
+            addWaypoint(navPoints["C"]!![11] - Translation(30.inches, 0.feet))
+            addWaypoint(navPoints["C"]!![9])
+            addWaypoint(navPoints["E"]!![9])
+            // addWaypoint(navPoints["E"]!![6])
+            addWaypoint(navPoints["E"]!![3])
+            // addWaypoint(navPoints["D"]!![3])
             addWaypoint(navPoints["C"]!![3] - Translation(30.inches,0.feet))
             build()
           },

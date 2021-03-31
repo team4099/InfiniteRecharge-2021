@@ -11,10 +11,7 @@ import com.team4099.lib.units.AngularMechanismSensor
 import com.team4099.lib.units.LinearAcceleration
 import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.Timescale
-import com.team4099.lib.units.base.Length
-import com.team4099.lib.units.base.feet
-import com.team4099.lib.units.base.inches
-import com.team4099.lib.units.base.meters
+import com.team4099.lib.units.base.*
 import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.ElectricalPotential
 import com.team4099.lib.units.derived.degrees
@@ -140,6 +137,8 @@ class Wheel(
 
     Logger.addSource("$label Drivetrain", "Drive SetPoint") { speedSetPoint.inFeetPerSecond }
     Logger.addSource("$label Drivetrain", "Direction SetPoint") { directionSetPoint.inDegrees }
+
+    Logger.addSource("$label Drivetrain", "Drive Position") { driveSensor.position.inFeet }
 
     Logger.addSource(
         "Drivetrain Tuning",
