@@ -298,19 +298,21 @@ object PathStore {
   val barrelPath: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
-          Path(Pose(navPoints["D"]!![2], 0.degrees), Pose(navPoints["B"]!![2], 0.degrees)).apply {
+          Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["B"]!![2], 0.degrees)).apply {
             addWaypoint(navPoints["C"]!![5])
             addWaypoint(navPoints["D"]!![6])
             addWaypoint(navPoints["E"]!![5])
             addWaypoint(navPoints["D"]!![4])
             addWaypoint(navPoints["C"]!![5])
+            addWaypoint(navPoints["C"]!![7])
             addWaypoint(navPoints["B"]!![9])
-            addWaypoint(navPoints["A"]!![8])
+            addWaypoint(navPoints["A"]!![8] - Translation(0.inches, 30.inches))
             addWaypoint(navPoints["B"]!![7])
-            addWaypoint(navPoints["D"]!![9])
+            addWaypoint(navPoints["D"]!![7])
             addWaypoint(navPoints["E"]!![10])
             addWaypoint(navPoints["D"]!![11])
-            addWaypoint(navPoints["B"]!![2])
+            addWaypoint(navPoints["C"]!![10])
+            addWaypoint(navPoints["C"]!![7])
             build()
           },
           Constants.Drivetrain.SLOW_AUTO_VEL,
