@@ -11,7 +11,7 @@ object Intake : SubsystemBase() {
 
   private val intakeTalon = TalonFX(Constants.Intake.INTAKE_MOTOR)
   private val intakeDoubleSolenoid =
-      DoubleSolenoid(Constants.Intake.ARM_SOLENOID_PORT_1, Constants.Intake.ARM_SOLENOID_PORT_2)
+      DoubleSolenoid(Constants.Intake.ARM_SOLENOID_FORWARD, Constants.Intake.ARM_SOLENOID_REVERSE)
 
   var intakeState = Constants.Intake.IntakeState.DEFAULT
     set(value) {

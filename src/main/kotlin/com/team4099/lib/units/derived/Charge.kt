@@ -35,65 +35,65 @@ val Double.coulombs
 val Number.coulombs
   get() = Charge(this.toDouble())
 
-val Force.inCoulombs: Double
+val Charge.inCoulombs: Double
   get() = value
 
-val Force.inYottacoulombs: Double
-  get() = value.yotta
+val Charge.inYottacoulombs: Double
+  get() = value * 1.yotta
 
-val Force.inZetacoulombs: Double
-  get() = value.zeta
+val Charge.inZetacoulombs: Double
+  get() = value * 1.zeta
 
-val Force.inExacoulombs: Double
-  get() = value.exa
+val Charge.inExacoulombs: Double
+  get() = value * 1.exa
 
-val Force.inPetacoulombs: Double
-  get() = value.peta
+val Charge.inPetacoulombs: Double
+  get() = value * 1.peta
 
-val Force.inTeracoulombs: Double
-  get() = value.tera
+val Charge.inTeracoulombs: Double
+  get() = value * 1.tera
 
-val Force.inGigacoulombs: Double
-  get() = value.giga
+val Charge.inGigacoulombs: Double
+  get() = value * 1.giga
 
-val Force.inMegacoulombs: Double
-  get() = value.mega
+val Charge.inMegacoulombs: Double
+  get() = value * 1.mega
 
-val Force.inKilocoulombs: Double
-  get() = value.kilo
+val Charge.inKilocoulombs: Double
+  get() = value * 1.kilo
 
-val Force.inHectocoulombs: Double
-  get() = value.hecto
+val Charge.inHectocoulombs: Double
+  get() = value * 1.hecto
 
-val Force.inDecacoulombs: Double
-  get() = value.deca
+val Charge.inDecacoulombs: Double
+  get() = value * 1.deca
 
-val Force.inDecicoulombs: Double
-  get() = value.deci
+val Charge.inDecicoulombs: Double
+  get() = value * 1.deci
 
-val Force.inCenticoulombs: Double
-  get() = value.centi
+val Charge.inCenticoulombs: Double
+  get() = value * 1.centi
 
-val Force.inMillicoulombs: Double
-  get() = value.milli
+val Charge.inMillicoulombs: Double
+  get() = value * 1.milli
 
-val Force.inMicrocoulombs: Double
-  get() = value.micro
+val Charge.inMicrocoulombs: Double
+  get() = value * 1.micro
 
-val Force.inNanocoulombs: Double
-  get() = value.nano
+val Charge.inNanocoulombs: Double
+  get() = value * 1.nano
 
-val Force.inPicocoulombs: Double
-  get() = value.pico
+val Charge.inPicocoulombs: Double
+  get() = value * 1.pico
 
-val Force.inFemtocoulombs: Double
-  get() = value.femto
+val Charge.inFemtocoulombs: Double
+  get() = value * 1.femto
 
-val Force.inAttocoulombs: Double
-  get() = value.atto
+val Charge.inAttocoulombs: Double
+  get() = value * 1.atto
 
-val Force.inZeptocoulombs: Double
-  get() = value.zepto
+val Charge.inZeptocoulombs: Double
+  get() = value * 1.zepto
 
-val Force.inYoctocoulombs: Double
-  get() = value.yocto
+val Charge.inYoctocoulombs: Double
+  get() = value * 1.yocto

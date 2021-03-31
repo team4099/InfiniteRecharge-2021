@@ -1,10 +1,10 @@
 package com.team4099.robot2021.subsystems
 
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.pathfollow.Trajectory
 import com.team4099.lib.units.derived.degrees
 import com.team4099.robot2021.auto.PathStore
 import com.team4099.robot2021.config.Constants
-import edu.wpi.first.wpilibj.trajectory.Trajectory
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import kotlin.math.absoluteValue
 import org.photonvision.PhotonCamera
@@ -19,7 +19,7 @@ object BallVision : SubsystemBase() {
     get() = ballCameraResult.getTargets()
 
   enum class BallPath(val path: Trajectory) {
-    NONE(PathStore.moveBack),
+    NONE(PathStore.driveForward),
     A_RED(PathStore.galacticSearchARed),
     A_BLUE(PathStore.galacticSearchABlue),
     B_RED(PathStore.galacticSearchBRed),
