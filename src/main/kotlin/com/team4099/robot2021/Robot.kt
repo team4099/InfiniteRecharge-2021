@@ -2,9 +2,7 @@ package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
-import com.team4099.robot2021.auto.DriveCharacterizeCommand
 import com.team4099.robot2021.auto.PathStore
-import com.team4099.robot2021.auto.modes.AutoNavBounceMode
 import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
 import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand

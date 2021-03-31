@@ -23,11 +23,11 @@ object PathStore {
           Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)
 
   private val slowTrajectoryConfig =
-    TrajectoryConfig(
-      Constants.Drivetrain.SLOW_AUTO_VEL,
-      Constants.Drivetrain.MAX_AUTO_ACCEL,
-      Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL,
-      Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)
+      TrajectoryConfig(
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          Constants.Drivetrain.MAX_AUTO_ACCEL,
+          Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL,
+          Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)
 
   private val initLinePowerPort = Pose(3.627.meters, (-2.429).meters, 0.0.radians)
   private val initLineFarTrench = Pose(3.627.meters, (-6.824).meters, 0.0.radians)
@@ -288,21 +288,29 @@ object PathStore {
                   Pose(navPoints["E"]!![2] - Translation(15.inches, 0.feet), 0.degrees),
                   Pose(navPoints["C"]!![1], 0.degrees))
               .apply {
+            addWaypoint(navPoints["E"]!![3] - Translation(30.inches, 0.feet))
             addWaypoint(navPoints["D"]!![3])
-            addWaypoint(navPoints["C"]!![6])
+            addWaypoint(navPoints["C"]!![4])
+            addWaypoint(navPoints["B"]!![6] - Translation(0.feet,15.inches))
+            addWaypoint(navPoints["C"]!![8])
             addWaypoint(navPoints["D"]!![9])
+            // top left of right circle
+            // addWaypoint(navPoints["D"]!![9] - Translation(30.inches,30.inches))
             addWaypoint(navPoints["E"]!![10])
             addWaypoint(navPoints["D"]!![11])
             addWaypoint(navPoints["C"]!![10])
             addWaypoint(navPoints["D"]!![9])
+            addWaypoint(navPoints["E"]!![8])
             addWaypoint(navPoints["E"]!![6])
+            addWaypoint(navPoints["E"]!![4])
             addWaypoint(navPoints["D"]!![3])
+            addWaypoint(navPoints["C"]!![3] - Translation(30.inches,0.feet))
             build()
           },
           Constants.Drivetrain.SLOW_AUTO_VEL,
           slowTrajectoryConfig)
 
-  /*val barrelPath: Trajectory =
+  val barrelPath: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
           Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["B"]!![2], 0.degrees)).apply {
@@ -323,5 +331,5 @@ object PathStore {
             build()
           },
           Constants.Drivetrain.SLOW_AUTO_VEL,
-          trajectoryConfig)*/
+          trajectoryConfig)
 }

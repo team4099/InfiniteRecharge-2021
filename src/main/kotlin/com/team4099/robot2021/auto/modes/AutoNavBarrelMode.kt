@@ -9,6 +9,6 @@ class AutoNavBarrelMode : SequentialCommandGroup() {
   init {
     addRequirements(Drivetrain)
 
-    //addCommands(AutoDriveCommand(PathStore.barrelPath))
+    addCommands(AutoDriveCommand(PathStore.barrelPath))
   }
 }
