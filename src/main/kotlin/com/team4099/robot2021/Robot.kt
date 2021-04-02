@@ -2,8 +2,7 @@ package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
-import com.team4099.robot2021.auto.PathStore
-import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
+import com.team4099.robot2021.auto.modes.GalacticSearch
 import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2021.commands.feeder.FeederCommand
@@ -49,7 +48,7 @@ object Robot : TimedRobot() {
     ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
 
     Intake.defaultCommand =
-        IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
+        IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN)
     ControlBoard.runIntakeIn
         //        .whileActiveContinuous(FeederSerialize())
         .whileActiveContinuous(
@@ -96,10 +95,10 @@ object Robot : TimedRobot() {
         .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.FAR))
   }
 
-  // private val autonomousCommand = GalacticSearch() // ResetZeroCommand()
+  private val autonomousCommand = GalacticSearch() // ResetZeroCommand()
   // private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchARed)
   // private val autonomousCommand = AutoNavBounceMode()
-  private val autonomousCommand = AutoDriveCommand(PathStore.slalomPath)
+  // private val autonomousCommand = AutoDriveCommand(PathStore.slalomPath)
   // private val autonomousCommand = DriveCharacterizeCommand()
 
   override fun autonomousInit() {

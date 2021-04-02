@@ -18,7 +18,8 @@ class GalacticSearch : SequentialCommandGroup() {
     addCommands(
         ResetZeroCommand(),
         ParallelRaceGroup(
-            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT),
+            IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN),
+            // IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT),
             AutoDriveCommand(BallVision.choosePath().path)))
   }
 }

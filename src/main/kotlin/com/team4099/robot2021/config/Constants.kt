@@ -137,15 +137,14 @@ object Constants {
     const val TAB = "Intake"
 
     enum class IntakeState(val speed: Double) {
-      DEFAULT(0.0),
+      IDLE(0.0),
       IN(1.0),
       OUT(-1.0)
     }
 
     enum class ArmPosition(val position: DoubleSolenoid.Value?) {
       OUT(DoubleSolenoid.Value.kReverse),
-      IN(DoubleSolenoid.Value.kForward),
-      DEFAULT(DoubleSolenoid.Value.kOff)
+      IN(DoubleSolenoid.Value.kForward)
     }
   }
 

@@ -27,7 +27,7 @@ object BallVision : SubsystemBase() {
   }
 
   init {
-    ballCamera.setPipelineIndex(Constants.Vision.DRIVER_PIPELINE_ID)
+    ballCamera.pipelineIndex = 0
 
     Logger.addSource("BallVision", "Ball Camera Pipeline") { ballCamera.pipelineIndex }
     Logger.addSource("BallVision", "Best Ball Path") { choosePath().name }
