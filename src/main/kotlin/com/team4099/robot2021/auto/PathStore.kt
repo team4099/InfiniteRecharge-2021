@@ -16,7 +16,7 @@ import com.team4099.robot2021.config.Constants
 
 object PathStore {
   private val trajectoryConfig =
-    TrajectoryConfig(
+      TrajectoryConfig(
           Constants.Drivetrain.MAX_AUTO_VEL,
           Constants.Drivetrain.MAX_AUTO_ACCEL,
           Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL,
@@ -282,16 +282,16 @@ object PathStore {
           trajectoryConfig)
 
   val slalomPath: Trajectory =
-    Trajectory(
+      Trajectory(
           0.0.meters.perSecond,
           Path(
-                  Pose(navPoints["E"]!![2]-Translation(15.inches,0.feet),0.degrees),
+                  Pose(navPoints["E"]!![2] - Translation(15.inches, 0.feet), 0.degrees),
                   Pose(navPoints["C"]!![1], 0.degrees))
               .apply {
-            addWaypoint(navPoints["E"]!![3]-Translation(30.inches,0.feet))
+            addWaypoint(navPoints["E"]!![3] - Translation(30.inches, 0.feet))
             addWaypoint(navPoints["D"]!![3])
             addWaypoint(navPoints["C"]!![4])
-            addWaypoint(navPoints["B"]!![6]-Translation(0.feet,15.inches))
+            addWaypoint(navPoints["B"]!![6] - Translation(0.feet, 15.inches))
             addWaypoint(navPoints["C"]!![8])
             addWaypoint(navPoints["D"]!![9])
             // top left of right circle
@@ -304,7 +304,7 @@ object PathStore {
             addWaypoint(navPoints["E"]!![6])
             addWaypoint(navPoints["E"]!![4])
             addWaypoint(navPoints["D"]!![3])
-            addWaypoint(navPoints["C"]!![3] - Translation(30.inches,0.feet))
+            addWaypoint(navPoints["C"]!![3] - Translation(30.inches, 0.feet))
             build()
           },
           Constants.Drivetrain.SLOW_AUTO_VEL,
