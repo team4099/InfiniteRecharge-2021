@@ -18,6 +18,9 @@ object BallVision : SubsystemBase() {
   private val targets
     get() = ballCameraResult.getTargets()
 
+  private var ballsOnLeft = false
+  private var ballsOnRight = false
+
   enum class BallPath(val path: Trajectory) {
     NONE(PathStore.driveForward),
     A_RED(PathStore.galacticSearchARed),
@@ -32,6 +35,9 @@ object BallVision : SubsystemBase() {
     Logger.addSource("BallVision", "Ball Camera Pipeline") { ballCamera.pipelineIndex }
     Logger.addSource("BallVision", "Best Ball Path") { choosePath().name }
     Logger.addSource("BallVision", "Number of Targets") { targets.size }
+
+    Logger.addSource("BallVision", "Balls On Left") { targets.size }
+    Logger.addSource("BallVision", "Balls On Right") { targets.size }
   }
 
   fun choosePath(): BallPath {
@@ -42,8 +48,6 @@ object BallVision : SubsystemBase() {
     var centerTarget: PhotonTrackedTarget = targets[0]
     // var offCenterTarget: PhotonTrackedTarget = targets[0]
     // var pathA = false
-    var ballsOnLeft = false
-    var ballsOnRight = true
     var ballsOffCenter = 0
 
     for (target in targets) {
@@ -56,7 +60,7 @@ object BallVision : SubsystemBase() {
         // offCenterTarget = target
         ballsOffCenter++
         // option 2 + 3?
-        if (target.yaw.degrees.absoluteValue < 0.degrees) {
+        if (target.yaw.degrees < 0.degrees) {
           ballsOnLeft = true
         } else {
           ballsOnRight = true

@@ -19,7 +19,7 @@ object Intake : SubsystemBase() {
       field = value
     }
 
-  var armState = Constants.Intake.ArmPosition.DEFAULT
+  var armState = Constants.Intake.ArmPosition.IN
     set(value) {
       intakeDoubleSolenoid.set(value.position)
       field = value
