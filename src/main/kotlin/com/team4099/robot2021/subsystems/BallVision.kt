@@ -36,8 +36,8 @@ object BallVision : SubsystemBase() {
     Logger.addSource("BallVision", "Best Ball Path") { choosePath().name }
     Logger.addSource("BallVision", "Number of Targets") { targets.size }
 
-    Logger.addSource("BallVision", "Balls On Left") { targets.size }
-    Logger.addSource("BallVision", "Balls On Right") { targets.size }
+    Logger.addSource("BallVision", "Balls On Left") { ballsOnLeft }
+    Logger.addSource("BallVision", "Balls On Right") { ballsOnRight }
   }
 
   fun choosePath(): BallPath {
