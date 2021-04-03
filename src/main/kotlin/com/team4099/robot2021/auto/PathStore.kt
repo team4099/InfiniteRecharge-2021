@@ -85,11 +85,12 @@ object PathStore {
   val galacticSearchARed: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
-          Path(Pose(navPoints["B"]!![1], 0.degrees), Pose(navPoints["B"]!![11], 180.degrees))
+          //change the end  to A10 if there's no wall to run into
+          Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["A"]!![10], 180.degrees))
               .apply {
-            addWaypoint(navPoints["B"]!![3], 0.degrees)
+            addWaypoint(navPoints["C"]!![3], 0.degrees)
             addWaypoint(navPoints["D"]!![5], 90.degrees)
-            addWaypoint(navPoints["B"]!![7])
+            addWaypoint(navPoints["A"]!![6])
             build()
           },
           0.0.meters.perSecond,
@@ -98,7 +99,8 @@ object PathStore {
   val galacticSearchABlue: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
-          Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["C"]!![11], 0.degrees)).apply {
+          //change the end  to C11 if there's no wall to run into
+          Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["C"]!![10], 0.degrees)).apply {
             addWaypoint(navPoints["E"]!![6])
             addWaypoint(navPoints["B"]!![7])
             addWaypoint(navPoints["C"]!![9])
@@ -110,7 +112,8 @@ object PathStore {
   val galacticSearchBRed: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
-          Path(Pose(navPoints["B"]!![1], 0.degrees), Pose(navPoints["B"]!![11], 0.degrees)).apply {
+          //change the end to B11 if there's no wall to run into
+          Path(Pose(navPoints["A"]!![1], 0.degrees), Pose(navPoints["B"]!![10], 0.degrees)).apply {
             addWaypoint(navPoints["B"]!![3])
             addWaypoint(navPoints["D"]!![5])
             addWaypoint(navPoints["B"]!![7])
@@ -122,7 +125,8 @@ object PathStore {
   val galacticSearchBBlue: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
-          Path(Pose(navPoints["E"]!![1], 0.degrees), Pose(navPoints["D"]!![11], 0.degrees)).apply {
+          //change the end to D11 if there's no wall to run into
+          Path(Pose(navPoints["E"]!![1], 0.degrees), Pose(navPoints["D"]!![10], 0.degrees)).apply {
             addWaypoint(navPoints["D"]!![6])
             addWaypoint(navPoints["B"]!![8])
             addWaypoint(navPoints["D"]!![10])

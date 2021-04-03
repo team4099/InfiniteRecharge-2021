@@ -71,7 +71,7 @@ object BallVision : SubsystemBase() {
     // Option 1 & 2
     /*if (pathA) {
       //balls in center means path A
-      //check area of target (distance of ball) to see if it is red or blue - test to find values for this
+      //check area of target (distance of ball) to see if it is red or blue
       //could use pitch instead if camera is high enough on the robot
       if (centerTarget.area < Constants.BallVision.PATH_A_AREA_THRESHOLD) {
         return BallPath.A_BLUE
