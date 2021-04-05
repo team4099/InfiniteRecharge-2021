@@ -41,13 +41,13 @@ object Robot : TimedRobot() {
     Logger.startLogging()
 
     // Link between feeder Trigger and Command
-//    Feeder.defaultCommand = FeederSerialize()
-    Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
+    Feeder.defaultCommand = FeederSerialize()
+//    Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
     ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_ALL))
     ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
 
     Intake.defaultCommand =
-        IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
+        IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.OUT)
     ControlBoard.runIntakeIn
 //        .whileActiveContinuous(FeederSerialize())
       .whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
@@ -63,11 +63,11 @@ object Robot : TimedRobot() {
     //    ControlBoard.climberLow
     //        .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
 
-    Shooter.defaultCommand = ShooterIdleCommand()
-//    Shooter.defaultCommand = SpinUpCommand()
+//    Shooter.defaultCommand = ShooterIdleCommand()
+    Shooter.defaultCommand = SpinUpCommand()
 //    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
-//    ControlBoard.shoot.whileActiveOnce(VisionCommand().andThen(ShootCommand()))
-    ControlBoard.shoot.whileActiveOnce(VisionCommand())
+    ControlBoard.shoot.whileActiveOnce(VisionCommand().andThen(ShootCommand()))
+//    ControlBoard.shoot.whileActiveOnce(VisionCommand())
 //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
 //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 

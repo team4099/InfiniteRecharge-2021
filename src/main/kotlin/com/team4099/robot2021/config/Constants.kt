@@ -112,7 +112,11 @@ object Constants {
   object Feeder {
     const val FLOOR_ID = 41
     const val VERTICAL_ID = 42
-    const val FEEDER_POWER = 0.5
+    const val FEEDER_POWER = 0.4
+    const val FAST_FEEDER_POWER = 1.0
+    const val FLOOR_CURRENT_LIMIT = 15
+    const val VERTICAL_CURRENT_LIMIT = 40
+
 
     const val TOP_DIO_PIN = 9 // may be swapped with bottom
     const val BOTTOM_DIO_PIN = 8
@@ -121,8 +125,8 @@ object Constants {
 
   object Intake {
     const val INTAKE_MOTOR = 31
-    const val ARM_SOLENOID_FORWARD = 5
-    const val ARM_SOLENOID_REVERSE = 2
+    const val ARM_SOLENOID_FORWARD = 7
+    const val ARM_SOLENOID_REVERSE = 0
     const val TAB = "Intake"
 
     enum class IntakeState(val speed: Double) {
@@ -148,9 +152,9 @@ object Constants {
     val VELOCITY_TOLERANCE = 100.rotations.perMinute
 
     const val SHOOTER_KS = 0.939
-    const val SHOOTER_KV = 0.114
+    const val SHOOTER_KV = 0.10
 
-    const val SHOOTER_KP = 0.5
+    const val SHOOTER_KP = 0.65
     const val SHOOTER_KI = 0.0
     const val SHOOTER_KD = 0.0
 
@@ -163,7 +167,7 @@ object Constants {
     val NEAR_DISTANCE = 130.0.inches
     val MID_DISTANCE = 249.0.inches
 
-    val POWER_CELL_CHALLENGE_RPM = 3000.rotations.perMinute
+    val POWER_CELL_CHALLENGE_RPM = 2950.rotations.perMinute
 
     // val HOOD_THRESHOLD = 0.0.inches
 
@@ -183,14 +187,14 @@ object Constants {
     val CAMERA_DIST_THRESHOLD = 55.0.inches
 
     val MAX_DIST_ERROR = 0.1.inches
-    val MAX_ANGLE_ERROR = 2.0.degrees
+    val MAX_ANGLE_ERROR = 1.0.degrees
 
-    const val MIN_TURN_COMMAND = 30.0
+    const val MIN_TURN_COMMAND = 20.0
 
     object TurnGains {
-      const val KP = 10.0
+      const val KP = 8.0
       const val KI = 0.0
-      const val KD = 0.46
+      const val KD = 0.8
 
 
       val MAX_VELOCITY = 90.0.degrees.perSecond

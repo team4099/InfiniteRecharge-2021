@@ -40,6 +40,7 @@ class SpinUpCommand(private val withVision: Boolean = false, private val accurac
           Vision.DistanceState.FAR -> Shooter.HoodPosition.EXTENDED
         }
       } else {
+        Shooter.hoodState = Shooter.HoodPosition.EXTENDED
         Shooter.targetVelocity = Constants.Shooter.POWER_CELL_CHALLENGE_RPM
       }
     }

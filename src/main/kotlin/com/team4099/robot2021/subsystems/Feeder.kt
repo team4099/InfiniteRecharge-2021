@@ -4,6 +4,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.config.Constants
+import com.team4099.robot2021.config.Constants.Feeder.FLOOR_CURRENT_LIMIT
+import com.team4099.robot2021.config.Constants.Feeder.VERTICAL_CURRENT_LIMIT
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
@@ -14,7 +16,8 @@ object Feeder : SubsystemBase() {
     FORWARD_ALL(Constants.Feeder.FEEDER_POWER, -Constants.Feeder.FEEDER_POWER),
     FORWARD_FLOOR(Constants.Feeder.FEEDER_POWER, 0.0),
     BACKWARD(-Constants.Feeder.FEEDER_POWER, +Constants.Feeder.FEEDER_POWER),
-    NEUTRAL(0.0, 0.0)
+    NEUTRAL(0.0, 0.0),
+    SHOOT(Constants.Feeder.FEEDER_POWER, -Constants.Feeder.FAST_FEEDER_POWER)
   }
 
   // The motor for the floor of the feeder (the spinny wheel at the bottom)
@@ -106,9 +109,9 @@ object Feeder : SubsystemBase() {
     floorMotor.enableVoltageCompensation(true)
     verticalMotor.enableVoltageCompensation(true)
 
-    floorMotor.configContinuousCurrentLimit(20, 10)
+    floorMotor.configContinuousCurrentLimit(FLOOR_CURRENT_LIMIT, 10)
     floorMotor.enableCurrentLimit(true)
-    verticalMotor.configContinuousCurrentLimit(40, 10)
+    verticalMotor.configContinuousCurrentLimit(VERTICAL_CURRENT_LIMIT, 10)
     verticalMotor.enableCurrentLimit(true)
   }
 }
