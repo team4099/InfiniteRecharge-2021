@@ -45,7 +45,6 @@ object Shooter : SubsystemBase() {
     shooterMotor.enableVoltageCompensation(true)
     shooterFollower.enableVoltageCompensation(true)
 
-
     shooterMotor.config_kP(0, Constants.Shooter.SHOOTER_KP, 0)
     shooterMotor.config_kI(0, Constants.Shooter.SHOOTER_KI, 0)
     shooterMotor.config_kD(0, Constants.Shooter.SHOOTER_KD, 0)
@@ -102,7 +101,8 @@ object Shooter : SubsystemBase() {
           ControlMode.Velocity,
           shooterSensor.velocityToRawUnits(velocity),
           DemandType.ArbitraryFeedForward,
-          (Constants.Shooter.SHOOTER_KS + Constants.Shooter.SHOOTER_KV * velocity.inRotationsPerSecond)/12.0)
+          (Constants.Shooter.SHOOTER_KS +
+              Constants.Shooter.SHOOTER_KV * velocity.inRotationsPerSecond) / 12.0)
     }
     get() = _targetVelocity
 

@@ -2,20 +2,24 @@ package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
-import com.team4099.robot2021.auto.DriveCharacterizeCommand
-import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
+import com.team4099.robot2021.auto.PathStore
+import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
+import com.team4099.robot2021.commands.drivetrain.LoopPathCommand
 import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
-import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
+import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.commands.feeder.FeederSerialize
 import com.team4099.robot2021.commands.intake.IntakeCommand
-import com.team4099.robot2021.commands.shooter.ShootCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.shooter.SpinUpCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
-import com.team4099.robot2021.subsystems.*
+import com.team4099.robot2021.subsystems.Drivetrain
+import com.team4099.robot2021.subsystems.Feeder
+import com.team4099.robot2021.subsystems.Intake
+import com.team4099.robot2021.subsystems.Shooter
+import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
@@ -81,16 +85,25 @@ object Robot : TimedRobot() {
 
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 
-//    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
+    //    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
 
-    ControlBoard.nearSpin.whileActiveOnce(SpinUpCommand(accuracy = true,distance = Vision.DistanceState.NEAR))
-    ControlBoard.lineSpin.whileActiveOnce(SpinUpCommand(accuracy = true,distance = Vision.DistanceState.LINE))
-    ControlBoard.midSpin.whileActiveOnce(SpinUpCommand(accuracy = true,distance = Vision.DistanceState.MID))
-    ControlBoard.farSpin.whileActiveOnce(SpinUpCommand(accuracy = true,distance = Vision.DistanceState.FAR))
-
+    ControlBoard.nearSpin
+        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.NEAR))
+    ControlBoard.lineSpin
+        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.LINE))
+    ControlBoard.midSpin
+        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.MID))
+    ControlBoard.farSpin
+        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.FAR))
   }
 
-  private val autonomousCommand = DriveCharacterizeCommand()
+  // private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchARed)
+  // private val autonomousCommand = AutoNavBounceMode()
+  private val autonomousCommand = AutoDriveCommand(PathStore.slalomPath)
+
+  // private val autonomousCommand = DriveCharacterizeCommand()
+
+  // private val autonomousCommand = LoopPathCommand(PathStore.driveForward, PathStore.driveBackwards)
 
   override fun autonomousInit() {
     autonomousCommand.schedule()

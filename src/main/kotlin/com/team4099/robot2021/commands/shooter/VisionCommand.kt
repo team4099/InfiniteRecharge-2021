@@ -10,14 +10,12 @@ import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Drivetrain
 import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.MedianFilter
-import edu.wpi.first.wpilibj.controller.ProfiledPIDController
-import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.CommandBase
 import kotlin.math.sign
 
 class VisionCommand : CommandBase() {
 
-  val filter =  MedianFilter(20)
+  val filter = MedianFilter(20)
   var medianYaw = 10000.0
 
   var contCloseIterations = 0
@@ -30,7 +28,7 @@ class VisionCommand : CommandBase() {
 
   override fun initialize() {
     Vision.pipeline = Constants.Vision.TARGETING_PIPELINE_ID
-    Vision.visionPIDcontroller.reset(0.0);
+    Vision.visionPIDcontroller.reset(0.0)
     // Vision.camera.setDriverMode(false)
     Logger.addEvent("VisionCommand", "Started vision command")
   }
@@ -52,7 +50,8 @@ class VisionCommand : CommandBase() {
       Vision.steeringAdjust = Vision.visionPIDcontroller.calculate(Vision.yawToUse.inDegrees, 0.0)
       Vision.steeringAdjust += -sign(Vision.yawToUse.inDegrees) * Constants.Vision.MIN_TURN_COMMAND
       // TODO: implement when shooter or drivetrain exists in master
-      Drivetrain.setOpenLoop(Vision.steeringAdjust.degrees.perSecond, Pair(0.0.meters.perSecond, 0.0.meters.perSecond))
+      Drivetrain.setOpenLoop(
+          Vision.steeringAdjust.degrees.perSecond, Pair(0.0.meters.perSecond, 0.0.meters.perSecond))
     }
 
     if (Vision.yawToUse.inDegrees.around(0.0, Constants.Vision.MAX_ANGLE_ERROR.inDegrees)) {
@@ -61,12 +60,10 @@ class VisionCommand : CommandBase() {
       contCloseIterations = 0
     }
     medianYaw = filter.calculate(Vision.yawToUse.inDegrees)
-
-
   }
 
   override fun isFinished(): Boolean {
-//    return medianYaw.around(0.0, Constants.Vision.MAX_ANGLE_ERROR.inDegrees)
+    //    return medianYaw.around(0.0, Constants.Vision.MAX_ANGLE_ERROR.inDegrees)
     return contCloseIterations > 10
   }
 

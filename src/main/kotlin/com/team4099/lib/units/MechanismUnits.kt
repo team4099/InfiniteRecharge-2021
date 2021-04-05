@@ -12,7 +12,6 @@ import com.team4099.lib.units.base.minutes
 import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.Radian
 import com.team4099.lib.units.derived.inRotations
-import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.rotations
 import kotlin.math.PI
 
@@ -103,7 +102,7 @@ fun ctreLinearMechanismSensor(
 ): LinearMechanismSensor {
   return LinearMechanismSensor(
       diameter,
-      ratio * sensorCpr,
+      ratio / sensorCpr,
       Timescale.CTRE,
       { controller.selectedSensorPosition.toDouble() },
       { controller.selectedSensorVelocity.toDouble() })
