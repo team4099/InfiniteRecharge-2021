@@ -6,7 +6,6 @@ import com.team4099.robot2021.auto.modes.GalacticSearch
 import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2021.commands.feeder.FeederCommand
-import com.team4099.robot2021.commands.feeder.FeederSerialize
 import com.team4099.robot2021.commands.intake.IntakeCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.shooter.SpinUpCommand
@@ -53,11 +52,13 @@ object Robot : TimedRobot() {
         //        .whileActiveContinuous(FeederSerialize())
         .whileActiveContinuous(
             IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
-                .alongWith(FeederSerialize()))
+        // .alongWith(FeederSerialize())
+        )
     ControlBoard.runIntakeOut
         .whileActiveContinuous(
             IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
-                .alongWith(FeederCommand(Feeder.FeederState.BACKWARD)))
+        // .alongWith(FeederCommand(Feeder.FeederState.BACKWARD))
+        )
 
     //    Climber.defaultCommand = LockClimber()
     //    ControlBoard.climberHigh
@@ -96,6 +97,7 @@ object Robot : TimedRobot() {
   }
 
   private val autonomousCommand = GalacticSearch() // ResetZeroCommand()
+
   // private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchARed)
   // private val autonomousCommand = AutoNavBounceMode()
   // private val autonomousCommand = AutoDriveCommand(PathStore.slalomPath)

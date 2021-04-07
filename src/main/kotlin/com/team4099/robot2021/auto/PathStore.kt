@@ -85,7 +85,7 @@ object PathStore {
   val galacticSearchARed: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
-          //change the end  to A10 if there's no wall to run into
+          // change the end to A10 if there's no wall to run into
           Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["A"]!![10], 180.degrees))
               .apply {
             addWaypoint(navPoints["C"]!![3], 0.degrees)
@@ -94,12 +94,12 @@ object PathStore {
             build()
           },
           0.0.meters.perSecond,
-          trajectoryConfig)
+          slowTrajectoryConfig)
 
   val galacticSearchABlue: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
-          //change the end  to C11 if there's no wall to run into
+          // change the end to C11 if there's no wall to run into
           Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["C"]!![10], 0.degrees)).apply {
             addWaypoint(navPoints["E"]!![6])
             addWaypoint(navPoints["B"]!![7])
@@ -107,12 +107,12 @@ object PathStore {
             build()
           },
           0.0.meters.perSecond,
-          trajectoryConfig)
+          slowTrajectoryConfig)
 
   val galacticSearchBRed: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
-          //change the end to B11 if there's no wall to run into
+          // change the end to B11 if there's no wall to run into
           Path(Pose(navPoints["A"]!![1], 0.degrees), Pose(navPoints["B"]!![10], 0.degrees)).apply {
             addWaypoint(navPoints["B"]!![3])
             addWaypoint(navPoints["D"]!![5])
@@ -120,20 +120,23 @@ object PathStore {
             build()
           },
           0.0.meters.perSecond,
-          trajectoryConfig)
+          slowTrajectoryConfig)
 
   val galacticSearchBBlue: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
-          //change the end to D11 if there's no wall to run into
-          Path(Pose(navPoints["E"]!![1], 0.degrees), Pose(navPoints["D"]!![10], 0.degrees)).apply {
+          // change the end to D11 if there's no wall to run into
+          Path(
+                  Pose(navPoints["E"]!![1], 0.degrees),
+                  Pose(navPoints["D"]!![10] - Translation(5.inches, 0.feet), 0.degrees))
+              .apply {
             addWaypoint(navPoints["D"]!![6])
             addWaypoint(navPoints["B"]!![8])
             addWaypoint(navPoints["D"]!![10])
             build()
           },
           0.0.meters.perSecond,
-          trajectoryConfig)
+          slowTrajectoryConfig)
 
   val toNearTrench: Trajectory =
       Trajectory(
@@ -295,7 +298,7 @@ object PathStore {
             addWaypoint(navPoints["E"]!![3] - Translation(30.inches, 0.feet))
             addWaypoint(navPoints["D"]!![3])
             addWaypoint(navPoints["C"]!![4])
-            addWaypoint(navPoints["B"]!![6] - Translation(0.feet, 15.inches))
+            // addWaypoint(navPoints["B"]!![6] - Translation(0.feet, 15.inches))
             addWaypoint(navPoints["C"]!![8])
             addWaypoint(navPoints["D"]!![9])
             // top left of right circle
@@ -312,7 +315,7 @@ object PathStore {
             build()
           },
           Constants.Drivetrain.SLOW_AUTO_VEL,
-          slowTrajectoryConfig)
+          trajectoryConfig)
 
   val barrelPath: Trajectory =
       Trajectory(

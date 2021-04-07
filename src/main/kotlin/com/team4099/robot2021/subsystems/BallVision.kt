@@ -41,30 +41,43 @@ object BallVision : SubsystemBase() {
   }
 
   fun choosePath(): BallPath {
-    if (targets.isEmpty()) {
-      return BallPath.NONE
-    }
-
-    var centerTarget: PhotonTrackedTarget = targets[0]
     // var offCenterTarget: PhotonTrackedTarget = targets[0]
     // var pathA = false
     var ballsOffCenter = 0
 
-    for (target in targets) {
-      if (target.yaw.degrees.absoluteValue < Constants.BallVision.CENTER_YAW_THRESHOLD) {
-        // comment path if using option 2
-        // pathA = true
-        centerTarget = target
-      } else {
-        // lines for option 3
-        // offCenterTarget = target
-        ballsOffCenter++
-        // option 2 + 3?
+    var centerTarget: PhotonTrackedTarget
+    if (targets.isEmpty()) {
+      return BallPath.NONE
+    } else {
+      centerTarget = targets[0]
+
+      for (target in targets) {
+        if (target.yaw.degrees.absoluteValue < Constants.BallVision.CENTER_YAW_THRESHOLD) {
+          // comment path if using option 2
+          // pathA = true
+          centerTarget = target
+        } else {
+          // lines for option 3
+          // offCenterTarget = target
+          ballsOffCenter++
+        }
         if (target.yaw.degrees < 0.degrees) {
           ballsOnLeft = true
         } else {
           ballsOnRight = true
         }
+      }
+
+      // if the robot starts in front of path B/D balls - should be a little bit faster
+      // change trajectories accordingly!
+      // Option 2 Method 1
+      return when (Pair(ballsOnLeft, ballsOnRight)) {
+        Pair(true, true) ->
+            if (centerTarget.area < Constants.BallVision.PATH_A_AREA_THRESHOLD) BallPath.A_BLUE
+            else BallPath.A_RED
+        Pair(true, false) -> BallPath.B_BLUE // only on left
+        Pair(false, true) -> BallPath.B_RED // only on right
+        else -> BallPath.NONE
       }
     }
 
@@ -88,18 +101,6 @@ object BallVision : SubsystemBase() {
       }
     }*/
     // End Else 1
-
-    // if the robot starts in front of path B/D balls - should be a little bit faster
-    // change trajectories accordingly!
-    // Option 2 Method 1
-    return when (Pair(ballsOnLeft, ballsOnRight)) {
-      Pair(true, true) ->
-          if (centerTarget.area < Constants.BallVision.PATH_A_AREA_THRESHOLD) BallPath.A_BLUE
-          else BallPath.A_RED
-      Pair(true, false) -> BallPath.B_BLUE // only on left
-      Pair(false, true) -> BallPath.B_RED // only on right
-      else -> BallPath.NONE
-    }
 
     // Option 2 Method 2
     /*if (ballsOnLeft && ballsOnRight){
