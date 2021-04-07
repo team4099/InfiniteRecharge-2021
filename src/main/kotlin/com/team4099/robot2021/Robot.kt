@@ -68,11 +68,12 @@ object Robot : TimedRobot() {
     //    ControlBoard.climberLow
     //        .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
 
-//    Shooter.defaultCommand = ShooterIdleCommand()
-    Shooter.defaultCommand = SpinUpCommand()
+    Shooter.defaultCommand = ShooterIdleCommand()
+//    Shooter.defaultCommand = SpinUpCommand()
 //    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
-    ControlBoard.shoot.whileActiveOnce(VisionCommand().andThen(ShootCommand()))
-//    ControlBoard.shoot.whileActiveOnce(VisionCommand())
+//    ControlBoard.shoot.whileActiveOnce(VisionCommand().andThen(ShootCommand()))
+//    ControlBoard.shoot.whileActiveOnce(ShootCommand())
+    ControlBoard.shoot.whileActiveOnce(VisionCommand())
 //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
 //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 
@@ -84,7 +85,7 @@ object Robot : TimedRobot() {
 
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
 
-    //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
+//        ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 
     //    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
 

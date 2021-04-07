@@ -123,7 +123,7 @@ object Constants {
   object Feeder {
     const val FLOOR_ID = 41
     const val VERTICAL_ID = 42
-    const val FEEDER_POWER = 0.4
+    const val FEEDER_POWER = 0.45
     const val FAST_FEEDER_POWER = 1.0
     const val FLOOR_CURRENT_LIMIT = 15
     const val VERTICAL_CURRENT_LIMIT = 40

@@ -1,6 +1,7 @@
 package com.team4099.robot2021.commands.drivetrain
 
 import com.team4099.lib.units.base.meters
+import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.perSecond
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Drivetrain
@@ -22,10 +23,12 @@ class OpenLoopDriveCommand(
   override fun execute() {
     val speed =
         Pair(
-          0.0.meters.perSecond,
-//            Constants.Drivetrain.DRIVE_SETPOINT_MAX * driveX() * driveX() * sign(driveX()),
+//          0.0.meters.perSecond,
+            Constants.Drivetrain.DRIVE_SETPOINT_MAX * driveX() * driveX() * sign(driveX()),
             Constants.Drivetrain.DRIVE_SETPOINT_MAX * driveY() * driveY() * sign(driveY()))
-    val direction = Constants.Drivetrain.TURN_SETPOINT_MAX * turn() * turn() * sign(turn())
+    val direction =
+      Constants.Drivetrain.TURN_SETPOINT_MAX * turn() * turn() * sign(turn())
+//      0.0.radians.perSecond
     Drivetrain.setOpenLoop(direction, speed, fieldOriented = true)
   }
   override fun isFinished(): Boolean {
