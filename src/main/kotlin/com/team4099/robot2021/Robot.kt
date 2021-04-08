@@ -2,7 +2,9 @@ package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
+import com.team4099.robot2021.auto.PathStore
 import com.team4099.robot2021.auto.modes.GalacticSearch
+import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
 import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2021.commands.feeder.FeederCommand
@@ -12,11 +14,7 @@ import com.team4099.robot2021.commands.shooter.SpinUpCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
-import com.team4099.robot2021.subsystems.Drivetrain
-import com.team4099.robot2021.subsystems.Feeder
-import com.team4099.robot2021.subsystems.Intake
-import com.team4099.robot2021.subsystems.Shooter
-import com.team4099.robot2021.subsystems.Vision
+import com.team4099.robot2021.subsystems.*
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
@@ -80,6 +78,8 @@ object Robot : TimedRobot() {
             { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
 
+    BallVision
+
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
 
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
@@ -96,9 +96,9 @@ object Robot : TimedRobot() {
         .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.FAR))
   }
 
-  private val autonomousCommand = GalacticSearch() // ResetZeroCommand()
+  // private val autonomousCommand = GalacticSearch() // ResetZeroCommand()
 
-  // private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchARed)
+  private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchBRed)
   // private val autonomousCommand = AutoNavBounceMode()
   // private val autonomousCommand = AutoDriveCommand(PathStore.slalomPath)
   // private val autonomousCommand = DriveCharacterizeCommand()

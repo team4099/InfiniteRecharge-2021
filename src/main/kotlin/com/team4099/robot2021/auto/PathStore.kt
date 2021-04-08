@@ -72,38 +72,28 @@ object PathStore {
           0.0.meters.perSecond,
           trajectoryConfig)
 
-  // use this default path if no path was chosen
-  val galacticSearchMoveBack: Trajectory =
-      Trajectory(
-          0.0.meters.perSecond,
-          Path(
-              Pose(navPoints["C"]!![1], 0.degrees),
-              Pose(navPoints["C"]!![1] - Translation(15.inches, 0.feet), 0.degrees)),
-          0.0.meters.perSecond,
-          trajectoryConfig)
-
   val galacticSearchARed: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
           // change the end to A10 if there's no wall to run into
-          Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["A"]!![10], 180.degrees))
+          Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["A"]!![10], 270.degrees))
               .apply {
             addWaypoint(navPoints["C"]!![3], 0.degrees)
-            addWaypoint(navPoints["D"]!![5], 90.degrees)
-            addWaypoint(navPoints["A"]!![6])
+            addWaypoint(navPoints["D"]!![5], 0.degrees)
+            addWaypoint(navPoints["A"]!![6], 270.degrees)
             build()
           },
           0.0.meters.perSecond,
-          slowTrajectoryConfig)
+          trajectoryConfig)
 
   val galacticSearchABlue: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
           // change the end to C11 if there's no wall to run into
-          Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["C"]!![10], 0.degrees)).apply {
-            addWaypoint(navPoints["E"]!![6])
-            addWaypoint(navPoints["B"]!![7])
-            addWaypoint(navPoints["C"]!![9])
+          Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["C"]!![10], 45.degrees)).apply {
+            addWaypoint(navPoints["E"]!![6], 0.degrees)
+            addWaypoint(navPoints["B"]!![7], 270.degrees)
+            addWaypoint(navPoints["C"]!![9], 45.degrees)
             build()
           },
           0.0.meters.perSecond,
