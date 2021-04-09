@@ -30,8 +30,8 @@ object Constants {
     }
 
     val ROBOT_ID_MAP =
-        mapOf<Int, RobotName>(
-            0 to RobotName.COMPETITION, 1 to RobotName.PRACTICE, 2 to RobotName.MULE)
+      mapOf<Int, RobotName>(
+        0 to RobotName.COMPETITION, 1 to RobotName.PRACTICE, 2 to RobotName.MULE)
   }
 
   object Joysticks {
@@ -44,6 +44,7 @@ object Constants {
 
   object Drivetrain {
     const val TICKS = 4096
+
     // drive and azimuth swapped
     const val FRONT_LEFT_SPEED_ID = 11
     const val FRONT_LEFT_DIRECTION_ID = 21
@@ -162,17 +163,17 @@ object Constants {
 
     val VELOCITY_TOLERANCE = 100.rotations.perMinute
 
-    const val SHOOTER_KS = 0.939
-    const val SHOOTER_KV = 0.10
+    const val SHOOTER_KS = 0.939 * 2
+    const val SHOOTER_KV = 0.114 //* 2
 
-    const val SHOOTER_KP = 0.65
+    const val SHOOTER_KP = 0.8
     const val SHOOTER_KI = 0.0
     const val SHOOTER_KD = 0.0
 
-    val NEAR_VELOCITY = 1500.0.rotations.perMinute
+    val NEAR_VELOCITY = 3500.0.rotations.perMinute
     val LINE_VELOCITY = 2750.0.rotations.perMinute
     val MID_VELOCITY = 2950.0.rotations.perMinute
-    val FAR_VELOCITY = 3500.0.rotations.perMinute
+    val FAR_VELOCITY = 4500.0.rotations.perMinute
 
     val LINE_DISTANCE = 100.0.inches
     val NEAR_DISTANCE = 130.0.inches
