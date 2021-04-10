@@ -73,7 +73,7 @@ object Constants {
 
     const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
 
-    val MAX_AUTO_VEL = 3.0.meters.perSecond
+    val MAX_AUTO_VEL = 3.meters.perSecond
     val SLOW_AUTO_VEL = 0.66.meters.perSecond
     val MAX_AUTO_ACCEL = 2.0.meters.perSecond.perSecond
 
@@ -104,11 +104,11 @@ object Constants {
       const val DRIVE_KD = 0.0
       const val DRIVE_KFF = 0.0
 
-      const val AUTO_POS_KP = 0.0 // 0.581 / 6
+      const val AUTO_POS_KP = 0.581 / 6
       const val AUTO_POS_KI = 0.0
       const val AUTO_POS_KD = 0.0 // 263.0 / 6
 
-      const val DRIVE_THETA_PID_KP = 7.0
+      const val DRIVE_THETA_PID_KP = 1.0
       const val DRIVE_THETA_PID_KI = 0.0
       const val DRIVE_THETA_PID_KD = 0.0
       val DRIVE_THETA_PID_MAX_VEL = 0.0.meters.perSecond

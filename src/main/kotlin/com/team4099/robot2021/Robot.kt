@@ -98,9 +98,9 @@ object Robot : TimedRobot() {
 
   // private val autonomousCommand = GalacticSearch() // ResetZeroCommand()
 
-  private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchBRed)
+  // private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchBRed)
   // private val autonomousCommand = AutoNavBounceMode()
-  // private val autonomousCommand = AutoDriveCommand(PathStore.slalomPath)
+  private val autonomousCommand = AutoDriveCommand(PathStore.slalomPath)
   // private val autonomousCommand = DriveCharacterizeCommand()
 
   override fun autonomousInit() {
