@@ -170,10 +170,10 @@ object Constants {
     const val SHOOTER_KI = 0.0
     const val SHOOTER_KD = 0.0
 
-    val NEAR_VELOCITY = 3500.0.rotations.perMinute
+    val NEAR_VELOCITY = 1500.0.rotations.perMinute
     val LINE_VELOCITY = 2750.0.rotations.perMinute
-    val MID_VELOCITY = 2950.0.rotations.perMinute
-    val FAR_VELOCITY = 4500.0.rotations.perMinute
+    val MID_VELOCITY = 2850.0.rotations.perMinute
+    val FAR_VELOCITY = 3100.0.rotations.perMinute
 
     val LINE_DISTANCE = 100.0.inches
     val NEAR_DISTANCE = 130.0.inches
