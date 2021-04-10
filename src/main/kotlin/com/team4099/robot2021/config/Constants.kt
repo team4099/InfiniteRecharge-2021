@@ -172,8 +172,8 @@ object Constants {
 
     val NEAR_VELOCITY = 1500.0.rotations.perMinute
     val LINE_VELOCITY = 2750.0.rotations.perMinute
-    val MID_VELOCITY = 2850.0.rotations.perMinute
-    val FAR_VELOCITY = 3100.0.rotations.perMinute
+    val MID_VELOCITY = 2800.0.rotations.perMinute
+    val FAR_VELOCITY = 3450.0.rotations.perMinute
 
     val LINE_DISTANCE = 100.0.inches
     val NEAR_DISTANCE = 130.0.inches
