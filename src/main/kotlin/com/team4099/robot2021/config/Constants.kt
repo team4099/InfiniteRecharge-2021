@@ -140,7 +140,7 @@ object Constants {
 
   object Shooter {
     const val SHOOTER_MOTOR_ID = 0
-    const val SHOOTER_FOLLOWER_ID = 0
+    const val SHOOTER_FOLLOWER_ID = 1
 
     const val SOLENOID_FORWARD_CHANNEL = 0
     const val SOLENOID_REVERSE_CHANNEL = 1
