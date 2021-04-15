@@ -2,7 +2,7 @@ package com.team4099.robot2021.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.DemandType
-import com.ctre.phoenix.motorcontrol.can.TalonFX
+import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.ctreAngularMechanismSensor
 import com.team4099.lib.units.derived.rotations
@@ -10,17 +10,22 @@ import com.team4099.lib.units.inRotationsPerMinute
 import com.team4099.lib.units.perMinute
 import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj.DoubleSolenoid
+import edu.wpi.first.wpilibj.RobotBase
+import edu.wpi.first.wpilibj.RobotController
+import edu.wpi.first.wpilibj.simulation.FlywheelSim
+import edu.wpi.first.wpilibj.system.plant.DCMotor
 import edu.wpi.first.wpilibj2.command.SubsystemBase
-
 object Shooter : SubsystemBase() {
-  private val shooterMotor = TalonFX(Constants.Shooter.SHOOTER_MOTOR_ID)
-  private val shooterSensor = ctreAngularMechanismSensor(shooterMotor, 2048, 2.0)
+  private val shooterMotor = TalonSRX(Constants.Shooter.SHOOTER_MOTOR_ID)
+  private val shooterSensor = ctreAngularMechanismSensor(shooterMotor, 2048, Constants.Shooter.GEAR_RATIO)
 
-  private val shooterFollower = TalonFX(Constants.Shooter.SHOOTER_FOLLOWER_ID)
+  private val shooterFollower = TalonSRX(Constants.Shooter.SHOOTER_FOLLOWER_ID)
 
   private val solenoid =
       DoubleSolenoid(
           Constants.Shooter.SOLENOID_FORWARD_CHANNEL, Constants.Shooter.SOLENOID_REVERSE_CHANNEL)
+
+  private lateinit var simPhysics: FlywheelSim
 
   enum class HoodPosition(val pos: DoubleSolenoid.Value) {
     EXTENDED(DoubleSolenoid.Value.kForward),
@@ -54,12 +59,23 @@ object Shooter : SubsystemBase() {
     Logger.addSource("Shooter", "Shooter Motor Stator Current") { shooterMotor.statorCurrent }
     Logger.addSource("Shooter", "Shooter Motor Supply Current") { shooterMotor.supplyCurrent }
     Logger.addSource("Shooter", "Shooter Motor Voltage") { shooterMotor.motorOutputVoltage }
+
+    if (RobotBase.isSimulation()) {
+      simPhysics = FlywheelSim(DCMotor.getFalcon500(2), Constants.Shooter.GEAR_RATIO, Constants.Shooter.FLYWHEEL_MOI)
+    }
+  }
+
+  override fun simulationPeriodic() {
+    simPhysics.setInput(shooterMotor.motorOutputPercent * RobotController.getBatteryVoltage())
+    simPhysics.update(0.020)
+
+    shooterMotor.simCollection.setQuadratureVelocity(shooterSensor.velocityToRawUnits(simPhysics.angularVelocityRPM.rotations.perMinute).toInt())
   }
 
   val currentVelocity
     get() = shooterSensor.velocity
 
-  // velocity setpoint
+  // velocity set point
   private var _targetVelocity = 0.rotations.perMinute
   var targetVelocity
     set(velocity) {
@@ -77,3 +93,4 @@ object Shooter : SubsystemBase() {
     shooterMotor.set(ControlMode.PercentOutput, power)
   }
 }
+// poggers

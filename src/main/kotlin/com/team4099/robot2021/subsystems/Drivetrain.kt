@@ -193,7 +193,6 @@ object Drivetrain : SubsystemBase() {
     driveAcceleration: Pair<LinearAcceleration, LinearAcceleration> =
         Pair(0.0.meters.perSecond.perSecond, 0.0.meters.perSecond.perSecond)
   ) {
-    Logger.addEvent("Drivetrain", "gyro angle: ${(-gyroAngle).inDegrees}")
     val vX =
         if (fieldOriented) {
           driveVector.first * (-gyroAngle).cos - driveVector.second * (-gyroAngle).sin
@@ -267,7 +266,6 @@ object Drivetrain : SubsystemBase() {
     wheelAngles[1] = atan2(b, c)
     wheelAngles[2] = atan2(a, d)
     wheelAngles[3] = atan2(a, c)
-    Logger.addEvent("Drivetrain", "wheel angle: $wheelAngles")
 
     wheels[0].set(wheelAngles[0], wheelSpeeds[0], wheelAccelerations[0])
     wheels[1].set(wheelAngles[1], wheelSpeeds[1], wheelAccelerations[1])

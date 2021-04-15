@@ -164,6 +164,9 @@ object Constants {
     val NEAR_DISTANCE = 130.0.inches
     val MID_DISTANCE = 249.0.inches
 
+    const val GEAR_RATIO = 1.5
+    const val FLYWHEEL_MOI = 0.00375548
+
     // val HOOD_THRESHOLD = 0.0.inches
   }
 
