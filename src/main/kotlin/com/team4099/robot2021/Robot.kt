@@ -4,13 +4,16 @@ import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.auto.DriveCharacterizeCommand
 import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
+import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.commands.shooter.ShootCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
 import com.team4099.robot2021.subsystems.Drivetrain
+import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.subsystems.Shooter
+import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
@@ -35,7 +38,7 @@ object Robot : TimedRobot() {
     Logger.startLogging()
 
     //    // Link between feeder Trigger and Command
-    //    Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
+    Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
     //    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_FLOOR))
     //    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
     //
@@ -56,9 +59,10 @@ object Robot : TimedRobot() {
     //    ControlBoard.climberLow
     //        .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
     //
+    Vision
     Shooter.defaultCommand = ShootCommand()
-//    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
-//    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
+    ControlBoard.shoot.whenActive(ShootCommand())
+    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
 
     Drivetrain.defaultCommand =
         TeleopDriveCommand(
