@@ -63,6 +63,7 @@ object Shooter : SubsystemBase() {
 
     if (RobotBase.isSimulation()) {
       simPhysics = FlywheelSim(DCMotor.getFalcon500(2), Constants.Shooter.GEAR_RATIO, Constants.Shooter.FLYWHEEL_MOI)
+      shooterMotor.simCollection.setQuadratureRawPosition(0)
     }
   }
 
@@ -72,6 +73,7 @@ object Shooter : SubsystemBase() {
     simPhysics.update(0.020)
 
     shooterMotor.simCollection.setQuadratureVelocity(shooterSensor.velocityToRawUnits(simPhysics.angularVelocityRPM.rotations.perMinute).toInt())
+    shooterMotor.simCollection.addQuadraturePosition(shooterSensor.velocityToRawUnits(simPhysics.angularVelocityRPM.rotations.perMinute * 0.02).toInt())
     shooterMotor.simCollection.setBusVoltage(12.0)
   }
 
@@ -96,4 +98,5 @@ object Shooter : SubsystemBase() {
     println("shooter output: $power")
     shooterMotor.set(ControlMode.PercentOutput, power)
   }
+
 }
