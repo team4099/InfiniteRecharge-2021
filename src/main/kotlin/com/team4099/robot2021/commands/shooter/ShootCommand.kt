@@ -21,13 +21,13 @@ class ShootCommand : CommandBase() {
           else -> Shooter.HoodPosition.EXTENDED
         }
 
-//    Shooter.targetVelocity =
-//        when (Vision.currentDistance) {
-//          Vision.DistanceState.LINE -> Constants.Shooter.LINE_VELOCITY
-//          Vision.DistanceState.NEAR -> Constants.Shooter.NEAR_VELOCITY
-//          Vision.DistanceState.MID -> Constants.Shooter.MID_VELOCITY
-//          Vision.DistanceState.FAR -> Constants.Shooter.FAR_VELOCITY
-//        }
+    Shooter.targetVelocity =
+        when (Vision.currentDistance) {
+          Vision.DistanceState.LINE -> Constants.Shooter.LINE_VELOCITY
+          Vision.DistanceState.NEAR -> Constants.Shooter.NEAR_VELOCITY
+          Vision.DistanceState.MID -> Constants.Shooter.MID_VELOCITY
+          Vision.DistanceState.FAR -> Constants.Shooter.FAR_VELOCITY
+        }
     Logger.addEvent("ShootCommand", "Started shoot command")
   }
 
@@ -36,7 +36,7 @@ class ShootCommand : CommandBase() {
         (Constants.Shooter.TARGET_VELOCITY - Shooter.currentVelocity).absoluteValue <
             Constants.Shooter.VELOCITY_TOLERANCE
 
-    Shooter.setOpenLoopPower(0.5)
+    // Shooter.setOpenLoopPower(0.5)
 
     if (shooterReady && Vision.onTarget) {
       // run feeder

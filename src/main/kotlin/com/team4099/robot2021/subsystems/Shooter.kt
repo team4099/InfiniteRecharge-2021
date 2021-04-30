@@ -72,6 +72,7 @@ object Shooter : SubsystemBase() {
     simPhysics.setInput(shooterMotor.motorOutputPercent * RobotController.getBatteryVoltage())
     simPhysics.update(0.020)
 
+    println("shooter raw velocity: ${shooterSensor.velocityToRawUnits(simPhysics.angularVelocityRPM.rotations.perMinute)}")
     shooterMotor.simCollection.setQuadratureVelocity(shooterSensor.velocityToRawUnits(simPhysics.angularVelocityRPM.rotations.perMinute).toInt())
     shooterMotor.simCollection.addQuadraturePosition(shooterSensor.velocityToRawUnits(simPhysics.angularVelocityRPM.rotations.perMinute * 0.02).toInt())
     shooterMotor.simCollection.setBusVoltage(12.0)
