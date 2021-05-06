@@ -1,26 +1,26 @@
 package com.team4099.lib.units
 
 object Magnitude {
-  const val YOTTA = 10E24
-  const val ZETA = 10E21
-  const val EXA = 10E18
-  const val PETA = 10E15
-  const val TERA = 10E12
-  const val GIGA = 10E9
-  const val MEGA = 10E6
-  const val KILO = 10E3
-  const val HECTO = 10E2
+  const val YOTTA = 1E24
+  const val ZETA = 1E21
+  const val EXA = 1E18
+  const val PETA = 1E15
+  const val TERA = 1E12
+  const val GIGA = 1E9
+  const val MEGA = 1E6
+  const val KILO = 1E3
+  const val HECTO = 1E2
   const val DECA = 10
-  const val DECI = 10E-1
-  const val CENTI = 10E-2
-  const val MILLI = 10E-3
-  const val MICRO = 10E-6
-  const val NANO = 10E-9
-  const val PICO = 10E-12
-  const val FEMTO = 10E-15
-  const val ATTO = 10E-18
-  const val ZEPTO = 10E-21
-  const val YOCTO = 10E-24
+  const val DECI = 1E-1
+  const val CENTI = 1E-2
+  const val MILLI = 1E-3
+  const val MICRO = 1E-6
+  const val NANO = 1E-9
+  const val PICO = 1E-12
+  const val FEMTO = 1E-15
+  const val ATTO = 1E-18
+  const val ZEPTO = 1E-21
+  const val YOCTO = 1E-24
 }
 
 val Double.yotta: Double

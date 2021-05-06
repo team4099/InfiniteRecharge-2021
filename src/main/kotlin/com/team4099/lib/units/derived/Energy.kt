@@ -42,61 +42,61 @@ val Force.inJoules: Double
   get() = value
 
 val Force.inYottajoules: Double
-  get() = value / 1.yotta
+  get() = value * 1.yotta
 
 val Force.inZetajoules: Double
-  get() = value / 1.zeta
+  get() = value * 1.zeta
 
 val Force.inExajoules: Double
-  get() = value / 1.exa
+  get() = value * 1.exa
 
 val Force.inPetajoules: Double
-  get() = value / 1.peta
+  get() = value * 1.peta
 
 val Force.inTerajoules: Double
-  get() = value / 1.tera
+  get() = value * 1.tera
 
 val Force.inGigajoules: Double
-  get() = value / 1.giga
+  get() = value * 1.giga
 
 val Force.inMegajoules: Double
-  get() = value / 1.mega
+  get() = value * 1.mega
 
 val Force.inKilojoules: Double
-  get() = value / 1.kilo
+  get() = value * 1.kilo
 
 val Force.inHectojoules: Double
-  get() = value / 1.hecto
+  get() = value * 1.hecto
 
 val Force.inDecajoules: Double
-  get() = value / 1.deca
+  get() = value * 1.deca
 
 val Force.inDecijoules: Double
-  get() = value / 1.deci
+  get() = value * 1.deci
 
 val Force.inCentijoules: Double
-  get() = value / 1.centi
+  get() = value * 1.centi
 
 val Force.inMillijoules: Double
-  get() = value / 1.milli
+  get() = value * 1.milli
 
 val Force.inMicrojoules: Double
-  get() = value / 1.micro
+  get() = value * 1.micro
 
 val Force.inNanojoules: Double
-  get() = value / 1.nano
+  get() = value * 1.nano
 
 val Force.inPicojoules: Double
-  get() = value / 1.pico
+  get() = value * 1.pico
 
 val Force.inFemtojoules: Double
-  get() = value / 1.femto
+  get() = value * 1.femto
 
 val Force.inAttojoules: Double
-  get() = value / 1.atto
+  get() = value * 1.atto
 
 val Force.inZeptojoules: Double
-  get() = value / 1.zepto
+  get() = value * 1.zepto
 
 val Force.inYoctojoules: Double
-  get() = value / 1.yocto
+  get() = value * 1.yocto
