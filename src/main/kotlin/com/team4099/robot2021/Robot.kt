@@ -1,13 +1,17 @@
 package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
-import com.team4099.robot2021.commands.feeder.FeederBeamBreak
+import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.commands.feeder.FeederCommand
+import com.team4099.robot2021.commands.shooter.ShootCommand
+import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
+import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
+import com.team4099.robot2021.subsystems.Drivetrain
 import com.team4099.robot2021.subsystems.Feeder
-import com.team4099.robot2021.commands.intake.IntakeCommand
-import com.team4099.robot2021.subsystems.Intake
+import com.team4099.robot2021.subsystems.Shooter
+import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
@@ -19,29 +23,82 @@ object Robot : TimedRobot() {
   val robotName: Constants.Tuning.RobotName
 
   init {
-    val robotId = Constants.Tuning.ROBOT_ID_PINS.withIndex().map { (i, pin) ->
-      if (DigitalInput(pin).get()) 0 else 2.0.pow(i).toInt()
-    }.sum()
-    robotName = Constants.Tuning.ROBOT_ID_MAP.getOrDefault(robotId, Constants.Tuning.RobotName.COMPETITION)
+    val robotId =
+        Constants.Tuning
+            .ROBOT_ID_PINS
+            .withIndex()
+            .map { (i, pin) -> if (DigitalInput(pin).get()) 0 else 2.0.pow(i).toInt() }
+            .sum()
+    robotName =
+        Constants.Tuning.ROBOT_ID_MAP.getOrDefault(robotId, Constants.Tuning.RobotName.COMPETITION)
     Logger.addEvent("Robot", "Robot Construction (running on $robotName)")
     Logger.addSource("Robot", "Battery Voltage", RobotController::getBatteryVoltage)
 
     Logger.startLogging()
 
-    // Link between feeder Trigger and Command
+    //    // Link between feeder Trigger and Command
     Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
-    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_FLOOR));
-    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD));
+    //    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_FLOOR))
+    //    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
+    //
+    //    Intake.defaultCommand =
+    //        IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
+    //    ControlBoard.runIntakeIn
+    //        .whileActiveContinuous(
+    //            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+    //                .alongWith(FeederBeamBreak()))
+    //    ControlBoard.runIntakeOut
+    //        .whileActiveContinuous(
+    //            IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
+    //                .alongWith(FeederCommand(Feeder.FeederState.BACKWARD)))
 
-    Intake.defaultCommand = IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
-    ControlBoard.runIntakeIn.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT).alongWith(FeederBeamBreak()));
-    ControlBoard.runIntakeOut.whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT).alongWith(FeederCommand(Feeder.FeederState.BACKWARD)));
+    //    Climber.defaultCommand = LockClimber()
+    //    ControlBoard.climberHigh
+    //        .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
+    //    ControlBoard.climberLow
+    //        .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
+
+    //
+    Vision
+    Shooter.defaultCommand = ShootCommand()
+    ControlBoard.shoot.whenActive(ShootCommand())
+
+//    Drivetrain.defaultCommand =
+//        OpenLoopDriveCommand(
+//            { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
+//            { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
+//            { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
+
+//    ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
+
+//        ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
+
+    //    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
+
+//    ControlBoard.nearSpin
+//        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.NEAR))
+//    ControlBoard.lineSpin
+//        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.LINE))
+//    ControlBoard.midSpin
+//        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.MID))
+//    ControlBoard.farSpin
+//        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.FAR))
   }
 
+  // private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchARed)
+  // private val autonomousCommand = AutoNavBounceMode()
   private val autonomousCommand = InstantCommand()
+
+  // private val autonomousCommand = DriveCharacterizeCommand()
+
+  // private val autonomousCommand = LoopPathCommand(PathStore.driveForward, PathStore.driveBackwards)
 
   override fun autonomousInit() {
     autonomousCommand.schedule()
+  }
+
+  override fun disabledInit() {
+    autonomousCommand.cancel()
   }
 
   override fun teleopInit() {
@@ -51,5 +108,6 @@ object Robot : TimedRobot() {
   override fun robotPeriodic() {
     CommandScheduler.getInstance().run()
     Logger.saveLogs()
+    Logger.updateShuffleboard()
   }
 }

@@ -26,31 +26,74 @@ import com.team4099.lib.units.zepto
 import com.team4099.lib.units.zeta
 
 typealias Coulomb = Product<Ampere, Second>
+
 typealias Charge = Value<Coulomb>
 
-val Double.coulombs get() = Charge(this)
+val Double.coulombs
+  get() = Charge(this)
 
-val Number.coulombs get() = Charge(this.toDouble())
+val Number.coulombs
+  get() = Charge(this.toDouble())
 
-val Force.inCoulombs : Double get() = value
+val Charge.inCoulombs: Double
+  get() = value
 
-val Force.inYottacoulombs : Double get() = value.yotta
-val Force.inZetacoulombs : Double get() = value.zeta
-val Force.inExacoulombs : Double get() = value.exa
-val Force.inPetacoulombs : Double get() = value.peta
-val Force.inTeracoulombs : Double get() = value.tera
-val Force.inGigacoulombs : Double get() = value.giga
-val Force.inMegacoulombs : Double get() = value.mega
-val Force.inKilocoulombs : Double get() = value.kilo
-val Force.inHectocoulombs : Double get() = value.hecto
-val Force.inDecacoulombs : Double get() = value.deca
-val Force.inDecicoulombs : Double get() = value.deci
-val Force.inCenticoulombs : Double get() = value.centi
-val Force.inMillicoulombs : Double get() = value.milli
-val Force.inMicrocoulombs : Double get() = value.micro
-val Force.inNanocoulombs : Double get() = value.nano
-val Force.inPicocoulombs : Double get() = value.pico
-val Force.inFemtocoulombs : Double get() = value.femto
-val Force.inAttocoulombs : Double get() = value.atto
-val Force.inZeptocoulombs : Double get() = value.zepto
-val Force.inYoctocoulombs : Double get() = value.yocto
+val Charge.inYottacoulombs: Double
+  get() = value * 1.yotta
+
+val Charge.inZetacoulombs: Double
+  get() = value * 1.zeta
+
+val Charge.inExacoulombs: Double
+  get() = value * 1.exa
+
+val Charge.inPetacoulombs: Double
+  get() = value * 1.peta
+
+val Charge.inTeracoulombs: Double
+  get() = value * 1.tera
+
+val Charge.inGigacoulombs: Double
+  get() = value * 1.giga
+
+val Charge.inMegacoulombs: Double
+  get() = value * 1.mega
+
+val Charge.inKilocoulombs: Double
+  get() = value * 1.kilo
+
+val Charge.inHectocoulombs: Double
+  get() = value * 1.hecto
+
+val Charge.inDecacoulombs: Double
+  get() = value * 1.deca
+
+val Charge.inDecicoulombs: Double
+  get() = value * 1.deci
+
+val Charge.inCenticoulombs: Double
+  get() = value * 1.centi
+
+val Charge.inMillicoulombs: Double
+  get() = value * 1.milli
+
+val Charge.inMicrocoulombs: Double
+  get() = value * 1.micro
+
+val Charge.inNanocoulombs: Double
+  get() = value * 1.nano
+
+val Charge.inPicocoulombs: Double
+  get() = value * 1.pico
+
+val Charge.inFemtocoulombs: Double
+  get() = value * 1.femto
+
+val Charge.inAttocoulombs: Double
+  get() = value * 1.atto
+
+val Charge.inZeptocoulombs: Double
+  get() = value * 1.zepto
+
+val Charge.inYoctocoulombs: Double
+  get() = value * 1.yocto
