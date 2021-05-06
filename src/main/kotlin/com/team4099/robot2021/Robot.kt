@@ -2,8 +2,6 @@ package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
-import com.team4099.robot2021.auto.DriveCharacterizeCommand
-import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.commands.shooter.ShootCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
@@ -15,9 +13,10 @@ import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.subsystems.Shooter
 import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.DigitalInput
+import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
+import edu.wpi.first.wpilibj2.command.InstantCommand
 import kotlin.math.pow
 
 object Robot : TimedRobot() {
@@ -33,7 +32,7 @@ object Robot : TimedRobot() {
     robotName =
         Constants.Tuning.ROBOT_ID_MAP.getOrDefault(robotId, Constants.Tuning.RobotName.COMPETITION)
     Logger.addEvent("Robot", "Robot Construction (running on $robotName)")
-    //    Logger.addSource("Robot", "Battery Voltage", RobotController::getBatteryVoltage)
+    Logger.addSource("Robot", "Battery Voltage", RobotController::getBatteryVoltage)
 
     Logger.startLogging()
 
@@ -52,28 +51,47 @@ object Robot : TimedRobot() {
     //        .whileActiveContinuous(
     //            IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
     //                .alongWith(FeederCommand(Feeder.FeederState.BACKWARD)))
-    //
+
     //    Climber.defaultCommand = LockClimber()
     //    ControlBoard.climberHigh
     //        .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
     //    ControlBoard.climberLow
     //        .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
+
     //
     Vision
     Shooter.defaultCommand = ShootCommand()
     ControlBoard.shoot.whenActive(ShootCommand())
-    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
 
-    Drivetrain.defaultCommand =
-        TeleopDriveCommand(
-            { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
-            { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
-            { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
+//    Drivetrain.defaultCommand =
+//        OpenLoopDriveCommand(
+//            { ControlBoard.strafe.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
+//            { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
+//            { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
 
-    //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
+//    ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
+
+//        ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
+
+    //    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
+
+//    ControlBoard.nearSpin
+//        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.NEAR))
+//    ControlBoard.lineSpin
+//        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.LINE))
+//    ControlBoard.midSpin
+//        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.MID))
+//    ControlBoard.farSpin
+//        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.FAR))
   }
 
-  private val autonomousCommand = DriveCharacterizeCommand()
+  // private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchARed)
+  // private val autonomousCommand = AutoNavBounceMode()
+  private val autonomousCommand = InstantCommand()
+
+  // private val autonomousCommand = DriveCharacterizeCommand()
+
+  // private val autonomousCommand = LoopPathCommand(PathStore.driveForward, PathStore.driveBackwards)
 
   override fun autonomousInit() {
     autonomousCommand.schedule()
