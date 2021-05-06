@@ -76,6 +76,7 @@ object Shooter : SubsystemBase() {
       shooterMotor.motorOutputVoltage
     }
 
+    //adding mutable entries to dashboard
     Logger.addSource(
       Constants.Shooter.TAB,
       "Shooter kP",
