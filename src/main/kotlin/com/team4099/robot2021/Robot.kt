@@ -6,12 +6,14 @@ import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.commands.shooter.ShootCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
+import com.team4099.robot2021.commands.intake.IntakeCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
 import com.team4099.robot2021.subsystems.Drivetrain
 import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.subsystems.Shooter
 import com.team4099.robot2021.subsystems.Vision
+import com.team4099.robot2021.subsystems.Intake
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
@@ -41,16 +43,18 @@ object Robot : TimedRobot() {
     //    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_FLOOR))
     //    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
     //
-    //    Intake.defaultCommand =
-    //        IntakeCommand(Constants.Intake.IntakeState.DEFAULT, Constants.Intake.ArmPosition.IN)
-    //    ControlBoard.runIntakeIn
-    //        .whileActiveContinuous(
-    //            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
-    //                .alongWith(FeederBeamBreak()))
-    //    ControlBoard.runIntakeOut
-    //        .whileActiveContinuous(
-    //            IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
-    //                .alongWith(FeederCommand(Feeder.FeederState.BACKWARD)))
+       Intake.defaultCommand =
+           IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.IN)
+       ControlBoard.runIntakeIn
+           .whileActiveContinuous(
+               IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+                  //  .alongWith(FeederBeamBreak())
+                   )
+       ControlBoard.runIntakeOut
+           .whileActiveContinuous(
+               IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
+                  //  .alongWith(FeederCommand(Feeder.FeederState.BACKWARD))
+                   )
 
     //    Climber.defaultCommand = LockClimber()
     //    ControlBoard.climberHigh
