@@ -3,15 +3,27 @@ package com.team4099.robot2021.subsystems
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.units.ctreAngularMechanismSensor
 import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj.DoubleSolenoid
+import edu.wpi.first.wpilibj.simulation.FlywheelSim
 import edu.wpi.first.wpilibj2.command.SubsystemBase
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX
+import edu.wpi.first.wpilibj.RobotBase
+import edu.wpi.first.wpilibj.system.plant.DCMotor
+import edu.wpi.first.wpilibj.RobotController
+import com.team4099.lib.units.derived.rotations
+import com.team4099.lib.units.inRotationsPerMinute
+import com.team4099.lib.units.perMinute
 
 object Intake : SubsystemBase() {
 
-  private val intakeTalon = TalonFX(Constants.Intake.INTAKE_MOTOR)
+  private val intakeTalon = WPI_TalonSRX(Constants.Intake.INTAKE_MOTOR)
   private val intakeDoubleSolenoid =
       DoubleSolenoid(Constants.Intake.ARM_SOLENOID_FORWARD, Constants.Intake.ARM_SOLENOID_REVERSE)
+
+  private lateinit var simPhysics: FlywheelSim
+  private val intakeMotorSensor = ctreAngularMechanismSensor(intakeTalon, 2048, Constants.Intake.GEAR_RATIO)
 
   var intakeState = Constants.Intake.IntakeState.DEFAULT
     set(value) {
@@ -38,5 +50,18 @@ object Intake : SubsystemBase() {
       intakeTalon.motorOutputVoltage
     }
     Logger.addSource(Constants.Intake.TAB, "Arm State") { armState.toString() }
+
+    if (RobotBase.isSimulation()) {
+      simPhysics = FlywheelSim(DCMotor.getFalcon500(1), Constants.Intake.GEAR_RATIO, Constants.Intake.INTAKE_MOI)
+    }
+  }
+
+  override fun simulationPeriodic() {
+    simPhysics.setInput(intakeTalon.motorOutputPercent * RobotController.getBatteryVoltage())
+    simPhysics.update(0.02)
+
+    intakeTalon.simCollection.setQuadratureVelocity(intakeMotorSensor.velocityToRawUnits(simPhysics.angularVelocityRPM.rotations.perMinute).toInt())
+    intakeTalon.simCollection.addQuadraturePosition(intakeMotorSensor.velocityToRawUnits(simPhysics.angularVelocityRPM.rotations.perMinute * 0.02).toInt())
+    intakeTalon.simCollection.setBusVoltage(12.0)
   }
 }
