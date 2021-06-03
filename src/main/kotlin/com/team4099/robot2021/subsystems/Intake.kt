@@ -17,6 +17,7 @@ import com.team4099.lib.units.inRotationsPerMinute
 import com.team4099.lib.units.perMinute
 
 object Intake : SubsystemBase() {
+  private val simulated = Mechanism2D()
 
   private val intakeTalon = WPI_TalonSRX(Constants.Intake.INTAKE_MOTOR)
   private val intakeDoubleSolenoid =

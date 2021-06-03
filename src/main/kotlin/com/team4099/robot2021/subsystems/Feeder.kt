@@ -3,6 +3,7 @@ package com.team4099.robot2021.subsystems
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.simulation.SimulationAnnotationProcessor
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.Constants.Feeder.FLOOR_CURRENT_LIMIT
 import com.team4099.robot2021.config.Constants.Feeder.VERTICAL_CURRENT_LIMIT
