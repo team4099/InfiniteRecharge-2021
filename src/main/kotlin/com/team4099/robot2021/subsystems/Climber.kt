@@ -4,9 +4,15 @@ import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel
 import com.revrobotics.ControlType
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.units.derived.rotations
+import com.team4099.lib.units.perMinute
 import com.team4099.lib.units.sparkMaxLinearMechanismSensor
 import com.team4099.robot2021.config.Constants
+import edu.wpi.first.wpilibj.RobotBase
+import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.Solenoid
+import edu.wpi.first.wpilibj.simulation.FlywheelSim
+import edu.wpi.first.wpilibj.system.plant.DCMotor
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object Climber : SubsystemBase() {
@@ -48,6 +54,8 @@ object Climber : SubsystemBase() {
     }
   var encoderR = climberRArm.encoder
   var encoderL = climberLArm.encoder
+
+  private lateinit var simPhysics: FlywheelSim
 
   init {
     Logger.addSource(Constants.Climber.TAB, "Climber Right Arm Motor Power") {

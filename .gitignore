@@ -93,4 +93,4 @@ bin/
 
 # Simulation
 imgui.ini
-logs/*
+logs*

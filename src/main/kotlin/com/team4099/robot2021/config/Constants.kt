@@ -140,6 +140,8 @@ object Constants {
     const val ARM_SOLENOID_FORWARD = 7
     const val ARM_SOLENOID_REVERSE = 0
     const val TAB = "Intake"
+    const val GEAR_RATIO = 16.0 / 36.0
+    const val INTAKE_MOI = 0.000901622772
 
     enum class IntakeState(val speed: Double) {
       DEFAULT(0.0),
@@ -180,7 +182,7 @@ object Constants {
     val NEAR_DISTANCE = 130.0.inches
     val MID_DISTANCE = 249.0.inches
     const val GEAR_RATIO = 1.5
-    const val FLYWHEEL_MOI = 0.00375548
+    const val FLYWHEEL_MOI = 0.0375548
     val POWER_CELL_CHALLENGE_RPM = 2950.rotations.perMinute
 
     // val HOOD_THRESHOLD = 0.0.inches
