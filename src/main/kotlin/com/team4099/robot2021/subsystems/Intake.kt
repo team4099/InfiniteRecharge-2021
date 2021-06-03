@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.RobotController
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.inRotationsPerMinute
 import com.team4099.lib.units.perMinute
+import edu.wpi.first.wpilibj.simulation.Mechanism2D
 
 object Intake : SubsystemBase() {
   private val simulated = Mechanism2D()

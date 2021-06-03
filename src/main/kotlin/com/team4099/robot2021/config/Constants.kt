@@ -140,7 +140,7 @@ object Constants {
     const val ARM_SOLENOID_FORWARD = 7
     const val ARM_SOLENOID_REVERSE = 0
     const val TAB = "Intake"
-    const val GEAR_RATIO = 16.0 / 36.0
+    const val GEAR_RATIO = 36.0 / 16.0 // 16.0 / 36.0
     const val INTAKE_MOI = 0.000901622772
 
     enum class IntakeState(val speed: Double) {

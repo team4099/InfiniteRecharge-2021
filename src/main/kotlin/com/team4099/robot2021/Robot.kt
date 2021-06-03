@@ -38,23 +38,23 @@ object Robot : TimedRobot() {
 
     Logger.startLogging()
 
-    //    // Link between feeder Trigger and Command
+    // Link between feeder Trigger and Command
     Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
     //    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_FLOOR))
     //    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
-    //
-       Intake.defaultCommand =
-           IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.IN)
-       ControlBoard.runIntakeIn
-           .whileActiveContinuous(
-               IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
-                  //  .alongWith(FeederBeamBreak())
-                   )
-       ControlBoard.runIntakeOut
-           .whileActiveContinuous(
-               IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
-                  //  .alongWith(FeederCommand(Feeder.FeederState.BACKWARD))
-                   )
+
+    Intake.defaultCommand =
+       IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.IN)
+    ControlBoard.runIntakeIn
+       .whileActiveContinuous(
+           IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+              //  .alongWith(FeederBeamBreak())
+               )
+    ControlBoard.runIntakeOut
+       .whileActiveContinuous(
+           IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
+              //  .alongWith(FeederCommand(Feeder.FeederState.BACKWARD))
+               )
 
     //    Climber.defaultCommand = LockClimber()
     //    ControlBoard.climberHigh
