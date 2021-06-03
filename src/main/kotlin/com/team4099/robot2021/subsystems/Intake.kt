@@ -23,7 +23,7 @@ object Intake : SubsystemBase() {
       DoubleSolenoid(Constants.Intake.ARM_SOLENOID_FORWARD, Constants.Intake.ARM_SOLENOID_REVERSE)
 
   private lateinit var simPhysics: FlywheelSim
-  private val intakeMotorSensor = ctreAngularMechanismSensor(intakeTalon, 2048, Constants.Intake.GEAR_RATIO)
+  private val intakeSensor = ctreAngularMechanismSensor(intakeTalon, 2048, Constants.Intake.GEAR_RATIO)
 
   var intakeState = Constants.Intake.IntakeState.DEFAULT
     set(value) {
@@ -57,11 +57,14 @@ object Intake : SubsystemBase() {
   }
 
   override fun simulationPeriodic() {
+    println("Intake commanded output: ${intakeTalon.motorOutputPercent} voltage: ${RobotController.getBatteryVoltage()}")
+    println("Intake raw velocity: ${intakeSensor.velocityToRawUnits(simPhysics.angularVelocityRPM.rotations.perMinute)}")
+
     simPhysics.setInput(intakeTalon.motorOutputPercent * RobotController.getBatteryVoltage())
     simPhysics.update(0.02)
 
-    intakeTalon.simCollection.setQuadratureVelocity(intakeMotorSensor.velocityToRawUnits(simPhysics.angularVelocityRPM.rotations.perMinute).toInt())
-    intakeTalon.simCollection.addQuadraturePosition(intakeMotorSensor.velocityToRawUnits(simPhysics.angularVelocityRPM.rotations.perMinute * 0.02).toInt())
+    intakeTalon.simCollection.setQuadratureVelocity(intakeSensor.velocityToRawUnits(simPhysics.angularVelocityRPM.rotations.perMinute).toInt())
+    intakeTalon.simCollection.addQuadraturePosition(intakeSensor.velocityToRawUnits(simPhysics.angularVelocityRPM.rotations.perMinute * 0.02).toInt())
     intakeTalon.simCollection.setBusVoltage(12.0)
   }
 }
