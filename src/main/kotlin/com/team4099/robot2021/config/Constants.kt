@@ -74,7 +74,7 @@ object Constants {
 
     const val GYRO_RATE_COEFFICIENT = 0.0 // TODO: Change this value
 
-    val MAX_AUTO_VEL = 3.0.meters.perSecond
+    val MAX_AUTO_VEL = 3.meters.perSecond
     val SLOW_AUTO_VEL = 0.66.meters.perSecond
     val MAX_AUTO_ACCEL = 2.0.meters.perSecond.perSecond
 
@@ -109,7 +109,7 @@ object Constants {
       const val AUTO_POS_KI = 0.0
       const val AUTO_POS_KD = 0.0 //263.0 / 6
 
-      const val DRIVE_THETA_PID_KP = 7.0
+      const val DRIVE_THETA_PID_KP = 1.0
       const val DRIVE_THETA_PID_KI = 0.0
       const val DRIVE_THETA_PID_KD = 0.0
       val DRIVE_THETA_PID_MAX_VEL = 0.0.meters.perSecond
@@ -142,15 +142,14 @@ object Constants {
     const val TAB = "Intake"
 
     enum class IntakeState(val speed: Double) {
-      DEFAULT(0.0),
+      IDLE(0.0),
       IN(1.0),
       OUT(-1.0)
     }
 
     enum class ArmPosition(val position: DoubleSolenoid.Value?) {
       OUT(DoubleSolenoid.Value.kReverse),
-      IN(DoubleSolenoid.Value.kForward),
-      DEFAULT(DoubleSolenoid.Value.kOff)
+      IN(DoubleSolenoid.Value.kForward)
     }
   }
 
@@ -231,5 +230,10 @@ object Constants {
   enum class ClimberPosition(val length: Length) {
     LOW(0.meters),
     HIGH(1.0414.meters) // Climber fulled extended: 1.0414 meters = 41 in
+  }
+
+  object BallVision {
+    val CENTER_YAW_THRESHOLD = 6.degrees
+    val PATH_A_AREA_THRESHOLD = 0.1
   }
 }

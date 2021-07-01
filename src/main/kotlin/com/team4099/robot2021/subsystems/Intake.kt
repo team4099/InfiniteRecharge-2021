@@ -13,13 +13,13 @@ object Intake : SubsystemBase() {
   private val intakeDoubleSolenoid =
       DoubleSolenoid(Constants.Intake.ARM_SOLENOID_FORWARD, Constants.Intake.ARM_SOLENOID_REVERSE)
 
-  var intakeState = Constants.Intake.IntakeState.DEFAULT
+  var intakeState = Constants.Intake.IntakeState.IDLE
     set(value) {
       intakeTalon.set(ControlMode.PercentOutput, value.speed)
       field = value
     }
 
-  var armState = Constants.Intake.ArmPosition.DEFAULT
+  var armState = Constants.Intake.ArmPosition.IN
     set(value) {
       intakeDoubleSolenoid.set(value.position)
       field = value

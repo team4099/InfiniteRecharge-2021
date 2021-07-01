@@ -103,7 +103,7 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
     val xFF = desiredState.linearVelocity * desiredState.curvature.cos
     val yFF = desiredState.linearVelocity * desiredState.curvature.sin
     val thetaFF =
-        thetaPID.calculate(Drivetrain.pose.theta.inRadians, desiredState.pose.theta.inRadians)
+        thetaPID.calculate(-Drivetrain.pose.theta.inRadians, desiredState.pose.theta.inRadians)
             .radians
             .perSecond
 

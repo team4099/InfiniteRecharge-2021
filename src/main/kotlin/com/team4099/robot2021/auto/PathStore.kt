@@ -72,24 +72,15 @@ object PathStore {
           0.0.meters.perSecond,
           trajectoryConfig)
 
-  // use this default path if no path was chosen
-  val galacticSearchMoveBack: Trajectory =
-      Trajectory(
-          0.0.meters.perSecond,
-          Path(
-              Pose(navPoints["C"]!![1], 0.degrees),
-              Pose(navPoints["C"]!![1] - Translation(15.inches, 0.feet), 0.degrees)),
-          0.0.meters.perSecond,
-          trajectoryConfig)
-
   val galacticSearchARed: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
-          Path(Pose(navPoints["B"]!![1], 0.degrees), Pose(navPoints["B"]!![11], 180.degrees))
+          // change the end to A10 if there's no wall to run into
+          Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["A"]!![10], 270.degrees))
               .apply {
-            addWaypoint(navPoints["B"]!![3], 0.degrees)
-            addWaypoint(navPoints["D"]!![5], 90.degrees)
-            addWaypoint(navPoints["B"]!![7])
+            addWaypoint(navPoints["C"]!![3], 0.degrees)
+            addWaypoint(navPoints["D"]!![5], 0.degrees)
+            addWaypoint(navPoints["A"]!![6], 270.degrees)
             build()
           },
           0.0.meters.perSecond,
@@ -98,38 +89,44 @@ object PathStore {
   val galacticSearchABlue: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
-          Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["C"]!![11], 0.degrees)).apply {
-            addWaypoint(navPoints["E"]!![6])
-            addWaypoint(navPoints["B"]!![7])
-            addWaypoint(navPoints["C"]!![9])
+          // change the end to C11 if there's no wall to run into
+          Path(Pose(navPoints["C"]!![1], 0.degrees), Pose(navPoints["C"]!![10], 45.degrees)).apply {
+            addWaypoint(navPoints["E"]!![6], 0.degrees)
+            addWaypoint(navPoints["B"]!![7], 270.degrees)
+            addWaypoint(navPoints["C"]!![9], 45.degrees)
             build()
           },
           0.0.meters.perSecond,
-          trajectoryConfig)
+          slowTrajectoryConfig)
 
   val galacticSearchBRed: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
-          Path(Pose(navPoints["B"]!![1], 0.degrees), Pose(navPoints["B"]!![11], 0.degrees)).apply {
+          // change the end to B11 if there's no wall to run into
+          Path(Pose(navPoints["A"]!![1], 0.degrees), Pose(navPoints["B"]!![10], 0.degrees)).apply {
             addWaypoint(navPoints["B"]!![3])
             addWaypoint(navPoints["D"]!![5])
             addWaypoint(navPoints["B"]!![7])
             build()
           },
           0.0.meters.perSecond,
-          trajectoryConfig)
+          slowTrajectoryConfig)
 
   val galacticSearchBBlue: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
-          Path(Pose(navPoints["E"]!![1], 0.degrees), Pose(navPoints["D"]!![11], 0.degrees)).apply {
+          // change the end to D11 if there's no wall to run into
+          Path(
+                  Pose(navPoints["E"]!![1], 0.degrees),
+                  Pose(navPoints["D"]!![10] - Translation(5.inches, 0.feet), 0.degrees))
+              .apply {
             addWaypoint(navPoints["D"]!![6])
             addWaypoint(navPoints["B"]!![8])
             addWaypoint(navPoints["D"]!![10])
             build()
           },
           0.0.meters.perSecond,
-          trajectoryConfig)
+          slowTrajectoryConfig)
 
   val toNearTrench: Trajectory =
       Trajectory(
@@ -285,33 +282,37 @@ object PathStore {
       Trajectory(
           0.0.meters.perSecond,
           Path(
-                  Pose(navPoints["E"]!![2] - Translation(15.inches, 0.feet), 0.degrees),
-                  Pose(navPoints["C"]!![1], 0.degrees))
+                  Pose(navPoints["E"]!![1] /*- Translation(15.inches, 0.feet)*/, 0.degrees),
+                  Pose(navPoints["C"]!![1] - Translation(0.inches, 10.inches), 0.degrees))
               .apply {
-            // addWaypoint(navPoints["E"]!![3] - Translation(30.inches, 0.feet))
-            //first intersection
-            // addWaypoint(navPoints["D"]!![3])
-            addWaypoint(navPoints["E"]!![3])
+            addWaypoint(navPoints["E"]!![3] /*- Translation(30.inches, 0.feet)*/)
+            addWaypoint(navPoints["D"]!![3])
+                //was C4
             addWaypoint(navPoints["C"]!![3])
-//            addWaypoint(navPoints["C"]!![4])
-            // addWaypoint(navPoints["B"]!![6] - Translation(0.feet,15.inches))
+            // addWaypoint(navPoints["B"]!![6] - Translation(0.feet, 15.inches))
+            // addWaypoint(navPoints["C"]!![8])
             addWaypoint(navPoints["C"]!![9])
-            addWaypoint(navPoints["E"]!![9])
+            addWaypoint(navPoints["E"]!![9] + Translation(0.inches,15.inches))
             // top left of right circle
             // addWaypoint(navPoints["D"]!![9] - Translation(30.inches,30.inches))
-            addWaypoint(navPoints["E"]!![11] - Translation(30.inches, 0.feet))
-//            addWaypoint(navPoints["D"]!![11] - Translation(30.inches, 0.feet))
-            addWaypoint(navPoints["C"]!![11] - Translation(30.inches, 0.feet))
-            addWaypoint(navPoints["C"]!![9])
+            //addWaypoint(navPoints["E"]!![10])
+                addWaypoint(navPoints["E"]!![11] + Translation(15.inches,0.inches))
+            //addWaypoint(navPoints["D"]!![11])
+                addWaypoint(navPoints["C"]!![11])
+            //addWaypoint(navPoints["C"]!![10])
+                addWaypoint(navPoints["C"]!![9])
+            //addWaypoint(navPoints["D"]!![9])
+                //rounding corner here - E8
             addWaypoint(navPoints["E"]!![9])
-            // addWaypoint(navPoints["E"]!![6])
+
+            //addWaypoint(navPoints["E"]!![6])
             addWaypoint(navPoints["E"]!![3])
-            // addWaypoint(navPoints["D"]!![3])
-            addWaypoint(navPoints["C"]!![3] - Translation(30.inches,0.feet))
+            addWaypoint(navPoints["C"]!![3] - Translation(0.inches, 10.inches))
+            //addWaypoint(navPoints["C"]!![3] - Translation(30.inches, 0.feet))
             build()
           },
           Constants.Drivetrain.SLOW_AUTO_VEL,
-          slowTrajectoryConfig)
+          trajectoryConfig)
 
   val barrelPath: Trajectory =
       Trajectory(
