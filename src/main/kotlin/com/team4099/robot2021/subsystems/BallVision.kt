@@ -6,7 +6,6 @@ import com.team4099.lib.units.derived.degrees
 import com.team4099.robot2021.auto.PathStore
 import com.team4099.robot2021.config.Constants
 import edu.wpi.first.wpilibj2.command.SubsystemBase
-import kotlin.math.absoluteValue
 import org.photonvision.PhotonCamera
 import org.photonvision.PhotonTrackedTarget
 

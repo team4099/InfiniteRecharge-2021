@@ -3,26 +3,27 @@ package com.team4099.robot2021
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.auto.PathStore
-import com.team4099.robot2021.auto.modes.GalacticSearch
 import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
-import com.team4099.robot2021.commands.drivetrain.LoopPathCommand
 import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.commands.feeder.FeederSerialize
 import com.team4099.robot2021.commands.intake.IntakeCommand
-import com.team4099.robot2021.commands.shooter.ShootCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.shooter.SpinUpCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
-import com.team4099.robot2021.subsystems.*
+import com.team4099.robot2021.subsystems.BallVision
+import com.team4099.robot2021.subsystems.Drivetrain
+import com.team4099.robot2021.subsystems.Feeder
+import com.team4099.robot2021.subsystems.Intake
+import com.team4099.robot2021.subsystems.Shooter
+import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
 import kotlin.math.pow
 
 object Robot : TimedRobot() {
@@ -51,8 +52,9 @@ object Robot : TimedRobot() {
     Intake.defaultCommand =
         IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN)
     ControlBoard.runIntakeIn
-//        .whileActiveContinuous(FeederSerialize())
-      .whileActiveContinuous(IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+        //        .whileActiveContinuous(FeederSerialize())
+        .whileActiveContinuous(
+            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
                 .alongWith(FeederSerialize()))
 
     ControlBoard.runIntakeOut
@@ -68,13 +70,13 @@ object Robot : TimedRobot() {
     //        .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
 
     Shooter.defaultCommand = ShooterIdleCommand()
-//    Shooter.defaultCommand = SpinUpCommand()
-//    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
-//    ControlBoard.shoot.whileActiveOnce(VisionCommand().andThen(ShootCommand()))
-//    ControlBoard.shoot.whileActiveOnce(ShootCommand())
+    //    Shooter.defaultCommand = SpinUpCommand()
+    //    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
+    //    ControlBoard.shoot.whileActiveOnce(VisionCommand().andThen(ShootCommand()))
+    //    ControlBoard.shoot.whileActiveOnce(ShootCommand())
     ControlBoard.shoot.whileActiveOnce(VisionCommand())
-//    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
-//    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
+    //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
+    //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 
     Drivetrain.defaultCommand =
         OpenLoopDriveCommand(
@@ -86,7 +88,7 @@ object Robot : TimedRobot() {
 
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
 
-//        ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
+    //        ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 
     //    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
 
@@ -108,7 +110,8 @@ object Robot : TimedRobot() {
 
   // private val autonomousCommand = DriveCharacterizeCommand()
 
-  // private val autonomousCommand = LoopPathCommand(PathStore.driveForward, PathStore.driveBackwards)
+  // private val autonomousCommand = LoopPathCommand(PathStore.driveForward,
+  // PathStore.driveBackwards)
 
   override fun autonomousInit() {
     autonomousCommand.schedule()

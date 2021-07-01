@@ -1,12 +1,9 @@
 package com.team4099.robot2021.commands.shooter
 
 import com.team4099.lib.logging.Logger
-import com.team4099.lib.units.derived.rotations
-import com.team4099.lib.units.perMinute
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.subsystems.Shooter
-import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj2.command.CommandBase
 
 class ShootCommand : CommandBase() {
@@ -48,9 +45,9 @@ class ShootCommand : CommandBase() {
       // run feeder
       Feeder.feederState = Feeder.FeederState.SHOOT
       Logger.addEvent(
-        "ShootCommand",
-        "Running feeder to shoot " +
-          "(error: ${(Shooter.targetVelocity - Shooter.currentVelocity).absoluteValue})")
+          "ShootCommand",
+          "Running feeder to shoot " +
+              "(error: ${(Shooter.targetVelocity - Shooter.currentVelocity).absoluteValue})")
     } else {
       // stop running feeder
       Feeder.feederState = Feeder.FeederState.NEUTRAL

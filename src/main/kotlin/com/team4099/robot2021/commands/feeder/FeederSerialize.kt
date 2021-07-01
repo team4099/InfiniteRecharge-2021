@@ -22,7 +22,8 @@ class FeederSerialize : CommandBase() {
     Feeder.feederState =
         when {
           Feeder.topBeamBroken -> Feeder.FeederState.NEUTRAL
-//          (Timer.getFPGATimestamp() - lastBrokenTime < 0.2) -> Feeder.FeederState.FORWARD_ALL
+          //          (Timer.getFPGATimestamp() - lastBrokenTime < 0.2) ->
+          // Feeder.FeederState.FORWARD_ALL
           else -> Feeder.FeederState.FORWARD_ALL
         }
   }

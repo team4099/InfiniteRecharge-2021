@@ -30,8 +30,8 @@ object Constants {
     }
 
     val ROBOT_ID_MAP =
-      mapOf<Int, RobotName>(
-        0 to RobotName.COMPETITION, 1 to RobotName.PRACTICE, 2 to RobotName.MULE)
+        mapOf<Int, RobotName>(
+            0 to RobotName.COMPETITION, 1 to RobotName.PRACTICE, 2 to RobotName.MULE)
   }
 
   object Joysticks {
@@ -107,7 +107,7 @@ object Constants {
 
       const val AUTO_POS_KP = 0.581 / 6
       const val AUTO_POS_KI = 0.0
-      const val AUTO_POS_KD = 0.0 //263.0 / 6
+      const val AUTO_POS_KD = 0.0 // 263.0 / 6
 
       const val DRIVE_THETA_PID_KP = 1.0
       const val DRIVE_THETA_PID_KI = 0.0
@@ -128,7 +128,6 @@ object Constants {
     const val FAST_FEEDER_POWER = 1.0
     const val FLOOR_CURRENT_LIMIT = 15
     const val VERTICAL_CURRENT_LIMIT = 40
-
 
     const val TOP_DIO_PIN = 9 // may be swapped with bottom
     const val BOTTOM_DIO_PIN = 8
@@ -163,7 +162,7 @@ object Constants {
     val VELOCITY_TOLERANCE = 100.rotations.perMinute
 
     const val SHOOTER_KS = 0.939 * 2
-    const val SHOOTER_KV = 0.114 //* 2
+    const val SHOOTER_KV = 0.114 // * 2
 
     const val SHOOTER_KP = 0.8
     const val SHOOTER_KI = 0.0

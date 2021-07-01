@@ -287,28 +287,28 @@ object PathStore {
               .apply {
             addWaypoint(navPoints["E"]!![3] /*- Translation(30.inches, 0.feet)*/)
             addWaypoint(navPoints["D"]!![3])
-                //was C4
+            // was C4
             addWaypoint(navPoints["C"]!![3])
             // addWaypoint(navPoints["B"]!![6] - Translation(0.feet, 15.inches))
             // addWaypoint(navPoints["C"]!![8])
             addWaypoint(navPoints["C"]!![9])
-            addWaypoint(navPoints["E"]!![9] + Translation(0.inches,15.inches))
+            addWaypoint(navPoints["E"]!![9] + Translation(0.inches, 15.inches))
             // top left of right circle
             // addWaypoint(navPoints["D"]!![9] - Translation(30.inches,30.inches))
-            //addWaypoint(navPoints["E"]!![10])
-                addWaypoint(navPoints["E"]!![11] + Translation(15.inches,0.inches))
-            //addWaypoint(navPoints["D"]!![11])
-                addWaypoint(navPoints["C"]!![11])
-            //addWaypoint(navPoints["C"]!![10])
-                addWaypoint(navPoints["C"]!![9])
-            //addWaypoint(navPoints["D"]!![9])
-                //rounding corner here - E8
+            // addWaypoint(navPoints["E"]!![10])
+            addWaypoint(navPoints["E"]!![11] + Translation(15.inches, 0.inches))
+            // addWaypoint(navPoints["D"]!![11])
+            addWaypoint(navPoints["C"]!![11])
+            // addWaypoint(navPoints["C"]!![10])
+            addWaypoint(navPoints["C"]!![9])
+            // addWaypoint(navPoints["D"]!![9])
+            // rounding corner here - E8
             addWaypoint(navPoints["E"]!![9])
 
-            //addWaypoint(navPoints["E"]!![6])
+            // addWaypoint(navPoints["E"]!![6])
             addWaypoint(navPoints["E"]!![3])
             addWaypoint(navPoints["C"]!![3] - Translation(0.inches, 10.inches))
-            //addWaypoint(navPoints["C"]!![3] - Translation(30.inches, 0.feet))
+            // addWaypoint(navPoints["C"]!![3] - Translation(30.inches, 0.feet))
             build()
           },
           Constants.Drivetrain.SLOW_AUTO_VEL,

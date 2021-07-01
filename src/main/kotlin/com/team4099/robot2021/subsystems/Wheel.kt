@@ -11,7 +11,11 @@ import com.team4099.lib.units.AngularMechanismSensor
 import com.team4099.lib.units.LinearAcceleration
 import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.Timescale
-import com.team4099.lib.units.base.*
+import com.team4099.lib.units.base.Length
+import com.team4099.lib.units.base.feet
+import com.team4099.lib.units.base.inFeet
+import com.team4099.lib.units.base.inches
+import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.Angle
 import com.team4099.lib.units.derived.ElectricalPotential
 import com.team4099.lib.units.derived.degrees

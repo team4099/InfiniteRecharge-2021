@@ -51,7 +51,8 @@ class VisionCommand : CommandBase() {
       Vision.steeringAdjust += -sign(Vision.yawToUse.inDegrees) * Constants.Vision.MIN_TURN_COMMAND
       // TODO: implement when shooter or drivetrain exists in master
       Drivetrain.setOpenLoop(
-          -Vision.steeringAdjust.degrees.perSecond, Pair(0.0.meters.perSecond, 0.0.meters.perSecond))
+          -Vision.steeringAdjust.degrees.perSecond,
+          Pair(0.0.meters.perSecond, 0.0.meters.perSecond))
     }
 
     if (Vision.yawToUse.inDegrees.around(0.0, Constants.Vision.MAX_ANGLE_ERROR.inDegrees)) {
