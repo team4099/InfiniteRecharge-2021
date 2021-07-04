@@ -177,7 +177,7 @@ object PathStore {
           Constants.Drivetrain.SLOW_AUTO_VEL,
           trajectoryConfig)
 
-  //Infinite Recharge @ Home
+  // Infinite Recharge @ Home
   val fromGreenToReintroduction =
       Trajectory(
           0.0.meters.perSecond,
