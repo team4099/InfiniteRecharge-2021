@@ -29,12 +29,12 @@ object PathStore {
           Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL,
           Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)
 
-  private val initLinePowerPort = Pose(3.627.meters, (-2.429).meters, 0.0.radians)
-  private val initLineFarTrench = Pose(3.627.meters, (-6.824).meters, 0.0.radians)
-  private val nearTrenchEdge = Pose(5.0.meters, (-0.869).meters, 0.0.radians)
-  private val nearTrenchEnd = Pose(7.5.meters, (-0.869).meters, 0.0.radians)
-  private val farTrench = Pose(5.794.meters, (-7.243).meters, (-20.0).radians)
-  private val rendezvousPoint2Balls = Pose(5.878.meters, (-2.755).meters, (-20.0).radians)
+  private val initLinePowerPort = Pose(3.627.meters, 2.429.meters, 0.0.radians)
+  private val initLineFarTrench = Pose(3.627.meters, 6.824.meters, 0.0.radians)
+  private val nearTrenchEdge = Pose(5.0.meters, 0.869.meters, 0.0.radians)
+  private val nearTrenchEnd = Pose(7.5.meters, 0.869.meters, 0.0.radians)
+  private val farTrench = Pose(5.794.meters, 7.243.meters, (-20.0).radians)
+  private val rendezvousPoint2Balls = Pose(5.878.meters, 2.755.meters, (-20.0).radians)
 
   private val navPoints =
       mapOf(
@@ -177,6 +177,7 @@ object PathStore {
           Constants.Drivetrain.SLOW_AUTO_VEL,
           trajectoryConfig)
 
+  //Infinite Recharge @ Home
   val fromGreenToReintroduction =
       Trajectory(
           0.0.meters.perSecond,
