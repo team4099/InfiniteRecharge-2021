@@ -15,9 +15,16 @@ import com.team4099.lib.units.step
 import com.team4099.robot2021.config.Constants
 
 object PathStore {
+  /*private val trajectoryConfig =
+  TrajectoryConfig(
+      Constants.Drivetrain.MAX_AUTO_VEL,
+      Constants.Drivetrain.MAX_AUTO_ACCEL,
+      Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL,
+      Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)*/
+
   private val trajectoryConfig =
       TrajectoryConfig(
-          Constants.Drivetrain.MAX_AUTO_VEL,
+          Constants.Drivetrain.SLOW_AUTO_VEL,
           Constants.Drivetrain.MAX_AUTO_ACCEL,
           Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL,
           Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)
@@ -29,12 +36,14 @@ object PathStore {
           Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL,
           Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)
 
+  private val initLineRendezvous = Pose(3.627.meters, 2.429.meters, 0.0.radians)
   private val initLinePowerPort = Pose(3.627.meters, 2.429.meters, 0.0.radians)
   private val initLineFarTrench = Pose(3.627.meters, 6.824.meters, 0.0.radians)
   private val nearTrenchEdge = Pose(5.0.meters, 0.869.meters, 0.0.radians)
+  //private val nearTrenchEdge = Translation(5.0.meters, 0.869.meters)
   private val nearTrenchEnd = Pose(7.5.meters, 0.869.meters, 0.0.radians)
-  private val farTrench = Pose(5.794.meters, 7.243.meters, (-20.0).radians)
-  private val rendezvousPoint2Balls = Pose(5.878.meters, 2.755.meters, (-20.0).radians)
+  private val farTrench = Pose(5.794.meters, 7.243.meters, 0.0.radians) //what is this
+  private val rendezvousPoint2Balls = Pose(5.878.meters, 2.755.meters, 0.0.radians)
 
   private val navPoints =
       mapOf(
@@ -72,6 +81,58 @@ object PathStore {
           0.0.meters.perSecond,
           trajectoryConfig)
 
+  val toNearTrench: Trajectory =
+      Trajectory(
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          Path(initLinePowerPort, nearTrenchEdge),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
+
+  val intakeInNearTrench: Trajectory =
+      Trajectory(
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          Path(nearTrenchEdge, nearTrenchEnd),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
+
+  val fromNearTrench: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          //Path(nearTrenchEnd, initLinePowerPort),
+          Path(nearTrenchEnd, initLineFarTrench),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
+
+  val toFarTrench: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(initLineFarTrench, farTrench),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
+
+  val fromFarTrench: Trajectory =
+      Trajectory(
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          Path(farTrench, initLineFarTrench),
+          0.0.meters.perSecond,
+          trajectoryConfig)
+
+  val toRendezvousPoint2Balls =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(initLineRendezvous, rendezvousPoint2Balls),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
+
+  val fromRendezvousPoint2Balls =
+      Trajectory(
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          Path(rendezvousPoint2Balls, initLinePowerPort),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
+
+  // Infinite Recharge @ Home
+
   val galacticSearchARed: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
@@ -84,7 +145,7 @@ object PathStore {
             build()
           },
           0.0.meters.perSecond,
-          trajectoryConfig)
+          slowTrajectoryConfig)
 
   val galacticSearchABlue: Trajectory =
       Trajectory(
@@ -128,56 +189,6 @@ object PathStore {
           0.0.meters.perSecond,
           slowTrajectoryConfig)
 
-  val toNearTrench: Trajectory =
-      Trajectory(
-          0.0.meters.perSecond,
-          Path(initLinePowerPort, nearTrenchEdge),
-          Constants.Drivetrain.SLOW_AUTO_VEL,
-          trajectoryConfig)
-
-  val intakeInNearTrench: Trajectory =
-      Trajectory(
-          0.0.meters.perSecond,
-          Path(nearTrenchEdge, nearTrenchEnd),
-          Constants.Drivetrain.SLOW_AUTO_VEL,
-          trajectoryConfig)
-
-  val fromNearTrench: Trajectory =
-      Trajectory(
-          0.0.meters.perSecond,
-          Path(nearTrenchEnd, initLinePowerPort),
-          Constants.Drivetrain.SLOW_AUTO_VEL,
-          trajectoryConfig)
-
-  val toFarTrench: Trajectory =
-      Trajectory(
-          0.0.meters.perSecond,
-          Path(initLineFarTrench, farTrench),
-          Constants.Drivetrain.SLOW_AUTO_VEL,
-          trajectoryConfig)
-
-  val fromFarTrench: Trajectory =
-      Trajectory(
-          0.0.meters.perSecond,
-          Path(farTrench, initLinePowerPort),
-          Constants.Drivetrain.SLOW_AUTO_VEL,
-          trajectoryConfig)
-
-  val toRendezvousPoint2Balls =
-      Trajectory(
-          0.0.meters.perSecond,
-          Path(initLinePowerPort, rendezvousPoint2Balls),
-          Constants.Drivetrain.SLOW_AUTO_VEL,
-          trajectoryConfig)
-
-  val fromRendezvousPoint2Balls =
-      Trajectory(
-          0.0.meters.perSecond,
-          Path(rendezvousPoint2Balls, initLinePowerPort),
-          Constants.Drivetrain.SLOW_AUTO_VEL,
-          trajectoryConfig)
-
-  // Infinite Recharge @ Home
   val fromGreenToReintroduction =
       Trajectory(
           0.0.meters.perSecond,

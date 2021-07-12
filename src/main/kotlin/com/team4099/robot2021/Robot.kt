@@ -2,8 +2,7 @@ package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
-import com.team4099.robot2021.auto.PathStore
-import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
+import com.team4099.robot2021.auto.modes.EightBallMode
 import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2021.commands.feeder.FeederCommand
@@ -106,12 +105,13 @@ object Robot : TimedRobot() {
 
   // private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchBRed)
   // private val autonomousCommand = AutoNavBounceMode()
-  private val autonomousCommand = AutoDriveCommand(PathStore.slalomPath)
+  // private val autonomousCommand = AutoDriveCommand(PathStore.slalomPath)
 
   // private val autonomousCommand = DriveCharacterizeCommand()
-
   // private val autonomousCommand = LoopPathCommand(PathStore.driveForward,
   // PathStore.driveBackwards)
+
+  private val autonomousCommand = EightBallMode()
 
   override fun autonomousInit() {
     autonomousCommand.schedule()
