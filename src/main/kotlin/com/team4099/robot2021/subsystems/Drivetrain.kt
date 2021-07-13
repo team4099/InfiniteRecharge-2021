@@ -93,10 +93,11 @@ object Drivetrain : SubsystemBase() {
 
   val gyroAngle: Angle
     get() {
-      var rawAngle = gyro.angle
+      var rawAngle = gyro.angle + gyroOffset.inDegrees
       rawAngle += Constants.Drivetrain.GYRO_RATE_COEFFICIENT * gyro.rate
       return rawAngle.IEEErem(360.0).degrees
     }
+  var gyroOffset: Angle = 0.0.degrees
 
   private val frontLeftWheelLocation =
       Translation(
@@ -176,7 +177,7 @@ object Drivetrain : SubsystemBase() {
         Pair(0.0.meters.perSecond.perSecond, 0.0.meters.perSecond.perSecond)
   ) {
 
-    Logger.addEvent("Drivetrain", "setting with $driveVector and $angularVelocity")
+    // Logger.addEvent("Drivetrain", "setting with $driveVector and $angularVelocity")
     //    Logger.addEvent("Drivetrain", "gyro angle: ${(-gyroAngle).inDegrees}")
     val vX =
         if (fieldOriented) {
@@ -264,7 +265,7 @@ object Drivetrain : SubsystemBase() {
     driveVector: Pair<LinearVelocity, LinearVelocity>,
     fieldOriented: Boolean = true
   ) {
-    Logger.addEvent("Drivetrain", "setting open loop with $driveVector and $angularVelocity")
+    // Logger.addEvent("Drivetrain", "setting open loop with $driveVector and $angularVelocity")
 
     val vX =
         if (fieldOriented) {
@@ -342,8 +343,12 @@ object Drivetrain : SubsystemBase() {
   fun zeroGyro() {
     gyro.reset()
   }
+  fun zeroGyro(offset: Angle){
+    zeroGyro()
+    gyroOffset = offset
+  }
 
-  private fun zeroDirection() {
+  fun zeroDirection() {
     wheels.forEach { it.zeroDirection() }
   }
 

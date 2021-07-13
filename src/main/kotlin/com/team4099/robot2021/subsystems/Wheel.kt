@@ -1,7 +1,6 @@
 package com.team4099.robot2021.subsystems
 
 import com.ctre.phoenix.sensors.CANCoder
-import com.ctre.phoenix.sensors.SensorInitializationStrategy
 import com.revrobotics.CANPIDController
 import com.revrobotics.CANSparkMax
 import com.revrobotics.ControlType
@@ -143,6 +142,7 @@ class Wheel(
     Logger.addSource("$label Drivetrain", "Direction SetPoint") { directionSetPoint.inDegrees }
 
     Logger.addSource("$label Drivetrain", "Drive Position") { driveSensor.position.inFeet }
+    Logger.addSource("$label Drivetrain", "Direction Position") { directionPosition.inDegrees }
 
     Logger.addSource(
         "Drivetrain Tuning",
@@ -237,19 +237,20 @@ class Wheel(
   }
 
   fun resetModuleZero() {
-    encoder.configFactoryDefault()
-    encoder.configMagnetOffset(0.0)
-    Logger.addEvent("Drivetrain", "Configuring Zero for Module $label")
-    encoder.configMagnetOffset(
-        -encoder.absolutePosition - zeroOffset.inDegrees - encoder.configGetMagnetOffset())
-    encoder.setPositionToAbsolute()
-    encoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition)
+    //    encoder.configFactoryDefault()
+    //    encoder.configMagnetOffset(0.0)
+    //    Logger.addEvent("Drivetrain", "Configuring Zero for Module $label")
+    //    encoder.configMagnetOffset(
+    //        -encoder.absolutePosition - zeroOffset.inDegrees - encoder.configGetMagnetOffset())
+    //    encoder.setPositionToAbsolute()
+    //
+    // encoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition)
   }
 
   fun zeroDirection() {
     directionSpark.encoder.position =
         directionSensor.positionToRawUnits(encoder.absolutePosition.degrees + zeroOffset)
-    Logger.addEvent("Drivetrain", "Loading Zero for Module $label")
+    Logger.addEvent("Drivetrain", "Loading Zero for Module $label (${encoder.absolutePosition})")
   }
 
   fun zeroDrive() {
