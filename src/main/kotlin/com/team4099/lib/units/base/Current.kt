@@ -27,29 +27,71 @@ object Ampere : UnitKey
 
 typealias Current = Value<Ampere>
 
-val Double.amps: Current get() = Current(this)
+val Double.amps: Current
+  get() = Current(this)
 
-val Number.amps: Current get() = this.toDouble().amps
+val Number.amps: Current
+  get() = this.toDouble().amps
 
-val Current.inAmperes get() = value
+val Current.inAmperes
+  get() = value
 
-val Current.inYottaamps get() = value.yotta
-val Current.inZetaamps get() = value.zeta
-val Current.inExaamps get() = value.exa
-val Current.inPetaamps get() = value.peta
-val Current.inTeraamps get() = value.tera
-val Current.inGigaamps get() = value.giga
-val Current.inMegaamps get() = value.mega
-val Current.inKiloamps get() = value.kilo
-val Current.inHectoamps get() = value.hecto
-val Current.inDecaamps get() = value.deca
-val Current.inDeciamps get() = value.deci
-val Current.inCentiamps get() = value.centi
-val Current.inMilliamps get() = value.milli
-val Current.inMicroamps get() = value.micro
-val Current.inNanoamps get() = value.nano
-val Current.inPicoamps get() = value.pico
-val Current.inFemtoamps get() = value.femto
-val Current.inAttoamps get() = value.atto
-val Current.inZeptoamps get() = value.zepto
-val Current.inYoctoamps get() = value.yocto
+val Current.inYottaamps
+  get() = value * 1.yotta
+
+val Current.inZetaamps
+  get() = value * 1.zeta
+
+val Current.inExaamps
+  get() = value * 1.exa
+
+val Current.inPetaamps
+  get() = value * 1.peta
+
+val Current.inTeraamps
+  get() = value * 1.tera
+
+val Current.inGigaamps
+  get() = value * 1.giga
+
+val Current.inMegaamps
+  get() = value * 1.mega
+
+val Current.inKiloamps
+  get() = value * 1.kilo
+
+val Current.inHectoamps
+  get() = value * 1.hecto
+
+val Current.inDecaamps
+  get() = value * 1.deca
+
+val Current.inDeciamps
+  get() = value * 1.deci
+
+val Current.inCentiamps
+  get() = value * 1.centi
+
+val Current.inMilliamps
+  get() = value * 1.milli
+
+val Current.inMicroamps
+  get() = value * 1.micro
+
+val Current.inNanoamps
+  get() = value * 1.nano
+
+val Current.inPicoamps
+  get() = value * 1.pico
+
+val Current.inFemtoamps
+  get() = value * 1.femto
+
+val Current.inAttoamps
+  get() = value * 1.atto
+
+val Current.inZeptoamps
+  get() = value * 1.zepto
+
+val Current.inYoctoamps
+  get() = value * 1.yocto

@@ -1,61 +1,58 @@
 package com.team4099.robot2021.config
 
-import com.team4099.lib.joystick.Gamepad
 import com.team4099.lib.joystick.XboxOneGamepad
+import edu.wpi.first.wpilibj2.command.button.Trigger
 
 /**
- * Maps buttons on the driver and operator controllers to specific actions
- * with meaningful variable names.
+ * Maps buttons on the driver and operator controllers to specific actions with meaningful variable
+ * names.
  */
 object ControlBoard {
-    private val driver = XboxOneGamepad(Constants.Joysticks.DRIVER_PORT)
-    private val operator = XboxOneGamepad(Constants.Joysticks.SHOTGUN_PORT)
+  private val driver = XboxOneGamepad(Constants.Joysticks.DRIVER_PORT)
+  private val operator = XboxOneGamepad(Constants.Joysticks.SHOTGUN_PORT)
 
-    val throttle: Double
-        get() = driver.rightTriggerAxis - driver.leftTriggerAxis
+  val strafe: Double
+    get() = -driver.leftXAxis
 
-    val turn: Double
-        get() = -driver.leftXAxis
+  val forward: Double
+    get() = driver.leftYAxis
 
-    val sampleClimberVelocity: Double
-        get() = operator.leftTriggerAxis - operator.rightTriggerAxis
+  val turn: Double
+    get() = driver.rightXAxis
 
-    val wristVertical: Boolean
-        get() = operator.leftShoulderButton
+  val resetGyro = Trigger { driver.startButton && driver.selectButton }
 
-    val wristHorizontal: Boolean
-        get() = operator.rightShoulderButton
+  val sampleClimberVelocity: Double
+    get() = operator.leftTriggerAxis - operator.rightTriggerAxis
 
-    val enableVisionAlignment: Boolean
-        get() = driver.aButton
+  // val wristVertical: Boolean
+  //  get() = operator.leftShoulderButton
 
-    val startShooter: Boolean
-        get() = operator.xButton
+  // val wristHorizontal: Boolean
+  //  get() = operator.rightShoulderButton
 
-    val stopShooter: Boolean
-        get() = operator.yButton
+  // val enableVisionAlignment: Boolean
+  //  get() = driver.aButton
 
-    val climberUp: Boolean
-        get() = driver.dPadUp
+  val runIntakeIn = Trigger { driver.aButton }
+  val runIntakeOut = Trigger { driver.bButton }
 
-    val climberDown: Boolean
-        get() = driver.dPadDown
+  // val slowMode: Boolean
+  // get() = driver.dPadDown
 
-    val runIntakeIn: Boolean
-        get() = operator.aButton
+  val runFeederIn = Trigger { operator.dPadDown }
+  val runFeederOut = Trigger { operator.dPadUp }
 
-    val runIntakeOut: Boolean
-        get() = operator.bButton
+  val shoot = Trigger { driver.xButton }
+  //  val stopShooting = Trigger { operator.yButton }
+  //  val spinUpShooter = Trigger { operator.dPadRight }
+  //  val visionButton = Trigger { driver.aButton }
 
-    val runFeederIn: Boolean
-        get() = operator.dPadDown
+  // val climberHigh = Trigger { driver.dPadUp }
+  // val climberLow = Trigger { driver.dPadDown }
 
-    val runFeederOut: Boolean
-        get() = operator.dPadUp
-
-    val runFeederShoot: Boolean
-        get() = operator.dPadLeft || operator.dPadRight
-
-    val slowMode: Boolean
-        get() = driver.dPadDown
+  val nearSpin = Trigger { operator.aButton }
+  val lineSpin = Trigger { operator.bButton }
+  val midSpin = Trigger { operator.yButton }
+  val farSpin = Trigger { operator.xButton }
 }
