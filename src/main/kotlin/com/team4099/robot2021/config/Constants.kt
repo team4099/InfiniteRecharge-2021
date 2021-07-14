@@ -232,8 +232,8 @@ object Constants {
 
   object LED {
     const val PORT = 0
-    const val LED_COUNT = 50
-    const val STATUS_LENGTH = 0
+    const val LED_COUNT = 50 // TODO: Determine total amount of LED
+    const val STATUS_LENGTH = 0 // TODO: Determine length for health
     enum class Status(var h: Int, var s: Int, var v: Int) {
       // Green
       VISION_LOCK(52, 255, 255),
