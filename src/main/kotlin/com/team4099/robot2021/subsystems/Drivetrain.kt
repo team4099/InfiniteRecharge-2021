@@ -343,7 +343,7 @@ object Drivetrain : SubsystemBase() {
   fun zeroGyro() {
     gyro.reset()
   }
-  fun zeroGyro(offset: Angle){
+  fun zeroGyro(offset: Angle) {
     zeroGyro()
     gyroOffset = offset
   }
