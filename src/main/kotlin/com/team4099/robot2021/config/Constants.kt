@@ -230,6 +230,20 @@ object Constants {
     HIGH(1.0414.meters) // Climber fulled extended: 1.0414 meters = 41 in
   }
 
+  object RobotPositions {
+    val START_X = 0.meters // TODO: Determine distance from Power Port
+    val START_Y = 2.363.meters // TODO: Determine if this is accurate and will make bot aligned
+    val START_ANGLE = 180.degrees
+
+    val CROSS_BAR_X = 5.0.meters
+    val CROSS_BAR_Y = 4.7.meters
+    val CROSS_BAR_ANGLE = 135.degrees // TODO: Find ending angle
+
+    val AVOID_BAR_X = 6.7.meters
+    val AVOID_BAR_Y = 2.0.meters
+    val AVOID_BAR_ANGLE = 180.degrees // TODO: Find ending angle
+  }
+
   object BallVision {
     val CENTER_YAW_THRESHOLD = 6.degrees
     val PATH_A_AREA_THRESHOLD = 0.1

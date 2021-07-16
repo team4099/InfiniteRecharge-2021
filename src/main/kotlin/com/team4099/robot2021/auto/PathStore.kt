@@ -37,6 +37,8 @@ object PathStore {
           Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL,
           Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)
 
+  // NOTE: Pathweaver y-axis is opposite than ours!
+  // 2020 Season
   private val initLineRendezvous = Pose(3.627.meters, 2.429.meters, 0.0.radians)
   private val initLinePowerPort = Pose(3.627.meters, 2.429.meters, 0.0.radians)
   private val initLineFarTrench = Pose(3.627.meters, 6.824.meters, 0.0.radians)
@@ -45,6 +47,23 @@ object PathStore {
   private val nearTrenchEnd = Pose(7.5.meters, 0.869.meters, 0.0.radians)
   private val farTrench = Pose(5.794.meters, 7.243.meters, 0.0.radians) // what is this
   private val rendezvousPoint2Balls = Pose(5.878.meters, 2.755.meters, 0.0.radians)
+
+  // 2021 Season
+  private val initShootPowerPort =
+      Pose(
+          Constants.RobotPositions.START_X,
+          Constants.RobotPositions.START_Y,
+          Constants.RobotPositions.START_ANGLE)
+  private val crossBarShoot =
+      Pose(
+          Constants.RobotPositions.CROSS_BAR_X,
+          Constants.RobotPositions.CROSS_BAR_Y,
+          Constants.RobotPositions.CROSS_BAR_ANGLE)
+  private val avoidBarShoot =
+      Pose(
+          Constants.RobotPositions.AVOID_BAR_X,
+          Constants.RobotPositions.AVOID_BAR_Y,
+          Constants.RobotPositions.AVOID_BAR_ANGLE)
 
   private val navPoints =
       mapOf(
@@ -131,6 +150,30 @@ object PathStore {
           Path(rendezvousPoint2Balls, initLinePowerPort),
           Constants.Drivetrain.SLOW_AUTO_VEL,
           trajectoryConfig)
+
+  val crossBar: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(initShootPowerPort, crossBarShoot).apply {
+            addWaypoint(Translation(6.9.meters, 2.9.meters), 337.5.degrees)
+            addWaypoint(Translation(6.0.meters, 3.6.meters))
+            addWaypoint(Translation(6.972.meters, 4.0.meters))
+            build()
+          },
+          0.0.meters.perSecond,
+          slowTrajectoryConfig)
+
+  val avoidBar: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(initShootPowerPort, avoidBarShoot).apply {
+            addWaypoint(Translation(6.611.meters, 3.237.meters), 337.5.degrees)
+            addWaypoint(Translation(6.029.meters, 3.423.meters))
+            addWaypoint(Translation(6.401.meters, 4.273.meters), 22.5.degrees)
+            addWaypoint(Translation(6.797.meters, 3.83.meters))
+          },
+          0.0.meters.perSecond,
+          slowTrajectoryConfig)
 
   // Infinite Recharge @ Home
 
