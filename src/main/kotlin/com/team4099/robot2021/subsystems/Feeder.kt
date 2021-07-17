@@ -110,6 +110,9 @@ object Feeder : SubsystemBase() {
     floorMotor.setSmartCurrentLimit(FLOOR_CURRENT_LIMIT)
     verticalMotor.setSmartCurrentLimit(VERTICAL_CURRENT_LIMIT)
 
+    floorMotor.setIdleMode(CANSparkMax.IdleMode.kCoast)
+    verticalMotor.setIdleMode(CANSparkMax.IdleMode.kCoast)
+
     floorMotor.burnFlash()
     verticalMotor.burnFlash()
   }
