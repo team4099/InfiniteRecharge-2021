@@ -1,4 +1,4 @@
-package com.team4099.robot2021.auto.modes
+package com.team4099.robot2021.auto.modesathome
 
 import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
 import com.team4099.robot2021.subsystems.BallVision
