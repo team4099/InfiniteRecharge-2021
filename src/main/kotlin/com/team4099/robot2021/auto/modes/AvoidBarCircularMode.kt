@@ -5,10 +5,10 @@ import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
 import com.team4099.robot2021.subsystems.Drivetrain
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 
-class AvoidBarMode : SequentialCommandGroup() {
+class AvoidBarCircularMode : SequentialCommandGroup() {
   init {
     addRequirements(Drivetrain)
 
-    addCommands(AutoDriveCommand(PathStore.avoidBar))
+    addCommands(AutoDriveCommand(PathStore.avoidBarCircular))
   }
 }

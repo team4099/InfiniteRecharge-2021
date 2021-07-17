@@ -155,7 +155,7 @@ object PathStore {
       Trajectory(
           0.0.meters.perSecond,
           Path(initShootPowerPort, crossBarShoot).apply {
-            addWaypoint(Translation(6.9.meters, 2.9.meters), 337.5.degrees)
+            addWaypoint(Translation(6.9.meters, 2.9.meters), 202.5.degrees)
             addWaypoint(Translation(6.0.meters, 3.6.meters))
             addWaypoint(Translation(6.972.meters, 4.0.meters))
             build()
@@ -163,14 +163,26 @@ object PathStore {
           0.0.meters.perSecond,
           slowTrajectoryConfig)
 
-  val avoidBar: Trajectory =
+  val avoidBarTightAngle: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
           Path(initShootPowerPort, avoidBarShoot).apply {
-            addWaypoint(Translation(6.611.meters, 3.237.meters), 337.5.degrees)
+            addWaypoint(Translation(6.611.meters, 3.237.meters), 202.5.degrees)
             addWaypoint(Translation(6.029.meters, 3.423.meters))
             addWaypoint(Translation(6.401.meters, 4.273.meters), 22.5.degrees)
             addWaypoint(Translation(6.797.meters, 3.83.meters))
+          },
+          0.0.meters.perSecond,
+          slowTrajectoryConfig)
+
+  val avoidBarCircular: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(initShootPowerPort, avoidBarShoot).apply {
+            addWaypoint(Translation(318.260579.inches, 101.8912455.inches), 202.5.degrees)
+            addWaypoint(Translation(252.8608316.inches, 141.3023018.inches))
+            addWaypoint(Translation(254.4389994.inches, 154.5564093.inches), 292.5.degrees)
+            addWaypoint(Translation(264.394.inches, 160.916.inches), 22.5.degrees)
           },
           0.0.meters.perSecond,
           slowTrajectoryConfig)
