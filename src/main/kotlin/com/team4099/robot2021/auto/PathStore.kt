@@ -179,7 +179,9 @@ object PathStore {
       Trajectory(
           0.0.meters.perSecond,
           Path(initShootPowerPort, avoidBarShoot).apply {
-            addWaypoint(Translation(318.260579.inches, 101.8912455.inches), 202.5.degrees)
+            addWaypoint(
+                Translation(294.524.inches, 113.2.inches),
+                202.5.degrees) // 318.260579.inches, 101.8912455.inches
             addWaypoint(Translation(252.8608316.inches, 141.3023018.inches))
             addWaypoint(Translation(254.4389994.inches, 154.5564093.inches), 292.5.degrees)
             addWaypoint(Translation(264.394.inches, 160.916.inches), 22.5.degrees)
