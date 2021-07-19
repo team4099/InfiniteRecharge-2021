@@ -15,7 +15,11 @@ import com.team4099.robot2021.commands.shooter.UnjamCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
-import com.team4099.robot2021.subsystems.*
+import com.team4099.robot2021.subsystems.Drivetrain
+import com.team4099.robot2021.subsystems.Feeder
+import com.team4099.robot2021.subsystems.Intake
+import com.team4099.robot2021.subsystems.Shooter
+import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
@@ -80,7 +84,8 @@ object Robot : TimedRobot() {
     //    ControlBoard.shoot.whileActiveOnce(VisionCommand())
     //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
-    ControlBoard.nearSpin.whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.NEAR))
+    ControlBoard.nearSpin
+        .whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.NEAR))
     ControlBoard.farSpin.whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.FAR))
 
     Drivetrain.defaultCommand =
