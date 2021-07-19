@@ -16,10 +16,11 @@ class AvoidBarCircularMode : SequentialCommandGroup() {
     addRequirements(Drivetrain, Intake, Shooter)
 
     addCommands(
-        ShootAllCommand(),
+        // ShootAllCommand(),
         ParallelRaceGroup(
             AutoDriveCommand(PathStore.avoidBarCircular),
-            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)),
-        ShootAllCommand())
+            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)) // ,
+        // ShootAllCommand()
+    )
   }
 }
