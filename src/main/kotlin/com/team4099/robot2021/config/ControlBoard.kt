@@ -44,12 +44,12 @@ object ControlBoard {
   val runFeederIn = Trigger { operator.dPadUp }
   val runFeederOut = Trigger { operator.dPadDown }
 
-  // val unjam = Trigger { operator.dPadDown }
-
   val shoot = Trigger { operator.yButton }
   val nearSpin = Trigger { operator.rightShoulderButton }
   val farSpin = Trigger { operator.leftShoulderButton }
   val visionButton = Trigger { driver.aButton }
+
+  val unjam = Trigger { operator.selectButton }
 
   val climberHigh = Trigger { operator.dPadRight }
   val climberLow = Trigger { operator.dPadLeft }

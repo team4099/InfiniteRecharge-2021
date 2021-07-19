@@ -123,13 +123,15 @@ object Constants {
   object Feeder {
     const val FLOOR_ID = 41
     const val VERTICAL_ID = 42
-    const val FEEDER_POWER = 0.45
+    const val FEEDER_POWER = 1.0 // was 0.45
     const val FAST_FEEDER_POWER = 1.0
     const val FLOOR_CURRENT_LIMIT = 15
     const val VERTICAL_CURRENT_LIMIT = 40
 
-    const val TOP_DIO_PIN = 9 // may be swapped with bottom
-    const val BOTTOM_DIO_PIN = 8
+    const val TOP_DIO_PIN = 8
+    const val BOTTOM_DIO_PIN = 9
+    const val BEAM_BREAK_BROKEN_TIME = 0.05
+    const val BEAM_BREAK_BACKWARDS_TIME = 0.05
     const val TAB = "Feeder"
   }
 
@@ -179,7 +181,7 @@ object Constants {
 
     val POWER_CELL_CHALLENGE_RPM = 2950.rotations.perMinute
 
-    val UNJAM_RPM = 200.rotations.perMinute // TODO: Find good unjam speed
+    val UNJAM_RPM = 200.rotations.perMinute
 
     // val HOOD_THRESHOLD = 0.0.inches
 

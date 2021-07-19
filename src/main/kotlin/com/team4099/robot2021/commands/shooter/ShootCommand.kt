@@ -47,6 +47,7 @@ class ShootCommand : CommandBase() {
       Feeder.feederState = Feeder.FeederState.SHOOT
       Logger.addEvent(
           "ShootCommand",
+
           "Running feeder to shoot " +
               "(error: ${(Shooter.targetVelocity - Shooter.currentVelocity).absoluteValue})")
     } else {

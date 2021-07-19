@@ -13,11 +13,12 @@ object Feeder : SubsystemBase() {
 
   /** An enum representing the state of the feeder floorMotor power, verticalMotor power */
   enum class FeederState(val floorMotorPower: Double, val verticalMotorPower: Double) {
-    FORWARD_ALL(Constants.Feeder.FEEDER_POWER, -Constants.Feeder.FEEDER_POWER),
+    FORWARD_ALL(Constants.Feeder.FEEDER_POWER, +Constants.Feeder.FEEDER_POWER),
     FORWARD_FLOOR(Constants.Feeder.FEEDER_POWER, 0.0),
-    BACKWARD(-Constants.Feeder.FEEDER_POWER, +Constants.Feeder.FEEDER_POWER),
+    BACKWARD(-Constants.Feeder.FEEDER_POWER, -Constants.Feeder.FEEDER_POWER),
+    BACKWARD_VERTICAL(0.0, -Constants.Feeder.FEEDER_POWER),
     NEUTRAL(0.0, 0.0),
-    SHOOT(Constants.Feeder.FEEDER_POWER, -Constants.Feeder.FAST_FEEDER_POWER)
+    SHOOT(Constants.Feeder.FEEDER_POWER, +Constants.Feeder.FAST_FEEDER_POWER)
   }
 
   // The motor for the floor of the feeder (the spinny wheel at the bottom)
@@ -101,6 +102,9 @@ object Feeder : SubsystemBase() {
     Logger.addSource(Constants.Feeder.TAB, "Feeder Top Beam DIO Broken") { topBeamBroken }
     Logger.addSource(Constants.Feeder.TAB, "Feeder Bottom Beam DIO Broken") { bottomBeamBroken }
 
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Beam Broken forwards time") { Constants.Feeder.BEAM_BREAK_BROKEN_TIME }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Beam Broken backwards time") { Constants.Feeder.BEAM_BREAK_BACKWARDS_TIME }
+
     floorMotor.restoreFactoryDefaults()
     verticalMotor.restoreFactoryDefaults()
 
@@ -114,7 +118,7 @@ object Feeder : SubsystemBase() {
     verticalMotor.setIdleMode(CANSparkMax.IdleMode.kCoast)
 
     floorMotor.inverted = true
-    verticalMotor.inverted = true
+    // verticalMotor.inverted = true
 
     floorMotor.burnFlash()
     verticalMotor.burnFlash()

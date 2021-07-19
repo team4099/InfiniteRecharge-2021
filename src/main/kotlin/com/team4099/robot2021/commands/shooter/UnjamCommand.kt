@@ -18,7 +18,6 @@ class UnjamCommand() : CommandBase() {
 
   override fun execute() {
     Shooter.targetVelocity = -Constants.Shooter.UNJAM_RPM
-
-    FeederCommand(Feeder.FeederState.BACKWARD)
+    Feeder.feederState = Feeder.FeederState.BACKWARD
   }
 }
