@@ -51,8 +51,8 @@ object ControlBoard {
   val climberHigh = Trigger { driver.dPadUp }
   val climberLow = Trigger { driver.dPadDown }
 
-  val nearSpin = Trigger { operator.aButton }
-  val lineSpin = Trigger { operator.bButton }
-  val midSpin = Trigger { operator.yButton }
-  val farSpin = Trigger { operator.xButton }
+//  val nearSpin = Trigger { operator.aButton }
+//  val lineSpin = Trigger { operator.bButton }
+//  val midSpin = Trigger { operator.yButton }
+//  val farSpin = Trigger { operator.xButton }
 }

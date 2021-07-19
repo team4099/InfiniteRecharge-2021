@@ -75,11 +75,11 @@ object Robot : TimedRobot() {
         // .alongWith(FeederCommand(Feeder.FeederState.BACKWARD))
         )
 
-    Climber.defaultCommand = LockClimber()
-    ControlBoard.climberHigh
-        .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
-    ControlBoard.climberLow
-        .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
+    // Climber.defaultCommand = LockClimber()
+    // ControlBoard.climberHigh
+        // .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
+    // ControlBoard.climberLow
+        // .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
 
     Shooter.defaultCommand = ShooterIdleCommand()
     //    Shooter.defaultCommand = SpinUpCommand()
@@ -104,14 +104,14 @@ object Robot : TimedRobot() {
 
     ControlBoard.visionButton.whileActiveOnce(VisionCommand())
 
-    ControlBoard.nearSpin
-        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.NEAR))
-    ControlBoard.lineSpin
-        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.LINE))
-    ControlBoard.midSpin
-        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.MID))
-    ControlBoard.farSpin
-        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.FAR))
+//    ControlBoard.nearSpin
+//        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.NEAR))
+//    ControlBoard.lineSpin
+//        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.LINE))
+//    ControlBoard.midSpin
+//        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.MID))
+//    ControlBoard.farSpin
+//        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.FAR))
   }
 
   // private val autonomousCommand = GalacticSearch() // ResetZeroCommand()

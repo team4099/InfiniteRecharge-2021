@@ -113,6 +113,9 @@ object Feeder : SubsystemBase() {
     floorMotor.setIdleMode(CANSparkMax.IdleMode.kCoast)
     verticalMotor.setIdleMode(CANSparkMax.IdleMode.kCoast)
 
+    floorMotor.inverted = true
+    verticalMotor.inverted = true
+
     floorMotor.burnFlash()
     verticalMotor.burnFlash()
   }
