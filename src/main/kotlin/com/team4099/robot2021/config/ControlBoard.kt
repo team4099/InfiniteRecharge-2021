@@ -25,31 +25,31 @@ object ControlBoard {
   val sampleClimberVelocity: Double
     get() = operator.leftTriggerAxis - operator.rightTriggerAxis
 
-  // val wristVertical: Boolean
-  //  get() = operator.leftShoulderButton
+  val wristVertical: Boolean
+    get() = operator.leftShoulderButton
 
-  // val wristHorizontal: Boolean
-  //  get() = operator.rightShoulderButton
+  val wristHorizontal: Boolean
+    get() = operator.rightShoulderButton
 
-  // val enableVisionAlignment: Boolean
-  //  get() = driver.aButton
+  val enableVisionAlignment: Boolean
+    get() = driver.aButton
 
-  val runIntakeIn = Trigger { driver.aButton }
-  val runIntakeOut = Trigger { driver.bButton }
+  val runIntakeIn = Trigger { operator.aButton }
+  val runIntakeOut = Trigger { operator.bButton }
 
-  // val slowMode: Boolean
-  // get() = driver.dPadDown
+  val slowMode: Boolean
+    get() = driver.dPadDown
 
-  val runFeederIn = Trigger { operator.dPadDown }
-  val runFeederOut = Trigger { operator.dPadUp }
+  val unjamThroughIntake = Trigger { operator.dPadDown }
+  val unjamThroughShooter = Trigger { operator.dPadUp }
 
-  val shoot = Trigger { driver.xButton }
-  //  val stopShooting = Trigger { operator.yButton }
-  //  val spinUpShooter = Trigger { operator.dPadRight }
-  //  val visionButton = Trigger { driver.aButton }
+  val shoot = Trigger { operator.xButton }
+  // val stopShooting = Trigger { operator.yButton }
+  val spinUpShooter = Trigger { operator.dPadRight }
+  val visionButton = Trigger { driver.aButton }
 
-  // val climberHigh = Trigger { driver.dPadUp }
-  // val climberLow = Trigger { driver.dPadDown }
+  val climberHigh = Trigger { driver.dPadUp }
+  val climberLow = Trigger { driver.dPadDown }
 
   val nearSpin = Trigger { operator.aButton }
   val lineSpin = Trigger { operator.bButton }

@@ -6,6 +6,10 @@ import com.team4099.robot2021.auto.PathStore
 import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
 import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
+import com.team4099.robot2021.commands.feeder.FeederCommand
+import com.team4099.robot2021.commands.feeder.FeederSerialize
+import com.team4099.robot2021.commands.intake.IntakeCommand
+import com.team4099.robot2021.commands.shooter.ShootCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.shooter.SpinUpCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
@@ -13,12 +17,15 @@ import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
 import com.team4099.robot2021.subsystems.BallVision
 import com.team4099.robot2021.subsystems.Drivetrain
+import com.team4099.robot2021.subsystems.Feeder
+import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2021.subsystems.Shooter
 import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
 import kotlin.math.pow
 
 object Robot : TimedRobot() {
@@ -39,24 +46,24 @@ object Robot : TimedRobot() {
     Logger.startLogging()
 
     // Link between feeder Trigger and Command
-    // Feeder.defaultCommand = FeederSerialize()
-    /*Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
-    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_ALL))
-    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))*/
+    Feeder.defaultCommand = FeederSerialize()
+    Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
+    ControlBoard.unjamThroughShooter.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_ALL))
+    ControlBoard.unjamThroughIntake.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD).alongWith(IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)))
 
-    /*Intake.defaultCommand =
-        IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN)
+    Intake.defaultCommand =
+        IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.OUT)
     ControlBoard.runIntakeIn
-        //        .whileActiveContinuous(FeederSerialize())
+        .whileActiveContinuous(FeederSerialize())
         .whileActiveContinuous(
             IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
-                .alongWith(FeederSerialize()))
+                .alongWith(FeederCommand(Feeder.FeederState.FORWARD_ALL)))
 
     ControlBoard.runIntakeOut
         .whileActiveContinuous(
-            IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
+            IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN)
         // .alongWith(FeederCommand(Feeder.FeederState.BACKWARD))
-        )*/
+        )
 
     //    Climber.defaultCommand = LockClimber()
     //    ControlBoard.climberHigh
@@ -66,10 +73,10 @@ object Robot : TimedRobot() {
 
     Shooter.defaultCommand = ShooterIdleCommand()
     //    Shooter.defaultCommand = SpinUpCommand()
-    //    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
+    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
     //    ControlBoard.shoot.whileActiveOnce(VisionCommand().andThen(ShootCommand()))
     //    ControlBoard.shoot.whileActiveOnce(ShootCommand())
-    ControlBoard.shoot.whileActiveOnce(VisionCommand())
+    //    ControlBoard.shoot.whileActiveOnce(VisionCommand())
     //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 
@@ -83,9 +90,9 @@ object Robot : TimedRobot() {
 
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
 
-    //        ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
+    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 
-    //    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
+    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
 
     ControlBoard.nearSpin
         .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.NEAR))
