@@ -22,15 +22,16 @@ class FeederSerialize : CommandBase() {
     currentTime = Timer.getFPGATimestamp()
     if (Feeder.bottomBeamBroken) {
       lastBrokenTime = currentTime
-    }
-    else {
+    } else {
       lastUnbrokenTime = currentTime
     }
     Feeder.feederState =
         when {
           Feeder.topBeamBroken -> Feeder.FeederState.NEUTRAL
-          (currentTime - lastBrokenTime < Constants.Feeder.BEAM_BREAK_BROKEN_TIME) -> Feeder.FeederState.FORWARD_ALL
-          (lastUnbrokenTime - lastBrokenTime < Constants.Feeder.BEAM_BREAK_BACKWARDS_TIME) -> Feeder.FeederState.BACKWARD_VERTICAL
+          (currentTime - lastBrokenTime < Constants.Feeder.BEAM_BREAK_BROKEN_TIME) ->
+              Feeder.FeederState.FORWARD_ALL
+          (lastUnbrokenTime - lastBrokenTime < Constants.Feeder.BEAM_BREAK_BACKWARDS_TIME) ->
+              Feeder.FeederState.BACKWARD_VERTICAL
           else -> Feeder.FeederState.FORWARD_FLOOR
         }
   }

@@ -1,7 +1,6 @@
 package com.team4099.robot2021.commands.shooter
 
 import com.team4099.lib.logging.Logger
-import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.subsystems.Shooter

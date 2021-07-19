@@ -102,8 +102,12 @@ object Feeder : SubsystemBase() {
     Logger.addSource(Constants.Feeder.TAB, "Feeder Top Beam DIO Broken") { topBeamBroken }
     Logger.addSource(Constants.Feeder.TAB, "Feeder Bottom Beam DIO Broken") { bottomBeamBroken }
 
-    Logger.addSource(Constants.Feeder.TAB, "Feeder Beam Broken forwards time") { Constants.Feeder.BEAM_BREAK_BROKEN_TIME }
-    Logger.addSource(Constants.Feeder.TAB, "Feeder Beam Broken backwards time") { Constants.Feeder.BEAM_BREAK_BACKWARDS_TIME }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Beam Broken forwards time") {
+      Constants.Feeder.BEAM_BREAK_BROKEN_TIME
+    }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Beam Broken backwards time") {
+      Constants.Feeder.BEAM_BREAK_BACKWARDS_TIME
+    }
 
     floorMotor.restoreFactoryDefaults()
     verticalMotor.restoreFactoryDefaults()
