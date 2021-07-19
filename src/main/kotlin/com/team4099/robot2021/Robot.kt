@@ -56,12 +56,10 @@ object Robot : TimedRobot() {
     ControlBoard.runIntakeIn
         .whileActiveContinuous(FeederSerialize())
         .whileActiveContinuous(
-            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
-        )
+            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT))
     ControlBoard.putIntakeUp
-      .whileActiveContinuous(
-        IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN)
-      )
+        .whileActiveContinuous(
+            IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN))
     ControlBoard.runIntakeOut
         .whileActiveContinuous(
             IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
@@ -82,9 +80,9 @@ object Robot : TimedRobot() {
     //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
     ControlBoard.nearSpin
-      .whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.NEAR))
+        .whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.NEAR))
     ControlBoard.farSpin
-      .whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.FAR))
+        .whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.FAR))
 
     ControlBoard.visionButton.whileActiveOnce(VisionCommand())
 
