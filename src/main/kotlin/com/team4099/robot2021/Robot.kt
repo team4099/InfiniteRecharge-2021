@@ -50,9 +50,6 @@ object Robot : TimedRobot() {
     // Link between feeder Trigger and Command
     // Feeder.defaultCommand = FeederSerialize()
     Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
-    ControlBoard.unjamThroughShooter
-        .whileActiveOnce(
-            FeederCommand(Feeder.FeederState.FORWARD_ALL).alongWith(UnjamCommand(true)))
     ControlBoard.unjamThroughIntake
         .whileActiveOnce(
             FeederCommand(Feeder.FeederState.BACKWARD)
@@ -66,8 +63,7 @@ object Robot : TimedRobot() {
     ControlBoard.runIntakeIn
         .whileActiveContinuous(FeederSerialize())
         .whileActiveContinuous(
-            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
-                .alongWith(FeederCommand(Feeder.FeederState.FORWARD_ALL)))
+            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT))
 
     ControlBoard.runIntakeOut
         .whileActiveContinuous(
@@ -89,6 +85,8 @@ object Robot : TimedRobot() {
     //    ControlBoard.shoot.whileActiveOnce(VisionCommand())
     //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
+    ControlBoard.nearSpin.whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.NEAR))
+    ControlBoard.farSpin.whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.FAR))
 
     Drivetrain.defaultCommand =
         OpenLoopDriveCommand(
@@ -99,8 +97,6 @@ object Robot : TimedRobot() {
     // BallVision
 
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
-
-    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 
     ControlBoard.visionButton.whileActiveOnce(VisionCommand())
 
