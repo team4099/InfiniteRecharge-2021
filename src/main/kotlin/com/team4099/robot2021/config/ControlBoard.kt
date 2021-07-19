@@ -22,7 +22,7 @@ object ControlBoard {
 
   val resetGyro = Trigger { driver.startButton && driver.selectButton }
 
-  //what
+  // what
   val sampleClimberVelocity: Double
     get() = operator.leftTriggerAxis - operator.rightTriggerAxis
 
