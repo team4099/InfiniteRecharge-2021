@@ -46,10 +46,9 @@ object ControlBoard {
 
   val unjamThroughIntake = Trigger { operator.dPadDown }
 
-  val shoot = Trigger { operator.dPadRight }
-  // val stopShooting = Trigger { operator.yButton }
-  val nearSpin = Trigger { operator.xButton }
-  val farSpin = Trigger { operator.yButton }
+  val shoot = Trigger { operator.yButton }
+  val nearSpin = Trigger { operator.rightShoulderButton }
+  val farSpin = Trigger { operator.leftShoulderButton }
   val visionButton = Trigger { driver.aButton }
 
   val climberHigh = Trigger { operator.dPadRight }
