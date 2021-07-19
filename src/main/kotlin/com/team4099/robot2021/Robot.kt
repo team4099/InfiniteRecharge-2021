@@ -15,10 +15,7 @@ import com.team4099.robot2021.commands.shooter.UnjamCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
-import com.team4099.robot2021.subsystems.Drivetrain
-import com.team4099.robot2021.subsystems.Feeder
-import com.team4099.robot2021.subsystems.Intake
-import com.team4099.robot2021.subsystems.Shooter
+import com.team4099.robot2021.subsystems.*
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
@@ -45,18 +42,13 @@ object Robot : TimedRobot() {
     // Link between feeder Trigger and Command
     // Feeder.defaultCommand = FeederSerialize()
     Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
-    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_ALL))
-    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
-//    ControlBoard.unjamThroughShooter
-//        .whileActiveOnce(
-//            FeederCommand(Feeder.FeederState.FORWARD_ALL).alongWith(UnjamCommand(true)))
-//    ControlBoard.unjamThroughIntake
-//        .whileActiveOnce(
-//            FeederCommand(Feeder.FeederState.BACKWARD)
-//                .alongWith(UnjamCommand(false))
-//                .alongWith(
-//                    IntakeCommand(
-//                        Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)))
+    ControlBoard.unjamThroughIntake
+        .whileActiveOnce(
+            FeederCommand(Feeder.FeederState.BACKWARD)
+                .alongWith(UnjamCommand(false))
+                .alongWith(
+                    IntakeCommand(
+                        Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)))
 
     Intake.defaultCommand =
         IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.OUT)
@@ -64,7 +56,6 @@ object Robot : TimedRobot() {
         .whileActiveContinuous(FeederSerialize())
         .whileActiveContinuous(
             IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
-        // .alongWith(FeederCommand(Feeder.FeederState.FORWARD_ALL))
         )
     ControlBoard.putIntakeUp
       .whileActiveContinuous(
@@ -83,13 +74,14 @@ object Robot : TimedRobot() {
     // .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
 
     Shooter.defaultCommand = ShooterIdleCommand()
-    //    Shooter.defaultCommand = SpinUpCommand()
     //    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
     //    ControlBoard.shoot.whileActiveOnce(VisionCommand().andThen(ShootCommand()))
     ControlBoard.shoot.whileActiveOnce(ShootCommand())
     //    ControlBoard.shoot.whileActiveOnce(VisionCommand())
     //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
+    ControlBoard.nearSpin.whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.NEAR))
+    ControlBoard.farSpin.whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.FAR))
 
     Drivetrain.defaultCommand =
         OpenLoopDriveCommand(
@@ -100,8 +92,6 @@ object Robot : TimedRobot() {
     // BallVision
 
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
-
-    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
 
     ControlBoard.visionButton.whileActiveOnce(VisionCommand())
 
