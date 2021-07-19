@@ -5,9 +5,9 @@ import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Shooter
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class UnjamCommand( private val throughShooter : Boolean ) : CommandBase() {
+class UnjamCommand(private val throughShooter: Boolean) : CommandBase() {
   init {
-      addRequirements(Shooter)
+    addRequirements(Shooter)
   }
 
   override fun initialize() {
@@ -15,10 +15,9 @@ class UnjamCommand( private val throughShooter : Boolean ) : CommandBase() {
   }
 
   override fun execute() {
-    if(throughShooter) {
+    if (throughShooter) {
       Shooter.targetVelocity = Constants.Shooter.UNJAM_RPM
-    }
-    else {
+    } else {
       Shooter.targetVelocity = -Constants.Shooter.UNJAM_RPM
     }
   }

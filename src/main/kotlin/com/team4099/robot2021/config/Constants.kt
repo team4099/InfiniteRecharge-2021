@@ -178,7 +178,7 @@ object Constants {
 
     val POWER_CELL_CHALLENGE_RPM = 2950.rotations.perMinute
 
-    val UNJAM_RPM = 200.rotations.perMinute //TODO: Find good unjam speed
+    val UNJAM_RPM = 200.rotations.perMinute // TODO: Find good unjam speed
 
     // val HOOD_THRESHOLD = 0.0.inches
 
