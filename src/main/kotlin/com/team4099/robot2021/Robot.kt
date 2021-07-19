@@ -3,9 +3,6 @@ package com.team4099.robot2021
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.auto.modes2021.AvoidBarCircularMode
-import com.team4099.robot2021.commands.MoveClimber
-import com.team4099.robot2021.commands.climber.LockClimber
-import com.team4099.robot2021.commands.climber.UnlockClimber
 import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2021.commands.feeder.FeederCommand
@@ -18,7 +15,6 @@ import com.team4099.robot2021.commands.shooter.UnjamCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
-import com.team4099.robot2021.subsystems.Climber
 import com.team4099.robot2021.subsystems.Drivetrain
 import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.subsystems.Intake
@@ -73,9 +69,9 @@ object Robot : TimedRobot() {
 
     // Climber.defaultCommand = LockClimber()
     // ControlBoard.climberHigh
-        // .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
+    // .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
     // ControlBoard.climberLow
-        // .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
+    // .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
 
     Shooter.defaultCommand = ShooterIdleCommand()
     //    Shooter.defaultCommand = SpinUpCommand()
@@ -85,7 +81,8 @@ object Robot : TimedRobot() {
     //    ControlBoard.shoot.whileActiveOnce(VisionCommand())
     //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
-    ControlBoard.nearSpin.whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.NEAR))
+    ControlBoard.nearSpin
+        .whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.NEAR))
     ControlBoard.farSpin.whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.FAR))
 
     Drivetrain.defaultCommand =
@@ -100,14 +97,14 @@ object Robot : TimedRobot() {
 
     ControlBoard.visionButton.whileActiveOnce(VisionCommand())
 
-//    ControlBoard.nearSpin
-//        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.NEAR))
-//    ControlBoard.lineSpin
-//        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.LINE))
-//    ControlBoard.midSpin
-//        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.MID))
-//    ControlBoard.farSpin
-//        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.FAR))
+    //    ControlBoard.nearSpin
+    //        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.NEAR))
+    //    ControlBoard.lineSpin
+    //        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.LINE))
+    //    ControlBoard.midSpin
+    //        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.MID))
+    //    ControlBoard.farSpin
+    //        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.FAR))
   }
 
   // private val autonomousCommand = GalacticSearch() // ResetZeroCommand()
