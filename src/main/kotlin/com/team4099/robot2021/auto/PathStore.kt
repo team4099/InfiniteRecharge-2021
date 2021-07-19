@@ -161,7 +161,7 @@ object PathStore {
             build()
           },
           0.0.meters.perSecond,
-          slowTrajectoryConfig)
+          trajectoryConfig)
 
   val avoidBarTightAngle: Trajectory =
       Trajectory(
@@ -173,7 +173,7 @@ object PathStore {
             addWaypoint(Translation(6.797.meters, 3.83.meters))
           },
           0.0.meters.perSecond,
-          slowTrajectoryConfig)
+          trajectoryConfig)
 
   val avoidBarCircular: Trajectory =
       Trajectory(
@@ -187,7 +187,7 @@ object PathStore {
             addWaypoint(Translation(264.394.inches, 160.916.inches), 22.5.degrees)
           },
           0.0.meters.perSecond,
-          slowTrajectoryConfig)
+          trajectoryConfig)
 
   // Infinite Recharge @ Home
 

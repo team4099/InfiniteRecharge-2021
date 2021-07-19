@@ -3,9 +3,13 @@ package com.team4099.robot2021
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.auto.PathStore
+import com.team4099.robot2021.auto.modes2021.AvoidBarCircularMode
 import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
 import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
+import com.team4099.robot2021.commands.feeder.FeederCommand
+import com.team4099.robot2021.commands.feeder.FeederSerialize
+import com.team4099.robot2021.commands.intake.IntakeCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.shooter.SpinUpCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
@@ -13,6 +17,8 @@ import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
 import com.team4099.robot2021.subsystems.BallVision
 import com.team4099.robot2021.subsystems.Drivetrain
+import com.team4099.robot2021.subsystems.Feeder
+import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2021.subsystems.Shooter
 import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.DigitalInput
@@ -40,23 +46,23 @@ object Robot : TimedRobot() {
 
     // Link between feeder Trigger and Command
     // Feeder.defaultCommand = FeederSerialize()
-    /*Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
+    Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
     ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_ALL))
-    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))*/
+    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
 
-    /*Intake.defaultCommand =
+    Intake.defaultCommand =
         IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN)
     ControlBoard.runIntakeIn
-        //        .whileActiveContinuous(FeederSerialize())
+        // .whileActiveContinuous(FeederSerialize())
         .whileActiveContinuous(
             IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
                 .alongWith(FeederSerialize()))
 
     ControlBoard.runIntakeOut
         .whileActiveContinuous(
-            IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
+            IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.IN)
         // .alongWith(FeederCommand(Feeder.FeederState.BACKWARD))
-        )*/
+        )
 
     //    Climber.defaultCommand = LockClimber()
     //    ControlBoard.climberHigh
@@ -79,7 +85,7 @@ object Robot : TimedRobot() {
             { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
 
-    BallVision
+    // BallVision
 
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
 
@@ -101,13 +107,14 @@ object Robot : TimedRobot() {
 
   // private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchBRed)
   // private val autonomousCommand = AutoNavBounceMode()
-  private val autonomousCommand = AutoDriveCommand(PathStore.barrelPath)
+  // private val autonomousCommand = AutoDriveCommand(PathStore.barrelPath)
 
   // private val autonomousCommand = DriveCharacterizeCommand()
   // private val autonomousCommand = LoopPathCommand(PathStore.driveForward,
   // PathStore.driveBackwards)
 
   // private val autonomousCommand = EightBallMode()
+  private val autonomousCommand = AvoidBarCircularMode()
 
   override fun autonomousInit() {
     Drivetrain.zeroSensors()
