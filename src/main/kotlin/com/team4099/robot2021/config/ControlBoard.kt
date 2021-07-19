@@ -44,7 +44,7 @@ object ControlBoard {
   val runFeederIn = Trigger { operator.dPadUp }
   val runFeederOut = Trigger { operator.dPadDown }
 
-  val unjam = Trigger { operator.dPadDown }
+  // val unjam = Trigger { operator.dPadDown }
 
   val shoot = Trigger { operator.yButton }
   val nearSpin = Trigger { operator.rightShoulderButton }

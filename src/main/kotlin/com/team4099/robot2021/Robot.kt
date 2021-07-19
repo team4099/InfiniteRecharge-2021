@@ -11,7 +11,6 @@ import com.team4099.robot2021.commands.intake.IntakeCommand
 import com.team4099.robot2021.commands.shooter.ShootCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.shooter.SpinUpCommand
-import com.team4099.robot2021.commands.shooter.UnjamCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
@@ -47,7 +46,7 @@ object Robot : TimedRobot() {
     // Feeder.defaultCommand = FeederSerialize()
     Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
 
-    ControlBoard.unjam
+    // ControlBoard.unjam.whileActiveContinuous(UnjamCommand())
     ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_ALL))
     ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
 
@@ -81,8 +80,7 @@ object Robot : TimedRobot() {
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
     ControlBoard.nearSpin
         .whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.NEAR))
-    ControlBoard.farSpin
-        .whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.FAR))
+    ControlBoard.farSpin.whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.FAR))
 
     ControlBoard.visionButton.whileActiveOnce(VisionCommand())
 
