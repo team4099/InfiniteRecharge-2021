@@ -86,7 +86,8 @@ object Robot : TimedRobot() {
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
     ControlBoard.nearSpin
         .whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.NEAR))
-    ControlBoard.farSpin.whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.FAR))
+    ControlBoard.farSpin
+        .whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.FAR))
 
     ControlBoard.visionButton.whileActiveOnce(VisionCommand())
 
