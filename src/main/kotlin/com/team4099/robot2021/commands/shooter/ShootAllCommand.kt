@@ -11,6 +11,7 @@ class ShootAllCommand : ParallelRaceGroup() {
     addRequirements(Shooter)
 
     addCommands(
+        SpinUpCommand(),
         WaitCommand(5.0), // subject to change
         WaitUntilCommand { Feeder.ballCount < 1 },
         ShootCommand())

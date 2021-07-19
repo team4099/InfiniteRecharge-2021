@@ -40,7 +40,7 @@ object ControlBoard {
   val slowMode: Boolean
     get() = driver.dPadDown
 
-  val unjamThroughIntake = Trigger { operator.dPadDown }
+  val unjam = Trigger { operator.dPadDown }
 
   val shoot = Trigger { operator.dPadRight }
   // val stopShooting = Trigger { operator.yButton }

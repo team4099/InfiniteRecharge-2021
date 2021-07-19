@@ -46,13 +46,10 @@ object Robot : TimedRobot() {
     // Link between feeder Trigger and Command
     // Feeder.defaultCommand = FeederSerialize()
     Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
-    ControlBoard.unjamThroughIntake
+    ControlBoard.unjam
         .whileActiveOnce(
-            FeederCommand(Feeder.FeederState.BACKWARD)
-                .alongWith(UnjamCommand(false))
-                .alongWith(
-                    IntakeCommand(
-                        Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)))
+            UnjamCommand().alongWith(
+                IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)))
 
     Intake.defaultCommand =
         IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.OUT)
