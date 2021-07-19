@@ -48,8 +48,7 @@ object Robot : TimedRobot() {
     Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
     ControlBoard.unjam
         .whileActiveOnce(
-            UnjamCommand().alongWith(
-                IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)))
+            UnjamCommand())
 
     Intake.defaultCommand =
         IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.OUT)
