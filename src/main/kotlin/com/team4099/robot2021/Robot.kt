@@ -56,11 +56,15 @@ object Robot : TimedRobot() {
     ControlBoard.runIntakeIn
         .whileActiveContinuous(FeederSerialize())
         .whileActiveContinuous(
-            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT))
-
+            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+        )
+    ControlBoard.putIntakeUp
+      .whileActiveContinuous(
+        IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN)
+      )
     ControlBoard.runIntakeOut
         .whileActiveContinuous(
-            IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN)
+            IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
         // .alongWith(FeederCommand(Feeder.FeederState.BACKWARD))
         )
 
@@ -71,7 +75,6 @@ object Robot : TimedRobot() {
     // .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
 
     Shooter.defaultCommand = ShooterIdleCommand()
-    //    Shooter.defaultCommand = SpinUpCommand()
     //    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
     //    ControlBoard.shoot.whileActiveOnce(VisionCommand().andThen(ShootCommand()))
     ControlBoard.shoot.whileActiveOnce(ShootCommand())

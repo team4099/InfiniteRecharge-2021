@@ -22,6 +22,7 @@ object ControlBoard {
 
   val resetGyro = Trigger { driver.startButton && driver.selectButton }
 
+  //what
   val sampleClimberVelocity: Double
     get() = operator.leftTriggerAxis - operator.rightTriggerAxis
 
@@ -35,22 +36,25 @@ object ControlBoard {
     get() = driver.aButton
 
   val runIntakeIn = Trigger { operator.aButton }
-  val runIntakeOut = Trigger { operator.bButton }
+  val putIntakeUp = Trigger { operator.bButton }
+  val runIntakeOut = Trigger { operator.xButton }
 
-  val slowMode: Boolean
-    get() = driver.dPadDown
+  // val unjamThroughIntake = Trigger { operator.dPadDown }
+  // val unjamThroughShooter = Trigger { operator.dPadUp }
+  val runFeederIn = Trigger { operator.dPadUp }
+  val runFeederOut = Trigger { operator.dPadDown }
 
   val unjam = Trigger { operator.dPadDown }
 
-  val shoot = Trigger { operator.dPadRight }
-  // val stopShooting = Trigger { operator.yButton }
-  val nearSpin = Trigger { operator.xButton }
-  val farSpin = Trigger { operator.yButton }
+  val shoot = Trigger { operator.yButton }
+  val nearSpin = Trigger { operator.rightShoulderButton }
+  val farSpin = Trigger { operator.leftShoulderButton }
   val visionButton = Trigger { driver.aButton }
 
-  val climberHigh = Trigger { driver.dPadUp }
-  val climberLow = Trigger { driver.dPadDown }
+  val climberHigh = Trigger { operator.dPadRight }
+  val climberLow = Trigger { operator.dPadLeft }
 
+  // Infinite Recharge @ Home
   //  val nearSpin = Trigger { operator.aButton }
   //  val lineSpin = Trigger { operator.bButton }
   //  val midSpin = Trigger { operator.yButton }
