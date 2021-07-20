@@ -53,6 +53,7 @@ object Robot : TimedRobot() {
     Intake.defaultCommand =
         IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.OUT)
     ControlBoard.runIntakeIn
+        // comment feeder with intake when beam breaks aren't working
         .whileActiveContinuous(FeederSerialize())
         .whileActiveContinuous(
             IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT))
