@@ -11,7 +11,6 @@ import com.team4099.robot2021.commands.shooter.ShootAllCommand
 import com.team4099.robot2021.commands.shooter.ShootCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.shooter.SpinUpCommand
-import com.team4099.robot2021.commands.shooter.UnjamCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
@@ -67,6 +66,13 @@ object Robot : TimedRobot() {
         )
 
     // Climber.defaultCommand = LockClimber()
+
+    // New Climber
+    // if (ControlBoard.climberSpeed != 0.0) {
+    //  ClimberCommand(ControlBoard.climberSpeed)
+    // }
+
+    // Old Climber
     // ControlBoard.climberHigh
     // .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
     // ControlBoard.climberLow
@@ -82,7 +88,7 @@ object Robot : TimedRobot() {
     ControlBoard.nearSpin
         .whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.NEAR))
     ControlBoard.farSpin.whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.FAR))
-    ControlBoard.unjam.whileActiveContinuous(UnjamCommand())
+    // ControlBoard.unjam.whileActiveContinuous(UnjamCommand())
 
     ControlBoard.visionButton.whileActiveOnce(VisionCommand())
 
