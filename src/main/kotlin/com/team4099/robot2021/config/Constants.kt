@@ -216,8 +216,8 @@ object Constants {
   }
 
   object Climber {
-    val CLIMBER_R_ARM_SPARKMAX_ID = 62
-    val CLIMBER_L_ARM_SPARKMAX_ID = 61
+    val R_ARM_ID = 62
+    val L_ARM_ID = 61
     val CLIMBER_SENSOR_LINEARMECH_GEARRATIO = 8.4
     val CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER = .0508.meters // diameter: .0508 meters = 2 in
     val CLIMBER_SOLENOID_ACTUATIONSTATE = 7
@@ -227,6 +227,9 @@ object Constants {
     val CLIMBER_SPARKMAX_VEL = 0.5.meters.perSecond
     val CLIMBER_SPARKMAX_ACC = 0.5.meters.perSecond.perSecond
     val BRAKE_RELEASE_TIMEOUT = 0.1.seconds
+
+    val BOTTOM_SAFETY_DISTANCE = 3.inches
+    val TOP_SAFETY_DISTANCE = 28.inches // TODO: Determine good length
     const val TAB = "Climber"
   }
 

@@ -23,8 +23,8 @@ object ControlBoard {
   val resetGyro = Trigger { driver.startButton && driver.selectButton }
 
   // what
-  val sampleClimberVelocity: Double
-    get() = operator.leftTriggerAxis - operator.rightTriggerAxis
+  val climberSpeed: Double
+    get() = operator.rightTriggerAxis - operator.leftTriggerAxis
 
   val wristVertical: Boolean
     get() = operator.leftShoulderButton
@@ -49,10 +49,10 @@ object ControlBoard {
   val farSpin = Trigger { operator.leftShoulderButton }
   val visionButton = Trigger { driver.aButton }
 
-  val unjam = Trigger { operator.selectButton }
+  // val unjam = Trigger { operator.selectButton }
 
-  val climberHigh = Trigger { operator.dPadRight }
-  val climberLow = Trigger { operator.dPadLeft }
+  // val climberHigh = Trigger { operator.dPadRight }
+  // val climberLow = Trigger { operator.dPadLeft }
 
   // Infinite Recharge @ Home
   //  val nearSpin = Trigger { operator.aButton }
