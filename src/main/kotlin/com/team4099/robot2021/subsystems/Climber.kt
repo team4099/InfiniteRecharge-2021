@@ -15,24 +15,6 @@ object Climber : SubsystemBase() {
       CANSparkMax(Constants.Climber.R_ARM_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
   private val climberLArm =
       CANSparkMax(Constants.Climber.L_ARM_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
-  var climbPower: Double = 0.0
-    set(power) {
-      field =
-          if (climberLArmSensor.position.inInches <
-              Constants.Climber.BOTTOM_SAFETY_THRESHOLD.value ||
-              climberRArmSensor.position.inInches <
-                  Constants.Climber.BOTTOM_SAFETY_THRESHOLD.value ||
-              climberLArmSensor.position.inInches < Constants.Climber.TOP_SAFETY_THRESHOLD.value ||
-              climberRArmSensor.position.inInches < Constants.Climber.TOP_SAFETY_THRESHOLD.value) {
-            climberRArm.set(0.0)
-            climberLArm.set(0.0)
-            0.0
-          } else {
-            climberRArm.set(power)
-            climberLArm.set(power)
-            power
-          }
-    }
 
   // private val climberRArmPIDController = climberRArm.pidController
   // private val climberLArmPIDController = climberLArm.pidController
@@ -48,8 +30,6 @@ object Climber : SubsystemBase() {
           Constants.Climber.CLIMBER_SENSOR_LINEARMECH_GEARRATIO,
           Constants.Climber
               .CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER) // diameter: .0508 meters = 2 in
-  private val Rpos = climberRArmSensor.position
-  private val LPos = climberLArmSensor.position
 
   private val pneumaticRBrake =
       Solenoid(
@@ -104,7 +84,7 @@ object Climber : SubsystemBase() {
     Logger.addSource(Constants.Climber.TAB, "Right Pneumatics State") { brakeApplied.toString() }
     Logger.addSource(Constants.Climber.TAB, "Left Pneumatics State") { brakeApplied.toString() }
 
-    // climberRArm.restoreFactoryDefaults()
+    climberRArm.restoreFactoryDefaults()
     // climberRArmPIDController.p = Constants.Climber.CLIMBER_P
     // climberRArmPIDController.i = Constants.Climber.CLIMBER_I
     // climberRArmPIDController.d = Constants.Climber.CLIMBER_D
@@ -112,9 +92,9 @@ object Climber : SubsystemBase() {
     //    climberRArmSensor.velocityToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_VEL), 0)
     // climberRArmPIDController.setSmartMotionMaxAccel(
     //    climberRArmSensor.accelerationToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_ACC), 0)
-    // climberRArm.burnFlash()
+    climberRArm.burnFlash()
 
-    // climberLArm.restoreFactoryDefaults()
+    climberLArm.restoreFactoryDefaults()
     // climberLArmPIDController.p = Constants.Climber.CLIMBER_P
     // climberLArmPIDController.i = Constants.Climber.CLIMBER_I
     // climberLArmPIDController.d = Constants.Climber.CLIMBER_D
@@ -122,7 +102,7 @@ object Climber : SubsystemBase() {
     //    climberLArmSensor.velocityToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_VEL), 0)
     // climberLArmPIDController.setSmartMotionMaxAccel(
     //    climberLArmSensor.accelerationToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_ACC), 0)
-    // climberLArm.burnFlash()
+    climberLArm.burnFlash()
   }
 
   fun setPosition(position: Constants.ClimberPosition) {
@@ -132,8 +112,22 @@ object Climber : SubsystemBase() {
     //      climberLArmSensor.positionToRawUnits(position.length), ControlType.kSmartMotion)
   }
 
-  fun setOpenLoopPower(power: Double) {
-    climberRArm.set(power)
-    climberLArm.set(power)
+  fun setOpenLoopPower(rightPower: Double, leftPower: Double) {
+    if ((climberLArmSensor.position.inInches < Constants.Climber.BOTTOM_SAFETY_THRESHOLD.value &&
+        leftPower < 0.0) ||
+        (climberLArmSensor.position.inInches > Constants.Climber.TOP_SAFETY_THRESHOLD.value &&
+            leftPower > 0.0)) {
+      climberLArm.set(0.0)
+    } else {
+      climberLArm.set(leftPower)
+    }
+    if ((climberRArmSensor.position.inInches < Constants.Climber.BOTTOM_SAFETY_THRESHOLD.value &&
+        rightPower < 0.0) ||
+        (climberRArmSensor.position.inInches > Constants.Climber.TOP_SAFETY_THRESHOLD.value &&
+            rightPower > 0.0)) {
+      climberRArm.set(0.0)
+    } else {
+      climberRArm.set(rightPower)
+    }
   }
 }

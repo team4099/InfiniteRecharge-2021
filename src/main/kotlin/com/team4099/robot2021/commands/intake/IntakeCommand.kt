@@ -15,6 +15,7 @@ class IntakeCommand(
   }
 
   override fun initialize() {
+    // Calls public variables and sets value based on arguments given
     Intake.armState = armState
     Intake.intakeState = intakeState
     Logger.addEvent("Intake", "Intake State: $intakeState Arm State: $armState")

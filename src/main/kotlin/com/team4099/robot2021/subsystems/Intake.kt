@@ -13,12 +13,14 @@ object Intake : SubsystemBase() {
   private val intakeDoubleSolenoid =
       DoubleSolenoid(Constants.Intake.ARM_SOLENOID_FORWARD, Constants.Intake.ARM_SOLENOID_REVERSE)
 
+  // Sets intake motor to desired speed
   var intakeState = Constants.Intake.IntakeState.IDLE
     set(value) {
       intakeTalon.set(ControlMode.PercentOutput, value.speed)
       field = value
     }
 
+  // Sets arm pneumatic to desired stage
   var armState = Constants.Intake.ArmPosition.IN
     set(value) {
       intakeDoubleSolenoid.set(value.position)
@@ -26,6 +28,7 @@ object Intake : SubsystemBase() {
     }
 
   init {
+    intakeTalon.configFactoryDefault()
     Logger.addSource(Constants.Intake.TAB, "Intake State") { intakeState.toString() }
     Logger.addSource(Constants.Intake.TAB, "Intake Motor Power") { intakeTalon.motorOutputPercent }
     Logger.addSource(Constants.Intake.TAB, "Intake Motor Stator Current") {
