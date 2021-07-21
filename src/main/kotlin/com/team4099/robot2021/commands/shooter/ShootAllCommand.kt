@@ -8,12 +8,10 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand
 
 class ShootAllCommand : ParallelRaceGroup() {
   init {
-    addRequirements(Shooter)
-
     addCommands(
-        SpinUpCommand(),
-        WaitCommand(5.0), // subject to change
-        WaitUntilCommand { Feeder.ballCount < 1 },
+        // SpinUpCommand(),
+        WaitCommand(4.0),
+        // WaitUntilCommand { Feeder.ballCount < 1 },
         ShootCommand())
   }
 }

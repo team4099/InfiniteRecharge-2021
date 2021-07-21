@@ -22,8 +22,8 @@ class SpinUpCommand(
     if (withVision) {
       Shooter.targetVelocity =
           when (Vision.currentDistance) {
-            Vision.DistanceState.LINE -> Constants.Shooter.LINE_VELOCITY
             Vision.DistanceState.NEAR -> Constants.Shooter.NEAR_VELOCITY
+            Vision.DistanceState.LINE -> Constants.Shooter.LINE_VELOCITY
             Vision.DistanceState.MID -> Constants.Shooter.MID_VELOCITY
             Vision.DistanceState.FAR -> Constants.Shooter.FAR_VELOCITY
           }
@@ -31,8 +31,8 @@ class SpinUpCommand(
       if (accuracy) {
         Shooter.targetVelocity =
             when (distance) {
-              Vision.DistanceState.LINE -> Constants.Shooter.LINE_VELOCITY
               Vision.DistanceState.NEAR -> Constants.Shooter.NEAR_VELOCITY
+              Vision.DistanceState.LINE -> Constants.Shooter.LINE_VELOCITY
               Vision.DistanceState.MID -> Constants.Shooter.MID_VELOCITY
               Vision.DistanceState.FAR -> Constants.Shooter.FAR_VELOCITY
             }

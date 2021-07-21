@@ -109,6 +109,8 @@ object Feeder : SubsystemBase() {
       Constants.Feeder.BEAM_BREAK_BACKWARDS_TIME
     }
 
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Ball Count") { ballCount }
+
     floorMotor.restoreFactoryDefaults()
     verticalMotor.restoreFactoryDefaults()
 

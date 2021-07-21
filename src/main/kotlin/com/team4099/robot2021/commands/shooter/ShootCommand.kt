@@ -24,13 +24,13 @@ class ShootCommand : CommandBase() {
       else -> Shooter.HoodPosition.EXTENDED
     }
 
-    Shooter.targetVelocity = Constants.Shooter.POWER_CELL_CHALLENGE_RPM
-    when (Vision.currentDistance) {
-      Vision.DistanceState.LINE -> Constants.Shooter.LINE_VELOCITY
-      Vision.DistanceState.NEAR -> Constants.Shooter.NEAR_VELOCITY
-      Vision.DistanceState.MID -> Constants.Shooter.MID_VELOCITY
-      Vision.DistanceState.FAR -> Constants.Shooter.FAR_VELOCITY
-    }
+//    Shooter.targetVelocity = Constants.Shooter.POWER_CELL_CHALLENGE_RPM
+//    when (Vision.currentDistance) {
+//      Vision.DistanceState.LINE -> Constants.Shooter.LINE_VELOCITY
+//      Vision.DistanceState.NEAR -> Constants.Shooter.NEAR_VELOCITY
+//      Vision.DistanceState.MID -> Constants.Shooter.MID_VELOCITY
+//      Vision.DistanceState.FAR -> Constants.Shooter.FAR_VELOCITY
+//    }
 
     shooterReady = false
     Logger.addEvent("ShootCommand", "Started shoot command")

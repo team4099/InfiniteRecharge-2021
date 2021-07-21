@@ -124,7 +124,8 @@ object Constants {
     const val FLOOR_ID = 41
     const val VERTICAL_ID = 42
     const val FEEDER_POWER = 1.0 // was 0.45
-    const val FAST_FEEDER_POWER = 1.0
+    const val FAST_FEEDER_POWER = 0.75 // was 1.0
+    // add one for close and far shot
     const val FLOOR_CURRENT_LIMIT = 15
     const val VERTICAL_CURRENT_LIMIT = 40
 
@@ -162,18 +163,18 @@ object Constants {
 
     val VELOCITY_TOLERANCE = 100.rotations.perMinute
 
-    const val SHOOTER_KS = 0.939 * 2
-    const val SHOOTER_KV = 0.114 // * 2
+    const val SHOOTER_KS = 0.939 // * 2
+    const val SHOOTER_KV = 0.1 // 0.114 // * 2
 
-    const val SHOOTER_KP = 0.8
+    const val SHOOTER_KP = 0.65
     const val SHOOTER_KI = 0.0
     const val SHOOTER_KD = 0.0
 
-    val NEAR_VELOCITY = 1500.0.rotations.perMinute // TODO: Determine velocity
+    val NEAR_VELOCITY = 1700.0.rotations.perMinute
     val LINE_VELOCITY = 2750.0.rotations.perMinute
     val MID_VELOCITY = 2800.0.rotations.perMinute
-    val FAR_VELOCITY =
-        3450.0.rotations.perMinute // TODO: Determine velocity needed to shoot from front of trench
+    val FAR_VELOCITY = 3450.0.rotations.perMinute
+    // TODO: Determine velocity needed to shoot from front of trench
 
     val LINE_DISTANCE = 100.0.inches
     val NEAR_DISTANCE = 130.0.inches

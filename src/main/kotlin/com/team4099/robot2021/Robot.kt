@@ -2,12 +2,12 @@ package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
-import com.team4099.robot2021.auto.modes2021.AvoidBarCircularMode
 import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.commands.feeder.FeederSerialize
 import com.team4099.robot2021.commands.intake.IntakeCommand
+import com.team4099.robot2021.commands.shooter.ShootAllCommand
 import com.team4099.robot2021.commands.shooter.ShootCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.shooter.SpinUpCommand
@@ -117,7 +117,9 @@ object Robot : TimedRobot() {
   // PathStore.driveBackwards)
 
   // private val autonomousCommand = EightBallMode()
-  private val autonomousCommand = AvoidBarCircularMode()
+  // private val autonomousCommand = AvoidBarCircularMode()
+  // private val autonomousCommand = EnemyTrenchMode()
+  private val autonomousCommand = ShootAllCommand()
 
   override fun autonomousInit() {
     Drivetrain.zeroSensors()
