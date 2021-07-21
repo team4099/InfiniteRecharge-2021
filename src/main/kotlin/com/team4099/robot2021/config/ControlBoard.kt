@@ -49,9 +49,9 @@ object ControlBoard {
 
   // val unjam = Trigger { operator.selectButton }
 
-  val climbVelocity: Double
+  val climbPower: Double
     get() = operator.rightTriggerAxis - operator.leftTriggerAxis
-  val moveClimber = Trigger { !climbVelocity.around(0.0, 0.1) }
+  val moveClimber = Trigger { !climbPower.around(0.0, 0.1) }
   // val climberHigh = Trigger { operator.dPadRight }
   // val climberLow = Trigger { operator.dPadLeft }
 

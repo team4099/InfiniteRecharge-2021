@@ -15,7 +15,7 @@ object Climber : SubsystemBase() {
       CANSparkMax(Constants.Climber.R_ARM_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
   private val climberLArm =
       CANSparkMax(Constants.Climber.L_ARM_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
-  var climbVelocity: Double = 0.0
+  var climbPower: Double = 0.0
     set(velocity) {
       field =
           if (climberLArmSensor.position.inInches <
