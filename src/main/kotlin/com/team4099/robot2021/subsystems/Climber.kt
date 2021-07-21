@@ -15,22 +15,22 @@ object Climber : SubsystemBase() {
       CANSparkMax(Constants.Climber.R_ARM_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
   private val climberLArm =
       CANSparkMax(Constants.Climber.L_ARM_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
-  var climberSpeed: Double = 0.0
-    set(speed) {
+  var climbVelocity: Double = 0.0
+    set(velocity) {
       field =
           if (climberLArmSensor.position.inInches <
-              Constants.Climber.BOTTOM_SAFETY_DISTANCE.value ||
+              Constants.Climber.BOTTOM_SAFETY_THRESHOLD.value ||
               climberRArmSensor.position.inInches <
-                  Constants.Climber.BOTTOM_SAFETY_DISTANCE.value ||
-              climberLArmSensor.position.inInches < Constants.Climber.TOP_SAFETY_DISTANCE.value ||
-              climberRArmSensor.position.inInches < Constants.Climber.TOP_SAFETY_DISTANCE.value) {
+                  Constants.Climber.BOTTOM_SAFETY_THRESHOLD.value ||
+              climberLArmSensor.position.inInches < Constants.Climber.TOP_SAFETY_THRESHOLD.value ||
+              climberRArmSensor.position.inInches < Constants.Climber.TOP_SAFETY_THRESHOLD.value) {
             climberRArm.set(0.0)
             climberLArm.set(0.0)
             0.0
           } else {
-            climberRArm.set(speed)
-            climberLArm.set(speed)
-            speed
+            climberRArm.set(velocity)
+            climberLArm.set(velocity)
+            velocity
           }
     }
 

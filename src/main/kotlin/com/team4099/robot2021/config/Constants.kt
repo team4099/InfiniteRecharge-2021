@@ -229,8 +229,8 @@ object Constants {
     val CLIMBER_SPARKMAX_ACC = 0.5.meters.perSecond.perSecond
     val BRAKE_RELEASE_TIMEOUT = 0.1.seconds
 
-    val BOTTOM_SAFETY_DISTANCE = 3.inches
-    val TOP_SAFETY_DISTANCE = 28.inches // TODO: Determine good length
+    val BOTTOM_SAFETY_THRESHOLD = 3.inches
+    val TOP_SAFETY_THRESHOLD = 28.inches // TODO: Determine good length
     const val TAB = "Climber"
   }
 

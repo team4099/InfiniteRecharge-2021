@@ -1,5 +1,6 @@
 package com.team4099.robot2021.config
 
+import com.team4099.lib.around
 import com.team4099.lib.joystick.XboxOneGamepad
 import edu.wpi.first.wpilibj2.command.button.Trigger
 
@@ -23,9 +24,6 @@ object ControlBoard {
   val resetGyro = Trigger { driver.startButton && driver.selectButton }
 
   // what
-  val climberSpeed: Double
-    get() = operator.rightTriggerAxis - operator.leftTriggerAxis
-
   val wristVertical: Boolean
     get() = operator.leftShoulderButton
 
@@ -51,6 +49,9 @@ object ControlBoard {
 
   // val unjam = Trigger { operator.selectButton }
 
+  val climbVelocity: Double
+    get() = operator.rightTriggerAxis - operator.leftTriggerAxis
+  val moveClimber = Trigger { !climbVelocity.around(0.0, 0.1) }
   // val climberHigh = Trigger { operator.dPadRight }
   // val climberLow = Trigger { operator.dPadLeft }
 

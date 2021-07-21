@@ -4,16 +4,15 @@ import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.subsystems.Climber
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class ClimberCommand(private val speed: Double) : CommandBase() {
+class LockClimberCommand : CommandBase() {
   init {
     addRequirements(Climber)
   }
 
   override fun initialize() {
-    if (Climber.brakeApplied) {
-      UnlockClimber()
-    }
-    Climber.climberSpeed = speed
-    Logger.addEvent("Climber", "Climber moving at $speed")
+    Climber.setOpenLoopPower(0.0)
+    Climber.brakeApplied = true
+    Logger.addEvent("Climber", "Climber Locked")
   }
 }
+// check pressure, if none, still try to lock and add event that pressure failed

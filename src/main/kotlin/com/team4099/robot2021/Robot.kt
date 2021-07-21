@@ -67,12 +67,12 @@ object Robot : TimedRobot() {
 
     // Climber.defaultCommand = LockClimber()
 
-    // New Climber
-    // if (ControlBoard.climberSpeed != 0.0) {
-    //  ClimberCommand(ControlBoard.climberSpeed)
-    // }
+    // Open Loop Climb
+    // ControlBoard.moveClimber.whileActiveOnce(
+    // UnlockClimberCommand().andThen(OpenLoopClimbCommand(ControlBoard.climbVelocity))
+    // )
 
-    // Old Climber
+    // Closed Loop Climber
     // ControlBoard.climberHigh
     // .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
     // ControlBoard.climberLow

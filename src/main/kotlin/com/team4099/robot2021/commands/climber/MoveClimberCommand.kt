@@ -1,12 +1,11 @@
 package com.team4099.robot2021.commands
 
 import com.team4099.lib.logging.Logger
-import com.team4099.robot2021.commands.climber.UnlockClimber
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Climber
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class MoveClimber(val pos: Constants.ClimberPosition) : CommandBase() {
+class MoveClimberCommand(val pos: Constants.ClimberPosition) : CommandBase() {
   init {
     addRequirements(Climber)
   }
@@ -16,9 +15,6 @@ class MoveClimber(val pos: Constants.ClimberPosition) : CommandBase() {
   }
 
   override fun execute() {
-    if (Climber.brakeApplied) {
-      UnlockClimber()
-    }
     Climber.setPosition(pos)
   }
 }
