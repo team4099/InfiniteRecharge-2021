@@ -11,7 +11,11 @@ import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2021.commands.feeder.FeederCommand
 import com.team4099.robot2021.commands.feeder.FeederSerialize
-import com.team4099.robot2021.commands.intake.IntakeCommand
+import com.team4099.robot2021.commands.intake.IntakeBallsCommand
+import com.team4099.robot2021.commands.intake.IntakeIdleCommand
+import com.team4099.robot2021.commands.intake.LiftIntakeCommand
+import com.team4099.robot2021.commands.intake.PrepareClimbCommand
+import com.team4099.robot2021.commands.intake.ReverseIntakeCommand
 import com.team4099.robot2021.commands.shooter.ShootAllCommand
 import com.team4099.robot2021.commands.shooter.ShootCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
@@ -56,21 +60,25 @@ object Robot : TimedRobot() {
     ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_ALL))
     ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
 
-    Intake.defaultCommand =
-        IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.OUT)
+    Intake.defaultCommand = IntakeIdleCommand()
+    // IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.OUT)
     ControlBoard.runIntakeIn
         // comment feeder with intake when beam breaks aren't working
         .whileActiveContinuous(FeederSerialize())
         .whileActiveContinuous(
-            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT))
+            // IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+            IntakeBallsCommand())
     ControlBoard.putIntakeUp
         .whileActiveContinuous(
-            IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN))
+            // IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN)
+            LiftIntakeCommand())
     ControlBoard.runIntakeOut
         .whileActiveContinuous(
-            IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
-        // .alongWith(FeederCommand(Feeder.FeederState.BACKWARD))
+            // IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
+            ReverseIntakeCommand()
+        // .alongWith(FeederCommand(Feeder.FeederState.BACKWARD)
         )
+    ControlBoard.prepareClimb.toggleWhenActive(PrepareClimbCommand())
 
     Climber.defaultCommand = LockClimberCommand()
     ControlBoard.unlockClimber.whileActiveOnce(UnlockClimberCommand())

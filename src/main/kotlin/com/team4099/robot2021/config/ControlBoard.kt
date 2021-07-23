@@ -38,18 +38,17 @@ object ControlBoard {
   val putIntakeUp = Trigger { operator.bButton }
   val runIntakeOut = Trigger { operator.xButton }
 
-  // val unjamThroughIntake = Trigger { operator.dPadDown }
-  // val unjamThroughShooter = Trigger { operator.dPadUp }
-  // val runFeederIn = Trigger { operator.dPadUp }
-  val runFeederIn = Trigger { operator.yButton }
+  // val runFeederIn = Trigger { operator.yButton }
+  val runFeederIn = Trigger { operator.dPadUp }
   val runFeederOut = Trigger { operator.dPadDown }
 
-  // val shoot = Trigger { operator.yButton }
-  val shoot = Trigger { technician.yButton }
+  val shoot = Trigger { operator.yButton }
+  // val shoot = Trigger { technician.yButton }
   val nearSpin = Trigger { operator.rightShoulderButton }
   val farSpin = Trigger { operator.leftShoulderButton }
   val visionButton = Trigger { driver.aButton }
 
+  val prepareClimb = Trigger { operator.startButton }
   val unjam = Trigger { operator.selectButton }
 
   val climbPower: Double

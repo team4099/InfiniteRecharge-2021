@@ -14,6 +14,7 @@ class OpenLoopClimbCommand(private val power: () -> Double) : CommandBase() {
 
   override fun initialize() {
     Logger.addEvent("Climber", "Climber power at ${power()}")
+    // Intake.armState = Constants.Intake.ArmPosition.IN
   }
 
   override fun isFinished(): Boolean {

@@ -143,10 +143,12 @@ object Constants {
     const val ARM_SOLENOID_REVERSE = 0
     const val TAB = "Intake"
 
+    val RAMP_TIME = 1.0
+
     enum class IntakeState(val speed: Double) {
       IDLE(0.0),
-      IN(1.0),
-      OUT(-1.0)
+      IN(0.1),
+      OUT(-0.1)
     }
 
     enum class ArmPosition(val position: DoubleSolenoid.Value?) {

@@ -41,5 +41,7 @@ object Intake : SubsystemBase() {
       intakeTalon.motorOutputVoltage
     }
     Logger.addSource(Constants.Intake.TAB, "Arm State") { armState.toString() }
+
+    intakeTalon.configOpenloopRamp(Constants.Intake.RAMP_TIME)
   }
 }
