@@ -87,7 +87,10 @@ object Robot : TimedRobot() {
     // Open Loop Climb
     ControlBoard.moveClimber
         .whileActiveOnce(
-            UnlockClimberCommand().andThen(OpenLoopClimbCommand({ ControlBoard.climbPower })))
+            PrepareClimbCommand().andThen(
+                UnlockClimberCommand().andThen(OpenLoopClimbCommand({ ControlBoard.climbPower }))
+            )
+        )
 
     // Closed Loop Climber
     // ControlBoard.climberHigh
