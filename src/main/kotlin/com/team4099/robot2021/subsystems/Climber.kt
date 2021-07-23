@@ -18,34 +18,29 @@ object Climber : SubsystemBase() {
 
   // private val climberRArmPIDController = climberRArm.pidController
   // private val climberLArmPIDController = climberLArm.pidController
-  private val climberRArmSensor =
+  val climberRArmSensor =
       sparkMaxLinearMechanismSensor(
           climberRArm,
           Constants.Climber.CLIMBER_SENSOR_LINEARMECH_GEARRATIO,
           Constants.Climber
               .CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER) // diameter: .0508 meters = 2 in
-  private val climberLArmSensor =
+  val climberLArmSensor =
       sparkMaxLinearMechanismSensor(
           climberLArm,
           Constants.Climber.CLIMBER_SENSOR_LINEARMECH_GEARRATIO,
           Constants.Climber
               .CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER) // diameter: .0508 meters = 2 in
 
-  private val pneumaticRBrake =
+  // out to lock
+  private val pneumaticBrake =
       Solenoid(
           Constants.Climber
-              .CLIMBER_SOLENOID_ACTUATIONSTATE) // unactuated state is having the pneumatic extended
+              .CLIMBER_SOLENOID_ID) // unactuated state is having the pneumatic extended
   // out to lock
-  private val pneumaticLBrake =
-      Solenoid(
-          Constants.Climber
-              .CLIMBER_SOLENOID_ACTUATIONSTATE) // unactuated state is having the pneumatic extended
-  // out to lock
-  var brakeApplied = false
+  var brakeApplied = true
     set(value) {
       field = value
-      pneumaticRBrake.set(value)
-      pneumaticLBrake.set(value)
+      pneumaticBrake.set(!value)
     }
 
   init {
@@ -85,6 +80,7 @@ object Climber : SubsystemBase() {
     Logger.addSource(Constants.Climber.TAB, "Left Pneumatics State") { brakeApplied.toString() }
 
     climberRArm.restoreFactoryDefaults()
+    climberRArm.inverted = true
     // climberRArmPIDController.p = Constants.Climber.CLIMBER_P
     // climberRArmPIDController.i = Constants.Climber.CLIMBER_I
     // climberRArmPIDController.d = Constants.Climber.CLIMBER_D
@@ -92,9 +88,11 @@ object Climber : SubsystemBase() {
     //    climberRArmSensor.velocityToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_VEL), 0)
     // climberRArmPIDController.setSmartMotionMaxAccel(
     //    climberRArmSensor.accelerationToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_ACC), 0)
+    climberRArm.idleMode = CANSparkMax.IdleMode.kBrake
     climberRArm.burnFlash()
 
     climberLArm.restoreFactoryDefaults()
+    climberLArm.inverted = true
     // climberLArmPIDController.p = Constants.Climber.CLIMBER_P
     // climberLArmPIDController.i = Constants.Climber.CLIMBER_I
     // climberLArmPIDController.d = Constants.Climber.CLIMBER_D
@@ -102,6 +100,7 @@ object Climber : SubsystemBase() {
     //    climberLArmSensor.velocityToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_VEL), 0)
     // climberLArmPIDController.setSmartMotionMaxAccel(
     //    climberLArmSensor.accelerationToRawUnits(Constants.Climber.CLIMBER_SPARKMAX_ACC), 0)
+    climberLArm.idleMode = CANSparkMax.IdleMode.kBrake
     climberLArm.burnFlash()
   }
 
@@ -112,22 +111,32 @@ object Climber : SubsystemBase() {
     //      climberLArmSensor.positionToRawUnits(position.length), ControlType.kSmartMotion)
   }
 
-  fun setOpenLoopPower(rightPower: Double, leftPower: Double) {
-    if ((climberLArmSensor.position.inInches < Constants.Climber.BOTTOM_SAFETY_THRESHOLD.value &&
-        leftPower < 0.0) ||
-        (climberLArmSensor.position.inInches > Constants.Climber.TOP_SAFETY_THRESHOLD.value &&
-            leftPower > 0.0)) {
+  fun setOpenLoopPower(leftPower: Double, rightPower: Double, safetyEnabled: Boolean = true) {
+    if (safetyEnabled &&
+        ((climberLArmSensor.position.inInches < Constants.Climber.BOTTOM_SAFETY_THRESHOLD.value &&
+            leftPower < 0.0) ||
+            (climberLArmSensor.position.inInches > Constants.Climber.TOP_SAFETY_THRESHOLD.value &&
+                leftPower > 0.0))) {
       climberLArm.set(0.0)
     } else {
       climberLArm.set(leftPower)
     }
-    if ((climberRArmSensor.position.inInches < Constants.Climber.BOTTOM_SAFETY_THRESHOLD.value &&
-        rightPower < 0.0) ||
-        (climberRArmSensor.position.inInches > Constants.Climber.TOP_SAFETY_THRESHOLD.value &&
-            rightPower > 0.0)) {
+    if (safetyEnabled &&
+        ((climberRArmSensor.position.inInches < Constants.Climber.BOTTOM_SAFETY_THRESHOLD.value &&
+            rightPower < 0.0) ||
+            (climberRArmSensor.position.inInches > Constants.Climber.TOP_SAFETY_THRESHOLD.value &&
+                rightPower > 0.0))) {
       climberRArm.set(0.0)
     } else {
       climberRArm.set(rightPower)
     }
+  }
+
+  fun zeroLeftEncoder() {
+    climberLArm.encoder.position = 0.0
+  }
+
+  fun zeroRightEncoder() {
+    climberRArm.encoder.position = 0.0
   }
 }

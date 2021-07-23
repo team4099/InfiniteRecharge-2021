@@ -11,10 +11,17 @@ class UnlockClimberCommand : CommandBase() {
     addRequirements(Climber)
   }
   private var initTime = Clock.fpgaTime
+
   override fun initialize() {
     initTime = Clock.fpgaTime
+    Climber.setOpenLoopPower(0.0, 0.0)
     Climber.brakeApplied = false
-    Logger.addEvent("Climber", "Climber Unlocked")
+  }
+
+  override fun end(interrupted: Boolean) {
+    if (!interrupted) {
+      Logger.addEvent("Climber", "Climber Unlocked")
+    }
   }
 
   override fun isFinished(): Boolean {

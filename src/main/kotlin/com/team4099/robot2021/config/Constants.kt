@@ -37,6 +37,7 @@ object Constants {
   object Joysticks {
     const val DRIVER_PORT = 0
     const val SHOTGUN_PORT = 1
+    const val TECHNICIAN_PORT = 2
 
     const val THROTTLE_DEADBAND = 0.05
     const val TURN_DEADBAND = 0.05
@@ -220,17 +221,20 @@ object Constants {
     val R_ARM_ID = 62
     val L_ARM_ID = 61
     val CLIMBER_SENSOR_LINEARMECH_GEARRATIO = 8.4
-    val CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER = .0508.meters // diameter: .0508 meters = 2 in
-    val CLIMBER_SOLENOID_ACTUATIONSTATE = 7
+    val CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER = 1.inches // diameter: .0508 meters = 2 in
+    val CLIMBER_SOLENOID_ID = 5
     val CLIMBER_P = 0.1
     val CLIMBER_I = 0.1
     val CLIMBER_D = 0.1
     val CLIMBER_SPARKMAX_VEL = 0.5.meters.perSecond
     val CLIMBER_SPARKMAX_ACC = 0.5.meters.perSecond.perSecond
-    val BRAKE_RELEASE_TIMEOUT = 0.1.seconds
+    val BRAKE_RELEASE_TIMEOUT = 0.3.seconds
 
     val BOTTOM_SAFETY_THRESHOLD = 3.inches
     val TOP_SAFETY_THRESHOLD = 28.inches // TODO: Determine good length
+
+    const val POSITION_P = 1.0 / 50.0
+
     const val TAB = "Climber"
   }
 

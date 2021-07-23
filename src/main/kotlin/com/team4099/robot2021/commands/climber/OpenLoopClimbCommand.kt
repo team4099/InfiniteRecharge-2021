@@ -1,6 +1,8 @@
 package com.team4099.robot2021.commands.climber
 
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.units.base.inInches
+import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Climber
 import edu.wpi.first.wpilibj2.command.CommandBase
 
@@ -11,10 +13,24 @@ class OpenLoopClimbCommand(private val power: () -> Double) : CommandBase() {
   }
 
   override fun initialize() {
-    if (!Climber.brakeApplied) {
-      Climber.setOpenLoopPower(power(), power())
-    }
+    Logger.addEvent("Climber", "Climber power at ${power()}")
+  }
 
-    Logger.addEvent("Climber", "Climber power at $power")
+  override fun isFinished(): Boolean {
+    return false
+  }
+
+  override fun execute() {
+    val powerDifference =
+        (Climber.climberLArmSensor.position - Climber.climberRArmSensor.position).inInches *
+            Constants.Climber.POSITION_P
+
+    if (!Climber.brakeApplied) {
+      Climber.setOpenLoopPower(power() - powerDifference, power() + powerDifference)
+    }
+  }
+
+  override fun end(interrupted: Boolean) {
+    Climber.setOpenLoopPower(0.0, 0.0)
   }
 }

@@ -2,6 +2,11 @@ package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
+import com.team4099.robot2021.commands.climber.LockClimberCommand
+import com.team4099.robot2021.commands.climber.OpenLoopClimbCommand
+import com.team4099.robot2021.commands.climber.SpoolLeftClimberCommand
+import com.team4099.robot2021.commands.climber.SpoolRightClimberCommand
+import com.team4099.robot2021.commands.climber.UnlockClimberCommand
 import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2021.commands.feeder.FeederCommand
@@ -14,6 +19,7 @@ import com.team4099.robot2021.commands.shooter.SpinUpCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
+import com.team4099.robot2021.subsystems.Climber
 import com.team4099.robot2021.subsystems.Drivetrain
 import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.subsystems.Intake
@@ -65,18 +71,25 @@ object Robot : TimedRobot() {
         // .alongWith(FeederCommand(Feeder.FeederState.BACKWARD))
         )
 
-    // Climber.defaultCommand = LockClimber()
+    Climber.defaultCommand = LockClimberCommand()
+    ControlBoard.unlockClimber.whileActiveOnce(UnlockClimberCommand())
+    ControlBoard.lockClimber.whileActiveOnce(LockClimberCommand())
 
     // Open Loop Climb
-    // ControlBoard.moveClimber
-    //   .whileActiveOnce(
-    //       UnlockClimberCommand().andThen(OpenLoopClimbCommand { ControlBoard.climbPower }))
+    ControlBoard.moveClimber
+        .whileActiveOnce(
+            UnlockClimberCommand().andThen(OpenLoopClimbCommand({ ControlBoard.climbPower })))
 
     // Closed Loop Climber
     // ControlBoard.climberHigh
     // .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
     // ControlBoard.climberLow
     // .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
+
+    ControlBoard.spoolLeftClimber
+        .whileActiveOnce(UnlockClimberCommand().andThen((SpoolLeftClimberCommand())))
+    ControlBoard.spoolRightClimber
+        .whileActiveOnce(UnlockClimberCommand().andThen((SpoolRightClimberCommand())))
 
     Shooter.defaultCommand = ShooterIdleCommand()
     //    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
