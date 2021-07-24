@@ -1,5 +1,6 @@
 package com.team4099.robot2021.config
 
+import com.team4099.lib.around
 import com.team4099.lib.joystick.XboxOneGamepad
 import edu.wpi.first.wpilibj2.command.button.Trigger
 
@@ -10,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger
 object ControlBoard {
   private val driver = XboxOneGamepad(Constants.Joysticks.DRIVER_PORT)
   private val operator = XboxOneGamepad(Constants.Joysticks.SHOTGUN_PORT)
+  private val technician = XboxOneGamepad(Constants.Joysticks.TECHNICIAN_PORT)
 
   val strafe: Double
     get() = -driver.leftXAxis
@@ -20,9 +22,9 @@ object ControlBoard {
   val turn: Double
     get() = driver.rightXAxis
 
-  val sampleClimberVelocity: Double
-    get() = operator.leftTriggerAxis - operator.rightTriggerAxis
+  val resetGyro = Trigger { driver.startButton && driver.selectButton }
 
+  // what
   val wristVertical: Boolean
     get() = operator.leftShoulderButton
 
@@ -32,33 +34,38 @@ object ControlBoard {
   val enableVisionAlignment: Boolean
     get() = driver.aButton
 
-  val startShooter: Boolean
-    get() = operator.xButton
-
-  val stopShooter: Boolean
-    get() = operator.yButton
-
-  val climberUp: Boolean
-    get() = driver.dPadUp
-
-  val climberDown: Boolean
-    get() = driver.dPadDown
-
   val runIntakeIn = Trigger { operator.aButton }
+  val putIntakeUp = Trigger { operator.bButton }
+  val runIntakeOut = Trigger { operator.xButton }
 
-  val runIntakeOut = Trigger { operator.bButton }
+  // val runFeederIn = Trigger { operator.yButton }
+  val runFeederIn = Trigger { operator.dPadUp }
+  val runFeederOut = Trigger { operator.dPadDown }
 
-  val slowMode: Boolean
-    get() = driver.dPadDown
+  val shoot = Trigger { operator.yButton }
+  // val shoot = Trigger { technician.yButton }
+  val nearSpin = Trigger { operator.rightShoulderButton }
+  val farSpin = Trigger { operator.leftShoulderButton }
+  val visionButton = Trigger { driver.aButton }
 
-  val runFeederIn = Trigger { operator.dPadDown }
-  val runFeederOut = Trigger { operator.dPadUp }
-  val shoot = Trigger { operator.xButton }
+  val prepareClimb = Trigger { operator.startButton }
+  val unjam = Trigger { operator.selectButton }
 
-  val stopShooting = Trigger { operator.yButton }
+  val climbPower: Double
+    get() = operator.rightTriggerAxis - operator.leftTriggerAxis
 
-  val spinUpShooter = Trigger { operator.dPadRight }
+  val moveClimber = Trigger { !climbPower.around(0.0, 0.1) }
+  // val climberHigh = Trigger { operator.dPadRight }
+  // val climberLow = Trigger { operator.dPadLeft }
+  val lockClimber = Trigger { technician.dPadRight }
+  val unlockClimber = Trigger { technician.dPadLeft }
 
-  val climberHigh = Trigger { driver.dPadUp }
-  val climberLow = Trigger { driver.dPadDown }
+  val spoolLeftClimber = Trigger { technician.leftShoulderButton }
+  val spoolRightClimber = Trigger { technician.rightShoulderButton }
+
+  // Infinite Recharge @ Home
+  //  val nearSpin = Trigger { operator.aButton }
+  //  val lineSpin = Trigger { operator.bButton }
+  //  val midSpin = Trigger { operator.yButton }
+  //  val farSpin = Trigger { operator.xButton }
 }

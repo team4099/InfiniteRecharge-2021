@@ -5,17 +5,21 @@ import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.inInches
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.derived.degrees
+import com.team4099.lib.units.derived.inDegrees
 import com.team4099.lib.units.derived.tan
 import com.team4099.robot2021.config.Constants
+import edu.wpi.first.wpilibj.controller.ProfiledPIDController
+import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.photonvision.PhotonCamera
+import org.photonvision.PhotonTrackedTarget
 
 object Vision : SubsystemBase() {
   // for up close
-  private val closeCamera: PhotonCamera = PhotonCamera("gloworm")
+  private val closeCamera: PhotonCamera = PhotonCamera("gloworm-near")
   private val closeCameraResult
     get() = closeCamera.getLatestResult()
-  private val target
+  private val target: PhotonTrackedTarget?
     get() = closeCameraResult.bestTarget
 
   // tv
@@ -24,31 +28,31 @@ object Vision : SubsystemBase() {
   // tx
   // negative: target on left of screen
   var closeYaw = 0.0.degrees
-    get() = target.yaw.degrees
+    get() = target?.yaw?.degrees ?: 0.0.degrees
   // ty
   // negative: target on bottom of screen
   var closePitch = 0.0.degrees
-    get() = target.pitch.degrees
+    get() = target?.pitch?.degrees ?: 0.0.degrees
   // ta
   // area is 0-100%
   var closeArea = 0.0
-    get() = target.area
+    get() = target?.area ?: 0.0
 
   // from farther away
-  private val farCamera: PhotonCamera = PhotonCamera("")
+  private val farCamera: PhotonCamera = PhotonCamera("gloworm-far")
   private val farCameraResult
     get() = farCamera.getLatestResult()
-  private val farTarget
+  private val farTarget: PhotonTrackedTarget?
     get() = farCameraResult.bestTarget
 
   var hasFarTargets = false
     get() = farCamera.hasTargets()
   var farYaw = 0.0.degrees
-    get() = farTarget.yaw.degrees
+    get() = farTarget?.yaw?.degrees ?: 0.0.degrees
   var farPitch = 0.0.degrees
-    get() = farTarget.pitch.degrees
+    get() = farTarget?.pitch?.degrees ?: 0.0.degrees
   var farArea = 0.0
-    get() = farTarget.area
+    get() = farTarget?.area ?: 0.0
 
   enum class DistanceState {
     LINE,
@@ -57,21 +61,60 @@ object Vision : SubsystemBase() {
     FAR
   }
 
+  val visionPIDcontroller =
+      ProfiledPIDController(
+          Constants.Vision.TurnGains.KP,
+          Constants.Vision.TurnGains.KI,
+          Constants.Vision.TurnGains.KD,
+          TrapezoidProfile.Constraints(
+              Constants.Vision.TurnGains.MAX_VELOCITY.value,
+              Constants.Vision.TurnGains.MAX_ACCEL.value))
+
   init {
     Logger.addSource("Vision", "Pipeline") { pipeline }
-    Logger.addSource("Vision", "Distance (inches)") { distance }
+    Logger.addSource("Vision", "Distance (inches)") { distance.inInches }
+    Logger.addSource("Vision", "Steering Adjust") { steeringAdjust }
+    Logger.addSource("Vision", "Yaw to use") { yawToUse.inDegrees }
+
+    Logger.addSource(
+        "Vision",
+        "Vision Aim kP",
+        { Constants.Vision.TurnGains.KP },
+        { newP -> visionPIDcontroller.p = newP },
+        false)
+
+    Logger.addSource(
+        "Vision",
+        "Vision Aim kI",
+        { Constants.Vision.TurnGains.KI },
+        { newI -> visionPIDcontroller.i = newI },
+        false)
+
+    Logger.addSource(
+        "Vision",
+        "Vision Aim kD",
+        { Constants.Vision.TurnGains.KD },
+        { newD -> visionPIDcontroller.d = newD },
+        false)
+
+    //    Logger.addSource("Vision", "Vision Camera Found") { if farCamera. }
   }
 
   var yawToUse = 0.0.degrees
     get() =
         when {
-          hasCloseTargets && hasFarTargets -> {
-            if (closeArea > farArea) closeYaw else farYaw
-          }
-          hasCloseTargets && !hasFarTargets -> closeYaw
-          !hasCloseTargets && hasFarTargets -> farYaw
+          hasFarTargets -> farYaw
           else -> Constants.Vision.MAX_ANGLE_ERROR
         }
+  //    get() =
+  //        when {
+  //          hasCloseTargets && hasFarTargets -> {
+  //            if (closeArea > farArea) closeYaw else farYaw
+  //          }
+  //          hasCloseTargets && !hasFarTargets -> closeYaw
+  //          !hasCloseTargets && hasFarTargets -> farYaw
+  //          else -> Constants.Vision.MAX_ANGLE_ERROR
+  //        }
   var onTarget = false
     get() = yawToUse.absoluteValue < Constants.Vision.MAX_ANGLE_ERROR
   var steeringAdjust = 0.0

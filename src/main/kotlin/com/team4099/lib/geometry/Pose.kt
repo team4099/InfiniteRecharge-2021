@@ -33,11 +33,11 @@ data class Pose(val x: Length, val y: Length, val theta: Angle) {
   }
 
   operator fun times(scalar: Double): Pose {
-    return Pose(translation * scalar, theta)
+    return Pose(translation * scalar, theta * scalar)
   }
 
   operator fun div(scalar: Double): Pose {
-    return Pose(translation / scalar, theta)
+    return Pose(translation / scalar, theta / scalar)
   }
 
   operator fun unaryMinus(): Pose {
@@ -61,4 +61,17 @@ data class Pose(val x: Length, val y: Length, val theta: Angle) {
         pose2d.transformBy(
             Transform2d(Translation2d(x.inMeters, y.inMeters), Rotation2d(theta.inRadians))))
   }
+}
+
+/**
+ * Linearly interpolate between two values.
+ *
+ * @param a The first value to interpolate between.
+ * @param b The second value to interpolate between.
+ * @param x The scalar that determines where the returned value falls between [a] and [b]. Limited
+ * to between 0 and 1 inclusive.
+ * @return A value between [a] and [b] determined by [x].
+ */
+fun interpolate(a: Pose, b: Pose, x: Double): Pose {
+  return a + (b - a) * x
 }

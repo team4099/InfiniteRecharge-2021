@@ -1,7 +1,6 @@
 package com.team4099.robot2021.subsystems
 
 import com.ctre.phoenix.sensors.CANCoder
-import com.ctre.phoenix.sensors.SensorInitializationStrategy
 import com.revrobotics.CANPIDController
 import com.revrobotics.CANSparkMax
 import com.revrobotics.ControlType
@@ -13,6 +12,7 @@ import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.Timescale
 import com.team4099.lib.units.base.Length
 import com.team4099.lib.units.base.feet
+import com.team4099.lib.units.base.inFeet
 import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.Angle
@@ -38,7 +38,7 @@ class Wheel(
   private val driveSpark: CANSparkMax,
   private val encoder: CANCoder,
   private val zeroOffset: Angle,
-  private val label: String
+  val label: String
 ) {
 
   private val directionPID = directionSpark.pidController
@@ -94,6 +94,9 @@ class Wheel(
   val driveVelocity: LinearVelocity
     get() = driveSensor.velocity
 
+  val directionPosition: Angle
+    get() = directionSensor.position
+
   private var speedSetPoint: LinearVelocity = 0.feet.perSecond
   private var accelerationSetPoint: LinearAcceleration = 0.feet.perSecond.perSecond
 
@@ -137,6 +140,9 @@ class Wheel(
 
     Logger.addSource("$label Drivetrain", "Drive SetPoint") { speedSetPoint.inFeetPerSecond }
     Logger.addSource("$label Drivetrain", "Direction SetPoint") { directionSetPoint.inDegrees }
+
+    Logger.addSource("$label Drivetrain", "Drive Position") { driveSensor.position.inFeet }
+    Logger.addSource("$label Drivetrain", "Direction Position") { directionPosition.inDegrees }
 
     Logger.addSource(
         "Drivetrain Tuning",
@@ -231,17 +237,20 @@ class Wheel(
   }
 
   fun resetModuleZero() {
-    encoder.configFactoryDefault()
-    encoder.configMagnetOffset(0.0)
-    encoder.configMagnetOffset(
-        -encoder.absolutePosition - zeroOffset.inDegrees - encoder.configGetMagnetOffset())
-    encoder.setPositionToAbsolute()
-    encoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition)
+    //    encoder.configFactoryDefault()
+    //    encoder.configMagnetOffset(0.0)
+    //    Logger.addEvent("Drivetrain", "Configuring Zero for Module $label")
+    //    encoder.configMagnetOffset(
+    //        -encoder.absolutePosition - zeroOffset.inDegrees - encoder.configGetMagnetOffset())
+    //    encoder.setPositionToAbsolute()
+    //
+    // encoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition)
   }
 
   fun zeroDirection() {
     directionSpark.encoder.position =
         directionSensor.positionToRawUnits(encoder.absolutePosition.degrees + zeroOffset)
+    Logger.addEvent("Drivetrain", "Loading Zero for Module $label (${encoder.absolutePosition})")
   }
 
   fun zeroDrive() {
