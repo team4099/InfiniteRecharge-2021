@@ -16,7 +16,7 @@ class ThreeBallMode : SequentialCommandGroup() {
     addCommands(
         AutoDriveCommand(PathStore.toPowerPort),
         WaitCommand(0.5),
-        VisionCommand(),
+        // VisionCommand(),
         ShootAllCommand())
   }
 }
