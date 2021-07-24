@@ -247,7 +247,7 @@ object Constants {
 
   object RobotPositions {
     val START_X = 108.9135.inches // TODO: Determine if accurate
-    val START_Y = 2.363.meters // TODO: Determine if this is accurate and will make bot aligned
+    val START_Y = 94.655.inches // TODO: Determine if this is accurate and will make bot aligned
     val START_ANGLE = 180.degrees
 
     val CROSS_BAR_X = 5.0.meters
