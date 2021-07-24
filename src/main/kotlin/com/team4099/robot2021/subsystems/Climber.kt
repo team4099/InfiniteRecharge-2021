@@ -112,19 +112,20 @@ object Climber : SubsystemBase() {
   }
 
   fun setOpenLoopPower(leftPower: Double, rightPower: Double, safetyEnabled: Boolean = true) {
+    Logger.addEvent("Climber", "Left power: $leftPower Right power: $rightPower")
     if (safetyEnabled &&
-        ((climberLArmSensor.position.inInches < Constants.Climber.BOTTOM_SAFETY_THRESHOLD.value &&
+        ((climberLArmSensor.position < Constants.Climber.BOTTOM_SAFETY_THRESHOLD &&
             leftPower < 0.0) ||
-            (climberLArmSensor.position.inInches > Constants.Climber.TOP_SAFETY_THRESHOLD.value &&
+            (climberLArmSensor.position > Constants.Climber.TOP_SAFETY_THRESHOLD &&
                 leftPower > 0.0))) {
       climberLArm.set(0.0)
     } else {
       climberLArm.set(leftPower)
     }
     if (safetyEnabled &&
-        ((climberRArmSensor.position.inInches < Constants.Climber.BOTTOM_SAFETY_THRESHOLD.value &&
+        ((climberRArmSensor.position < Constants.Climber.BOTTOM_SAFETY_THRESHOLD &&
             rightPower < 0.0) ||
-            (climberRArmSensor.position.inInches > Constants.Climber.TOP_SAFETY_THRESHOLD.value &&
+            (climberRArmSensor.position > Constants.Climber.TOP_SAFETY_THRESHOLD &&
                 rightPower > 0.0))) {
       climberRArm.set(0.0)
     } else {

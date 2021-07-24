@@ -103,13 +103,18 @@ object Vision : SubsystemBase() {
   var yawToUse = 0.0.degrees
     get() =
         when {
-          hasCloseTargets && hasFarTargets -> {
-            if (closeArea > farArea) closeYaw else farYaw
-          }
-          hasCloseTargets && !hasFarTargets -> closeYaw
-          !hasCloseTargets && hasFarTargets -> farYaw
+          hasFarTargets -> farYaw
           else -> Constants.Vision.MAX_ANGLE_ERROR
         }
+  //    get() =
+  //        when {
+  //          hasCloseTargets && hasFarTargets -> {
+  //            if (closeArea > farArea) closeYaw else farYaw
+  //          }
+  //          hasCloseTargets && !hasFarTargets -> closeYaw
+  //          !hasCloseTargets && hasFarTargets -> farYaw
+  //          else -> Constants.Vision.MAX_ANGLE_ERROR
+  //        }
   var onTarget = false
     get() = yawToUse.absoluteValue < Constants.Vision.MAX_ANGLE_ERROR
   var steeringAdjust = 0.0

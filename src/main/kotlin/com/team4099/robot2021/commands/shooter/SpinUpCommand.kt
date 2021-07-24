@@ -38,8 +38,8 @@ class SpinUpCommand(
             }
         Shooter.hoodState =
             when (distance) {
-              Vision.DistanceState.LINE -> Shooter.HoodPosition.EXTENDED
               Vision.DistanceState.NEAR -> Shooter.HoodPosition.RETRACTED
+              Vision.DistanceState.LINE -> Shooter.HoodPosition.EXTENDED
               Vision.DistanceState.MID -> Shooter.HoodPosition.EXTENDED
               Vision.DistanceState.FAR -> Shooter.HoodPosition.EXTENDED
             }

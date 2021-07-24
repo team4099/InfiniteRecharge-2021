@@ -2,6 +2,7 @@ package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
+import com.team4099.robot2021.auto.modes2021.EnemyTrenchMode
 import com.team4099.robot2021.commands.climber.LockClimberCommand
 import com.team4099.robot2021.commands.climber.OpenLoopClimbCommand
 import com.team4099.robot2021.commands.climber.SpoolLeftClimberCommand
@@ -58,7 +59,7 @@ object Robot : TimedRobot() {
     Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
 
     ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_ALL))
-    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))
+    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD_ALL))
 
     Intake.defaultCommand = IntakeIdleCommand()
     // IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.OUT)
@@ -88,9 +89,7 @@ object Robot : TimedRobot() {
     ControlBoard.moveClimber
         .whileActiveOnce(
             PrepareClimbCommand().andThen(
-                UnlockClimberCommand().andThen(OpenLoopClimbCommand({ ControlBoard.climbPower }))
-            )
-        )
+                UnlockClimberCommand().andThen(OpenLoopClimbCommand({ ControlBoard.climbPower }))))
 
     // Closed Loop Climber
     // ControlBoard.climberHigh
@@ -148,9 +147,14 @@ object Robot : TimedRobot() {
   // PathStore.driveBackwards)
 
   // private val autonomousCommand = EightBallMode()
+
   // private val autonomousCommand = AvoidBarCircularMode()
-  // private val autonomousCommand = EnemyTrenchMode()
-  private val autonomousCommand = ShootAllCommand()
+
+  //COMPETITION 2021
+  //PREFERABLE AUTO MODE (NOT TESTED THOROUGHLY)
+  private val autonomousCommand = EnemyTrenchMode()
+  //SAFE AUTO MODE
+
 
   override fun autonomousInit() {
     Drivetrain.zeroSensors()

@@ -67,11 +67,20 @@ object Shooter : SubsystemBase() {
     Logger.addSource(Constants.Shooter.TAB, "Shooter Motor Stator Current") {
       shooterMotor.statorCurrent
     }
-    Logger.addSource(Constants.Shooter.TAB, "Shooter Motor Supply Current") {
+    Logger.addSource(Constants.Shooter.TAB, "Shooter Motor Primary Supply Current") {
       shooterMotor.supplyCurrent
+    }
+    Logger.addSource(Constants.Shooter.TAB, "Shooter Motor Follower Supply Current") {
+      shooterFollower.supplyCurrent
     }
     Logger.addSource(Constants.Shooter.TAB, "Shooter Motor Voltage") {
       shooterMotor.motorOutputVoltage
+    }
+    Logger.addSource(Constants.Shooter.TAB, "Shooter Motor Primary Bus Voltage") {
+      shooterMotor.busVoltage
+    }
+    Logger.addSource(Constants.Shooter.TAB, "Shooter Motor Follower Bus Voltage") {
+      shooterFollower.busVoltage
     }
 
     Logger.addSource(

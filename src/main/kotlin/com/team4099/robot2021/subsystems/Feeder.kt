@@ -15,7 +15,7 @@ object Feeder : SubsystemBase() {
   enum class FeederState(val floorMotorPower: Double, val verticalMotorPower: Double) {
     FORWARD_ALL(Constants.Feeder.FEEDER_POWER, +Constants.Feeder.FEEDER_POWER),
     FORWARD_FLOOR(Constants.Feeder.FEEDER_POWER, 0.0),
-    BACKWARD(-Constants.Feeder.FEEDER_POWER, -Constants.Feeder.FEEDER_POWER),
+    BACKWARD_ALL(-Constants.Feeder.FEEDER_POWER, -Constants.Feeder.FEEDER_POWER),
     BACKWARD_VERTICAL(0.0, -Constants.Feeder.FEEDER_POWER),
     NEUTRAL(0.0, 0.0),
     SHOOT(Constants.Feeder.FEEDER_POWER, +Constants.Feeder.FAST_FEEDER_POWER)

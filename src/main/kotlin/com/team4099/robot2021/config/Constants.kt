@@ -147,8 +147,8 @@ object Constants {
 
     enum class IntakeState(val speed: Double) {
       IDLE(0.0),
-      IN(0.1),
-      OUT(-0.1)
+      IN(1.0),
+      OUT(-1.0)
     }
 
     enum class ArmPosition(val position: DoubleSolenoid.Value?) {
@@ -169,14 +169,14 @@ object Constants {
     const val SHOOTER_KS = 0.939 // * 2
     const val SHOOTER_KV = 0.1 // 0.114 // * 2
 
-    const val SHOOTER_KP = 0.65
+    const val SHOOTER_KP = 0.5 // 0.65
     const val SHOOTER_KI = 0.0
     const val SHOOTER_KD = 0.0
 
     val NEAR_VELOCITY = 1700.0.rotations.perMinute
     val LINE_VELOCITY = 2750.0.rotations.perMinute
     val MID_VELOCITY = 2800.0.rotations.perMinute
-    val FAR_VELOCITY = 3450.0.rotations.perMinute
+    val FAR_VELOCITY = 4000.0.rotations.perMinute
     // TODO: Determine velocity needed to shoot from front of trench
 
     val LINE_DISTANCE = 100.0.inches
@@ -222,7 +222,7 @@ object Constants {
   object Climber {
     val R_ARM_ID = 62
     val L_ARM_ID = 61
-    val CLIMBER_SENSOR_LINEARMECH_GEARRATIO = 8.4
+    val CLIMBER_SENSOR_LINEARMECH_GEARRATIO = 1 / 8.4
     val CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER = 1.inches // diameter: .0508 meters = 2 in
     val CLIMBER_SOLENOID_ID = 5
     val CLIMBER_P = 0.1
@@ -232,8 +232,8 @@ object Constants {
     val CLIMBER_SPARKMAX_ACC = 0.5.meters.perSecond.perSecond
     val BRAKE_RELEASE_TIMEOUT = 0.3.seconds
 
-    val BOTTOM_SAFETY_THRESHOLD = 3.inches
-    val TOP_SAFETY_THRESHOLD = 28.inches // TODO: Determine good length
+    val BOTTOM_SAFETY_THRESHOLD = 0.inches
+    val TOP_SAFETY_THRESHOLD = 34.inches
 
     const val POSITION_P = 1.0 / 50.0
 

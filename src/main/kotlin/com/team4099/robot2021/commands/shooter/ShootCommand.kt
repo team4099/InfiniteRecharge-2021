@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase
 
 class ShootCommand : CommandBase() {
   init {
-    addRequirements(Shooter)
     addRequirements(Feeder)
   }
 
