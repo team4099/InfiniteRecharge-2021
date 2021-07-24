@@ -1,6 +1,5 @@
 package com.team4099.robot2021.commands.climber
 
-import com.team4099.lib.hal.Clock
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.units.base.inInches
 import com.team4099.robot2021.config.Constants
@@ -25,8 +24,8 @@ class OpenLoopClimbCommand(private val power: () -> Double) : CommandBase() {
   override fun execute() {
     if (!Climber.brakeApplied && DriverStation.getInstance().matchTime < 30) {
       val powerDifference =
-        (Climber.climberLArmSensor.position - Climber.climberRArmSensor.position).inInches *
-          Constants.Climber.POSITION_P
+          (Climber.climberLArmSensor.position - Climber.climberRArmSensor.position).inInches *
+              Constants.Climber.POSITION_P
       Climber.setOpenLoopPower(power() - powerDifference, power() + powerDifference)
     }
   }
