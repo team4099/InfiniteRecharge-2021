@@ -13,7 +13,7 @@ class IntakeBallsCommand : CommandBase() {
   override fun initialize() {
     Intake.intakeState = Constants.Intake.IntakeState.IN
     Intake.armState = Constants.Intake.ArmPosition.OUT
-    Logger.addEvent("Intake", "Intake State: ${Intake.intakeState} Arm State: ${Intake.armState}")
+    Logger.addEvent("Intake", "Intake balls")
   }
   override fun execute() {}
   override fun isFinished(): Boolean {

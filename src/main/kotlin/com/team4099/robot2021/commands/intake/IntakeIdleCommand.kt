@@ -12,7 +12,7 @@ class IntakeIdleCommand : CommandBase() {
 
   override fun initialize() {
     Intake.intakeState = Constants.Intake.IntakeState.IDLE
-    Logger.addEvent("Intake", "Intake State: ${Intake.intakeState} Arm State: ${Intake.armState}")
+    Logger.addEvent("Intake", "Intake idle")
   }
   override fun execute() {}
   override fun isFinished(): Boolean {

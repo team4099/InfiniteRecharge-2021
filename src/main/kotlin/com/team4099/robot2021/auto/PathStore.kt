@@ -193,6 +193,12 @@ object PathStore {
           0.0.meters.perSecond,
           trajectoryConfig)
 
+  val toPowerPort: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(initShootPowerPort, bestShotPose),
+          0.0.meters.perSecond,
+          trajectoryConfig)
   // Infinite Recharge @ Home
 
   private val navPoints =

@@ -17,7 +17,6 @@ import com.team4099.robot2021.commands.intake.IntakeIdleCommand
 import com.team4099.robot2021.commands.intake.LiftIntakeCommand
 import com.team4099.robot2021.commands.intake.PrepareClimbCommand
 import com.team4099.robot2021.commands.intake.ReverseIntakeCommand
-import com.team4099.robot2021.commands.shooter.ShootAllCommand
 import com.team4099.robot2021.commands.shooter.ShootCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.shooter.SpinUpCommand
@@ -150,11 +149,10 @@ object Robot : TimedRobot() {
 
   // private val autonomousCommand = AvoidBarCircularMode()
 
-  //COMPETITION 2021
-  //PREFERABLE AUTO MODE (NOT TESTED THOROUGHLY)
+  // COMPETITION 2021
+  // PREFERABLE AUTO MODE (NOT TESTED THOROUGHLY)
   private val autonomousCommand = EnemyTrenchMode()
-  //SAFE AUTO MODE
-
+  // SAFE AUTO MODE
 
   override fun autonomousInit() {
     Drivetrain.zeroSensors()

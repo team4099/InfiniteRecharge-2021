@@ -15,7 +15,7 @@ class PrepareClimbCommand : CommandBase() {
     Intake.intakeState = Constants.Intake.IntakeState.IDLE
     Intake.armState = Constants.Intake.ArmPosition.IN
     Shooter.hoodState = Shooter.HoodPosition.RETRACTED
-    Logger.addEvent("Intake", "Intake State: ${Intake.intakeState} Arm State: ${Intake.armState}")
+    Logger.addEvent("Intake", "Intake lifted and idle")
     Logger.addEvent("Shooter", "Hood Retracted")
   }
   override fun execute() {}
