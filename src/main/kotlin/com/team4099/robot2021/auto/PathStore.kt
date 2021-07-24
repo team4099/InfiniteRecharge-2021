@@ -137,7 +137,10 @@ object PathStore {
           Constants.RobotPositions.AVOID_BAR_ANGLE)
   private val initEnemyTrench = Pose(131.5.inches, 297.5.inches, 180.degrees)
   private val enemyTrench = Pose(230.537.inches, 297.5.inches, 180.degrees)
-  private val bestShotPose = Pose(30.250.inches, 94.655.inches, 180.degrees)
+  // on apex of triangle
+  // private val bestShotPose = Pose(30.250.inches, 94.655.inches, 180.degrees)
+  // estimated against wall
+  private val bestShotPose = Pose(20.inches, 94.655.inches, 180.degrees)
 
   val crossBar: Trajectory =
       Trajectory(
