@@ -231,7 +231,7 @@ object Constants {
   }
 
   object LED {
-    const val PORT = 0 // PWM Port
+    const val PORT = 0 // PWM Port (could be Arduino)
     const val LED_COUNT = 50 // TODO: Determine total amount of LED
     const val STATUS_LENGTH = 0 // TODO: Determine length for health
 
