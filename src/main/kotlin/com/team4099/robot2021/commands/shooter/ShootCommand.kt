@@ -4,11 +4,11 @@ import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Feeder
 import com.team4099.robot2021.subsystems.Shooter
+import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj2.command.CommandBase
 
 class ShootCommand : CommandBase() {
   init {
-    addRequirements(Shooter)
     addRequirements(Feeder)
   }
 
@@ -16,20 +16,20 @@ class ShootCommand : CommandBase() {
 
   override fun initialize() {
     // make distance not private if we want to use a different number for the threshold
-    Shooter.hoodState = Shooter.HoodPosition.EXTENDED
-    //        when (Vision.currentDistance) {
-    //          Vision.DistanceState.LINE -> Shooter.HoodPosition.RETRACTED
-    //          Vision.DistanceState.NEAR -> Shooter.HoodPosition.RETRACTED
-    //          else -> Shooter.HoodPosition.EXTENDED
-    //        }
+    //        Shooter.hoodState = Shooter.HoodPosition.EXTENDED
+    when (Vision.currentDistance) {
+      Vision.DistanceState.LINE -> Shooter.HoodPosition.RETRACTED
+      Vision.DistanceState.NEAR -> Shooter.HoodPosition.RETRACTED
+      else -> Shooter.HoodPosition.EXTENDED
+    }
 
-    Shooter.targetVelocity = Constants.Shooter.POWER_CELL_CHALLENGE_RPM
-    //        when (Vision.currentDistance) {
-    //          Vision.DistanceState.LINE -> Constants.Shooter.LINE_VELOCITY
-    //          Vision.DistanceState.NEAR -> Constants.Shooter.NEAR_VELOCITY
-    //          Vision.DistanceState.MID -> Constants.Shooter.MID_VELOCITY
-    //          Vision.DistanceState.FAR -> Constants.Shooter.FAR_VELOCITY
-    //        }
+    //    Shooter.targetVelocity = Constants.Shooter.POWER_CELL_CHALLENGE_RPM
+    //    when (Vision.currentDistance) {
+    //      Vision.DistanceState.LINE -> Constants.Shooter.LINE_VELOCITY
+    //      Vision.DistanceState.NEAR -> Constants.Shooter.NEAR_VELOCITY
+    //      Vision.DistanceState.MID -> Constants.Shooter.MID_VELOCITY
+    //      Vision.DistanceState.FAR -> Constants.Shooter.FAR_VELOCITY
+    //    }
 
     shooterReady = false
     Logger.addEvent("ShootCommand", "Started shoot command")

@@ -1,7 +1,7 @@
 package com.team4099.robot2021.subsystems
 
-import com.ctre.phoenix.motorcontrol.ControlMode
-import com.ctre.phoenix.motorcontrol.can.TalonSRX
+import com.revrobotics.CANSparkMax
+import com.revrobotics.CANSparkMaxLowLevel
 import com.team4099.lib.logging.Logger
 import com.team4099.robot2021.commands.led.LEDCommand
 import com.team4099.robot2021.config.Constants
@@ -14,18 +14,21 @@ object Feeder : SubsystemBase() {
 
   /** An enum representing the state of the feeder floorMotor power, verticalMotor power */
   enum class FeederState(val floorMotorPower: Double, val verticalMotorPower: Double) {
-    FORWARD_ALL(Constants.Feeder.FEEDER_POWER, -Constants.Feeder.FEEDER_POWER),
+    FORWARD_ALL(Constants.Feeder.FEEDER_POWER, +Constants.Feeder.FEEDER_POWER),
     FORWARD_FLOOR(Constants.Feeder.FEEDER_POWER, 0.0),
-    BACKWARD(-Constants.Feeder.FEEDER_POWER, +Constants.Feeder.FEEDER_POWER),
+    BACKWARD_ALL(-Constants.Feeder.FEEDER_POWER, -Constants.Feeder.FEEDER_POWER),
+    BACKWARD_VERTICAL(0.0, -Constants.Feeder.FEEDER_POWER),
     NEUTRAL(0.0, 0.0),
-    SHOOT(Constants.Feeder.FEEDER_POWER, -Constants.Feeder.FAST_FEEDER_POWER)
+    SHOOT(Constants.Feeder.FEEDER_POWER, +Constants.Feeder.FAST_FEEDER_POWER)
   }
 
   // The motor for the floor of the feeder (the spinny wheel at the bottom)
-  private val floorMotor = TalonSRX(Constants.Feeder.FLOOR_ID)
+  private val floorMotor =
+      CANSparkMax(Constants.Feeder.FLOOR_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
 
   // The motor for vertical part of the feeder (the poly cord)
-  private val verticalMotor = TalonSRX(Constants.Feeder.VERTICAL_ID)
+  private val verticalMotor =
+      CANSparkMax(Constants.Feeder.VERTICAL_ID, CANSparkMaxLowLevel.MotorType.kBrushless)
 
   // The DIO pin state of the top Beam Break
   private val topBeamDIO = DigitalInput(Constants.Feeder.TOP_DIO_PIN)
@@ -50,8 +53,8 @@ object Feeder : SubsystemBase() {
   var feederState = FeederState.NEUTRAL
     set(value) {
       field = value
-      floorMotor.set(ControlMode.PercentOutput, feederState.floorMotorPower)
-      verticalMotor.set(ControlMode.PercentOutput, feederState.verticalMotorPower)
+      floorMotor.set(feederState.floorMotorPower)
+      verticalMotor.set(feederState.verticalMotorPower)
     }
 
   var ballCount: Int = 0
@@ -59,13 +62,13 @@ object Feeder : SubsystemBase() {
   private var topLastStage: Boolean = topBeamBroken
   override fun periodic() {
     if (bottomLastStage != bottomBeamBroken && !bottomBeamBroken) {
-      if (floorMotor.motorOutputPercent > 0) {
+      if (floorMotor.appliedOutput > 0) {
         ballCount++
-      } else if (floorMotor.motorOutputPercent < 0) {
+      } else if (floorMotor.appliedOutput < 0) {
         ballCount--
       }
     }
-    if (topLastStage != topBeamBroken && !topBeamBroken && verticalMotor.motorOutputPercent > 0) {
+    if (topLastStage != topBeamBroken && !topBeamBroken && verticalMotor.appliedOutput > 0) {
       ballCount--
     }
     when {
@@ -86,44 +89,56 @@ object Feeder : SubsystemBase() {
   init {
     Logger.addSource(Constants.Feeder.TAB, "Feeder State") { feederState.toString() }
 
-    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Power") {
-      floorMotor.motorOutputPercent
-    }
-    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Stator Current") {
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Power") { floorMotor.appliedOutput }
+    /*Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Stator Current") {
       floorMotor.statorCurrent
-    }
+    }*/
     Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Supply Current") {
-      floorMotor.supplyCurrent
+      floorMotor.outputCurrent
     }
-    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Voltage") {
-      floorMotor.motorOutputVoltage
-    }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Floor Motor Voltage") { floorMotor.busVoltage }
 
     Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Power") {
-      verticalMotor.motorOutputPercent
+      verticalMotor.appliedOutput
     }
-    Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Stator Current") {
+    /*Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Stator Current") {
       verticalMotor.statorCurrent
-    }
+    }*/
     Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Supply Current") {
-      verticalMotor.supplyCurrent
+      verticalMotor.outputCurrent
     }
     Logger.addSource(Constants.Feeder.TAB, "Feeder Vertical Motor Voltage") {
-      verticalMotor.motorOutputVoltage
+      verticalMotor.busVoltage
     }
 
     Logger.addSource(Constants.Feeder.TAB, "Feeder Top Beam DIO Broken") { topBeamBroken }
     Logger.addSource(Constants.Feeder.TAB, "Feeder Bottom Beam DIO Broken") { bottomBeamBroken }
 
-    floorMotor.configFactoryDefault()
-    verticalMotor.configFactoryDefault()
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Beam Broken forwards time") {
+      Constants.Feeder.BEAM_BREAK_BROKEN_TIME
+    }
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Beam Broken backwards time") {
+      Constants.Feeder.BEAM_BREAK_BACKWARDS_TIME
+    }
 
-    floorMotor.enableVoltageCompensation(true)
-    verticalMotor.enableVoltageCompensation(true)
+    Logger.addSource(Constants.Feeder.TAB, "Feeder Ball Count") { ballCount }
 
-    floorMotor.configContinuousCurrentLimit(FLOOR_CURRENT_LIMIT, 10)
-    floorMotor.enableCurrentLimit(true)
-    verticalMotor.configContinuousCurrentLimit(VERTICAL_CURRENT_LIMIT, 10)
-    verticalMotor.enableCurrentLimit(true)
+    floorMotor.restoreFactoryDefaults()
+    verticalMotor.restoreFactoryDefaults()
+
+    floorMotor.enableVoltageCompensation(10.0)
+    verticalMotor.enableVoltageCompensation(10.0)
+
+    floorMotor.setSmartCurrentLimit(FLOOR_CURRENT_LIMIT)
+    verticalMotor.setSmartCurrentLimit(VERTICAL_CURRENT_LIMIT)
+
+    floorMotor.setIdleMode(CANSparkMax.IdleMode.kCoast)
+    verticalMotor.setIdleMode(CANSparkMax.IdleMode.kCoast)
+
+    floorMotor.inverted = true
+    // verticalMotor.inverted = true
+
+    floorMotor.burnFlash()
+    verticalMotor.burnFlash()
   }
 }

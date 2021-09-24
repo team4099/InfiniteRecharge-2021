@@ -37,6 +37,7 @@ object Constants {
   object Joysticks {
     const val DRIVER_PORT = 0
     const val SHOTGUN_PORT = 1
+    const val TECHNICIAN_PORT = 2
 
     const val THROTTLE_DEADBAND = 0.05
     const val TURN_DEADBAND = 0.05
@@ -123,13 +124,16 @@ object Constants {
   object Feeder {
     const val FLOOR_ID = 41
     const val VERTICAL_ID = 42
-    const val FEEDER_POWER = 0.45
-    const val FAST_FEEDER_POWER = 1.0
+    const val FEEDER_POWER = 1.0 // was 0.45
+    const val FAST_FEEDER_POWER = 0.75 // was 1.0
+    // add one for close and far shot
     const val FLOOR_CURRENT_LIMIT = 15
     const val VERTICAL_CURRENT_LIMIT = 40
 
-    const val TOP_DIO_PIN = 9 // may be swapped with bottom
+    const val TOP_DIO_PIN = 9
     const val BOTTOM_DIO_PIN = 8
+    const val BEAM_BREAK_BROKEN_TIME = 0.05
+    const val BEAM_BREAK_BACKWARDS_TIME = 0.05
     const val TAB = "Feeder"
   }
 
@@ -138,6 +142,8 @@ object Constants {
     const val ARM_SOLENOID_FORWARD = 7
     const val ARM_SOLENOID_REVERSE = 0
     const val TAB = "Intake"
+
+    val RAMP_TIME = 1.0
 
     enum class IntakeState(val speed: Double) {
       IDLE(0.0),
@@ -160,23 +166,26 @@ object Constants {
 
     val VELOCITY_TOLERANCE = 100.rotations.perMinute
 
-    const val SHOOTER_KS = 0.939 * 2
-    const val SHOOTER_KV = 0.114 // * 2
+    const val SHOOTER_KS = 0.939 // * 2
+    const val SHOOTER_KV = 0.1 // 0.114 // * 2
 
-    const val SHOOTER_KP = 0.8
+    const val SHOOTER_KP = 0.5 // 0.65
     const val SHOOTER_KI = 0.0
     const val SHOOTER_KD = 0.0
 
-    val NEAR_VELOCITY = 1500.0.rotations.perMinute
+    val NEAR_VELOCITY = 1700.0.rotations.perMinute
     val LINE_VELOCITY = 2750.0.rotations.perMinute
     val MID_VELOCITY = 2800.0.rotations.perMinute
-    val FAR_VELOCITY = 3450.0.rotations.perMinute
+    val FAR_VELOCITY = 4000.0.rotations.perMinute
+    // TODO: Determine velocity needed to shoot from front of trench
 
     val LINE_DISTANCE = 100.0.inches
     val NEAR_DISTANCE = 130.0.inches
     val MID_DISTANCE = 249.0.inches
 
     val POWER_CELL_CHALLENGE_RPM = 2950.rotations.perMinute
+
+    val UNJAM_RPM = 200.rotations.perMinute
 
     // val HOOD_THRESHOLD = 0.0.inches
 
@@ -211,23 +220,48 @@ object Constants {
   }
 
   object Climber {
-    val CLIMBER_R_ARM_SPARKMAX_ID = 62
-    val CLIMBER_L_ARM_SPARKMAX_ID = 61
-    val CLIMBER_SENSOR_LINEARMECH_GEARRATIO = 8.4
-    val CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER = .0508.meters // diameter: .0508 meters = 2 in
-    val CLIMBER_SOLENOID_ACTUATIONSTATE = 7
+    val R_ARM_ID = 62
+    val L_ARM_ID = 61
+    val CLIMBER_SENSOR_LINEARMECH_GEARRATIO = 1 / 8.4
+    val CLIMBER_SENSOR_LINEARMECH_PULLEYDIAMETER = 1.inches // diameter: .0508 meters = 2 in
+    val CLIMBER_SOLENOID_ID = 5
     val CLIMBER_P = 0.1
     val CLIMBER_I = 0.1
     val CLIMBER_D = 0.1
     val CLIMBER_SPARKMAX_VEL = 0.5.meters.perSecond
     val CLIMBER_SPARKMAX_ACC = 0.5.meters.perSecond.perSecond
-    val BRAKE_RELEASE_TIMEOUT = 0.1.seconds
+    val BRAKE_RELEASE_TIMEOUT = 0.3.seconds
+
+    val BOTTOM_SAFETY_THRESHOLD = 0.inches
+    val TOP_SAFETY_THRESHOLD = 34.inches
+
+    const val POSITION_P = 1.0 / 50.0
+
     const val TAB = "Climber"
   }
 
   enum class ClimberPosition(val length: Length) {
     LOW(0.meters),
     HIGH(1.0414.meters) // Climber fulled extended: 1.0414 meters = 41 in
+  }
+
+  object RobotPositions {
+    val START_X = 108.9135.inches // TODO: Determine if accurate
+    val START_Y = 94.655.inches // TODO: Determine if this is accurate and will make bot aligned
+    val START_ANGLE = 180.degrees
+
+    val CROSS_BAR_X = 5.0.meters
+    val CROSS_BAR_Y = 4.7.meters
+    val CROSS_BAR_ANGLE = 135.degrees // TODO: Find ending angle
+
+    val AVOID_BAR_X = 6.7.meters
+    val AVOID_BAR_Y = 2.0.meters
+    val AVOID_BAR_ANGLE = 180.degrees // TODO: Find ending angle
+  }
+
+  object BallVision {
+    val CENTER_YAW_THRESHOLD = 6.degrees
+    val PATH_A_AREA_THRESHOLD = 0.1
   }
 
   object LED {
@@ -261,10 +295,5 @@ object Constants {
       OTHER(17, 255, 255),
       DEFAULT(36, 255, 255)
     }
-  }
-
-  object BallVision {
-    val CENTER_YAW_THRESHOLD = 6.degrees
-    val PATH_A_AREA_THRESHOLD = 0.1
   }
 }

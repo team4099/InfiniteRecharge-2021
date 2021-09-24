@@ -37,6 +37,8 @@ object PathStore {
           Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL,
           Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)
 
+  // NOTE: Pathweaver y-axis is opposite than ours!
+  // 2020 Season
   private val initLineRendezvous = Pose(3.627.meters, 2.429.meters, 0.0.radians)
   private val initLinePowerPort = Pose(3.627.meters, 2.429.meters, 0.0.radians)
   private val initLineFarTrench = Pose(3.627.meters, 6.824.meters, 0.0.radians)
@@ -45,21 +47,6 @@ object PathStore {
   private val nearTrenchEnd = Pose(7.5.meters, 0.869.meters, 0.0.radians)
   private val farTrench = Pose(5.794.meters, 7.243.meters, 0.0.radians) // what is this
   private val rendezvousPoint2Balls = Pose(5.878.meters, 2.755.meters, 0.0.radians)
-
-  private val navPoints =
-      mapOf(
-          "A" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 2.5.feet) },
-          "B" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 5.feet) },
-          "C" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 7.5.feet) },
-          "D" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 10.feet) },
-          "E" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 12.5.feet) })
-
-  private val reintroductionZone =
-      Pose(navPoints["C"]!![10] + Translation(15.inches, 0.feet), 0.degrees)
-  private val green = Pose(navPoints["C"]!![2] + Translation(15.inches, 0.feet), 0.degrees)
-  private val yellow = Pose(navPoints["C"]!![5] + Translation(15.inches, 0.feet), 0.degrees)
-  private val red = Pose(navPoints["C"]!![8] + Translation(15.inches, 0.feet), 0.degrees)
-  private val blue = Pose(navPoints["C"]!![6] + Translation(15.inches, 0.feet), 0.degrees)
 
   val driveForward =
       Trajectory(
@@ -132,7 +119,105 @@ object PathStore {
           Constants.Drivetrain.SLOW_AUTO_VEL,
           trajectoryConfig)
 
+  // 2021 Season (Shooter is front)
+  private val initShootPowerPort =
+      Pose(
+          Constants.RobotPositions.START_X,
+          Constants.RobotPositions.START_Y,
+          Constants.RobotPositions.START_ANGLE)
+  private val crossBarShoot =
+      Pose(
+          Constants.RobotPositions.CROSS_BAR_X,
+          Constants.RobotPositions.CROSS_BAR_Y,
+          Constants.RobotPositions.CROSS_BAR_ANGLE)
+  private val avoidBarShoot =
+      Pose(
+          Constants.RobotPositions.AVOID_BAR_X,
+          Constants.RobotPositions.AVOID_BAR_Y,
+          Constants.RobotPositions.AVOID_BAR_ANGLE)
+  private val initEnemyTrench = Pose(131.5.inches, 297.5.inches, 180.degrees)
+  private val enemyTrench = Pose(230.537.inches, 297.5.inches, 180.degrees)
+  // on apex of triangle
+  // private val bestShotPose = Pose(30.250.inches, 94.655.inches, 180.degrees)
+  // estimated against wall
+  private val bestShotPose = Pose(20.inches, 94.655.inches, 180.degrees)
+
+  val crossBar: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(initShootPowerPort, crossBarShoot).apply {
+            addWaypoint(Translation(6.9.meters, 2.9.meters), 202.5.degrees)
+            addWaypoint(Translation(6.0.meters, 3.6.meters))
+            addWaypoint(Translation(6.972.meters, 4.0.meters))
+            build()
+          },
+          0.0.meters.perSecond,
+          trajectoryConfig)
+
+  val avoidBarTightAngle: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(initShootPowerPort, avoidBarShoot).apply {
+            addWaypoint(Translation(6.611.meters, 3.237.meters), 202.5.degrees)
+            addWaypoint(Translation(6.029.meters, 3.423.meters))
+            addWaypoint(Translation(6.401.meters, 4.273.meters), 22.5.degrees)
+            addWaypoint(Translation(6.797.meters, 3.83.meters))
+          },
+          0.0.meters.perSecond,
+          trajectoryConfig)
+
+  val avoidBarCircular: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(initShootPowerPort, avoidBarShoot).apply {
+            addWaypoint(
+                Translation(294.524.inches, 113.2.inches),
+                202.5.degrees) // 318.260579.inches, 101.8912455.inches
+            addWaypoint(Translation(252.8608316.inches, 141.3023018.inches))
+            addWaypoint(Translation(254.4389994.inches, 154.5564093.inches), 292.5.degrees)
+            addWaypoint(Translation(264.394.inches, 160.916.inches), 22.5.degrees)
+          },
+          0.0.meters.perSecond,
+          trajectoryConfig)
+
+  val toEnemyTrench: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(initEnemyTrench, enemyTrench),
+          Constants.Drivetrain.SLOW_AUTO_VEL,
+          trajectoryConfig)
+
+  val fromEnemyTrench: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(enemyTrench, bestShotPose).apply {
+            addWaypoint(Translation(bestShotPose.x, enemyTrench.y))
+          },
+          0.0.meters.perSecond,
+          trajectoryConfig)
+
+  val toPowerPort: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(initShootPowerPort, bestShotPose),
+          0.0.meters.perSecond,
+          trajectoryConfig)
   // Infinite Recharge @ Home
+
+  private val navPoints =
+      mapOf(
+          "A" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 2.5.feet) },
+          "B" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 5.feet) },
+          "C" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 7.5.feet) },
+          "D" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 10.feet) },
+          "E" to (0.0.feet..30.0.feet step 2.5.feet).map { x -> Translation(x, 12.5.feet) })
+
+  private val reintroductionZone =
+      Pose(navPoints["C"]!![10] + Translation(15.inches, 0.feet), 0.degrees)
+  private val green = Pose(navPoints["C"]!![2] + Translation(15.inches, 0.feet), 0.degrees)
+  private val yellow = Pose(navPoints["C"]!![5] + Translation(15.inches, 0.feet), 0.degrees)
+  private val red = Pose(navPoints["C"]!![8] + Translation(15.inches, 0.feet), 0.degrees)
+  private val blue = Pose(navPoints["C"]!![6] + Translation(15.inches, 0.feet), 0.degrees)
 
   val galacticSearchARed: Trajectory =
       Trajectory(

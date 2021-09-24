@@ -6,15 +6,22 @@ import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Climber
 import edu.wpi.first.wpilibj2.command.CommandBase
 
-class UnlockClimber : CommandBase() {
+class UnlockClimberCommand : CommandBase() {
   init {
     addRequirements(Climber)
   }
   private var initTime = Clock.fpgaTime
+
   override fun initialize() {
     initTime = Clock.fpgaTime
+    Climber.setOpenLoopPower(0.0, 0.0)
     Climber.brakeApplied = false
-    Logger.addEvent("Climber", "Climber Unlocked")
+  }
+
+  override fun end(interrupted: Boolean) {
+    if (!interrupted) {
+      Logger.addEvent("Climber", "Climber Unlocked")
+    }
   }
 
   override fun isFinished(): Boolean {

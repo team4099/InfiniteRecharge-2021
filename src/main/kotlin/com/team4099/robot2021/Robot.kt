@@ -2,17 +2,32 @@ package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
-import com.team4099.robot2021.auto.PathStore
-import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
+import com.team4099.robot2021.auto.modes2021.ThreeBallMode
+import com.team4099.robot2021.commands.climber.LockClimberCommand
+import com.team4099.robot2021.commands.climber.OpenLoopClimbCommand
+import com.team4099.robot2021.commands.climber.SpoolLeftClimberCommand
+import com.team4099.robot2021.commands.climber.SpoolRightClimberCommand
+import com.team4099.robot2021.commands.climber.UnlockClimberCommand
 import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
+import com.team4099.robot2021.commands.feeder.FeederCommand
+import com.team4099.robot2021.commands.feeder.FeederSerialize
+import com.team4099.robot2021.commands.intake.IntakeBallsCommand
+import com.team4099.robot2021.commands.intake.IntakeIdleCommand
+import com.team4099.robot2021.commands.intake.LiftIntakeCommand
+import com.team4099.robot2021.commands.intake.PrepareClimbCommand
+import com.team4099.robot2021.commands.intake.ReverseIntakeCommand
+import com.team4099.robot2021.commands.shooter.ShootCommand
 import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.shooter.SpinUpCommand
+import com.team4099.robot2021.commands.shooter.UnjamCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
-import com.team4099.robot2021.subsystems.BallVision
+import com.team4099.robot2021.subsystems.Climber
 import com.team4099.robot2021.subsystems.Drivetrain
+import com.team4099.robot2021.subsystems.Feeder
+import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2021.subsystems.Shooter
 import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.DigitalInput
@@ -40,38 +55,65 @@ object Robot : TimedRobot() {
 
     // Link between feeder Trigger and Command
     // Feeder.defaultCommand = FeederSerialize()
-    /*Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
+    Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
+
     ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_ALL))
-    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD))*/
+    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD_ALL))
 
-    /*Intake.defaultCommand =
-        IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN)
+    Intake.defaultCommand = IntakeIdleCommand()
+    // IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.OUT)
     ControlBoard.runIntakeIn
-        //        .whileActiveContinuous(FeederSerialize())
+        // comment feeder with intake when beam breaks aren't working
+        .whileActiveContinuous(FeederSerialize())
         .whileActiveContinuous(
-            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
-                .alongWith(FeederSerialize()))
-
+            // IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+            IntakeBallsCommand())
+    ControlBoard.putIntakeUp
+        .whileActiveContinuous(
+            // IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN)
+            LiftIntakeCommand())
     ControlBoard.runIntakeOut
         .whileActiveContinuous(
-            IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
-        // .alongWith(FeederCommand(Feeder.FeederState.BACKWARD))
-        )*/
+            // IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
+            ReverseIntakeCommand()
+        // .alongWith(FeederCommand(Feeder.FeederState.BACKWARD)
+        )
+    ControlBoard.prepareClimb.toggleWhenActive(PrepareClimbCommand())
 
-    //    Climber.defaultCommand = LockClimber()
-    //    ControlBoard.climberHigh
-    //        .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
-    //    ControlBoard.climberLow
-    //        .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
+    Climber.defaultCommand = LockClimberCommand()
+    ControlBoard.unlockClimber.whileActiveOnce(UnlockClimberCommand())
+    ControlBoard.lockClimber.whileActiveOnce(LockClimberCommand())
+
+    // Open Loop Climb
+    ControlBoard.moveClimber
+        .whileActiveOnce(
+            PrepareClimbCommand().andThen(
+                UnlockClimberCommand().andThen(OpenLoopClimbCommand({ ControlBoard.climbPower }))))
+
+    // Closed Loop Climber
+    // ControlBoard.climberHigh
+    // .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.HIGH)))
+    // ControlBoard.climberLow
+    // .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
+
+    ControlBoard.spoolLeftClimber
+        .whileActiveOnce(UnlockClimberCommand().andThen((SpoolLeftClimberCommand())))
+    ControlBoard.spoolRightClimber
+        .whileActiveOnce(UnlockClimberCommand().andThen((SpoolRightClimberCommand())))
 
     Shooter.defaultCommand = ShooterIdleCommand()
-    //    Shooter.defaultCommand = SpinUpCommand()
     //    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
     //    ControlBoard.shoot.whileActiveOnce(VisionCommand().andThen(ShootCommand()))
-    //    ControlBoard.shoot.whileActiveOnce(ShootCommand())
-    ControlBoard.shoot.whileActiveOnce(VisionCommand())
+    ControlBoard.shoot.whileActiveOnce(ShootCommand())
+    //    ControlBoard.shoot.whileActiveOnce(VisionCommand())
     //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
+    ControlBoard.nearSpin
+        .whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.NEAR))
+    ControlBoard.farSpin.whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.FAR))
+    ControlBoard.unjam.whileActiveContinuous(UnjamCommand())
+
+    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
 
     Drivetrain.defaultCommand =
         OpenLoopDriveCommand(
@@ -79,35 +121,39 @@ object Robot : TimedRobot() {
             { ControlBoard.forward.smoothDeadband(Constants.Joysticks.THROTTLE_DEADBAND) },
             { ControlBoard.turn.smoothDeadband(Constants.Joysticks.TURN_DEADBAND) })
 
-    BallVision
+    // BallVision
 
     ControlBoard.resetGyro.whileActiveOnce(ResetGyroCommand())
 
-    //        ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
-
-    //    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
-
-    ControlBoard.nearSpin
-        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.NEAR))
-    ControlBoard.lineSpin
-        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.LINE))
-    ControlBoard.midSpin
-        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.MID))
-    ControlBoard.farSpin
-        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.FAR))
+    //    ControlBoard.nearSpin
+    //        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.NEAR))
+    //    ControlBoard.lineSpin
+    //        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.LINE))
+    //    ControlBoard.midSpin
+    //        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.MID))
+    //    ControlBoard.farSpin
+    //        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.FAR))
   }
 
   // private val autonomousCommand = GalacticSearch() // ResetZeroCommand()
 
   // private val autonomousCommand = AutoDriveCommand(PathStore.galacticSearchBRed)
   // private val autonomousCommand = AutoNavBounceMode()
-  private val autonomousCommand = AutoDriveCommand(PathStore.barrelPath)
+  // private val autonomousCommand = AutoDriveCommand(PathStore.barrelPath)
 
   // private val autonomousCommand = DriveCharacterizeCommand()
   // private val autonomousCommand = LoopPathCommand(PathStore.driveForward,
   // PathStore.driveBackwards)
 
   // private val autonomousCommand = EightBallMode()
+
+  // private val autonomousCommand = AvoidBarCircularMode()
+
+  // COMPETITION 2021
+  // PREFERABLE AUTO MODE (NOT TESTED THOROUGHLY)
+  // private val autonomousCommand = EnemyTrenchMode()
+  // SAFE AUTO MODE
+  private val autonomousCommand = ThreeBallMode()
 
   override fun autonomousInit() {
     Drivetrain.zeroSensors()
