@@ -296,4 +296,8 @@ object Constants {
       DEFAULT(36, 255, 255)
     }
   }
+
+  object Arduino {
+    const val PORT = 0 // TODO: set port value
+  }
 }

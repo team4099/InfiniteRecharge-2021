@@ -31,6 +31,7 @@ import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2021.subsystems.Shooter
 import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.DigitalInput
+import edu.wpi.first.wpilibj.I2C
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.CommandScheduler
@@ -38,6 +39,7 @@ import kotlin.math.pow
 
 object Robot : TimedRobot() {
   val robotName: Constants.Tuning.RobotName
+  var arduino: I2C = I2C(I2C.Port.kOnboard, Constants.Arduino.PORT)
 
   init {
     val robotId =
@@ -170,6 +172,12 @@ object Robot : TimedRobot() {
   }
 
   override fun robotPeriodic() {
+    val sendData = "This text IS the Data".toByteArray()
+    val receiveData = ByteArray(12) //This tells the RoboRio how many characters to receive
+
+    arduino.transaction(sendData, sendData.size, receiveData, receiveData.size)
+    println("Received: " + String(receiveData, 0, receiveData.size))
+
     CommandScheduler.getInstance().run()
     Logger.saveLogs()
     Logger.updateShuffleboard()
