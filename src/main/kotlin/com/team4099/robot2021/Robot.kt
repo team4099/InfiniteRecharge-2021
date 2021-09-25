@@ -173,7 +173,7 @@ object Robot : TimedRobot() {
 
   override fun robotPeriodic() {
     val sendData = "This text IS the Data".toByteArray()
-    val receiveData = ByteArray(12) //This tells the RoboRio how many characters to receive
+    val receiveData = ByteArray(12) // This tells the RoboRio how many characters to receive
 
     arduino.transaction(sendData, sendData.size, receiveData, receiveData.size)
     println("Received: " + String(receiveData, 0, receiveData.size))
