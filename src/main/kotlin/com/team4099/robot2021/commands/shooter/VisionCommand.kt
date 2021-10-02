@@ -6,6 +6,7 @@ import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.inDegrees
 import com.team4099.lib.units.perSecond
+import com.team4099.robot2021.commands.led.LEDCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Drivetrain
 import com.team4099.robot2021.subsystems.Vision
@@ -68,6 +69,7 @@ class VisionCommand : CommandBase() {
   }
 
   override fun end(interrupted: Boolean) {
+    LEDCommand(Constants.LED.Status.VISION_LOCK)
     Drivetrain.setOpenLoop(0.degrees.perSecond, Pair(0.0.meters.perSecond, 0.0.meters.perSecond))
   }
 }

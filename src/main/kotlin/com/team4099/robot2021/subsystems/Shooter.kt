@@ -104,7 +104,7 @@ object Shooter : SubsystemBase() {
   // velocity setpoint
   private var _targetVelocity = 0.rotations.perMinute
   var targetVelocity
-    set(velocity) {
+    set(velocity) { // TODO: Set LED when reaches target velocity
       _targetVelocity = velocity
       shooterMotor.set(
           ControlMode.Velocity,

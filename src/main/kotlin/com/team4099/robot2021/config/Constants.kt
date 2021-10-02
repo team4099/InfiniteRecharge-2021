@@ -263,4 +263,37 @@ object Constants {
     val CENTER_YAW_THRESHOLD = 6.degrees
     val PATH_A_AREA_THRESHOLD = 0.1
   }
+
+  object LED {
+    const val PORT = 0 // PWM Port (could be Arduino)
+    const val LED_COUNT = 50 // TODO: Determine total amount of LED
+    const val STATUS_LENGTH = 0 // TODO: Determine length for health
+
+    enum class Status(var h: Int, var s: Int, var v: Int) {
+      // Green
+      VISION_LOCK(52, 255, 255),
+
+      // Blue
+      SHOOTER_SPEED(120, 255, 255),
+
+      // White
+      INTAKE_EMPTY(0, 0, 255),
+
+      // Magenta
+      ONE_TWO_BALL(154, 255, 255),
+
+      // Sky blue
+      THREE_FOUR_BALL(90, 255, 255),
+
+      // Weird yellow green
+      DEFAULT(36, 255, 255)
+    }
+
+    enum class Health(var h: Int, var s: Int, var v: Int) {
+      VISION(0, 255, 255),
+      BEAM_BREAK(60, 255, 255),
+      OTHER(17, 255, 255),
+      DEFAULT(36, 255, 255)
+    }
+  }
 }

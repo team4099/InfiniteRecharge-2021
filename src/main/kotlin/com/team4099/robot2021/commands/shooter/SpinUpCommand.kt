@@ -1,6 +1,7 @@
 package com.team4099.robot2021.commands.shooter
 
 import com.team4099.lib.logging.Logger
+import com.team4099.robot2021.commands.led.LEDCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Shooter
 import com.team4099.robot2021.subsystems.Vision
@@ -19,6 +20,7 @@ class SpinUpCommand(
     Logger.addEvent("SpinUpCommand", "Started shooter spin-up command")
   }
   override fun execute() {
+    LEDCommand(Constants.LED.Status.SHOOTER_SPEED)
     if (withVision) {
       Shooter.targetVelocity =
           when (Vision.currentDistance) {

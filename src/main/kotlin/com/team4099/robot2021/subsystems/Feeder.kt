@@ -3,6 +3,7 @@ package com.team4099.robot2021.subsystems
 import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel
 import com.team4099.lib.logging.Logger
+import com.team4099.robot2021.commands.led.LEDCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.Constants.Feeder.FLOOR_CURRENT_LIMIT
 import com.team4099.robot2021.config.Constants.Feeder.VERTICAL_CURRENT_LIMIT
@@ -69,6 +70,17 @@ object Feeder : SubsystemBase() {
     }
     if (topLastStage != topBeamBroken && !topBeamBroken && verticalMotor.appliedOutput > 0) {
       ballCount--
+    }
+    when {
+      ballCount <= 0 -> {
+        LEDCommand(Constants.LED.Status.INTAKE_EMPTY)
+      }
+      ballCount in 1..2 -> {
+        LEDCommand(Constants.LED.Status.ONE_TWO_BALL)
+      }
+      else -> {
+        LEDCommand(Constants.LED.Status.THREE_FOUR_BALL)
+      }
     }
     bottomLastStage = bottomBeamBroken
     topLastStage = topBeamBroken
