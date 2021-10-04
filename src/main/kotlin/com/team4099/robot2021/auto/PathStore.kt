@@ -146,7 +146,7 @@ object PathStore {
   // estimated against wall
 
   // private val bestShotPose = Pose(20.inches, 94.655.inches, 180.degrees)
-  private val bestShotPose = Pose((-111.5).inches, (-202.845).inches, 180.degrees)
+  private val bestShotPose = Pose((-111.5).inches, (-202.845).inches, 0.degrees)
 
   val crossBar: Trajectory =
       Trajectory(
