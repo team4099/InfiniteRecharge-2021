@@ -20,7 +20,8 @@ class EnemyTrenchMode : SequentialCommandGroup() {
             SequentialCommandGroup(AutoDriveCommand(PathStore.toEnemyTrench), WaitCommand(0.5)) // ,
             // IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
         ),
-        AutoDriveCommand(PathStore.fromEnemyTrench) // ,
+        WaitCommand(3.0),
+        AutoDriveCommand(PathStore.fromEnemyTrench)// ,
         //VisionCommand(),
         //ShootAllCommand()
     )
