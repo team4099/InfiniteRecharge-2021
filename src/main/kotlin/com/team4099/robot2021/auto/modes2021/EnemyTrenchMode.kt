@@ -18,10 +18,11 @@ class EnemyTrenchMode : SequentialCommandGroup() {
     addCommands(
         ParallelRaceGroup(
             SequentialCommandGroup(AutoDriveCommand(PathStore.toEnemyTrench), WaitCommand(0.5)) // ,
-        // IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+            // IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
         ),
-        AutoDriveCommand(PathStore.fromEnemyTrench),
-        VisionCommand(),
-        ShootAllCommand())
+        AutoDriveCommand(PathStore.fromEnemyTrench) // ,
+        //VisionCommand(),
+        //ShootAllCommand()
+    )
   }
 }
