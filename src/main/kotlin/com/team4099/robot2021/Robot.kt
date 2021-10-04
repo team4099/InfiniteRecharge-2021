@@ -3,6 +3,7 @@ package com.team4099.robot2021
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
 import com.team4099.robot2021.auto.modes2021.EnemyTrenchMode
+import com.team4099.robot2021.auto.modes2021.TestWaitCommand
 import com.team4099.robot2021.commands.climber.LockClimberCommand
 import com.team4099.robot2021.commands.climber.OpenLoopClimbCommand
 import com.team4099.robot2021.commands.climber.SpoolLeftClimberCommand
@@ -154,6 +155,8 @@ object Robot : TimedRobot() {
   private val autonomousCommand = EnemyTrenchMode()
   // SAFE AUTO MODE
   // private val autonomousCommand = ThreeBallMode()
+
+  // private val autonomousCommand = TestWaitCommand()
 
   override fun autonomousInit() {
     Drivetrain.zeroSensors()
