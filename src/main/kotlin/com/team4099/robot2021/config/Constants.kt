@@ -143,7 +143,8 @@ object Constants {
     const val ARM_SOLENOID_REVERSE = 0
     const val TAB = "Intake"
 
-    val RAMP_TIME = 1.0
+    const val RAMP_TIME = 1.0
+    const val CURRENT_LIMIT = 40
 
     enum class IntakeState(val speed: Double) {
       IDLE(0.0),
