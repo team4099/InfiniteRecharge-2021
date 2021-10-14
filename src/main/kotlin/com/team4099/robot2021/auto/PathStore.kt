@@ -207,7 +207,7 @@ object PathStore {
       Trajectory(
           0.0.meters.perSecond,
           Path(enemyTrench, bestShotPose).apply {
-            addWaypoint(Translation(bestShotPose.x, enemyTrench.y))
+            addWaypoint(Translation(bestShotPose.x, enemyTrench.y), 0.degrees)
           },
           0.0.meters.perSecond,
           trajectoryConfig)
