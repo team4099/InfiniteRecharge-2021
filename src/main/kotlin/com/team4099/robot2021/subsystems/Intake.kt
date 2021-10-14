@@ -1,7 +1,5 @@
 package com.team4099.robot2021.subsystems
 
-import com.ctre.phoenix.motorcontrol.ControlMode
-import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel
 import com.team4099.lib.logging.Logger
@@ -11,7 +9,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object Intake : SubsystemBase() {
 
-  private val intakeMotor = CANSparkMax(Constants.Intake.INTAKE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless)
+  private val intakeMotor =
+      CANSparkMax(Constants.Intake.INTAKE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless)
   // private val intakeTalon = TalonFX(Constants.Intake.INTAKE_MOTOR)
   private val intakeDoubleSolenoid =
       DoubleSolenoid(Constants.Intake.ARM_SOLENOID_FORWARD, Constants.Intake.ARM_SOLENOID_REVERSE)
@@ -39,9 +38,7 @@ object Intake : SubsystemBase() {
     Logger.addSource(Constants.Intake.TAB, "Intake Motor Supply Current") {
       intakeMotor.outputCurrent
     }
-    Logger.addSource(Constants.Intake.TAB, "Intake Motor Voltage") {
-      intakeMotor.busVoltage
-    }
+    Logger.addSource(Constants.Intake.TAB, "Intake Motor Voltage") { intakeMotor.busVoltage }
     Logger.addSource(Constants.Intake.TAB, "Arm State") { armState.toString() }
 
     intakeMotor.restoreFactoryDefaults()

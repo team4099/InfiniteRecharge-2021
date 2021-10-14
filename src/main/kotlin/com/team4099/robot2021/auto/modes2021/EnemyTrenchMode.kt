@@ -2,6 +2,8 @@ package com.team4099.robot2021.auto.modes2021
 
 import com.team4099.robot2021.auto.PathStore
 import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
+import com.team4099.robot2021.commands.intake.IntakeCommand
+import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Drivetrain
 import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2021.subsystems.Shooter
@@ -15,10 +17,12 @@ class EnemyTrenchMode : SequentialCommandGroup() {
 
     addCommands(
         ParallelRaceGroup(
-            SequentialCommandGroup(AutoDriveCommand(PathStore.toEnemyTrench), WaitCommand(0.5)) // ,
-        // IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
-        ),
-        // WaitCommand(3.0),
+            // SequentialCommandGroup(
+              AutoDriveCommand(PathStore.toEnemyTrench),
+              // WaitCommand(0.5)
+            // ),
+            IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)),
+        WaitCommand(3.0),
         AutoDriveCommand(PathStore.fromEnemyTrench) // ,
     // VisionCommand(),
     // ShootAllCommand()

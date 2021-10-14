@@ -139,14 +139,24 @@ object PathStore {
   private val initEnemyTrench = Pose(0.inches, 0.inches, 0.degrees)
 
   // private val enemyTrench = Pose(230.537.inches, 297.5.inches, 180.degrees)
-  private val enemyTrench = Pose(99.037.inches, 0.inches, 0.degrees)
+  // private val enemyTrench = Pose(99.037.inches, 0.inches, 0.degrees)
+  // dist between initiation line & trench balls minus 20 inches clearance
+  // 110.35
+  private val enemyTrench = Pose((130.35 - 20).inches, 0.inches, 0.degrees)
 
   // on apex of triangle
   // private val bestShotPose = Pose(30.250.inches, 94.655.inches, 180.degrees)
   // estimated against wall
 
   // private val bestShotPose = Pose(20.inches, 94.655.inches, 180.degrees)
-  private val bestShotPose = Pose((-111.5).inches, (-202.845).inches, 0.degrees)
+  // private val bestShotPose = Pose((-111.5).inches, (-202.845).inches, 0.degrees)
+  // x: dist between initiation line & trench balls minus 20 inches clearance plus dist between
+  // initiation line & triangle apex
+  // -202.29
+  // y: dist between triangle apex and left ball at trench plus half dist between balls
+  // -200.68
+  private val bestShotPose =
+      Pose((-(130.35 - 20 + 91.94)).inches, (-(191.43 + 9.25)).inches, 0.degrees)
 
   val crossBar: Trajectory =
       Trajectory(
