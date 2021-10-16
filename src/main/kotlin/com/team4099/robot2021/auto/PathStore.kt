@@ -219,7 +219,6 @@ object PathStore {
           0.0.meters.perSecond,
           trajectoryConfig)
 
-
   // Infinite Recharge @ Home
 
   private val navPoints =
