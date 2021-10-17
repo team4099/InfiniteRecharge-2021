@@ -142,7 +142,10 @@ object PathStore {
   // private val enemyTrench = Pose(99.037.inches, 0.inches, 0.degrees)
   // dist between initiation line & trench balls minus 20 inches clearance
   // 110.35
-  private val enemyTrench = Pose((130.35 - 20).inches, 0.inches, 0.degrees)
+  private val bestShotPose =
+      Pose(((130.35 - 20 + 91.94)).inches, ((191.43 + 9.25)).inches, 0.degrees)
+  private val enemyTrench = Pose(-(130.35 - 20).inches, 0.inches, 0.degrees)
+  private val middleEnemyTrench = Pose(((130.35 - 20 + 91.94)).inches, 0.inches, 0.degrees)
 
   // on apex of triangle
   // private val bestShotPose = Pose(30.250.inches, 94.655.inches, 180.degrees)
@@ -155,8 +158,6 @@ object PathStore {
   // -202.29
   // y: dist between triangle apex and left ball at trench plus half dist between balls
   // -200.68
-  private val bestShotPose =
-      Pose((-(130.35 - 20 + 91.94)).inches, (-(191.43 + 9.25)).inches, 0.degrees)
 
   val crossBar: Trajectory =
       Trajectory(
@@ -202,13 +203,18 @@ object PathStore {
           Path(initEnemyTrench, enemyTrench),
           Constants.Drivetrain.SLOW_AUTO_VEL,
           trajectoryConfig)
-
   val fromEnemyTrench: Trajectory =
       Trajectory(
           0.0.meters.perSecond,
-          Path(enemyTrench, bestShotPose).apply {
-            addWaypoint(Translation(bestShotPose.x, enemyTrench.y), 0.degrees)
-          },
+          Path(enemyTrench, middleEnemyTrench), // .apply {
+          //  addWaypoint(Translation(bestShotPose.x, enemyTrench.y), 0.degrees)
+          // }
+          0.0.meters.perSecond,
+          trajectoryConfig)
+  val fromMiddleEnemyTrench: Trajectory =
+      Trajectory(
+          0.0.meters.perSecond,
+          Path(middleEnemyTrench, bestShotPose),
           0.0.meters.perSecond,
           trajectoryConfig)
 
