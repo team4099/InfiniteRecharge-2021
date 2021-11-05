@@ -105,7 +105,7 @@ object Constants {
       const val DRIVE_KD = 0.0
       const val DRIVE_KFF = 0.0
 
-      const val AUTO_POS_KP = 0.581 / 6
+      const val AUTO_POS_KP = 0.0 // 0.581 / 6 // this was actually used
       const val AUTO_POS_KI = 0.0
       const val AUTO_POS_KD = 0.0 // 263.0 / 6
 
@@ -143,7 +143,8 @@ object Constants {
     const val ARM_SOLENOID_REVERSE = 0
     const val TAB = "Intake"
 
-    val RAMP_TIME = 1.0
+    const val RAMP_TIME = 1.0
+    const val CURRENT_LIMIT = 40
 
     enum class IntakeState(val speed: Double) {
       IDLE(0.0),
@@ -247,7 +248,7 @@ object Constants {
 
   object RobotPositions {
     val START_X = 108.9135.inches // TODO: Determine if accurate
-    val START_Y = 2.363.meters // TODO: Determine if this is accurate and will make bot aligned
+    val START_Y = 94.655.inches // TODO: Determine if this is accurate and will make bot aligned
     val START_ANGLE = 180.degrees
 
     val CROSS_BAR_X = 5.0.meters
