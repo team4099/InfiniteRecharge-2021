@@ -143,6 +143,8 @@ object Constants {
     const val ARM_SOLENOID_REVERSE = 0
     const val TAB = "Intake"
 
+    val TO_FAR_TRENCH_INTAKE_DELAY_TIME = (2.207 /0.66) * 0.85
+
     const val RAMP_TIME = 1.0
     const val CURRENT_LIMIT = 40
 

@@ -26,7 +26,7 @@ class DelayedIntakeAutoToFarTrench: ParallelCommandGroup() {
               Constants.Intake.IntakeState.IDLE,
               Constants.Intake.ArmPosition.OUT
               ),
-            WaitCommand(2.843), //to-do: distance/velocity * 0.85 = 2.20713615/0.66 * 0.85 = 2.84252383
+            WaitCommand(Constants.Intake.TO_FAR_TRENCH_INTAKE_DELAY_TIME),
             // turn intake on
             IntakeCommand(
               Constants.Intake.IntakeState.IN,
