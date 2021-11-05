@@ -8,6 +8,7 @@ import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.subsystems.Drivetrain
 import com.team4099.robot2021.subsystems.Intake
 import com.team4099.robot2021.subsystems.Shooter
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.WaitCommand
@@ -22,7 +23,7 @@ class TestAuto: ParallelCommandGroup() {
             SequentialCommandGroup(AutoDriveCommand(PathStore.toFarTrench), WaitCommand(0.5)),
             SequentialCommandGroup(
                 //put intake down (idk the command for this)
-                WaitCommand()//distance travelling over robot speed * 0.75);
+                WaitCommand(0.0) //distance travelling over robot speed * 0.75
                 //intake command vroom vroom (idk command for this)
             ),
             IntakeCommand(
@@ -30,7 +31,7 @@ class TestAuto: ParallelCommandGroup() {
                 Constants.Intake.ArmPosition.OUT)
         ),
         AutoDriveCommand(PathStore.fromFarTrench),
-        ShootComand()
+        ShootCommand()
     )
   }
 }
