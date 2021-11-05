@@ -26,8 +26,8 @@ class DelayedIntakeAutoToFarTrench: ParallelCommandGroup() {
               Constants.Intake.IntakeState.IDLE,
               Constants.Intake.ArmPosition.OUT
               ),
-            WaitCommand(0.0), //to-do: distance travelling over robot speed * 0.75 (figure out how PIDs work first)
-            //
+            WaitCommand(2.843), //to-do: distance/velocity * 0.85 = 2.20713615/0.66 * 0.85 = 2.84252383
+            // turn intake on
             IntakeCommand(
               Constants.Intake.IntakeState.IN,
               Constants.Intake.ArmPosition.OUT
