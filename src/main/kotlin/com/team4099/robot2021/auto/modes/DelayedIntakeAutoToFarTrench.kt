@@ -32,10 +32,10 @@ class DelayedIntakeAutoToFarTrench: ParallelCommandGroup() {
               Constants.Intake.IntakeState.IN,
               Constants.Intake.ArmPosition.OUT
               )
-            ),
+            )
+        ),
           AutoDriveCommand(PathStore.fromFarTrench),
           ShootCommand()
-        )
     )
   }
 }
