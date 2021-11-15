@@ -56,40 +56,40 @@ object Robot : TimedRobot() {
 
     // Link between feeder Trigger and Command
     // Feeder.defaultCommand = FeederSerialize()
-    Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
+    // Feeder.defaultCommand = FeederCommand(Feeder.FeederState.NEUTRAL)
 
-    ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_ALL))
-    ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD_ALL))
+    // ControlBoard.runFeederIn.whileActiveOnce(FeederCommand(Feeder.FeederState.FORWARD_ALL))
+    // ControlBoard.runFeederOut.whileActiveOnce(FeederCommand(Feeder.FeederState.BACKWARD_ALL))
 
-    Intake.defaultCommand = IntakeIdleCommand()
+    // Intake.defaultCommand = IntakeIdleCommand()
     // IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.OUT)
-    ControlBoard.runIntakeIn
+    // ControlBoard.runIntakeIn
         // comment feeder with intake when beam breaks aren't working
-        .whileActiveContinuous(FeederSerialize())
-        .whileActiveContinuous(
+        // .whileActiveContinuous(FeederSerialize())
+        // .whileActiveContinuous(
             // IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
-            IntakeBallsCommand())
-    ControlBoard.putIntakeUp
-        .whileActiveContinuous(
+            // IntakeBallsCommand())
+    // ControlBoard.putIntakeUp
+        // .whileActiveContinuous(
             // IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN)
-            LiftIntakeCommand())
-    ControlBoard.runIntakeOut
-        .whileActiveContinuous(
+            // LiftIntakeCommand())
+    // ControlBoard.runIntakeOut
+        // .whileActiveContinuous(
             // IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
-            ReverseIntakeCommand()
+            // ReverseIntakeCommand()
         // .alongWith(FeederCommand(Feeder.FeederState.BACKWARD)
-        )
-    ControlBoard.prepareClimb.toggleWhenActive(PrepareClimbCommand())
+        // )
+    // ControlBoard.prepareClimb.toggleWhenActive(PrepareClimbCommand())
 
-    Climber.defaultCommand = LockClimberCommand()
-    ControlBoard.unlockClimber.whileActiveOnce(UnlockClimberCommand())
-    ControlBoard.lockClimber.whileActiveOnce(LockClimberCommand())
+    // Climber.defaultCommand = LockClimberCommand()
+    // ControlBoard.unlockClimber.whileActiveOnce(UnlockClimberCommand())
+    // ControlBoard.lockClimber.whileActiveOnce(LockClimberCommand())
 
     // Open Loop Climb
-    ControlBoard.moveClimber
-        .whileActiveOnce(
-            PrepareClimbCommand().andThen(
-                UnlockClimberCommand().andThen(OpenLoopClimbCommand({ ControlBoard.climbPower }))))
+    // ControlBoard.moveClimber
+        // .whileActiveOnce(
+            // PrepareClimbCommand().andThen(
+                // UnlockClimberCommand().andThen(OpenLoopClimbCommand({ ControlBoard.climbPower }))))
 
     // Closed Loop Climber
     // ControlBoard.climberHigh
@@ -97,24 +97,24 @@ object Robot : TimedRobot() {
     // ControlBoard.climberLow
     // .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
 
-    ControlBoard.spoolLeftClimber
-        .whileActiveOnce(UnlockClimberCommand().andThen((SpoolLeftClimberCommand())))
-    ControlBoard.spoolRightClimber
-        .whileActiveOnce(UnlockClimberCommand().andThen((SpoolRightClimberCommand())))
+    // ControlBoard.spoolLeftClimber
+        // .whileActiveOnce(UnlockClimberCommand().andThen((SpoolLeftClimberCommand())))
+    // ControlBoard.spoolRightClimber
+        // .whileActiveOnce(UnlockClimberCommand().andThen((SpoolRightClimberCommand())))
 
-    Shooter.defaultCommand = ShooterIdleCommand()
+    // Shooter.defaultCommand = ShooterIdleCommand()
     //    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
     //    ControlBoard.shoot.whileActiveOnce(VisionCommand().andThen(ShootCommand()))
-    ControlBoard.shoot.whileActiveOnce(ShootCommand())
+    // ControlBoard.shoot.whileActiveOnce(ShootCommand())
     //    ControlBoard.shoot.whileActiveOnce(VisionCommand())
     //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
-    ControlBoard.nearSpin
-        .whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.NEAR))
-    ControlBoard.farSpin.whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.FAR))
-    ControlBoard.unjam.whileActiveContinuous(UnjamCommand())
+    // ControlBoard.nearSpin
+        // .whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.NEAR))
+    // ControlBoard.farSpin.whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.FAR))
+    // ControlBoard.unjam.whileActiveContinuous(UnjamCommand())
 
-    ControlBoard.visionButton.whileActiveOnce(VisionCommand())
+    // ControlBoard.visionButton.whileActiveOnce(VisionCommand())
 
     Drivetrain.defaultCommand =
         OpenLoopDriveCommand(
