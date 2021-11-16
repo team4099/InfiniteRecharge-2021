@@ -34,6 +34,7 @@ import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
+import edu.wpi.first.wpilibj2.command.CommandBase
 import edu.wpi.first.wpilibj2.command.CommandScheduler
 import kotlin.math.pow
 
@@ -154,7 +155,7 @@ object Robot : TimedRobot() {
   // PREFERABLE AUTO MODE (NOT TESTED THOROUGHLY)
   // private val autonomousCommand = EnemyTrenchMode()
   // SAFE AUTO MODE
-  private val autonomousCommand = ThreeBallMode()
+  private val autonomousCommand = ResetGyroCommand()
 
   override fun autonomousInit() {
     Drivetrain.zeroSensors()
