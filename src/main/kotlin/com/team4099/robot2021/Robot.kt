@@ -2,39 +2,14 @@ package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
-import com.team4099.robot2021.auto.modes2021.EnemyTrenchMode
-import com.team4099.robot2021.auto.modes2021.ThreeBallMode
-import com.team4099.robot2021.commands.climber.LockClimberCommand
-import com.team4099.robot2021.commands.climber.OpenLoopClimbCommand
-import com.team4099.robot2021.commands.climber.SpoolLeftClimberCommand
-import com.team4099.robot2021.commands.climber.SpoolRightClimberCommand
-import com.team4099.robot2021.commands.climber.UnlockClimberCommand
 import com.team4099.robot2021.commands.drivetrain.OpenLoopDriveCommand
 import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
-import com.team4099.robot2021.commands.feeder.FeederCommand
-import com.team4099.robot2021.commands.feeder.FeederSerialize
-import com.team4099.robot2021.commands.intake.IntakeBallsCommand
-import com.team4099.robot2021.commands.intake.IntakeIdleCommand
-import com.team4099.robot2021.commands.intake.LiftIntakeCommand
-import com.team4099.robot2021.commands.intake.PrepareClimbCommand
-import com.team4099.robot2021.commands.intake.ReverseIntakeCommand
-import com.team4099.robot2021.commands.shooter.ShootCommand
-import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
-import com.team4099.robot2021.commands.shooter.SpinUpCommand
-import com.team4099.robot2021.commands.shooter.UnjamCommand
-import com.team4099.robot2021.commands.shooter.VisionCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
-import com.team4099.robot2021.subsystems.Climber
 import com.team4099.robot2021.subsystems.Drivetrain
-import com.team4099.robot2021.subsystems.Feeder
-import com.team4099.robot2021.subsystems.Intake
-import com.team4099.robot2021.subsystems.Shooter
-import com.team4099.robot2021.subsystems.Vision
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
-import edu.wpi.first.wpilibj2.command.CommandBase
 import edu.wpi.first.wpilibj2.command.CommandScheduler
 import kotlin.math.pow
 
@@ -65,21 +40,21 @@ object Robot : TimedRobot() {
     // Intake.defaultCommand = IntakeIdleCommand()
     // IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.OUT)
     // ControlBoard.runIntakeIn
-        // comment feeder with intake when beam breaks aren't working
-        // .whileActiveContinuous(FeederSerialize())
-        // .whileActiveContinuous(
-            // IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
-            // IntakeBallsCommand())
+    // comment feeder with intake when beam breaks aren't working
+    // .whileActiveContinuous(FeederSerialize())
+    // .whileActiveContinuous(
+    // IntakeCommand(Constants.Intake.IntakeState.IN, Constants.Intake.ArmPosition.OUT)
+    // IntakeBallsCommand())
     // ControlBoard.putIntakeUp
-        // .whileActiveContinuous(
-            // IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN)
-            // LiftIntakeCommand())
+    // .whileActiveContinuous(
+    // IntakeCommand(Constants.Intake.IntakeState.IDLE, Constants.Intake.ArmPosition.IN)
+    // LiftIntakeCommand())
     // ControlBoard.runIntakeOut
-        // .whileActiveContinuous(
-            // IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
-            // ReverseIntakeCommand()
-        // .alongWith(FeederCommand(Feeder.FeederState.BACKWARD)
-        // )
+    // .whileActiveContinuous(
+    // IntakeCommand(Constants.Intake.IntakeState.OUT, Constants.Intake.ArmPosition.OUT)
+    // ReverseIntakeCommand()
+    // .alongWith(FeederCommand(Feeder.FeederState.BACKWARD)
+    // )
     // ControlBoard.prepareClimb.toggleWhenActive(PrepareClimbCommand())
 
     // Climber.defaultCommand = LockClimberCommand()
@@ -88,9 +63,9 @@ object Robot : TimedRobot() {
 
     // Open Loop Climb
     // ControlBoard.moveClimber
-        // .whileActiveOnce(
-            // PrepareClimbCommand().andThen(
-                // UnlockClimberCommand().andThen(OpenLoopClimbCommand({ ControlBoard.climbPower }))))
+    // .whileActiveOnce(
+    // PrepareClimbCommand().andThen(
+    // UnlockClimberCommand().andThen(OpenLoopClimbCommand({ ControlBoard.climbPower }))))
 
     // Closed Loop Climber
     // ControlBoard.climberHigh
@@ -99,9 +74,9 @@ object Robot : TimedRobot() {
     // .whileActiveOnce(UnlockClimber().andThen(MoveClimber(Constants.ClimberPosition.LOW)))
 
     // ControlBoard.spoolLeftClimber
-        // .whileActiveOnce(UnlockClimberCommand().andThen((SpoolLeftClimberCommand())))
+    // .whileActiveOnce(UnlockClimberCommand().andThen((SpoolLeftClimberCommand())))
     // ControlBoard.spoolRightClimber
-        // .whileActiveOnce(UnlockClimberCommand().andThen((SpoolRightClimberCommand())))
+    // .whileActiveOnce(UnlockClimberCommand().andThen((SpoolRightClimberCommand())))
 
     // Shooter.defaultCommand = ShooterIdleCommand()
     //    ControlBoard.shoot.whenActive(ParallelCommandGroup(ShootCommand(), VisionCommand()))
@@ -111,8 +86,9 @@ object Robot : TimedRobot() {
     //    ControlBoard.stopShooting.whenActive(ShooterIdleCommand())
     //    ControlBoard.spinUpShooter.whenActive(SpinUpCommand(true))
     // ControlBoard.nearSpin
-        // .whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.NEAR))
-    // ControlBoard.farSpin.whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.FAR))
+    // .whileActiveContinuous(SpinUpCommand(false, true, Vision.DistanceState.NEAR))
+    // ControlBoard.farSpin.whileActiveContinuous(SpinUpCommand(false, true,
+    // Vision.DistanceState.FAR))
     // ControlBoard.unjam.whileActiveContinuous(UnjamCommand())
 
     // ControlBoard.visionButton.whileActiveOnce(VisionCommand())
