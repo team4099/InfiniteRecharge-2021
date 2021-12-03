@@ -67,7 +67,7 @@ class Wheel(
   private val directionTemp: Double
     get() = directionSpark.motorTemperature
 
-  private val driveOutputCurrent: Double
+  val driveOutputCurrent: Double
     get() = driveSpark.outputCurrent
 
   private val directionOutputCurrent: Double
