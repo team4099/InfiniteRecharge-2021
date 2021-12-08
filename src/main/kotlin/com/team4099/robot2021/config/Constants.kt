@@ -7,7 +7,6 @@ import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.base.seconds
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.div
-import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.derived.rotations
 import com.team4099.lib.units.derived.volts
 import com.team4099.lib.units.perMinute
