@@ -44,7 +44,7 @@ object Constants {
   }
 
   object PowerDistributionPanel {
-    const val PDP_ID = 0 // TODO: need to find
+    const val PDP_ID = 10
     const val RIGHT_SHOOTER = 0
     const val LEFT_SHOOTER = 1
 

@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 
 object PowerDistributionPanel : SubsystemBase() {
-  val PDP: PowerDistributionPanel = PowerDistributionPanel(10)
+  val PDP: PowerDistributionPanel = PowerDistributionPanel(Constants.PowerDistributionPanel.PDP_ID)
 
   init {
     Logger.addSource("Power Distribution Panel", "PDP Power") { PDP.totalPower }
