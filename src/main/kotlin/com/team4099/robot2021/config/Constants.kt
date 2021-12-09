@@ -45,6 +45,25 @@ object Constants {
 
   object PowerDistributionPanel {
     const val PDP_ID = 0 // TODO: need to find
+    const val RIGHT_SHOOTER = 0
+    const val LEFT_SHOOTER = 1
+
+    const val RIGHT_CLIMBER = 2
+    const val LEFT_CLIMBER = 13
+
+    const val INTAKE = 8
+
+    const val LEFT_FEEDER = 3
+    const val RIGHT_FEEDER = 6
+
+    const val WHEEL_ONE_DIRECTION = 10
+    const val WHEEL_ONE_DRIVE = 12
+    const val WHEEL_TWO_DIRECTION = 7
+    const val WHEEL_TWO_DRIVE = 3
+    const val WHEEL_THREE_DIRECTION = 15
+    const val WHEEL_THREE_DRIVE = 9
+    const val WHEEL_FOUR_DIRECTION = 4
+    const val WHEEL_FOUR_DRIVE = 14
   }
 
   object Drivetrain {

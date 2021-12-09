@@ -7,6 +7,7 @@ import com.team4099.robot2021.commands.drivetrain.ResetGyroCommand
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
 import com.team4099.robot2021.subsystems.Drivetrain
+import com.team4099.robot2021.subsystems.PowerDistributionPanel
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.TimedRobot
@@ -111,6 +112,7 @@ object Robot : TimedRobot() {
     //        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.MID))
     //    ControlBoard.farSpin
     //        .whileActiveOnce(SpinUpCommand(accuracy = true, distance = Vision.DistanceState.FAR))
+    PowerDistributionPanel
   }
 
   // private val autonomousCommand = GalacticSearch() // ResetZeroCommand()
