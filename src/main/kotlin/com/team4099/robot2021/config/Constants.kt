@@ -43,6 +43,10 @@ object Constants {
     const val TURN_DEADBAND = 0.05
   }
 
+  object PowerDistributionPanel {
+    const val PDP_ID = 0 // TODO: need to find
+  }
+
   object Drivetrain {
     const val TICKS = 4096
 
