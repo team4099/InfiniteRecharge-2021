@@ -2,6 +2,7 @@ package com.team4099.robot2021
 
 import com.team4099.lib.logging.Logger
 import com.team4099.lib.smoothDeadband
+<<<<<<< HEAD
 import com.team4099.robot2021.auto.modes2021.ThreeBallMode
 import com.team4099.robot2021.commands.climber.LockClimberCommand
 import com.team4099.robot2021.commands.climber.OpenLoopClimbCommand
@@ -22,6 +23,11 @@ import com.team4099.robot2021.commands.shooter.ShooterIdleCommand
 import com.team4099.robot2021.commands.shooter.SpinUpCommand
 import com.team4099.robot2021.commands.shooter.UnjamCommand
 import com.team4099.robot2021.commands.shooter.VisionCommand
+=======
+import com.team4099.robot2021.auto.PathStore
+import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
+import com.team4099.robot2021.commands.drivetrain.TeleopDriveCommand
+>>>>>>> 0b47a73d250002d5563ab6cab25819d9e7cb0aa1
 import com.team4099.robot2021.config.Constants
 import com.team4099.robot2021.config.ControlBoard
 import com.team4099.robot2021.subsystems.Climber
