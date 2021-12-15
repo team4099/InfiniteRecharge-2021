@@ -1,5 +1,7 @@
 package com.team4099.robot2021.auto
 
+import com.pathplanner.lib.PathPlanner
+import com.pathplanner.lib.PathPlannerTrajectory
 import com.team4099.lib.geometry.Pose
 import com.team4099.lib.geometry.Translation
 import com.team4099.lib.pathfollow.Path
@@ -12,6 +14,7 @@ import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.radians
 import com.team4099.lib.units.perSecond
 import com.team4099.lib.units.step
+import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
 import com.team4099.robot2021.config.Constants
 
 object PathStore {
@@ -36,6 +39,11 @@ object PathStore {
       Constants.Drivetrain.MAX_AUTO_ACCEL,
       Constants.Drivetrain.MAX_AUTO_ANGULAR_VEL,
       Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)
+
+
+  val examplePath: PathPlannerTrajectory = PathPlanner.loadPath("testPath1", 8.0, 5.0)
+  val squarepath = AutoDriveCommand(examplePath)
+
 
   // NOTE: Pathweaver y-axis is opposite than ours!
   // 2020 Season

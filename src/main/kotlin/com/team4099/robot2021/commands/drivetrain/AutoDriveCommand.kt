@@ -84,7 +84,6 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
           yPID.d = newD
         },
         false)
-<<<<<<< HEAD
     Logger.addSource("Drivetrain Tuning", "desired x") {
       trajectory.sample(trajCurTime).pose.x.inFeet
     }
@@ -95,8 +94,6 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
     Logger.addSource("Drivetrain Tuning", "desired theta") {
       trajectory.sample(trajCurTime).pose.theta.inDegrees
     }
-=======
->>>>>>> 0b47a73d250002d5563ab6cab25819d9e7cb0aa1
 
     thetaPID.enableContinuousInput(-PI, PI)
   }

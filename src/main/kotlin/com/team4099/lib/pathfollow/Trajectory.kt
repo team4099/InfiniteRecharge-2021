@@ -1,5 +1,6 @@
 package com.team4099.lib.pathfollow
 
+import com.pathplanner.lib.PathPlannerTrajectory
 import com.team4099.lib.geometry.Pose
 import com.team4099.lib.geometry.Translation
 import com.team4099.lib.geometry.interpolate
@@ -19,10 +20,10 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryParameterizer
  * drivetrains.
  */
 class Trajectory(
-  private val startVelocity: LinearVelocity,
-  private val path: Path,
-  private val endVelocity: LinearVelocity,
-  private val trajectoryConfig: TrajectoryConfig
+    private val startVelocity: LinearVelocity,
+    private val path: Path,
+    private val endVelocity: LinearVelocity,
+    private val trajectoryConfig: TrajectoryConfig
 ) {
   val states: List<TrajectoryState>
   val startTime: Time
