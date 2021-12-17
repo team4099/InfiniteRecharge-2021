@@ -12,6 +12,8 @@ import com.team4099.lib.units.base.inches
 import com.team4099.lib.units.base.meters
 import com.team4099.lib.units.derived.degrees
 import com.team4099.lib.units.derived.radians
+import com.team4099.lib.units.inMetersPerSecond
+import com.team4099.lib.units.inMetersPerSecondPerSecond
 import com.team4099.lib.units.perSecond
 import com.team4099.lib.units.step
 import com.team4099.robot2021.commands.drivetrain.AutoDriveCommand
@@ -41,7 +43,10 @@ object PathStore {
       Constants.Drivetrain.MAX_AUTO_ANGULAR_ACCEL)
 
 
-  val examplePath: PathPlannerTrajectory = PathPlanner.loadPath("testPath1", 8.0, 5.0)
+  val examplePath: PathPlannerTrajectory = PathPlanner.loadPath("testPath1",
+    Constants.Drivetrain.MAX_AUTO_VEL.inMetersPerSecond,
+    Constants.Drivetrain.MAX_AUTO_ACCEL.inMetersPerSecondPerSecond)
+
   val squarepath = AutoDriveCommand(examplePath)
 
 

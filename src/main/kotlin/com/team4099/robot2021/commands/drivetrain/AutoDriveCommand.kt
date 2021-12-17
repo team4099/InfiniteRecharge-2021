@@ -1,8 +1,12 @@
 package com.team4099.robot2021.commands.drivetrain
 
+import com.pathplanner.lib.PathPlannerTrajectory
 import com.team4099.lib.hal.Clock
 import com.team4099.lib.logging.Logger
+import com.team4099.lib.pathfollow.Path
 import com.team4099.lib.pathfollow.Trajectory
+import com.team4099.lib.pathfollow.TrajectoryState
+import com.team4099.lib.units.LinearVelocity
 import com.team4099.lib.units.base.inFeet
 import com.team4099.lib.units.base.inMeters
 import com.team4099.lib.units.base.inSeconds
@@ -26,6 +30,18 @@ import edu.wpi.first.wpilibj2.command.CommandBase
 import kotlin.math.PI
 
 class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
+
+  private var isPP = false;
+  private lateinit var pathPlannerTrajectory: PathPlannerTrajectory;
+
+  constructor(pathPlannerTrajectory: PathPlannerTrajectory) {
+    Logger.addSource("bruh", "stupid") {
+      2
+    }
+    isPP = true;
+    this.pathPlannerTrajectory = pathPlannerTrajectory
+  }
+
   private val xPID =
       PIDController(
           Constants.Drivetrain.PID.AUTO_POS_KP,
@@ -105,7 +121,7 @@ class AutoDriveCommand(private val trajectory: Trajectory) : CommandBase() {
 
   override fun execute() {
     trajCurTime = Clock.fpgaTime - trajStartTime
-    val desiredState = trajectory.sample(trajCurTime)
+    val desiredState = if (isPP) { TrajectoryState(trajCurTime, pathPlannerTrajectory.sample(trajCurTime)) } else { trajectory.sample(trajCurTime) }
     val xFF = desiredState.linearVelocity * desiredState.curvature.cos
     val yFF = desiredState.linearVelocity * desiredState.curvature.sin
     val thetaFF =
