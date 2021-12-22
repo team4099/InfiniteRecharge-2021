@@ -317,11 +317,7 @@ object Drivetrain : SubsystemBase() {
         SwerveModuleState(
             wheels[1].driveVelocity.inMetersPerSecond, wheels[1].directionPosition.inRotation2ds),
         SwerveModuleState(
-<<<<<<< HEAD
             wheels[2].driveVelocity.inMetersPerSecond, wheels[2].directionPosition.inRotation2ds),
-=======
-            wheels[2].driveVelocity.inMetersPerSecond, wheels[1].directionPosition.inRotation2ds),
->>>>>>> 0b47a73d250002d5563ab6cab25819d9e7cb0aa1
         SwerveModuleState(
             wheels[3].driveVelocity.inMetersPerSecond, wheels[3].directionPosition.inRotation2ds))
   }
